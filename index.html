@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web + Mobile Development — A Study Book</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Web + Mobile Dev — A Study Book</a>
+    <nav class="tracks">
+      <a class="active" href="index.html#backend">Backend</a>
+      <span class="disabled">Frontend (not started)</span>
+      <span class="disabled">Mobile (not started)</span>
+      <span class="disabled">Cybersecurity (not started)</span>
+      <a href="review-schedule.html">Review Schedule</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <h1>Web + Mobile Development</h1>
+  <p class="subtitle">Concepts and mental models first, frameworks later. A living book, built topic by topic — nothing here is treated as finished; everything is revisited for depth over time.</p>
+
+  <div class="callout">
+    <strong>How to read this:</strong> Start wherever you like — each page stands alone but links to the pages it naturally connects to. The <a href="review-schedule.html">Review Schedule</a> tracks what's due for a recall check, spaced-repetition style.
+  </div>
+
+  <h2 id="backend">Backend</h2>
+  <p>The server side of the client-server model: how requests are shaped, how identity and permissions are handled, how data is kept fresh, and how it's actually stored.</p>
+
+  <div class="card-grid">
+    <a class="card" href="backend/apis.html">
+      <div class="card-title">APIs</div>
+      <div class="card-meta">REST resource modeling, verbs, status codes · basics solid</div>
+    </a>
+    <a class="card" href="backend/auth.html">
+      <div class="card-title">Auth</div>
+      <div class="card-meta">Sessions vs. tokens, cookie security, CSRF/XSS · basics solid</div>
+    </a>
+    <a class="card" href="backend/state-caching.html">
+      <div class="card-title">State &amp; Caching</div>
+      <div class="card-meta">Caching strategies, optimistic updates · basics solid</div>
+    </a>
+    <a class="card" href="backend/databases.html">
+      <div class="card-title">Databases</div>
+      <div class="card-meta">Relational vs. non-relational, ACID, isolation levels, replication, sharding, CAP · in progress</div>
+    </a>
+  </div>
+
+  <h2 id="frontend">Frontend</h2>
+  <p>Not started yet — browser internals: the DOM, CSS, the JS event loop, rendering strategies.</p>
+
+  <h2 id="mobile">Mobile</h2>
+  <p>Not started yet — native vs. cross-platform, app lifecycle, OS sandboxing and permissions.</p>
+
+  <h2 id="cybersecurity">Cybersecurity</h2>
+  <p>Not a formal track yet, though XSS/CSRF mechanics were already covered as part of closing the Auth gap — see the <a href="backend/auth.html">Auth</a> page.</p>
+</main>
+
+<footer class="site-footer">Built topic by topic. Depth over completion.</footer>
+</body>
+</html>

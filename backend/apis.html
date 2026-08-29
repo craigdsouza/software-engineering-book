@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIs — Web + Mobile Dev Book</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="../index.html">Web + Mobile Dev — A Study Book</a>
+    <nav class="tracks">
+      <a class="active" href="../index.html#backend">Backend</a>
+      <a href="../review-schedule.html">Review Schedule</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="../index.html">Home</a> / Backend / APIs</div>
+  <h1>APIs</h1>
+  <p class="subtitle">Status: <span class="status-solid">basics solid</span> · Last covered 2026-08-29</p>
+
+  <h2>REST, in short</h2>
+  <p>REST models data as <strong>resources</strong> (nouns) living at URLs, and reuses HTTP's small built-in vocabulary of verbs to act on them instead of inventing a new endpoint per action:</p>
+  <ul>
+    <li><code>GET /users/42</code> — fetch user 42</li>
+    <li><code>POST /users</code> — create a new user</li>
+    <li><code>PATCH /users/42</code> — update user 42</li>
+    <li><code>DELETE /users/42</code> — remove user 42</li>
+  </ul>
+  <p>Status codes come in groups: 2xx success, 4xx client error (400 bad request, 401 unauthorized, 403 forbidden, 404 not found), 5xx server error.</p>
+  <p><strong>GraphQL</strong> is noted at awareness level only — a single endpoint where the client specifies exactly which fields it wants, solving REST's common over/under-fetching problem. Not gone deep on yet.</p>
+
+  <h2>Case study: modeling a "like"</h2>
+  <p>Two designs considered for letting a user like a post:</p>
+  <ul>
+    <li><code>POST</code> / <code>DELETE /posts/42/likes</code> — resource-oriented</li>
+    <li><code>PATCH /posts/42</code> with a <code>likedBy</code> field — attribute-oriented</li>
+  </ul>
+  <p><strong>Resource-oriented wins.</strong> A like is an <em>event</em> (a fact that happened), not <em>state</em> (an attribute of the post). The PATCH-with-array approach requires a client-side read-modify-write: fetch the current array, append the new like, send the whole array back. That creates a <strong>lost-update race condition</strong> — if two users like concurrently, both read the same starting array, both append their own name, and whichever PATCH lands second silently overwrites the first's change. <code>POST</code>-to-a-collection needs no such read first, so it's atomic on the server — no race.</p>
+
+  <div class="callout">
+    <strong>General principle, not just a REST quirk:</strong> this exact race condition — and the general-purpose fix for it — reappears when databases are covered directly. See <a href="databases.html#isolation">Databases — ACID &amp; Isolation</a> for the underlying mechanism (transaction isolation) that a real database uses to prevent this class of bug automatically.
+  </div>
+
+  <h3>Rule of thumb</h3>
+  <p>Model something as its own resource if it has independent identity, can be listed, or can be created/removed by someone other than the parent resource's owner. Otherwise, PATCH the parent's attribute — e.g. archiving an email is a PATCH, since it's a property change made by the resource's own owner, with no concurrent-actor risk.</p>
+
+  <h2>Where things stand</h2>
+  <p>Solid. Reasoned through the REST verb question unprompted, and correctly absorbed the critique when self-proposing the PATCH-with-array refinement — including recognizing the concurrency/event-vs-state distinction immediately. Confirmed again on a later recall check (archiving-email variant). No flagged gaps — safe to build on (pagination, idempotency, versioning) without re-teaching basics.</p>
+
+  <h2>Coverage log (spaced repetition)</h2>
+  <div class="table-scroll">
+  <table>
+    <tr><th>Subtopic</th><th>Last covered</th><th>Times reviewed</th></tr>
+    <tr><td>REST resource modeling, verbs, status codes</td><td>2026-08-29</td><td>2</td></tr>
+    <tr><td>"Like" case study — event vs. state, race conditions</td><td>2026-08-29</td><td>2</td></tr>
+  </table>
+  </div>
+
+  <div class="related">
+    <h2>Related pages</h2>
+    <ul>
+      <li><a href="databases.html">Databases</a> — the "like" race condition generalizes to transaction isolation.</li>
+      <li><a href="auth.html">Auth</a> — auth decisions are themselves modeled as resources/endpoints in the same style.</li>
+      <li><a href="../review-schedule.html">Review Schedule</a> — spaced-repetition status for this topic.</li>
+    </ul>
+  </div>
+</main>
+<footer class="site-footer">Built topic by topic. Depth over completion.</footer>
+</body>
+</html>

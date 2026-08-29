@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Databases — Web + Mobile Dev Book</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="../index.html">Web + Mobile Dev — A Study Book</a>
+    <nav class="tracks">
+      <a class="active" href="../index.html#backend">Backend</a>
+      <a href="../review-schedule.html">Review Schedule</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="../index.html">Home</a> / Backend / Databases</div>
+  <h1>Databases</h1>
+  <p class="subtitle">Status: basics <span class="status-solid">solid</span>, "beyond" layer <span class="status-upcoming">in progress</span> · Last covered 2026-08-29</p>
+
+  <h2>Why databases exist</h2>
+  <p>An application server holding data only in memory has three problems: it vanishes on restart, it can't be shared across multiple server instances, and it has no way to answer precise questions about the data without hand-written scanning logic. A database gives durable, shared, queryable storage.</p>
+
+  <h2>Relational vs. non-relational</h2>
+  <p><strong>Relational (SQL)</strong> databases organize data into tables with fixed columns; relationships between tables are expressed via <strong>foreign keys</strong>, and reassembled at query time with <strong>joins</strong>. <strong>Non-relational (NoSQL)</strong> databases — document stores, key-value stores — relax that structure, letting each record be a self-contained blob with no enforced schema or joins.</p>
+  <p><strong>Normalization</strong> (store a reference, one source of truth) vs. <strong>denormalization</strong> (duplicate data directly for read speed) is the same underlying tension as caching. Denormalization is a modeling <em>choice</em>, not exclusive to non-relational systems — a relational table can denormalize too; non-relational stores just make it the default since cheap joins aren't available there.</p>
+
+  <h2 id="isolation">ACID and isolation</h2>
+  <p>A <strong>transaction</strong> groups multiple operations so the database guarantees they behave as one indivisible unit — <strong>Atomicity</strong> (all or nothing), <strong>Consistency</strong> (only valid states), <strong>Isolation</strong> (concurrent transactions can't corrupt each other's view of the data), <strong>Durability</strong> (once confirmed, survives a crash).</p>
+
+  <div class="callout">
+    <strong>This is the general-purpose fix for the "likes" race condition.</strong> See <a href="apis.html">APIs — the "like" case study</a>: two concurrent PATCH-array likes could silently lose one update. <em>Isolation</em> is the database property specifically designed to prevent exactly that class of bug.
+  </div>
+
+  <h3>Isolation is a dial, not a switch</h3>
+  <p>Isolation means concurrent transactions <em>behave as if</em> serialized — not that the database literally forbids parallelism. How strictly that illusion holds is configurable, because full strictness is expensive. Three classic anomalies, weakest to worst:</p>
+
+  <pre>DIRTY READ — seeing work that isn't final yet
+Time ──────────────────────────────────────►
+Txn A:  BEGIN ── set balance=90 ────────── ROLLBACK (back to 100)
+Txn B:          BEGIN ── read balance=90 ── COMMIT
+                          ▲
+                          B saw a number that, in the end, never really happened
+
+NON-REPEATABLE READ — same question, two different answers, mid-transaction
+Time ──────────────────────────────────────►
+Txn A:  BEGIN ── read balance=100 ─────────────── read balance=90 ── COMMIT
+Txn B:               BEGIN ── set balance=90 ── COMMIT
+                                                   ▲
+                             A asked twice, got two different answers, in one sitting
+
+PHANTOM READ — same search, a new row shows up
+Time ──────────────────────────────────────►
+Txn A:  BEGIN ── "orders&gt;$100"→5 rows ──────────────── same query→6 rows ── COMMIT
+Txn B:                  BEGIN ── insert new $150 order ── COMMIT
+                                                             ▲
+                                    a row "appeared" between two identical queries</pre>
+
+  <div class="table-scroll">
+  <table>
+    <tr><th>Isolation level</th><th>Dirty read</th><th>Non-repeatable read</th><th>Phantom read</th></tr>
+    <tr><td>Read Uncommitted</td><td>Possible</td><td>Possible</td><td>Possible</td></tr>
+    <tr><td>Read Committed</td><td>Prevented</td><td>Possible</td><td>Possible</td></tr>
+    <tr><td>Repeatable Read</td><td>Prevented</td><td>Prevented</td><td>Possible (DB-dependent)</td></tr>
+    <tr><td>Serializable</td><td>Prevented</td><td>Prevented</td><td>Prevented</td></tr>
+  </table>
+  </div>
+
+  <p>Two implementation strategies: <strong>locking</strong> (a transaction takes a lock on a row before touching it; others wait their turn) and <strong>MVCC</strong> — multi-version concurrency control (the database keeps multiple versions of each row; each transaction reads a consistent snapshot from when it started, without blocking anyone). Like a shared document: locking is "only one editor at a time"; MVCC is "everyone sees their own snapshot, conflicts sort out at save time." Postgres leans heavily on MVCC.</p>
+
+  <h2 id="replication">Replication</h2>
+  <p>One database on one machine is a single point of failure and a throughput ceiling. <strong>Replication</strong> keeps copies of the same data on multiple machines: a <strong>leader</strong> accepts writes, <strong>replicas</strong> receive a copy of every change and typically serve read traffic too.</p>
+  <p><strong>Synchronous</strong> replication — the leader waits for replicas to confirm before acknowledging the write (safe, slower). <strong>Asynchronous</strong> — the leader confirms immediately, replicates in the background (fast, but replicas can lag).</p>
+
+  <div class="callout">
+    <strong>Same shape as caching staleness.</strong> See <a href="state-caching.html">State &amp; Caching</a> — an async replica serving a slightly-behind read is the same "known vs. guessed freshness" tradeoff as stale-while-revalidate, just one layer down in the stack.
+  </div>
+
+  <h2 id="sharding">Sharding</h2>
+  <p>Where replication copies the <em>same</em> data everywhere, <strong>sharding</strong> splits <em>different</em> data across machines by some key (e.g. users A–M on one shard, N–Z on another). Buys horizontal write scalability, at the cost of cross-shard operations: a query spanning shards can't join inside the database anymore — the application (or a separate reporting/analytics store) has to combine results itself, a pattern usually called <strong>scatter-gather</strong>. Replication and sharding are complementary — a large system often shards the data <em>and</em> replicates each shard.</p>
+
+  <h2 id="cap">CAP theorem</h2>
+  <p>Once data lives on multiple machines connected by a network, that network can partition. CAP says: during a partition, choose between <strong>Consistency</strong> (every node gives the absolute latest write, even if that means refusing to answer) and <strong>Availability</strong> (every node always answers, even if slightly behind). Partition tolerance isn't optional in a real distributed system, so the real decision is CP vs. AP.</p>
+  <p>Two bank branches, NYC and London, phone line down. A withdrawal just happened in NYC. Does London refuse all transactions until the line's back (consistent, unavailable), or keep operating on its last-known balance, risking an overdraft to reconcile later (available, inconsistent for a while)? A system that keeps accepting writes on both sides of a partition is choosing <strong>availability</strong> — the risk isn't automatically "bad data," it's <em>conflicting writes needing a reconciliation strategy</em> once the partition heals (last-write-wins, merge, manual review), and depending on that strategy real problems can still occur (e.g. both branches believing they hold the last unit of inventory).</p>
+
+  <div class="callout">
+    <strong>The recurring meta-pattern of this whole course:</strong> "answer fast and possibly wrong/stale" vs. "wait and be certain" shows up again and again — optimistic updates, async replication, and CP vs. AP are all the same underlying tension at different layers.
+  </div>
+
+  <h2>Where things stand</h2>
+  <p>Basics (relational vs. non-relational, normalization, ACID, indexes) are solid, including a strong spontaneous callback connecting isolation to the earlier API race-condition example. The "beyond" layer (isolation levels, replication, sharding, CAP) is <strong>in progress</strong> — a quiz on isolation-level identification, replication staleness, sharding aggregation, and CAP tradeoffs is underway; three of four questions graded correct so far (replication, sharding, CAP), one (isolation-level identification) still pending after a request for a simpler explanation.</p>
+
+  <h2>Coverage log (spaced repetition)</h2>
+  <div class="table-scroll">
+  <table>
+    <tr><th>Subtopic</th><th>Last covered</th><th>Times reviewed</th></tr>
+    <tr><td>Why DBs exist; relational vs. non-relational; normalization</td><td>2026-08-29</td><td>1</td></tr>
+    <tr><td>ACID/transactions/isolation (tied to likes race condition)</td><td>2026-08-29</td><td>1</td></tr>
+    <tr><td>Indexes</td><td>2026-08-29</td><td>1</td></tr>
+    <tr><td>Isolation levels (dirty/non-repeatable/phantom reads, locking vs. MVCC)</td><td>2026-08-29</td><td>in progress</td></tr>
+    <tr><td>Replication (sync vs. async)</td><td>2026-08-29</td><td>1</td></tr>
+    <tr><td>Sharding and scatter-gather</td><td>2026-08-29</td><td>1</td></tr>
+    <tr><td>CAP theorem (CP vs. AP)</td><td>2026-08-29</td><td>1</td></tr>
+  </table>
+  </div>
+
+  <div class="related">
+    <h2>Related pages</h2>
+    <ul>
+      <li><a href="apis.html">APIs</a> — the "like" race condition that isolation generalizes.</li>
+      <li><a href="state-caching.html">State &amp; Caching</a> — replication lag as staleness, one layer down.</li>
+      <li><a href="../review-schedule.html">Review Schedule</a> — spaced-repetition status for this topic.</li>
+    </ul>
+  </div>
+</main>
+<footer class="site-footer">Built topic by topic. Depth over completion.</footer>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>State &amp; Caching — Web + Mobile Dev Book</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="../index.html">Web + Mobile Dev — A Study Book</a>
+    <nav class="tracks">
+      <a class="active" href="../index.html#backend">Backend</a>
+      <a href="../review-schedule.html">Review Schedule</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="../index.html">Home</a> / Backend / State &amp; Caching</div>
+  <h1>State &amp; Caching</h1>
+  <p class="subtitle">Status: <span class="status-solid">basics solid</span> · Last covered 2026-08-29</p>
+
+  <h2>Client state vs. server state</h2>
+  <p><strong>Client state</strong> is transient UI stuff — is a dropdown open, what's typed in a box — that never came from the server, so it can never go "stale" in the caching sense. <strong>Server state</strong> is data the backend actually owns; anything the client displays is only a <em>cached copy</em> of it, and that copy can drift from the truth. The caching strategies below apply only to server state — client state was never a copy of anything, so there's no invalidation question to ask about it.</p>
+
+  <h2>Caching strategies</h2>
+  <ul>
+    <li><strong>TTL</strong> — time-based expiry; treat cached data as valid for N seconds, then discard and refetch.</li>
+    <li><strong>Stale-while-revalidate</strong> — show cached data instantly, refetch in the background, swap in the fresh copy when it arrives. Trigger is <em>uncertainty</em> (freshness unknown), not necessarily elapsed time.</li>
+    <li><strong>Invalidate on known mutation</strong> — the client itself just wrote something, so it <em>knows</em> a specific cached view is now wrong, and proactively refetches it.</li>
+    <li><strong>Push-based</strong> — the server notifies the client of changes directly (e.g. WebSockets), instead of the client guessing when to check.</li>
+  </ul>
+
+  <h2>Optimistic updates</h2>
+  <p>The UI assumes a write will succeed and updates immediately, before the server confirms — rolling back visibly if the write fails. Distinguished from stale-while-revalidate by what's <em>known</em> (a write was just issued, unconfirmed) vs. <em>guessed</em> (cached data assumed still roughly correct).</p>
+  <p>Optimistic update is a <strong>sibling</strong> of invalidate-on-known-mutation, not a sub-case of it. Both respond to the same trigger — a write you know just happened — but optimistic update skips the round trip entirely (guess immediately, for the object you're directly watching), while invalidate-on-mutation still does an honest refetch (safer, slower — used for other cached views affected by the same change, where a small delay is invisible).</p>
+
+  <h2>Push vs. polling</h2>
+  <p>Polling means resending a full HTTP request (headers, cookies, everything) on a fixed timer, whether or not anything changed — most of those calls are wasted. A <strong>WebSocket</strong> connection is set up once, then stays open as a passive, reserved slot in server memory — no repeated transmission required to "keep it open." When there's actually something to send, the server pushes it down the already-open pipe. The only recurring cost is an occasional small heartbeat frame to detect a silently-dead connection — orders of magnitude cheaper than re-polling every second.</p>
+
+  <div class="callout">
+    <strong>Same idea, one layer down:</strong> this exact staleness tradeoff reappears in database replication. See <a href="databases.html#replication">Databases — Replication</a> — an asynchronous replica lagging behind the primary is the same "known vs. guessed freshness" shape as stale-while-revalidate, just applied to database copies instead of client caches.
+  </div>
+
+  <h2>Where things stand</h2>
+  <p>Basics solid, including the push-vs-polling tradeoff and why WebSocket connections don't carry polling-like recurring cost. A spaced-repetition check on client-vs-server state briefly conflated it with an unrelated concept (server-side caching layers) — corrected and reset for another look. Revisit later for depth: WebSocket internals, real-world cache invalidation patterns.</p>
+
+  <h2>Coverage log (spaced repetition)</h2>
+  <div class="table-scroll">
+  <table>
+    <tr><th>Subtopic</th><th>Last covered</th><th>Times reviewed</th></tr>
+    <tr><td>Client vs. server state; TTL/SWR/invalidate/push definitions</td><td>2026-08-29</td><td>1 (reset — see note above)</td></tr>
+    <tr><td>Optimistic updates vs. stale-while-revalidate vs. invalidate-on-mutation</td><td>2026-08-29</td><td>2</td></tr>
+    <tr><td>Push vs. polling / WebSocket connection mechanics</td><td>2026-08-29</td><td>2</td></tr>
+  </table>
+  </div>
+
+  <div class="related">
+    <h2>Related pages</h2>
+    <ul>
+      <li><a href="databases.html">Databases</a> — replication lag is this same staleness problem, one layer down.</li>
+      <li><a href="apis.html">APIs</a> — optimistic updates are usually paired with a write to a REST endpoint.</li>
+      <li><a href="../review-schedule.html">Review Schedule</a> — client vs. server state is due again soon.</li>
+    </ul>
+  </div>
+</main>
+<footer class="site-footer">Built topic by topic. Depth over completion.</footer>
+</body>
+</html>

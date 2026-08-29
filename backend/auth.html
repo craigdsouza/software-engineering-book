@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auth — Web + Mobile Dev Book</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="../index.html">Web + Mobile Dev — A Study Book</a>
+    <nav class="tracks">
+      <a class="active" href="../index.html#backend">Backend</a>
+      <a href="../review-schedule.html">Review Schedule</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="../index.html">Home</a> / Backend / Auth</div>
+  <h1>Auth</h1>
+  <p class="subtitle">Status: <span class="status-solid">basics solid</span> · Last covered 2026-08-28 (cookie security), 2026-08-29 (recall check)</p>
+
+  <h2>Authentication vs. authorization</h2>
+  <p><strong>Authentication</strong> is "who are you" (logging in). <strong>Authorization</strong> is "what are you allowed to do now that we know who you are."</p>
+
+  <h2>Sessions vs. tokens</h2>
+  <p><strong>Session-based auth:</strong> after login, the server creates a session record <em>server-side</em> and hands the client an opaque ID via a cookie. The browser auto-attaches that cookie to future requests. Source of truth lives on the server — easy to revoke instantly, but requires shared session storage across servers.</p>
+  <p><strong>Token-based auth</strong> (e.g. JWT): the server issues a signed, self-contained token; the client stores it and manually attaches it (e.g. <code>Authorization: Bearer</code>) on every request. No server-side lookup needed — scales statelessly, but harder to revoke before natural expiry.</p>
+  <p><strong>Why mobile favors tokens:</strong> cookies are fundamentally a <em>browser</em> feature — the automatic storing and re-attaching is built into the browser's rendering engine, tied to its domain model. A native app isn't a browser and was never going to inherit that behavior for free, no matter the engineering effort. Since a native app already writes its own explicit networking code for every request, manually attaching a token is simply business as usual for it.</p>
+  <p><strong>OAuth</strong> — delegated auth ("Sign in with Google") — a third party vouches for identity so the app never touches the password directly.</p>
+
+  <h2 id="cookie-security">Cookie security model</h2>
+  <ul>
+    <li><strong>Domain scoping</strong> — a cookie is only sent to the domain that set it.</li>
+    <li><strong><code>HttpOnly</code></strong> — blocks JavaScript from <em>reading</em> the cookie, defending against XSS token theft. Key nuance: the browser still <em>auto-attaches</em> an HttpOnly cookie to any request an injected script fires — so XSS can still perform authenticated actions as the victim, it just can't exfiltrate the credential for reuse later.</li>
+    <li><strong><code>Secure</code></strong> — HTTPS-only transmission.</li>
+    <li><strong><code>SameSite</code></strong> — restricts cross-site request behavior by checking the <em>origin that triggered the request</em>, not just the destination.</li>
+  </ul>
+
+  <h3>XSS, plainly</h3>
+  <p>A site fails to sanitize user-generated content (e.g. an unescaped comment field), so an attacker's <code>&lt;script&gt;</code> gets stored and later served <em>as if it were the site's own content</em>. The victim's browser can't tell attacker-injected code apart from the site's legitimate code — it just runs, with full access to that page.</p>
+
+  <h3>CSRF, plainly</h3>
+  <p>A form or script on a <em>different</em> site silently submits a request to the target site. Without <code>SameSite</code>, the browser still attaches the cookie, because domain scoping alone only checks <em>where the request is going</em>, not <em>who initiated it</em>.</p>
+
+  <div class="callout">
+    <strong>Important nuance:</strong> <code>SameSite</code> defends CSRF but does <em>nothing</em> for XSS. An XSS-triggered request is same-site from the browser's point of view — the injected script is running on a page the trusted site itself served — so there's no cross-site boundary for SameSite to catch. The real XSS fix is preventing the injection in the first place (sanitization/escaping, Content-Security-Policy), not any cookie flag.
+  </div>
+
+  <p>The deeper capability difference: CSRF is a <strong>blind, write-only</strong> forged request — the attacker pre-writes an action and gets no visibility into the result. XSS grants <strong>full code execution</strong> inside the trusted origin — read the page, read non-HttpOnly cookies, read server responses, adapt in real time. CSRF is really just one narrow thing an XSS attacker could also do.</p>
+
+  <p><strong>Token in localStorage vs. HttpOnly cookie:</strong> localStorage has no read-protection equivalent to HttpOnly, so XSS can steal a token outright — strictly more exposed than a well-configured HttpOnly cookie.</p>
+
+  <h2>Where things stand</h2>
+  <p>Basics solid across sessions/tokens/OAuth and the cookie/CSRF/XSS security model — the SameSite-only-stops-CSRF distinction and the HttpOnly nuance were both worked out independently rather than recalled. A later spaced-repetition check on "why mobile favors tokens" drifted toward a vaguer "closer to hardware" framing — noted for a short follow-up review. Revisit later for depth: CSP, synchronizer-token CSRF defenses, refresh-token rotation.</p>
+
+  <h2>Coverage log (spaced repetition)</h2>
+  <div class="table-scroll">
+  <table>
+    <tr><th>Subtopic</th><th>Last covered</th><th>Times reviewed</th></tr>
+    <tr><td>Sessions vs. tokens, OAuth, why mobile favors tokens</td><td>2026-08-29</td><td>1 (reset — see note above)</td></tr>
+    <tr><td>Cookie security model (domain scoping, HttpOnly, Secure, SameSite) + XSS/CSRF mechanics</td><td>2026-08-28</td><td>1</td></tr>
+    <tr><td>CSRF vs. XSS deeper distinction (SameSite only stops CSRF)</td><td>2026-08-28</td><td>1</td></tr>
+  </table>
+  </div>
+
+  <div class="related">
+    <h2>Related pages</h2>
+    <ul>
+      <li><a href="apis.html">APIs</a> — the same resource-modeling style applies to auth-related endpoints.</li>
+      <li><a href="../review-schedule.html">Review Schedule</a> — "why mobile favors tokens" is due for another look soon.</li>
+    </ul>
+  </div>
+</main>
+<footer class="site-footer">Built topic by topic. Depth over completion.</footer>
+</body>
+</html>

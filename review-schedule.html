@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review Schedule — Web + Mobile Dev Book</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Web + Mobile Dev — A Study Book</a>
+    <nav class="tracks">
+      <a href="index.html#backend">Backend</a>
+      <a class="active" href="review-schedule.html">Review Schedule</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="index.html">Home</a> / Review Schedule</div>
+  <h1>Spaced Repetition Review Schedule</h1>
+  <p class="subtitle">Every subtopic tracks when it was last covered and how many times it's been reviewed. The gap before the next review grows each time recall is confirmed — and resets if a review reveals shaky understanding.</p>
+
+  <div class="table-scroll">
+  <table>
+    <tr><th>Times reviewed</th><th>Next review after</th></tr>
+    <tr><td>1</td><td>3 days</td></tr>
+    <tr><td>2</td><td>7 days</td></tr>
+    <tr><td>3</td><td>14 days</td></tr>
+    <tr><td>4</td><td>30 days</td></tr>
+    <tr><td>5+</td><td>60 days</td></tr>
+  </table>
+  </div>
+
+  <h2>Status as of 2026-08-29, after the first recall round</h2>
+  <p>Sorted by next review due.</p>
+
+  <div class="table-scroll">
+  <table>
+    <tr><th>Subtopic</th><th>Topic</th><th>Last covered</th><th>Reviewed</th><th>Next due</th><th>Status</th></tr>
+    <tr>
+      <td>Client vs. server state; TTL/SWR/invalidate/push</td>
+      <td><a href="backend/state-caching.html">State &amp; Caching</a></td>
+      <td>2026-08-29</td><td>1 (reset)</td><td>2026-09-01</td>
+      <td><span class="status-fresh">Reset</span></td>
+    </tr>
+    <tr>
+      <td>Sessions vs. tokens, OAuth, why mobile favors tokens</td>
+      <td><a href="backend/auth.html">Auth</a></td>
+      <td>2026-08-29</td><td>1 (reset)</td><td>2026-09-01</td>
+      <td><span class="status-fresh">Reset</span></td>
+    </tr>
+    <tr>
+      <td>Why databases exist; relational vs. non-relational; normalization</td>
+      <td><a href="backend/databases.html">Databases</a></td>
+      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
+      <td><span class="status-fresh">Fresh</span></td>
+    </tr>
+    <tr>
+      <td>ACID/transactions/isolation (tied to likes race condition)</td>
+      <td><a href="backend/databases.html">Databases</a></td>
+      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
+      <td><span class="status-fresh">Fresh</span></td>
+    </tr>
+    <tr>
+      <td>Indexes</td>
+      <td><a href="backend/databases.html">Databases</a></td>
+      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
+      <td><span class="status-fresh">Fresh</span></td>
+    </tr>
+    <tr>
+      <td>Isolation levels, replication, sharding, CAP ("beyond" layer)</td>
+      <td><a href="backend/databases.html">Databases</a></td>
+      <td>2026-08-29</td><td>in progress</td><td>—</td>
+      <td><span class="status-upcoming">In progress</span></td>
+    </tr>
+    <tr>
+      <td>Cookie security model (domain scoping/HttpOnly/Secure/SameSite) + XSS/CSRF mechanics</td>
+      <td><a href="backend/auth.html">Auth</a></td>
+      <td>2026-08-28</td><td>1</td><td>2026-08-31</td>
+      <td><span class="status-upcoming">Upcoming</span></td>
+    </tr>
+    <tr>
+      <td>CSRF vs. XSS deeper distinction (SameSite only stops CSRF)</td>
+      <td><a href="backend/auth.html">Auth</a></td>
+      <td>2026-08-28</td><td>1</td><td>2026-08-31</td>
+      <td><span class="status-upcoming">Upcoming</span></td>
+    </tr>
+    <tr>
+      <td>REST resource modeling, verbs, status codes</td>
+      <td><a href="backend/apis.html">APIs</a></td>
+      <td>2026-08-29</td><td>2</td><td>2026-09-05</td>
+      <td><span class="status-solid">Confirmed solid</span></td>
+    </tr>
+    <tr>
+      <td>"Like" case study — event vs. state, race conditions</td>
+      <td><a href="backend/apis.html">APIs</a></td>
+      <td>2026-08-29</td><td>2</td><td>2026-09-05</td>
+      <td><span class="status-solid">Confirmed solid</span></td>
+    </tr>
+    <tr>
+      <td>Optimistic updates vs. SWR vs. invalidate-on-mutation</td>
+      <td><a href="backend/state-caching.html">State &amp; Caching</a></td>
+      <td>2026-08-29</td><td>2</td><td>2026-09-05</td>
+      <td><span class="status-solid">Confirmed solid</span></td>
+    </tr>
+    <tr>
+      <td>Push vs. polling / WebSocket connection mechanics</td>
+      <td><a href="backend/state-caching.html">State &amp; Caching</a></td>
+      <td>2026-08-29</td><td>2</td><td>2026-09-05</td>
+      <td><span class="status-solid">Confirmed solid</span></td>
+    </tr>
+  </table>
+  </div>
+
+  <p><em>Maintained alongside internal memory used across sessions — update both when a subtopic is reviewed.</em></p>
+</main>
+<footer class="site-footer">Built topic by topic. Depth over completion.</footer>
+</body>
+</html>
