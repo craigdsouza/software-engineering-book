@@ -221,6 +221,114 @@ a { color: var(--accent); }
 .card .card-title { font-weight: 600; margin-bottom: 0.3rem; }
 .card .card-meta { font-size: 0.8rem; color: var(--text-dim); }
 
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+  font-family: var(--font-ui);
+}
+
+.stat-box {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  background: var(--bg-alt);
+}
+
+.stat-box .stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.stat-box .stat-label {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.contrib-wrap {
+  overflow-x: auto;
+  font-family: var(--font-ui);
+  margin: 1.5rem 0;
+}
+
+.contrib-months {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 13px;
+  gap: 3px;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-bottom: 0.25rem;
+  margin-left: 28px;
+}
+
+.contrib-body {
+  display: flex;
+  gap: 4px;
+}
+
+.contrib-daylabels {
+  display: grid;
+  grid-template-rows: repeat(7, 13px);
+  gap: 3px;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-align: right;
+  width: 24px;
+}
+
+.contrib-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, 13px);
+  grid-auto-columns: 13px;
+  gap: 3px;
+}
+
+.contrib-cell {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+}
+
+.contrib-cell[data-level="1"] { background: color-mix(in srgb, var(--accent) 25%, var(--bg-alt)); border-color: transparent; }
+.contrib-cell[data-level="2"] { background: color-mix(in srgb, var(--accent) 50%, var(--bg-alt)); border-color: transparent; }
+.contrib-cell[data-level="3"] { background: color-mix(in srgb, var(--accent) 75%, var(--bg-alt)); border-color: transparent; }
+.contrib-cell[data-level="4"] { background: var(--accent); border-color: transparent; }
+.contrib-cell[data-future] { visibility: hidden; }
+
+.contrib-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 0.6rem;
+  font-family: var(--font-ui);
+}
+
+.contrib-legend .contrib-cell { width: 11px; height: 11px; }
+
+.event-log {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+}
+
+.event-log .event-day {
+  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 0;
+}
+
+.event-log .event-date {
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 0.8rem;
+}
+
 footer.site-footer {
   text-align: center;
   color: var(--text-dim);

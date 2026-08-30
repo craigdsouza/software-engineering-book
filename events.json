@@ -1,0 +1,1200 @@
+[
+  {
+    "id": 1,
+    "ts": "2026-07-04T00:00:00+05:30",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:cpu-cache-hierarchy",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/cpu-cache-hierarchy.md",
+      "concepts_written": [
+        "concept:cpu-cache-hierarchy",
+        "concept:cache-lines",
+        "concept:spatial-locality"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null
+    }
+  },
+  {
+    "id": 2,
+    "ts": "2026-07-04T17:30:00+05:30",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "concept:cpu-cache-hierarchy",
+    "payload": {
+      "score": 0.25,
+      "score_note": "recomputed 2026-07-04: 5/5 Recall × ceiling 0.25 (formula corrected from additive to level-ceiling)",
+      "prior_score": null,
+      "questions_asked": 5,
+      "max_level_reached": "recall",
+      "correct": 5,
+      "wrong": 0,
+      "gaps": []
+    }
+  },
+  {
+    "id": 3,
+    "ts": "2026-07-06T15:00:00+05:30",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:containers-docker",
+    "payload": {
+      "mode": "job-prep",
+      "vault_note": "study/kubernetes-and-cloud-infrastructure.md",
+      "concepts_written": [
+        "concept:containers-docker",
+        "concept:kubernetes-workloads",
+        "concept:kubernetes-networking",
+        "concept:managed-kubernetes-cloud-iam",
+        "concept:cloud-storage-disk-behavior"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "job_prep": "Customer Support Engineer (HQ2), Blitzy"
+    }
+  },
+  {
+    "id": 4,
+    "ts": "2026-07-06T15:05:00+05:30",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:observability-apm",
+    "payload": {
+      "mode": "job-prep",
+      "vault_note": "study/observability.md",
+      "concepts_written": [
+        "concept:observability-apm",
+        "concept:distributed-tracing-correlation-ids"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "job_prep": "Customer Support Engineer (HQ2), Blitzy",
+      "note": "split from the original combined observability-and-distributed-debugging.md on 2026-07-06 into observability.md + distributed-debugging.md; JD-specific framing removed to keep the notes evergreen"
+    }
+  },
+  {
+    "id": 5,
+    "ts": "2026-07-06T15:10:00+05:30",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:message-queues-redis",
+    "payload": {
+      "mode": "job-prep",
+      "vault_note": "study/queues-and-data-operations.md",
+      "concepts_written": [
+        "concept:message-queues-redis",
+        "concept:sql-for-operational-diagnostics"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "job_prep": "Customer Support Engineer (HQ2), Blitzy"
+    }
+  },
+  {
+    "id": 6,
+    "ts": "2026-07-06T15:15:00+05:30",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:networking-fundamentals-for-support",
+    "payload": {
+      "mode": "job-prep",
+      "vault_note": "study/networking-and-transport-faults.md",
+      "concepts_written": [
+        "concept:networking-fundamentals-for-support",
+        "concept:websockets-real-time-transport",
+        "concept:tls-secure-transport"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "job_prep": "Customer Support Engineer (HQ2), Blitzy"
+    }
+  },
+  {
+    "id": 7,
+    "ts": "2026-07-06T15:20:00+05:30",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:source-control-credential-failure-modes",
+    "payload": {
+      "mode": "job-prep",
+      "vault_note": "study/deploy-integrity-and-incident-response.md",
+      "concepts_written": [
+        "concept:source-control-credential-failure-modes",
+        "concept:ci-cd-deploy-integrity",
+        "concept:secrets-management-vault",
+        "concept:linux-windows-triage",
+        "concept:multi-tenant-safety-blast-radius",
+        "concept:incident-management-escalation-workflow"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "job_prep": "Customer Support Engineer (HQ2), Blitzy"
+    }
+  },
+  {
+    "id": 8,
+    "ts": "2026-07-06T16:00:00+05:30",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:hypothesis-driven-debugging",
+    "payload": {
+      "mode": "job-prep",
+      "vault_note": "study/distributed-debugging.md",
+      "concepts_written": [
+        "concept:hypothesis-driven-debugging",
+        "concept:isolating-the-failing-hop"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "job_prep": "Customer Support Engineer (HQ2), Blitzy",
+      "note": "split from the original combined observability-and-distributed-debugging.md on 2026-07-06 into observability.md + distributed-debugging.md; JD-specific framing removed to keep the notes evergreen"
+    }
+  },
+  {
+    "id": 9,
+    "ts": "2026-07-07T16:37:29.935Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:ip-addresses-packets",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/networking.md",
+      "concepts_written": [
+        "concept:ip-addresses-packets",
+        "concept:ports-tcp-udp",
+        "concept:dns",
+        "concept:http",
+        "concept:https-tls",
+        "concept:nat",
+        "concept:load-balancers",
+        "concept:websockets"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Beginner-level foundational networking note, written at Craig's request after finding networking-and-transport-faults.md pitched at intermediate/expert level. Deliberately no Connections section and no deps into other notes yet."
+    }
+  },
+  {
+    "id": 10,
+    "ts": "2026-07-07T18:03:08.462Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:version-control",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/version-control.md",
+      "concepts_written": [
+        "concept:version-control"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for deploy-integrity-and-incident-response.md, split into one note per separable discipline (not one per concept) per Craig 2026-07-07 decision."
+    }
+  },
+  {
+    "id": 11,
+    "ts": "2026-07-07T18:03:08.462Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:cicd-pipelines",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/cicd-fundamentals.md",
+      "concepts_written": [
+        "concept:cicd-pipelines"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for deploy-integrity-and-incident-response.md, split into one note per separable discipline (not one per concept) per Craig 2026-07-07 decision."
+    }
+  },
+  {
+    "id": 12,
+    "ts": "2026-07-07T18:03:08.462Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:secrets-credentials",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/secrets-and-credentials.md",
+      "concepts_written": [
+        "concept:secrets-credentials"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for deploy-integrity-and-incident-response.md, split into one note per separable discipline (not one per concept) per Craig 2026-07-07 decision."
+    }
+  },
+  {
+    "id": 13,
+    "ts": "2026-07-07T18:03:08.462Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:authentication",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/access-control.md",
+      "concepts_written": [
+        "concept:authentication",
+        "concept:authorization"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for deploy-integrity-and-incident-response.md, split into one note per separable discipline (not one per concept) per Craig 2026-07-07 decision."
+    }
+  },
+  {
+    "id": 14,
+    "ts": "2026-07-07T18:03:08.462Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:processes",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/operating-systems-fundamentals.md",
+      "concepts_written": [
+        "concept:processes",
+        "concept:os-resources"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for deploy-integrity-and-incident-response.md, split into one note per separable discipline (not one per concept) per Craig 2026-07-07 decision."
+    }
+  },
+  {
+    "id": 15,
+    "ts": "2026-07-07T18:03:08.462Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:multi-tenancy-shared-infrastructure",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/multi-tenancy.md",
+      "concepts_written": [
+        "concept:multi-tenancy-shared-infrastructure"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for deploy-integrity-and-incident-response.md, split into one note per separable discipline (not one per concept) per Craig 2026-07-07 decision."
+    }
+  },
+  {
+    "id": 16,
+    "ts": "2026-07-08T06:01:47.688Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:kernel",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/kernel-and-isolation-primitives.md",
+      "concepts_written": [
+        "concept:kernel",
+        "concept:namespaces",
+        "concept:cgroups"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for kubernetes-and-cloud-infrastructure.md, split into one note per separable discipline per Craig 2026-07-08 decision to go far deeper into from-scratch CS fundamentals."
+    }
+  },
+  {
+    "id": 17,
+    "ts": "2026-07-08T06:01:47.688Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:virtualization",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/virtualization.md",
+      "concepts_written": [
+        "concept:virtualization"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for kubernetes-and-cloud-infrastructure.md, split into one note per separable discipline per Craig 2026-07-08 decision to go far deeper into from-scratch CS fundamentals."
+    }
+  },
+  {
+    "id": 18,
+    "ts": "2026-07-08T06:01:47.688Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:containers",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/containers.md",
+      "concepts_written": [
+        "concept:containers"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for kubernetes-and-cloud-infrastructure.md, split into one note per separable discipline per Craig 2026-07-08 decision to go far deeper into from-scratch CS fundamentals."
+    }
+  },
+  {
+    "id": 19,
+    "ts": "2026-07-08T06:01:47.688Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:docker",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/docker.md",
+      "concepts_written": [
+        "concept:docker"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for kubernetes-and-cloud-infrastructure.md, split into one note per separable discipline per Craig 2026-07-08 decision to go far deeper into from-scratch CS fundamentals."
+    }
+  },
+  {
+    "id": 20,
+    "ts": "2026-07-08T06:01:47.688Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:kubernetes",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/kubernetes.md",
+      "concepts_written": [
+        "concept:kubernetes"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for kubernetes-and-cloud-infrastructure.md, split into one note per separable discipline per Craig 2026-07-08 decision to go far deeper into from-scratch CS fundamentals."
+    }
+  },
+  {
+    "id": 21,
+    "ts": "2026-07-08T06:01:47.688Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:cloud-computing-fundamentals",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/cloud-computing-fundamentals.md",
+      "concepts_written": [
+        "concept:cloud-computing-fundamentals"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for kubernetes-and-cloud-infrastructure.md, split into one note per separable discipline per Craig 2026-07-08 decision to go far deeper into from-scratch CS fundamentals."
+    }
+  },
+  {
+    "id": 22,
+    "ts": "2026-07-08T06:01:47.688Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:storage-types",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/storage-fundamentals.md",
+      "concepts_written": [
+        "concept:storage-types",
+        "concept:iops-throughput"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for kubernetes-and-cloud-infrastructure.md, split into one note per separable discipline per Craig 2026-07-08 decision to go far deeper into from-scratch CS fundamentals."
+    }
+  },
+  {
+    "id": 23,
+    "ts": "2026-07-08T06:01:47.688Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:databases",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/databases.md",
+      "concepts_written": [
+        "concept:databases"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for kubernetes-and-cloud-infrastructure.md, split into one note per separable discipline per Craig 2026-07-08 decision to go far deeper into from-scratch CS fundamentals."
+    }
+  },
+  {
+    "id": 24,
+    "ts": "2026-07-08T06:01:47.688Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:iam",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/identity-and-access-management.md",
+      "concepts_written": [
+        "concept:iam",
+        "concept:rbac"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites for kubernetes-and-cloud-infrastructure.md, split into one note per separable discipline per Craig 2026-07-08 decision to go far deeper into from-scratch CS fundamentals."
+    }
+  },
+  {
+    "id": 25,
+    "ts": "2026-07-08T06:51:32.837Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:type-systems",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/type-systems.md",
+      "concepts_written": [
+        "concept:type-systems"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites surfaced by core-dumped.md (raw personal notes), per Craig 2026-07-08 decision to keep going note-by-note through study/."
+    }
+  },
+  {
+    "id": 26,
+    "ts": "2026-07-08T06:51:32.837Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:call-stack",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/memory-layout-stack-and-heap.md",
+      "concepts_written": [
+        "concept:call-stack",
+        "concept:heap-memory"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites surfaced by core-dumped.md (raw personal notes), per Craig 2026-07-08 decision to keep going note-by-note through study/."
+    }
+  },
+  {
+    "id": 27,
+    "ts": "2026-07-08T06:51:32.837Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:virtual-memory",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/virtual-memory.md",
+      "concepts_written": [
+        "concept:virtual-memory"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites surfaced by core-dumped.md (raw personal notes), per Craig 2026-07-08 decision to keep going note-by-note through study/."
+    }
+  },
+  {
+    "id": 28,
+    "ts": "2026-07-08T06:51:32.837Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:context-switching",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/context-switching-and-concurrency.md",
+      "concepts_written": [
+        "concept:context-switching",
+        "concept:concurrency-vs-parallelism"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Written to backfill fundamental prerequisites surfaced by core-dumped.md (raw personal notes), per Craig 2026-07-08 decision to keep going note-by-note through study/."
+    }
+  },
+  {
+    "id": 29,
+    "ts": "2026-07-08T07:20:50.119Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:docker-networking-types",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/containerization-and-virtualization.md",
+      "concepts_written": [
+        "concept:docker-networking-types",
+        "concept:multi-stage-builds",
+        "concept:docker-compose",
+        "concept:stateless-applications-in-kubernetes",
+        "concept:stateful-applications-in-kubernetes"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Decorated existing raw DataCamp notes (containerization-and-virtualization.md) with #concept tags for the 4 genuinely new ideas not covered by existing Containers/Docker/Kubernetes notes; rest of file linked via Connections section, per Craig 2026-07-08 decision to keep these as inline concepts rather than new standalone notes since the file is mostly command-level detail on already-covered fundamentals."
+    }
+  },
+  {
+    "id": 30,
+    "ts": "2026-07-08T07:42:24.083Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:reverse-proxy",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/nginx.md",
+      "concepts_written": [
+        "concept:reverse-proxy",
+        "concept:redirects-and-rewrites"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Decorated existing raw nginx notes with #concept tags for Reverse Proxy (genuinely missing from the graph — Load Balancers only covers one of its two functions) and redirects/rewrites; rest left as plain reference material, per Craig 2026-07-08 note-by-note pass through study/."
+    }
+  },
+  {
+    "id": 31,
+    "ts": "2026-07-08T07:45:56.826Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:local-networks-routing",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/how-the-internet-works.md",
+      "concepts_written": [
+        "concept:local-networks-routing",
+        "concept:wide-area-networks-isps"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Decorated existing raw how-the-internet-works notes with two #concept groupings split at the existing LAN/WAN content boundary (no reordering) — Local Networks & Routing, Wide Area Networks & ISPs — since nothing in the graph yet covers physical/organizational internet infrastructure beneath the IP layer. Per Craig 2026-07-08 note-by-note pass through study/."
+    }
+  },
+  {
+    "id": 32,
+    "ts": "2026-07-08T07:54:38.465Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:mcp",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/skills-vs-mcp-vs-plugin.md",
+      "concepts_written": [
+        "concept:skill",
+        "concept:mcp",
+        "concept:plugin"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Formalized existing Skill/MCP/Plugin decision-guide notes as three contrasting concepts, so MCP becomes a real dependency target instead of duplicating the content in a new note. Per Craig 2026-07-08."
+    }
+  },
+  {
+    "id": 33,
+    "ts": "2026-07-08T07:54:38.465Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:mcp-configuration-locations",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/mcp-config-locations.md",
+      "concepts_written": [
+        "concept:mcp-configuration-locations"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Fringe reference file, decorated with exactly one concept and one dependency (MCP) per Craig 2026-07-08 instruction."
+    }
+  },
+  {
+    "id": 34,
+    "ts": "2026-07-08T08:10:42.106Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:skill",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/skills.md",
+      "concepts_written": [
+        "concept:skill"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Craig asked to split the combined skills-vs-mcp-vs-plugin.md into one file per singular concept; the combined file (and its taught event 32) is now superseded — skills.md, mcp.md, and claude-cowork-plugins.md are the current homes for these three concepts."
+    }
+  },
+  {
+    "id": 35,
+    "ts": "2026-07-08T08:10:42.106Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:mcp",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/mcp.md",
+      "concepts_written": [
+        "concept:mcp"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Craig asked to split the combined skills-vs-mcp-vs-plugin.md into one file per singular concept; the combined file (and its taught event 32) is now superseded — skills.md, mcp.md, and claude-cowork-plugins.md are the current homes for these three concepts."
+    }
+  },
+  {
+    "id": 36,
+    "ts": "2026-07-08T08:10:42.106Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:plugin",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/claude-cowork-plugins.md",
+      "concepts_written": [
+        "concept:plugin"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Craig asked to split the combined skills-vs-mcp-vs-plugin.md into one file per singular concept; the combined file (and its taught event 32) is now superseded — skills.md, mcp.md, and claude-cowork-plugins.md are the current homes for these three concepts."
+    }
+  },
+  {
+    "id": 37,
+    "ts": "2026-07-08T08:23:09.017Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:llms",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/llms.md",
+      "concepts_written": [
+        "concept:llms"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "New standalone fundamentals note per Craig 2026-07-08 — LLMs underpin RAG, embeddings, and agents, so it earns its own note rather than staying inline."
+    }
+  },
+  {
+    "id": 38,
+    "ts": "2026-07-08T08:23:09.017Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:rag",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/rag.md",
+      "concepts_written": [
+        "concept:rag"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "New standalone fundamentals note per Craig 2026-07-08."
+    }
+  },
+  {
+    "id": 39,
+    "ts": "2026-07-08T08:23:09.017Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:embeddings",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/embeddings.md",
+      "concepts_written": [
+        "concept:embeddings"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "New standalone fundamentals note per Craig 2026-07-08."
+    }
+  },
+  {
+    "id": 40,
+    "ts": "2026-07-08T08:23:09.017Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:vector-databases",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/vector-databases.md",
+      "concepts_written": [
+        "concept:vector-databases"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "New standalone fundamentals note per Craig 2026-07-08."
+    }
+  },
+  {
+    "id": 41,
+    "ts": "2026-07-08T08:23:09.017Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:chunking",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/production-rag.md",
+      "concepts_written": [
+        "concept:chunking"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Chunking stays inline in the still-in-progress production-rag.md course notes per Craig 2026-07-08, unlike its 4 sibling concepts which got standalone notes. deps:: RAG, Embeddings."
+    }
+  },
+  {
+    "id": 42,
+    "ts": "2026-07-09T08:56:53.205Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:geospatial-altitude-reference-frames-gsd",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/geospatial-reference-frames.md",
+      "concepts_written": [
+        "concept:geospatial-altitude-reference-frames-gsd"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Solutions Engineer interview prep (Flytbase) session, 2026-07-09 — domain-generic geospatial altitude framing."
+    }
+  },
+  {
+    "id": 43,
+    "ts": "2026-07-09T08:56:53.205Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:mqtt-pub-sub-messaging",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/iot-messaging-and-integration-patterns.md",
+      "concepts_written": [
+        "concept:mqtt-pub-sub-messaging",
+        "concept:webhooks-event-driven-integration",
+        "concept:api-first-integration-architecture"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Solutions Engineer interview prep (Flytbase) session, 2026-07-09 — bundled messaging/integration cluster."
+    }
+  },
+  {
+    "id": 44,
+    "ts": "2026-07-09T08:56:53.205Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:rtsp-real-time-video-streaming",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/video-streaming-protocols.md",
+      "concepts_written": [
+        "concept:rtsp-real-time-video-streaming"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Solutions Engineer interview prep (Flytbase) session, 2026-07-09."
+    }
+  },
+  {
+    "id": 45,
+    "ts": "2026-07-09T08:56:53.205Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:bvlos-operations-regulatory-compliance",
+    "payload": {
+      "mode": "explore",
+      "vault_note": "study/safety-critical-autonomous-systems.md",
+      "concepts_written": [
+        "concept:bvlos-operations-regulatory-compliance"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Solutions Engineer interview prep (Flytbase) session, 2026-07-09."
+    }
+  },
+  {
+    "id": 46,
+    "ts": "2026-07-09T09:13:49.870Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "concept:tls-secure-transport",
+    "payload": {
+      "mode": "frontier",
+      "vault_note": "study/networking-and-transport-faults.md",
+      "concepts_written": [
+        "concept:tls-secure-transport"
+      ],
+      "session_depth": "deep",
+      "catalog_video": null,
+      "note": "SE interview prep 2026-07-09 — augmented existing note with handshake walkthrough, 3 cert failure types, openssl s_client recipe before quizzing."
+    }
+  },
+  {
+    "id": 47,
+    "ts": "2026-07-09T21:59:56.898Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "concept:tls-secure-transport",
+    "payload": {
+      "score": 0.07,
+      "prior_score": null,
+      "questions_asked": 13,
+      "max_level_reached": "explain",
+      "correct": 10,
+      "wrong": 3,
+      "gaps": [
+        "Conflated certificate VALIDATION (client-side, after receipt) with certificate SELECTION (server-side, why SNI must precede encryption)",
+        "Assumed RTSPS TLS auth is bidirectional by default; it is one-directional (server presents cert, client validates) — client-to-server auth is typically RTSP-level embedded credentials, not a second TLS cert",
+        "Conflated UDP per-packet loss (expected, tolerable) with NAT/firewall idle-timeout silently dropping an entire idle session (same root cause as the WebSocket idle-drop pattern) — corrected via analogy transfer"
+      ],
+      "note": "Session paused by Craig after Level 2 completed 5/5 (score clamped to ceiling before L2 finished — formula saturates fast on 0.20/question at Level 2). Level 3 (Predict) was entered, one question posed (clock drift + cert validity window) but not answered before pausing. Resume at Level 3 if revisiting this topic. RESCORED 2026-07-10 under the redesigned mastery formula (25 reps/level target, no single-session ceiling) — see life-os-quizmaster SKILL.md Step 4 design notes. Old score was 1.0 under the deprecated formula; new lifetime mastery score is 0.07. Gating status: Level 1 and Level 2 both cleared (5/5 recent correct each), Level 3 unlocked but 0/5 recent correct so far (one question posed, unanswered).",
+      "level_breakdown": {
+        "recall": {
+          "correct": 5,
+          "wrong": 1
+        },
+        "explain": {
+          "correct": 5,
+          "wrong": 2
+        },
+        "predict": {
+          "correct": 0,
+          "wrong": 0
+        },
+        "design": {
+          "correct": 0,
+          "wrong": 0
+        }
+      }
+    }
+  },
+  {
+    "id": 48,
+    "ts": "2026-07-11T15:49:36.000Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "concept:tls-secure-transport",
+    "payload": {
+      "score": 0.08,
+      "prior_score": 0.07,
+      "questions_asked": 1,
+      "max_level_reached": "predict",
+      "correct": 1,
+      "wrong": 0,
+      "level_breakdown": {
+        "recall": {
+          "correct": 0,
+          "wrong": 0
+        },
+        "explain": {
+          "correct": 0,
+          "wrong": 0
+        },
+        "predict": {
+          "correct": 1,
+          "wrong": 0
+        },
+        "design": {
+          "correct": 0,
+          "wrong": 0
+        }
+      },
+      "gaps": [],
+      "note": "Resumed Level 3 (Predict) from event 47's pending clock-drift-vs-cert-validity question. Original question phrasing was ambiguous ('its' could refer to the dock's own cert or the cloud's) — Craig caught the ambiguity, it was resolved in conversation (dock is the TLS client here, validating the cloud's server cert against its own drifted clock), and his original reasoning was confirmed correct once clarified, so the miss was struck rather than counted against him. Interleaved with WebSockets (event 49) and MQTT (event 50) per Craig's 2026-07-11 request to rotate between topics rather than finish one before starting the next. Level 3 gating: 1/5 recent correct, 4 more needed to unlock Level 4."
+    }
+  },
+  {
+    "id": 49,
+    "ts": "2026-07-11T15:49:37.000Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "concept:websockets-real-time-transport",
+    "payload": {
+      "score": 0.0,
+      "prior_score": null,
+      "questions_asked": 1,
+      "max_level_reached": "recall",
+      "correct": 0,
+      "wrong": 1,
+      "level_breakdown": {
+        "recall": {
+          "correct": 0,
+          "wrong": 1
+        },
+        "explain": {
+          "correct": 0,
+          "wrong": 0
+        },
+        "predict": {
+          "correct": 0,
+          "wrong": 0
+        },
+        "design": {
+          "correct": 0,
+          "wrong": 0
+        }
+      },
+      "gaps": [
+        "Correctly named the Upgrade: websocket header, but described the server-side mechanism for persistence as application-level ping/pong heartbeats (which actually solve a downstream NAT/LB idle-timeout problem) rather than the core fact: the server responds 101 Switching Protocols and drops HTTP's request/response turn-taking, holding the same TCP connection open indefinitely.",
+        "On a second attempt, described this as the server 'making the TCP connection full duplex' — TCP connections are already full-duplex by default; the actual change is at the application layer (HTTP's one-request-one-response discipline is dropped), not the transport layer."
+      ],
+      "note": "First quiz session on this node. Paused after 1 question — interleaved with TLS (event 48) and MQTT (event 50) per Craig's 2026-07-11 request to rotate between topics. Level 1 gating: 0/5 recent correct so far."
+    }
+  },
+  {
+    "id": 50,
+    "ts": "2026-07-11T15:49:38.000Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "concept:mqtt-pub-sub-messaging",
+    "payload": {
+      "score": 0.01,
+      "prior_score": null,
+      "questions_asked": 3,
+      "max_level_reached": "recall",
+      "correct": 2,
+      "wrong": 1,
+      "level_breakdown": {
+        "recall": {
+          "correct": 2,
+          "wrong": 1
+        },
+        "explain": {
+          "correct": 0,
+          "wrong": 0
+        },
+        "predict": {
+          "correct": 0,
+          "wrong": 0
+        },
+        "design": {
+          "correct": 0,
+          "wrong": 0
+        }
+      },
+      "gaps": [
+        "Described LWT registration as consisting of 'keep-alive interval + message' rather than 'will topic + will payload' — merged two separate CONNECT-packet fields (keep-alive interval governs timeout detection; will topic/payload is the message content itself).",
+        "Described will registration as happening 'immediately after CONNECT is sent' rather than as fields carried within the CONNECT packet itself, as a single message."
+      ],
+      "note": "First quiz session on this node. Preceded by a life-os-teacher re-teach pass (small-bites re-explanation of the same already-taught concept, no new vault write or taught event, per skill hard rule against editing/duplicating existing vault content) requested by Craig mid-quiz because the existing dense note was hard to digest before answering. Interleaved with TLS (event 48) and WebSockets (event 49) per Craig's 2026-07-11 rotation request. Level 1 gating: 2/5 recent correct, 3 more needed to unlock Level 2 (3-question minimum already met)."
+    }
+  },
+  {
+    "id": 51,
+    "ts": "2026-08-25T00:00:00Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:backend/apis",
+    "source": "book",
+    "payload": {
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/backend/apis.html",
+      "concepts_written": ["REST resource modeling", "HTTP verbs and status codes", "like-as-event vs. PATCH-as-state case study"],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Reconstructed from conversation review, not a precise timestamped log — see README.md in the book repo."
+    }
+  },
+  {
+    "id": 52,
+    "ts": "2026-08-25T00:05:00Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:backend/apis",
+    "source": "book",
+    "payload": {
+      "questions_asked": 1,
+      "correct": 1,
+      "wrong": 0,
+      "gaps": [],
+      "note": "Aggregated per-topic-per-day, reconstructed from conversation review (no per-question timestamps captured live). Score/level fields intentionally omitted — this quizzing didn't follow the Recall/Explain/Predict/Design leveled scheme, so a fabricated score would misrepresent what quizmaster scores mean elsewhere in this file."
+    }
+  },
+  {
+    "id": 53,
+    "ts": "2026-08-25T00:10:00Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:backend/auth",
+    "source": "book",
+    "payload": {
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/backend/auth.html",
+      "concepts_written": ["authn vs. authz", "sessions vs. tokens", "OAuth", "why mobile favors tokens"],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Reconstructed from conversation review."
+    }
+  },
+  {
+    "id": 54,
+    "ts": "2026-08-25T00:15:00Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:backend/state-caching",
+    "source": "book",
+    "payload": {
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/backend/state-caching.html",
+      "concepts_written": ["client vs. server state", "TTL/stale-while-revalidate/invalidate-on-mutation/push", "optimistic updates"],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "Reconstructed from conversation review."
+    }
+  },
+  {
+    "id": 55,
+    "ts": "2026-08-25T00:20:00Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:backend/state-caching",
+    "source": "book",
+    "payload": {
+      "questions_asked": 6,
+      "correct": 5,
+      "wrong": 1,
+      "gaps": [
+        "Initially reasoned a fast-changing real-time value (stock ticker) should use TTL/polling over push, citing server load; resolved via follow-up discussion into why an open WebSocket doesn't carry polling's recurring cost."
+      ],
+      "note": "Aggregated per-topic-per-day, reconstructed from conversation review."
+    }
+  },
+  {
+    "id": 56,
+    "ts": "2026-08-28T00:00:00Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:backend/auth",
+    "source": "book",
+    "payload": {
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/backend/auth.html",
+      "concepts_written": ["cookie security model (domain scoping, HttpOnly, Secure, SameSite)", "XSS mechanism", "CSRF mechanism", "SameSite stops CSRF only, not XSS"],
+      "session_depth": "deep",
+      "catalog_video": null,
+      "note": "Closing a gap flagged in the 2026-08-25 session. Reconstructed from conversation review."
+    }
+  },
+  {
+    "id": 57,
+    "ts": "2026-08-28T00:10:00Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:backend/auth",
+    "source": "book",
+    "payload": {
+      "questions_asked": 3,
+      "correct": 3,
+      "wrong": 0,
+      "gaps": [],
+      "note": "Aggregated per-topic-per-day, reconstructed from conversation review."
+    }
+  },
+  {
+    "id": 58,
+    "ts": "2026-08-29T00:00:00Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:backend/databases",
+    "source": "book",
+    "payload": {
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/backend/databases.html",
+      "concepts_written": ["relational vs. non-relational", "normalization", "ACID/isolation", "indexes", "isolation levels", "replication", "sharding", "CAP theorem"],
+      "session_depth": "deep",
+      "catalog_video": null,
+      "note": "Basics and beyond-basics layer covered same day. Reconstructed from conversation review."
+    }
+  },
+  {
+    "id": 59,
+    "ts": "2026-08-29T00:20:00Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:backend/databases",
+    "source": "book",
+    "payload": {
+      "questions_asked": 7,
+      "correct": 7,
+      "wrong": 0,
+      "gaps": [],
+      "note": "Aggregated per-topic-per-day (basics: denormalization/isolation/indexing; beyond: isolation-level ID with a simplified re-explanation first, replication staleness, sharding scatter-gather, CAP CP-vs-AP), reconstructed from conversation review."
+    }
+  },
+  {
+    "id": 60,
+    "ts": "2026-08-29T01:00:00Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:backend/apis",
+    "source": "book",
+    "payload": {
+      "questions_asked": 2,
+      "correct": 2,
+      "wrong": 0,
+      "gaps": [],
+      "note": "Spaced-repetition recall round. Aggregated, reconstructed from conversation review."
+    }
+  },
+  {
+    "id": 61,
+    "ts": "2026-08-29T01:05:00Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:backend/state-caching",
+    "source": "book",
+    "payload": {
+      "questions_asked": 3,
+      "correct": 2,
+      "wrong": 1,
+      "gaps": [
+        "Conflated client state with an unrelated concept (server-side caching layers in front of a database) when explaining why the caching strategies covered don't apply to client state."
+      ],
+      "note": "Spaced-repetition recall round; this subtopic was reset (times-reviewed restarted) due to the gap above. Aggregated, reconstructed from conversation review."
+    }
+  },
+  {
+    "id": 62,
+    "ts": "2026-08-29T01:10:00Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:backend/auth",
+    "source": "book",
+    "payload": {
+      "questions_asked": 1,
+      "correct": 0,
+      "wrong": 1,
+      "gaps": [
+        "Explained \"why mobile favors tokens over cookies\" as being about mobile apps being closer to hardware / avoiding the effort of replicating browser security, rather than the actual mechanism: cookies are a browser-only feature a native app never has access to in the first place."
+      ],
+      "note": "Spaced-repetition recall round; this subtopic was reset. Aggregated, reconstructed from conversation review."
+    }
+  },
+  {
+    "id": 63,
+    "ts": "2026-05-13T00:00:00Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:foundations/data-structures",
+    "source": "book",
+    "payload": {
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/foundations/data-structures.html",
+      "concepts_written": ["Arrays", "Linked Lists", "Stacks", "Queues", "Big O Notation", "Hash Tables"],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "ESTIMATED date, not exact — inferred from a memory file's reported age (~104 days) at the start of this conversation. This session predates the book and the events log entirely; original conversation content is not available, only a brief summary."
+    }
+  },
+  {
+    "id": 64,
+    "ts": "2026-08-30T00:00:00Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:foundations/data-structures",
+    "source": "book",
+    "payload": {
+      "questions_asked": 11,
+      "correct": 10,
+      "wrong": 1,
+      "gaps": [
+        "Hash table collision resolution strategies (chaining vs. open addressing) and load factor/rehashing were fully forgotten after the ~104-day gap — re-taught from scratch, then correctly reasoned about in a follow-up check."
+      ],
+      "note": "Review after an estimated 104-day gap. Arrays, Linked Lists, Big O, Queues confirmed directly; Stacks (LIFO) confirmed via 5 independently-sorted scenarios after Craig objected that testing recall of a specific prior example isn't testing the concept (see quiz-design preference). Aggregated, reconstructed from conversation review."
+    }
+  }
+]

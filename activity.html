@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Activity — Software Engineering Book</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Software Engineering — A Study Book</a>
+    <nav class="tracks">
+      <a href="index.html#foundations">Foundations</a>
+      <a href="index.html#web-mobile-dev">Web + Mobile Dev</a>
+      <a href="review-schedule.html">Review Schedule</a>
+      <a class="active" href="activity.html">Activity</a>
+      <a href="about/teaching-style.html">Teaching Style</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="index.html">Home</a> / Activity</div>
+  <h1>Study Activity</h1>
+  <p class="subtitle">A day-by-day log of teaching and quiz events across every curriculum tracked here, in the same shape as a GitHub contribution graph. Built from <code>events.json</code> — the same event log used by the life-os knowledge-graph project, merged here under the <code>book:</code> node namespace.</p>
+
+  <div class="callout">
+    <strong>Two sources, one log:</strong> events prefixed <code>concept:</code> come from the life-os vault (Claude teaching sessions on the knowledge graph); events prefixed <code>book:</code> come from tutoring sessions in this book. They share one timeline so a full picture of study activity shows in one place, but <code>book:</code> quiz events don't carry the leveled Recall→Explain→Predict→Design mastery scoring that life-os quizzes do — see the note on the <a href="#methodology">data below</a>.
+  </div>
+
+  <div id="stats" class="stat-grid"></div>
+
+  <div id="grid-container"></div>
+
+  <h2>Recent days</h2>
+  <p class="subtitle">Most recent activity first. Click a square above to jump here (hover for a quick summary).</p>
+  <div id="event-log" class="event-log"></div>
+
+  <h2 id="methodology">How this is built</h2>
+  <p>Each square is one calendar day (UTC), colored by how many events — teaching sessions and quiz attempts combined — landed on it. This page loads <code>events.json</code> directly in the browser, so it reflects whatever is in that file at the time it's viewed; no separate build step regenerates it.</p>
+  <p>Book-sourced <code>quiz_answered</code> events record <code>questions_asked</code>/<code>correct</code>/<code>wrong</code>/<code>gaps</code> but omit <code>score</code>, <code>max_level_reached</code>, and <code>level_breakdown</code> — those fields depend on life-os's leveled mastery formula (5-in-a-row per level to advance Recall→Explain→Predict→Design), which book tutoring sessions don't follow. Rather than fabricate numbers to fit the schema, those fields are left off entirely for <code>book:</code> events.</p>
+
+  <div class="related">
+    <h2>Related pages</h2>
+    <ul>
+      <li><a href="review-schedule.html">Review Schedule</a> — what's due for a recall check next, independent of this raw activity log.</li>
+      <li><a href="about/teaching-style.html">Teaching Style</a> — how sessions are run and why nothing here is marked "done."</li>
+    </ul>
+  </div>
+</main>
+<footer class="site-footer">Built topic by topic. Depth over completion.</footer>
+
+<script>
+(async function () {
+  const container = document.getElementById('grid-container');
+  const statsEl = document.getElementById('stats');
+  const logEl = document.getElementById('event-log');
+
+  let events;
+  try {
+    const res = await fetch('events.json');
+    if (!res.ok) throw new Error('fetch failed: ' + res.status);
+    events = await res.json();
+  } catch (err) {
+    container.innerHTML = '<p class="callout">Could not load <code>events.json</code> (' + err.message +
+      '). If you\'re opening this file directly from disk, some browsers block local fetches — try running a static server (e.g. <code>python3 -m http.server</code>) in this folder, or view the page once it\'s published to GitHub Pages.</p>';
+    return;
+  }
+
+  function dayKey(ts) {
+    return ts.slice(0, 10); // YYYY-MM-DD, timezone offsets ignored for bucketing
+  }
+
+  const ACRONYMS = ['API', 'APIs', 'TLS', 'CPU', 'HTTP', 'DOM', 'CSS', 'SQL', 'DNS', 'OAuth', 'ACID', 'CAP', 'JS', 'CSRF', 'XSS', 'TTL', 'SWR'];
+  function prettyNode(nodeId) {
+    const withoutPrefix = nodeId.includes(':') ? nodeId.split(':').slice(1).join(':') : nodeId;
+    const last = withoutPrefix.split('/').pop();
+    let words = last.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    for (const a of ACRONYMS) {
+      words = words.replace(new RegExp('\\b' + a + '\\b', 'gi'), a);
+    }
+    return words;
+  }
+
+  // Aggregate by day
+  const byDay = new Map(); // key -> { taught: [], quiz: [] }
+  for (const e of events) {
+    const key = dayKey(e.ts);
+    if (!byDay.has(key)) byDay.set(key, { taught: [], quiz: [] });
+    const bucket = byDay.get(key);
+    if (e.verb === 'taught') bucket.taught.push(e);
+    else if (e.verb === 'quiz_answered') bucket.quiz.push(e);
+  }
+
+  // ---- Stats ----
+  const totalTaught = events.filter(e => e.verb === 'taught').length;
+  const totalQuiz = events.filter(e => e.verb === 'quiz_answered').length;
+  const activeDays = byDay.size;
+  let correctSum = 0, gradedSum = 0;
+  for (const e of events) {
+    if (e.verb === 'quiz_answered' && typeof e.payload.correct === 'number') {
+      correctSum += e.payload.correct;
+      gradedSum += e.payload.correct + (e.payload.wrong || 0);
+    }
+  }
+  const accuracy = gradedSum ? Math.round((correctSum / gradedSum) * 100) : null;
+
+  // Streaks — walk backward from today
+  const allDayKeys = new Set(byDay.keys());
+  function fmt(d) { return d.toISOString().slice(0, 10); }
+  let cursor = new Date();
+  cursor.setUTCHours(0, 0, 0, 0);
+  let currentStreak = 0;
+  // if today has no activity yet, streak counts from the most recent active day backward
+  if (!allDayKeys.has(fmt(cursor))) cursor.setUTCDate(cursor.getUTCDate() - 1);
+  while (allDayKeys.has(fmt(cursor))) {
+    currentStreak++;
+    cursor.setUTCDate(cursor.getUTCDate() - 1);
+  }
+  let longestStreak = 0, run = 0;
+  const sortedKeys = [...allDayKeys].sort();
+  let prevDate = null;
+  for (const k of sortedKeys) {
+    const d = new Date(k + 'T00:00:00Z');
+    if (prevDate && (d - prevDate) === 86400000) run++;
+    else run = 1;
+    longestStreak = Math.max(longestStreak, run);
+    prevDate = d;
+  }
+
+  const stats = [
+    [totalTaught, 'Teaching events'],
+    [totalQuiz, 'Quiz attempts'],
+    [activeDays, 'Active days'],
+    [currentStreak, 'Current streak (days)'],
+    [longestStreak, 'Longest streak (days)'],
+  ];
+  if (accuracy !== null) stats.push([accuracy + '%', 'Quiz accuracy (graded)']);
+  statsEl.innerHTML = stats.map(([v, l]) =>
+    '<div class="stat-box"><div class="stat-value">' + v + '</div><div class="stat-label">' + l + '</div></div>'
+  ).join('');
+
+  // ---- Grid: 53 weeks ending today, Sunday-first ----
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  const end = new Date(today);
+  const start = new Date(today);
+  start.setUTCDate(start.getUTCDate() - 7 * 53);
+  start.setUTCDate(start.getUTCDate() - start.getUTCDay()); // back up to a Sunday
+
+  const days = [];
+  for (let d = new Date(start); d <= end; d.setUTCDate(d.getUTCDate() + 1)) {
+    days.push(new Date(d));
+  }
+  // pad end to complete the final week (Saturday)
+  while (days[days.length - 1].getUTCDay() !== 6) {
+    const next = new Date(days[days.length - 1]);
+    next.setUTCDate(next.getUTCDate() + 1);
+    days.push(next);
+  }
+
+  function levelFor(count) {
+    if (count <= 0) return 0;
+    if (count === 1) return 1;
+    if (count <= 2) return 2;
+    if (count <= 4) return 3;
+    return 4;
+  }
+
+  const monthLabels = [];
+  let lastMonth = -1;
+  const weeks = Math.ceil(days.length / 7);
+  for (let w = 0; w < weeks; w++) {
+    const firstDayOfWeek = days[w * 7];
+    const m = firstDayOfWeek.getUTCMonth();
+    if (m !== lastMonth) {
+      monthLabels.push(firstDayOfWeek.toLocaleString('en-US', { month: 'short', timeZone: 'UTC' }));
+      lastMonth = m;
+    } else {
+      monthLabels.push('');
+    }
+  }
+
+  const dayLabels = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
+
+  let cellsHtml = '';
+  for (const d of days) {
+    const key = fmt(d);
+    const isFuture = d > today;
+    const bucket = byDay.get(key);
+    const count = bucket ? bucket.taught.length + bucket.quiz.length : 0;
+    const level = levelFor(count);
+    let title = key;
+    if (bucket && count > 0) {
+      const topics = new Set([...bucket.taught, ...bucket.quiz].map(e => prettyNode(e.node_id)));
+      title += ': ' + bucket.taught.length + ' taught, ' + bucket.quiz.length + ' quiz — ' + [...topics].join(', ');
+    } else {
+      title += ': no activity';
+    }
+    cellsHtml += '<div class="contrib-cell" data-date="' + key + '"' +
+      (isFuture ? ' data-future' : ' data-level="' + level + '"') +
+      ' title="' + title.replace(/"/g, '&quot;') + '"></div>';
+  }
+
+  container.innerHTML =
+    '<div class="contrib-wrap">' +
+    '<div class="contrib-months">' + monthLabels.map(m => '<div>' + m + '</div>').join('') + '</div>' +
+    '<div class="contrib-body">' +
+    '<div class="contrib-daylabels">' + dayLabels.map(l => '<div>' + l + '</div>').join('') + '</div>' +
+    '<div class="contrib-grid">' + cellsHtml + '</div>' +
+    '</div>' +
+    '<div class="contrib-legend">Less' +
+    [0, 1, 2, 3, 4].map(l => '<div class="contrib-cell" data-level="' + l + '"></div>').join('') +
+    'More</div>' +
+    '</div>';
+
+  // ---- Recent day-by-day log ----
+  const sortedDesc = [...byDay.keys()].sort().reverse().slice(0, 20);
+  logEl.innerHTML = sortedDesc.map(key => {
+    const bucket = byDay.get(key);
+    const lines = [];
+    for (const e of bucket.taught) {
+      lines.push('Taught — ' + prettyNode(e.node_id) + (e.payload.session_depth ? ' (' + e.payload.session_depth + ')' : ''));
+    }
+    for (const e of bucket.quiz) {
+      const p = e.payload;
+      let line = 'Quiz — ' + prettyNode(e.node_id);
+      if (typeof p.correct === 'number') line += ': ' + p.correct + ' correct, ' + (p.wrong || 0) + ' wrong';
+      if (p.score !== undefined && p.score !== null) line += ' (score ' + p.score + ')';
+      lines.push(line);
+    }
+    return '<div class="event-day"><div class="event-date">' + key + '</div><ul>' +
+      lines.map(l => '<li>' + l + '</li>').join('') + '</ul></div>';
+  }).join('');
+})();
+</script>
+</body>
+</html>
