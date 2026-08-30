@@ -9,10 +9,12 @@
 <body>
 <header class="site-header">
   <div class="inner">
-    <a class="brand" href="../index.html">Web + Mobile Dev — A Study Book</a>
+    <a class="brand" href="../index.html">Software Engineering — A Study Book</a>
     <nav class="tracks">
-      <a class="active" href="../index.html#backend">Backend</a>
+      <a href="../index.html#foundations">Foundations</a>
+      <a class="active" href="../index.html#web-mobile-dev">Web + Mobile Dev</a>
       <a href="../review-schedule.html">Review Schedule</a>
+      <a href="../about/teaching-style.html">Teaching Style</a>
     </nav>
   </div>
 </header>
@@ -20,7 +22,7 @@
 <main>
   <div class="breadcrumb"><a href="../index.html">Home</a> / Backend / Databases</div>
   <h1>Databases</h1>
-  <p class="subtitle">Status: basics <span class="status-solid">solid</span>, "beyond" layer <span class="status-upcoming">in progress</span> · Last covered 2026-08-29</p>
+  <p class="subtitle">Status: basics and "beyond" layer both <span class="status-solid">covered</span> · Last covered 2026-08-29</p>
 
   <h2>Why databases exist</h2>
   <p>An application server holding data only in memory has three problems: it vanishes on restart, it can't be shared across multiple server instances, and it has no way to answer precise questions about the data without hand-written scanning logic. A database gives durable, shared, queryable storage.</p>
@@ -92,7 +94,7 @@ Txn B:                  BEGIN ── insert new $150 order ── COMMIT
   </div>
 
   <h2>Where things stand</h2>
-  <p>Basics (relational vs. non-relational, normalization, ACID, indexes) are solid, including a strong spontaneous callback connecting isolation to the earlier API race-condition example. The "beyond" layer (isolation levels, replication, sharding, CAP) is <strong>in progress</strong> — a quiz on isolation-level identification, replication staleness, sharding aggregation, and CAP tradeoffs is underway; three of four questions graded correct so far (replication, sharding, CAP), one (isolation-level identification) still pending after a request for a simpler explanation.</p>
+  <p>Basics (relational vs. non-relational, normalization, ACID, indexes) and the "beyond" layer (isolation levels, replication, sharding, CAP) are both covered — all four beyond-layer quiz questions graded correct, including a strong spontaneous callback connecting isolation to the earlier API race-condition example. Still not treated as finished — genuinely deeper material (consensus protocols like Raft/Paxos, real per-database isolation defaults, multi-region replication topologies) is a further layer beyond even this, for whenever it's useful.</p>
 
   <h2>Coverage log (spaced repetition)</h2>
   <div class="table-scroll">
@@ -101,8 +103,8 @@ Txn B:                  BEGIN ── insert new $150 order ── COMMIT
     <tr><td>Why DBs exist; relational vs. non-relational; normalization</td><td>2026-08-29</td><td>1</td></tr>
     <tr><td>ACID/transactions/isolation (tied to likes race condition)</td><td>2026-08-29</td><td>1</td></tr>
     <tr><td>Indexes</td><td>2026-08-29</td><td>1</td></tr>
-    <tr><td>Isolation levels (dirty/non-repeatable/phantom reads, locking vs. MVCC)</td><td>2026-08-29</td><td>in progress</td></tr>
-    <tr><td>Replication (sync vs. async)</td><td>2026-08-29</td><td>1</td></tr>
+    <tr><td>Isolation levels (dirty/non-repeatable/phantom reads, locking vs. MVCC)</td><td>2026-08-29</td><td>1</td></tr>
+    <tr><td>Replication (sync vs. async, staleness link to caching)</td><td>2026-08-29</td><td>1</td></tr>
     <tr><td>Sharding and scatter-gather</td><td>2026-08-29</td><td>1</td></tr>
     <tr><td>CAP theorem (CP vs. AP)</td><td>2026-08-29</td><td>1</td></tr>
   </table>

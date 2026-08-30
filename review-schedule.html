@@ -9,10 +9,12 @@
 <body>
 <header class="site-header">
   <div class="inner">
-    <a class="brand" href="index.html">Web + Mobile Dev — A Study Book</a>
+    <a class="brand" href="index.html">Software Engineering — A Study Book</a>
     <nav class="tracks">
-      <a href="index.html#backend">Backend</a>
+      <a href="index.html#foundations">Foundations</a>
+      <a href="index.html#web-mobile-dev">Web + Mobile Dev</a>
       <a class="active" href="review-schedule.html">Review Schedule</a>
+      <a href="about/teaching-style.html">Teaching Style</a>
     </nav>
   </div>
 </header>
@@ -70,10 +72,28 @@
       <td><span class="status-fresh">Fresh</span></td>
     </tr>
     <tr>
-      <td>Isolation levels, replication, sharding, CAP ("beyond" layer)</td>
+      <td>Isolation levels (dirty/non-repeatable/phantom, locking vs. MVCC)</td>
       <td><a href="backend/databases.html">Databases</a></td>
-      <td>2026-08-29</td><td>in progress</td><td>—</td>
-      <td><span class="status-upcoming">In progress</span></td>
+      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
+      <td><span class="status-fresh">Fresh</span></td>
+    </tr>
+    <tr>
+      <td>Replication (sync vs. async, staleness link to caching)</td>
+      <td><a href="backend/databases.html">Databases</a></td>
+      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
+      <td><span class="status-fresh">Fresh</span></td>
+    </tr>
+    <tr>
+      <td>Sharding and scatter-gather</td>
+      <td><a href="backend/databases.html">Databases</a></td>
+      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
+      <td><span class="status-fresh">Fresh</span></td>
+    </tr>
+    <tr>
+      <td>CAP theorem (CP vs. AP)</td>
+      <td><a href="backend/databases.html">Databases</a></td>
+      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
+      <td><span class="status-fresh">Fresh</span></td>
     </tr>
     <tr>
       <td>Cookie security model (domain scoping/HttpOnly/Secure/SameSite) + XSS/CSRF mechanics</td>
@@ -112,6 +132,10 @@
       <td><span class="status-solid">Confirmed solid</span></td>
     </tr>
   </table>
+  </div>
+
+  <div class="callout">
+    <strong>Not yet integrated:</strong> <a href="foundations/data-structures.html">Foundations — Data Structures</a> topics (Arrays, Linked Lists, Stacks, Queues, Hash Tables, Big O) predate this spaced-repetition system, so they don't have last-covered/next-due dates yet. They'll get entries here the next time each is revisited directly.
   </div>
 
   <p><em>Maintained alongside internal memory used across sessions — update both when a subtopic is reviewed.</em></p>

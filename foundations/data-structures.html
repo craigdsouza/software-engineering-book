@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Structures — Software Engineering Book</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="../index.html">Software Engineering — A Study Book</a>
+    <nav class="tracks">
+      <a class="active" href="../index.html#foundations">Foundations</a>
+      <a href="../index.html#web-mobile-dev">Web + Mobile Dev</a>
+      <a href="../review-schedule.html">Review Schedule</a>
+      <a href="../about/teaching-style.html">Teaching Style</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="../index.html">Home</a> / Foundations / Data Structures</div>
+  <h1>Data Structures</h1>
+  <p class="subtitle">Status: <span class="status-upcoming">in progress</span> — deepening toward intermediate before moving on. Last covered: prior session (exact date not recorded before this book existed).</p>
+
+  <div class="callout">
+    <strong>A note on depth:</strong> this page currently reflects a brief summary carried over from before this book existed, not the full teaching narrative (analogies, quiz results, corrections) that the Web + Mobile Development pages have. Each section below will grow richer as it's revisited directly within this book's tutoring flow.
+  </div>
+
+  <h2>Arrays</h2>
+  <p>Contiguous memory layout — elements sit back-to-back in memory, which is what makes indexed access O(1): the address of element <em>i</em> can be computed directly from the base address, no searching required. That same contiguity is the cost: inserting or resizing can require shifting or copying everything, O(n).</p>
+
+  <h2>Linked Lists</h2>
+  <p>Nodes scattered anywhere in memory, connected by pointers rather than physical adjacency. Access to an arbitrary element is O(n) — there's no address arithmetic shortcut, you have to walk the chain. Insertion is O(1) once you're at the right spot, since it's just re-pointing a couple of links rather than shifting anything.</p>
+
+  <h2>Stacks</h2>
+  <p>LIFO — last in, first out. The canonical use case is undo functionality: each action pushes onto the stack, and undo pops the most recent one off.</p>
+
+  <h2>Queues</h2>
+  <p>FIFO — first in, first out.</p>
+
+  <h2>Big O Notation</h2>
+  <p>The core concept is growth rate — how the cost of an operation scales as input size grows, not the exact cost at any one size. O(1), O(log n), O(n), and O(n²) covered so far.</p>
+
+  <h2>Hash Tables</h2>
+  <p>A hash function maps a key to a bucket. Two keys can land in the same bucket — collision — resolved either by chaining (each bucket holds a small list) or open addressing (probe for the next free slot). Load factor tracks how full the table is, and rehashing (growing the table and redistributing everything) keeps performance from degrading as it fills up.</p>
+
+  <h2>Where things stand</h2>
+  <p>Intermediate-level proficiency is the goal before moving on. Likely next topics: Trees, Graphs, Heaps, or Tries.</p>
+
+  <div class="related">
+    <h2>Related pages</h2>
+    <ul>
+      <li><a href="../backend/apis.html">APIs</a> — the "likes" race condition and hash-table collision resolution are both instances of "two things want the same slot, now what?"</li>
+      <li><a href="../review-schedule.html">Review Schedule</a> — spaced-repetition status.</li>
+    </ul>
+  </div>
+</main>
+<footer class="site-footer">Built topic by topic. Depth over completion.</footer>
+</body>
+</html>

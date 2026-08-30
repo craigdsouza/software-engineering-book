@@ -3,34 +3,42 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Web + Mobile Development — A Study Book</title>
+<title>Software Engineering — A Study Book</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="site-header">
   <div class="inner">
-    <a class="brand" href="index.html">Web + Mobile Dev — A Study Book</a>
+    <a class="brand" href="index.html">Software Engineering — A Study Book</a>
     <nav class="tracks">
-      <a class="active" href="index.html#backend">Backend</a>
-      <span class="disabled">Frontend (not started)</span>
-      <span class="disabled">Mobile (not started)</span>
-      <span class="disabled">Cybersecurity (not started)</span>
+      <a href="index.html#foundations">Foundations</a>
+      <a href="index.html#web-mobile-dev">Web + Mobile Dev</a>
       <a href="review-schedule.html">Review Schedule</a>
+      <a href="about/teaching-style.html">Teaching Style</a>
     </nav>
   </div>
 </header>
 
 <main>
-  <h1>Web + Mobile Development</h1>
-  <p class="subtitle">Concepts and mental models first, frameworks later. A living book, built topic by topic — nothing here is treated as finished; everything is revisited for depth over time.</p>
+  <h1>Software Engineering</h1>
+  <p class="subtitle">Concepts and mental models first, implementation later. A living book spanning the full curriculum — Foundations, Systems, Mathematics, Software Engineering, Theory, and chosen specializations. Nothing here is treated as finished; everything is revisited for depth over time.</p>
 
   <div class="callout">
-    <strong>How to read this:</strong> Start wherever you like — each page stands alone but links to the pages it naturally connects to. The <a href="review-schedule.html">Review Schedule</a> tracks what's due for a recall check, spaced-repetition style.
+    <strong>How to read this:</strong> Pick a curriculum below, then a topic — each page stands alone but links to what it naturally connects to. See <a href="about/teaching-style.html">Teaching Style</a> for how this book is meant to be used, and <a href="review-schedule.html">Review Schedule</a> for what's due for a recall check.
   </div>
 
-  <h2 id="backend">Backend</h2>
-  <p>The server side of the client-server model: how requests are shaped, how identity and permissions are handled, how data is kept fresh, and how it's actually stored.</p>
+  <h2 id="foundations">Foundations</h2>
+  <p>Data structures, algorithms, complexity theory, discrete math, programming concepts — the base layer everything else builds on.</p>
+  <div class="card-grid">
+    <a class="card" href="foundations/data-structures.html">
+      <div class="card-title">Data Structures</div>
+      <div class="card-meta">Arrays, linked lists, stacks, queues, hash tables, Big O · in progress, deepening toward intermediate</div>
+    </a>
+  </div>
+  <p class="subtitle">Not yet started: Algorithms, Complexity Theory, Discrete Math, Programming Concepts.</p>
 
+  <h2 id="web-mobile-dev">Web + Mobile Development <small>(Specialization)</small></h2>
+  <p>The client-server model applied to the web and mobile: how requests are shaped, how identity and permissions are handled, how data is kept fresh, and how it's actually stored.</p>
   <div class="card-grid">
     <a class="card" href="backend/apis.html">
       <div class="card-title">APIs</div>
@@ -46,18 +54,13 @@
     </a>
     <a class="card" href="backend/databases.html">
       <div class="card-title">Databases</div>
-      <div class="card-meta">Relational vs. non-relational, ACID, isolation levels, replication, sharding, CAP · in progress</div>
+      <div class="card-meta">Relational vs. non-relational, ACID, isolation, replication, sharding, CAP · basics + beyond covered</div>
     </a>
   </div>
+  <p class="subtitle">Not yet started: Frontend (DOM, CSS, JS event loop, rendering), Mobile (native vs. cross-platform, app lifecycle, sandboxing), Cybersecurity as its own track (though XSS/CSRF mechanics are already in Auth).</p>
 
-  <h2 id="frontend">Frontend</h2>
-  <p>Not started yet — browser internals: the DOM, CSS, the JS event loop, rendering strategies.</p>
-
-  <h2 id="mobile">Mobile</h2>
-  <p>Not started yet — native vs. cross-platform, app lifecycle, OS sandboxing and permissions.</p>
-
-  <h2 id="cybersecurity">Cybersecurity</h2>
-  <p>Not a formal track yet, though XSS/CSRF mechanics were already covered as part of closing the Auth gap — see the <a href="backend/auth.html">Auth</a> page.</p>
+  <h2 id="other">Systems · Mathematics · Software Engineering · Theory</h2>
+  <p>Not started yet — Computer Architecture, Operating Systems, Networks, Compilers &amp; PLs; Linear Algebra, Probability &amp; Statistics, Calculus; OOP &amp; Design Patterns, Git, Testing, Architecture, Databases; Automata, Computability, Cryptography.</p>
 </main>
 
 <footer class="site-footer">Built topic by topic. Depth over completion.</footer>
