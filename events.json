@@ -1262,5 +1262,46 @@
       ],
       "note": "Recall check on cookie security model + CSRF/XSS distinction, both due 2026-08-31 per review-schedule.html. Two fresh scenarios never discussed before, per quiz-design preference (test the concept, not memory of a prior example). Reset to review count 1 given the domain-scoping gap surfaced mid-check."
     }
+  },
+  {
+    "id": 66,
+    "ts": "2026-08-31T17:50:34+05:30",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:foundations/data-structures",
+    "source": "book",
+    "payload": {
+      "date": "2026-08-31",
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/foundations/data-structures.html",
+      "concepts_written": [
+        "Trees \u2014 terminology (root/leaf/depth/height)",
+        "Binary search tree ordering invariant",
+        "DFS traversal via stack/recursion",
+        "BFS traversal via queue",
+        "Balance and why skewed insertion degrades to O(n)"
+      ],
+      "session_depth": "explain",
+      "catalog_video": null,
+      "note": "First Trees session, opened with a cold diagnostic (no prior teaching) rather than starting from definitions. Session still open \u2014 BST search-direction question posed, not yet answered at time of this log."
+    }
+  },
+  {
+    "id": 67,
+    "ts": "2026-08-31T18:05:34+05:30",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:foundations/data-structures",
+    "source": "book",
+    "payload": {
+      "date": "2026-08-31",
+      "questions_asked": 4,
+      "correct": 4,
+      "wrong": 0,
+      "gaps": [
+        "DFS/stack vs. BFS/queue traversal correspondence wasn't spontaneously drawn on the first (org-chart) question \u2014 the traversal behavior described was correct, but the structural link to Stacks/Queues needed to be taught explicitly rather than self-generated. Applied correctly and independently on the very next (file-system BFS) question once introduced, so treated as informational rather than a wrong answer."
+      ],
+      "note": "Cold diagnostic before any Trees teaching: (1) correctly guessed O(log n) search cost from ordering intuition alone, transferring binary-search logic unprompted; (2) correctly described narrowing to a subtree, though the DFS/stack vs BFS/queue framing needed to be supplied (see gaps). After terminology + traversal + balance were taught, two fresh probe questions both answered correctly with precise reasoning: skewed BST insertion order producing a degenerate O(n) chain (with exact step count), and BFS/queue as the correct structure for shallowest-match search. Session continues into BST invariant mechanics."
+    }
   }
 ]

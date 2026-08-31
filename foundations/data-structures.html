@@ -23,10 +23,14 @@
 <main>
   <div class="breadcrumb"><a href="../index.html">Home</a> / Foundations / Data Structures</div>
   <h1>Data Structures</h1>
-  <p class="subtitle">Status: basics <span class="status-solid">reviewed and solid</span> (five of six), one <span class="status-fresh">relearned</span> · deepening toward intermediate before moving on · Last reviewed 2026-08-30</p>
+  <p class="subtitle">Status: basics <span class="status-solid">reviewed and solid</span>, <span class="status-fresh">Trees in progress</span> (intermediate level) · Last covered 2026-08-31</p>
 
   <div class="callout">
     <strong>Reviewed 2026-08-30</strong> after an estimated ~104-day gap since the original ~2026-05-13 session (exact original date not recorded — this book didn't exist yet). Arrays, Linked Lists, Stacks, Queues, and Big O all held up cleanly, including a fresh independent test for Stacks (sorting five new LIFO/FIFO scenarios never discussed before, after a fair objection that quizzing on a specific prior example tests conversation-recall rather than the concept). Hash Tables had genuinely been forgotten — collision resolution and load factor were re-taught from scratch below, then correctly reasoned about in a follow-up check.
+  </div>
+
+  <div class="callout">
+    <strong>Trees started 2026-08-31.</strong> Opened cold, no prior teaching: correctly guessed O(log n) search cost from the ordering intuition alone (unprompted transfer from binary search), and correctly described narrowing search to a subtree — though the traversal's structural link to Stacks/Queues needed to be introduced rather than self-generated. After terminology, the BST ordering invariant, DFS-via-stack, BFS-via-queue, and the balance concept were taught, two fresh probe questions were both answered correctly with precise reasoning (skewed-insertion degenerate case with exact step count; BFS/queue for shallowest-match search). Session still open at time of writing.
   </div>
 
   <h2>Arrays</h2>
@@ -47,8 +51,13 @@
   <h2>Hash Tables</h2>
   <p>A hash function maps a key to a bucket. Two keys can land in the same bucket — collision — resolved either by chaining (each bucket holds a small list) or open addressing (probe for the next free slot). Load factor tracks how full the table is, and rehashing (growing the table and redistributing everything) keeps performance from degrading as it fills up.</p>
 
+  <h2>Trees</h2>
+  <p>A tree is a linked structure where each node can have more than one child, with one designated <strong>root</strong> (no parent) and any number of <strong>leaves</strong> (no children). A node's <strong>depth</strong> is its distance from the root; the tree's <strong>height</strong> is the depth of its deepest leaf. A <strong>binary tree</strong> caps every node at two children; a <strong>binary search tree (BST)</strong> adds an ordering invariant — for any node, everything in its left subtree is smaller and everything in its right subtree is larger — which is what makes search fast: each comparison discards an entire half of the remaining tree, the same logic as binary search.</p>
+  <p>That speed isn't automatic, though. If values are inserted in already-sorted order, each new node just extends one side, producing a straight chain — structurally a linked list wearing a tree's name, with search back down to O(n). <strong>Self-balancing</strong> BSTs (AVL, red-black) detect this kind of skew during insertion and restructure locally (rotations) to keep height near log n regardless of insertion order — mechanics deferred for now; the concept to hold onto is that balance has to be actively maintained, not assumed.</p>
+  <p>Two ways to walk a tree, and both reuse structures already covered here: <strong>depth-first (DFS)</strong> commits to one branch all the way down before backtracking to a sibling — powered by a stack, either explicit or the call stack recursion provides for free. <strong>Breadth-first (BFS)</strong> checks all of a node's children before moving to the next level — powered by a queue, since children are enqueued as discovered and processed in that order.</p>
+
   <h2>Where things stand</h2>
-  <p>Intermediate-level proficiency is the goal before moving on. Likely next topics: Trees, Graphs, Heaps, or Tries.</p>
+  <p>Arrays through Hash Tables: basics reviewed and solid. Trees: in progress — terminology, the BST invariant, DFS/BFS traversal, and the balance concept are taught and holding up on fresh probes; BST search-direction mechanics and self-balancing rotation details still ahead. After Trees: Graphs, Heaps, or Tries.</p>
 
   <h2>Coverage log (spaced repetition)</h2>
   <div class="table-scroll">
@@ -60,6 +69,8 @@
     <tr><td>Queues (FIFO)</td><td>2026-08-30</td><td>1</td></tr>
     <tr><td>Big O — growth rate as the core concept</td><td>2026-08-30</td><td>1</td></tr>
     <tr><td>Hash tables — collision resolution, load factor, rehashing</td><td>2026-08-30</td><td>1 (relearned)</td></tr>
+    <tr><td>Trees — terminology, BST invariant, balance concept</td><td>2026-08-31</td><td>1</td></tr>
+    <tr><td>Tree traversal — DFS via stack, BFS via queue</td><td>2026-08-31</td><td>1</td></tr>
   </table>
   </div>
 
