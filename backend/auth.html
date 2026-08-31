@@ -23,7 +23,11 @@
 <main>
   <div class="breadcrumb"><a href="../index.html">Home</a> / Backend / Auth</div>
   <h1>Auth</h1>
-  <p class="subtitle">Status: <span class="status-solid">basics solid</span> · Last covered 2026-08-28 (cookie security), 2026-08-29 (recall check)</p>
+  <p class="subtitle">Status: <span class="status-solid">basics solid</span> · Last covered 2026-08-28 (cookie security), 2026-08-31 (recall check)</p>
+
+  <div class="callout">
+    <strong>Reviewed 2026-08-31</strong> with two fresh scenarios (a stored-XSS attacker and a lookalike phishing domain) never discussed before. The HttpOnly nuance and the SameSite/CSRF boundary both held up cleanly and were reasoned independently. The phishing-domain case surfaced a real gap: it was answered as a SameSite/CSRF case, but a cookie is simply never sent to a domain other than the one that set it — a separate, prior guarantee (domain scoping) that has nothing to do with SameSite. Corrected and confirmed on follow-up; reset to review count 1 for that subtopic given the gap.
+  </div>
 
   <h2>Authentication vs. authorization</h2>
   <p><strong>Authentication</strong> is "who are you" (logging in). <strong>Authorization</strong> is "what are you allowed to do now that we know who you are."</p>
@@ -57,15 +61,15 @@
   <p><strong>Token in localStorage vs. HttpOnly cookie:</strong> localStorage has no read-protection equivalent to HttpOnly, so XSS can steal a token outright — strictly more exposed than a well-configured HttpOnly cookie.</p>
 
   <h2>Where things stand</h2>
-  <p>Basics solid across sessions/tokens/OAuth and the cookie/CSRF/XSS security model — the SameSite-only-stops-CSRF distinction and the HttpOnly nuance were both worked out independently rather than recalled. A later spaced-repetition check on "why mobile favors tokens" drifted toward a vaguer "closer to hardware" framing — noted for a short follow-up review. Revisit later for depth: CSP, synchronizer-token CSRF defenses, refresh-token rotation.</p>
+  <p>Basics solid across sessions/tokens/OAuth and the cookie/CSRF/XSS security model — the SameSite-only-stops-CSRF distinction and the HttpOnly nuance were both worked out independently rather than recalled, twice now (2026-08-29 and 2026-08-31). A later spaced-repetition check on "why mobile favors tokens" drifted toward a vaguer "closer to hardware" framing — noted for a short follow-up review. Domain scoping as a guarantee distinct from SameSite was a genuine gap as of 2026-08-31, now corrected. Revisit later for depth: CSP, synchronizer-token CSRF defenses, refresh-token rotation.</p>
 
   <h2>Coverage log (spaced repetition)</h2>
   <div class="table-scroll">
   <table>
     <tr><th>Subtopic</th><th>Last covered</th><th>Times reviewed</th></tr>
     <tr><td>Sessions vs. tokens, OAuth, why mobile favors tokens</td><td>2026-08-29</td><td>1 (reset — see note above)</td></tr>
-    <tr><td>Cookie security model (domain scoping, HttpOnly, Secure, SameSite) + XSS/CSRF mechanics</td><td>2026-08-28</td><td>1</td></tr>
-    <tr><td>CSRF vs. XSS deeper distinction (SameSite only stops CSRF)</td><td>2026-08-28</td><td>1</td></tr>
+    <tr><td>Cookie security model (domain scoping, HttpOnly, Secure, SameSite) + XSS/CSRF mechanics</td><td>2026-08-31</td><td>1 (reset — domain scoping gap, see callout above)</td></tr>
+    <tr><td>CSRF vs. XSS deeper distinction (SameSite only stops CSRF)</td><td>2026-08-31</td><td>2 (confirmed solid again)</td></tr>
   </table>
   </div>
 
