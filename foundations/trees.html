@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trees — Software Engineering Book</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="../index.html">Software Engineering — A Study Book</a>
+    <nav class="tracks">
+      <a class="active" href="../index.html#foundations">Foundations</a>
+      <a href="../index.html#web-mobile-dev">Web + Mobile Dev</a>
+      <a href="../review-schedule.html">Review Schedule</a>
+      <a href="../activity.html">Activity</a>
+      <a href="../about/teaching-style.html">Teaching Style</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="../index.html">Home</a> / Foundations / <a href="data-structures.html">Data Structures</a> / Trees</div>
+  <h1>Trees</h1>
+  <p class="subtitle">Status: terminology/traversal/balance <span class="status-solid">reviewed and solid</span>, <span class="status-fresh">BST mechanics — search, insertion, deletion all taught</span> · Last covered 2026-09-03</p>
+
+  <div class="callout">
+    <strong>Promoted to its own page 2026-09-02.</strong> Trees started as a section of <a href="data-structures.html">Data Structures</a> but outgrew it — multiple sessions' worth of terminology, traversal, and now deep BST mechanics (search, insertion, deletion). Still conceptually a child of Data Structures; just materialized as its own page now that it has sections of its own.
+  </div>
+
+  <div class="callout">
+    <strong>Started 2026-08-31.</strong> Opened cold, no prior teaching: correctly guessed O(log n) search cost from the ordering intuition alone (unprompted transfer from binary search), and correctly described narrowing search to a subtree — though the traversal's structural link to Stacks/Queues needed to be introduced rather than self-generated. After terminology, the BST ordering invariant, DFS-via-stack, BFS-via-queue, and the balance concept were taught, two fresh probe questions were both answered correctly with precise reasoning (skewed-insertion degenerate case with exact step count; BFS/queue for shallowest-match search).
+  </div>
+
+  <h2>Terminology</h2>
+  <p>A tree is a linked structure where each node can have more than one child, with one designated <strong>root</strong> (no parent) and any number of <strong>leaves</strong> (no children). A node's <strong>depth</strong> is its distance from the root; the tree's <strong>height</strong> is the depth of its deepest leaf. A <strong>binary tree</strong> caps every node at two children; a <strong>binary search tree (BST)</strong> adds an ordering invariant — for any node, everything in its left subtree is smaller and everything in its right subtree is larger — which is what makes search fast: each comparison discards an entire half of the remaining tree, the same logic as binary search. BST mechanics (search, insertion, deletion) are covered in their own section below, since they've grown enough depth to warrant it.</p>
+
+  <h2>Traversal</h2>
+  <p>Two ways to walk a tree, and both reuse structures already covered under <a href="data-structures.html">Data Structures</a>: <strong>depth-first (DFS)</strong> commits to one branch all the way down before backtracking to a sibling — powered by a stack, either explicit or the call stack recursion provides for free. <strong>Breadth-first (BFS)</strong> checks all of a node's children before moving to the next level — powered by a queue, since children are enqueued as discovered and processed in that order.</p>
+
+  <h2>Balance</h2>
+  <p>Speed isn't automatic. If values are inserted in already-sorted order, each new node just extends one side, producing a straight chain — structurally a linked list wearing a tree's name, with search back down to O(n). <strong>Self-balancing</strong> BSTs (AVL, red-black) detect this kind of skew during insertion and restructure locally (rotations) to keep height near log n regardless of insertion order — mechanics deferred for now; the concept to hold onto is that balance has to be actively maintained, not assumed.</p>
+
+  <h2 id="bst">Binary Search Trees (BST)</h2>
+  <p><strong>Search direction</strong> follows directly from the ordering invariant: at any node, compare the target to the current value — smaller goes left, larger goes right, equal means found. Each comparison discards an entire subtree, which is why search costs O(log n) on a balanced tree.</p>
+  <p><strong>Finding the minimum</strong> of a whole tree means starting at the <em>root</em> and always going left until there's no left child left. Root matters specifically: any other node's subtree is a strict subset of the whole tree, so it can silently exclude smaller values sitting outside it (a node with no left child is only the minimum of its own subtree, not necessarily the whole tree — a real trap: a node reached via a right turn from some ancestor can have that ancestor be smaller than it, even though the node itself has no left child). Mechanically, going left only ever discards provably-larger material; going right risks discarding something smaller — which is exactly why the always-left walk has to start at the root, where nothing has been discarded yet.</p>
+  <p><strong>Insertion</strong> is the same walk as search, run until it fails: compare, go left or right, and when the direction you'd move in doesn't exist, that empty slot is where the new node goes, as a new leaf. Insertion never displaces or moves an existing node — the invariant guarantees the walk always terminates at a gap, never a collision.</p>
+  <p><strong>Deletion</strong> has three cases, and only the last one is genuinely hard.</p>
+  <p><em>Leaf</em> (no children): just drop the parent's pointer to it.</p>
+  <pre>    50                50
+   /  \      -->      /  \
+ 30    70           30    70
+ /
+20  (delete 20)</pre>
+  <p><em>One child</em>: the child slides directly into the vacated spot — a promotion, nothing else changes.</p>
+  <pre>    50                50
+   /  \      -->      /  \
+ 30    70           40    70
+   \
+   40  (delete 30)</pre>
+  <p><em>Two children</em>: exactly one node has to fill the vacated spot, and it has to satisfy two separate constraints. (1) <strong>Value fit</strong> — bigger than everything in the left subtree, smaller than everything in the right. (2) <strong>Structural safety</strong> — removable without a collision, meaning it has at most one child of its own, so pulling it from its old spot is just the one-child/leaf case above, not another two-children mess. A tempting shortcut — promote a child of the deleted node directly — usually satisfies (1) but not (2): if that child already has a child of its own, there's no free slot left to also attach the other subtree (this is exactly the trap either side of the tree: promoting the right child fails the moment it has a left child in the way, and promoting the left child fails the moment it has a right child in the way, by the identical logic). The node guaranteed to satisfy <em>both</em> constraints, in every tree shape, is the <strong>successor</strong> — walk left-until-empty starting inside the deleted node's right subtree. Everything in that subtree already outranks everything on the left (constraint 1, free), and stopping because there's no left child left means it has at most a right child (constraint 2, free). (The mirror-image node — rightmost of the left subtree, the <strong>predecessor</strong> — works by the same logic and is an equally valid pick.) Splicing it in: copy the successor's value up into the deleted node's spot, then delete the <em>original</em> successor node using the one-child/leaf case — it's guaranteed to qualify.</p>
+  <pre>       50                     60
+      /  \                   /  \
+    30    70      -->      30    70
+         /  \                   /  \
+       60    80                65    80
+         \                (delete 50: successor is 60,
+         65                 copy 60 up, then remove the
+                             original 60 via its one child, 65)</pre>
+
+  <h2>Where things stand</h2>
+  <p>Terminology, traversal, and balance: taught and holding up on fresh probes. BST: search direction and minimum-finding solid after a corrected misconception (local vs. global minimum); insertion solid after a corrected misconception (insertion doesn't displace existing nodes); deletion now taught end to end (leaf, one child, two-children via successor), including the two-constraint reasoning for why the successor is the safe pick and why direct child-promotion generally isn't — verified against a fresh two-children scenario, answered correctly. Splicing the deposed successor's own child up (the final micro-step, e.g. 65 in the worked example above) hasn't been separately drilled — worth a quick confirm-only check next time, not a full re-teach. After BST: Graphs, Heaps, or Tries.</p>
+
+  <h2>Coverage log (spaced repetition)</h2>
+  <div class="table-scroll">
+  <table>
+    <tr><th>Subtopic</th><th>Last covered</th><th>Times reviewed</th></tr>
+    <tr><td>Terminology, BST invariant (vocabulary), balance concept</td><td>2026-08-31</td><td>1</td></tr>
+    <tr><td>Traversal — DFS via stack, BFS via queue</td><td>2026-08-31</td><td>1</td></tr>
+    <tr><td>BST search direction (left/right from ordering invariant)</td><td>2026-09-01</td><td>1</td></tr>
+    <tr><td>BST minimum-finding (root-to-leftmost rule, local vs. global scoping)</td><td>2026-09-01</td><td>1 (misconception caught and corrected same session)</td></tr>
+    <tr><td>BST insertion (walk-and-plant, no displacement)</td><td>2026-09-01</td><td>1 (misconception caught and corrected same session)</td></tr>
+    <tr><td>BST deletion — all cases (leaf, one child, two children via successor); two-constraint reasoning (value fit + structural safety)</td><td>2026-09-03</td><td>1 (fresh scenario answered correctly)</td></tr>
+  </table>
+  </div>
+
+  <div class="related">
+    <h2>Related pages</h2>
+    <ul>
+      <li><a href="data-structures.html">Data Structures</a> — parent page; traversal reuses Stacks and Queues covered there.</li>
+      <li><a href="../review-schedule.html">Review Schedule</a> — spaced-repetition status.</li>
+    </ul>
+  </div>
+</main>
+<footer class="site-footer">Built topic by topic. Depth over completion.</footer>
+</body>
+</html>

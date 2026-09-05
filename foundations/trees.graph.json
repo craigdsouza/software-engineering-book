@@ -1,0 +1,11 @@
+{
+  "page": "foundations/trees",
+  "title": "Trees",
+  "parent": "foundations/data-structures",
+  "deps": ["Linked Lists"],
+  "contrasts": [],
+  "sections": [
+    { "id": "bst", "title": "Binary Search Trees (BST)", "deps": [], "contrasts": ["Hash Tables"] }
+  ],
+  "note": "Promoted out of foundations/data-structures.html 2026-09-02 (see book-graph-migration-spec.md). deps: Linked Lists because tree nodes are the same pointer-connected-node idea, one level richer (more than one child pointer). BST contrasts Hash Tables: both are lookup-optimized structures with different tradeoffs (ordered O(log n) vs. average O(1) unordered)."
+}

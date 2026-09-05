@@ -1,0 +1,16 @@
+{
+  "page": "foundations/data-structures",
+  "title": "Data Structures",
+  "parent": null,
+  "deps": [],
+  "contrasts": [],
+  "sections": [
+    { "id": "arrays", "title": "Arrays", "deps": [], "contrasts": ["Linked Lists"] },
+    { "id": "linked-lists", "title": "Linked Lists", "deps": [], "contrasts": ["Arrays"] },
+    { "id": "stacks", "title": "Stacks", "deps": [], "contrasts": ["Queues"] },
+    { "id": "queues", "title": "Queues", "deps": [], "contrasts": ["Stacks"] },
+    { "id": "big-o", "title": "Big O Notation", "deps": [], "contrasts": [] },
+    { "id": "hash-tables", "title": "Hash Tables", "deps": ["Arrays"], "contrasts": [] }
+  ],
+  "note": "Sections declared here for future fine-grained logging. Existing events (ids 63, 64) predate this granularity and remain logged at the page level (book:foundations/data-structures) rather than retroactively split, per the same rationale used for the Trees/BST retag: only split when the source content clearly separates."
+}

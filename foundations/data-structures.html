@@ -23,14 +23,18 @@
 <main>
   <div class="breadcrumb"><a href="../index.html">Home</a> / Foundations / Data Structures</div>
   <h1>Data Structures</h1>
-  <p class="subtitle">Status: basics <span class="status-solid">reviewed and solid</span>, <span class="status-fresh">Trees in progress</span> (intermediate level) · Last covered 2026-08-31</p>
+  <p class="subtitle">Status: Arrays, Linked Lists, Stacks, Queues, Big O <span class="status-solid">reviewed and solid</span> (2026-08-30) · Hash Tables <span class="status-fresh">reset — one wrong sub-answer, corrected same session</span> (2026-09-05) · Trees moved to <a href="trees.html">its own page</a> 2026-09-02</p>
+
+  <div class="callout">
+    <strong>Hash Tables reviewed again 2026-09-05</strong>, deeper than the 2026-08-30 pass. Worked a concrete scenario (16-bucket table, 12 keys, load factor 0.75) comparing chaining vs. open addressing. Corrected a genuine misconception — that open-addressing lookups stay fast independent of write cost — via a probe-sequence counterexample, then explained primary clustering with a parking-lot analogy. Craig then independently derived that open addressing degrades faster than chaining at a given load factor, before catching an unstated assumption in that very claim: it only holds under a reasonably uniform hash function. See the Hash Tables section below for the corrected, precise version.
+  </div>
 
   <div class="callout">
     <strong>Reviewed 2026-08-30</strong> after an estimated ~104-day gap since the original ~2026-05-13 session (exact original date not recorded — this book didn't exist yet). Arrays, Linked Lists, Stacks, Queues, and Big O all held up cleanly, including a fresh independent test for Stacks (sorting five new LIFO/FIFO scenarios never discussed before, after a fair objection that quizzing on a specific prior example tests conversation-recall rather than the concept). Hash Tables had genuinely been forgotten — collision resolution and load factor were re-taught from scratch below, then correctly reasoned about in a follow-up check.
   </div>
 
   <div class="callout">
-    <strong>Trees started 2026-08-31.</strong> Opened cold, no prior teaching: correctly guessed O(log n) search cost from the ordering intuition alone (unprompted transfer from binary search), and correctly described narrowing search to a subtree — though the traversal's structural link to Stacks/Queues needed to be introduced rather than self-generated. After terminology, the BST ordering invariant, DFS-via-stack, BFS-via-queue, and the balance concept were taught, two fresh probe questions were both answered correctly with precise reasoning (skewed-insertion degenerate case with exact step count; BFS/queue for shallowest-match search). Session still open at time of writing.
+    <strong>Trees is now its own page</strong> (promoted 2026-09-02 — it outgrew being a section here, with BST mechanics deep enough to need a section of its own). See <a href="trees.html">Trees</a>.
   </div>
 
   <h2>Arrays</h2>
@@ -50,14 +54,11 @@
 
   <h2>Hash Tables</h2>
   <p>A hash function maps a key to a bucket. Two keys can land in the same bucket — collision — resolved either by chaining (each bucket holds a small list) or open addressing (probe for the next free slot). Load factor tracks how full the table is, and rehashing (growing the table and redistributing everything) keeps performance from degrading as it fills up.</p>
-
-  <h2>Trees</h2>
-  <p>A tree is a linked structure where each node can have more than one child, with one designated <strong>root</strong> (no parent) and any number of <strong>leaves</strong> (no children). A node's <strong>depth</strong> is its distance from the root; the tree's <strong>height</strong> is the depth of its deepest leaf. A <strong>binary tree</strong> caps every node at two children; a <strong>binary search tree (BST)</strong> adds an ordering invariant — for any node, everything in its left subtree is smaller and everything in its right subtree is larger — which is what makes search fast: each comparison discards an entire half of the remaining tree, the same logic as binary search.</p>
-  <p>That speed isn't automatic, though. If values are inserted in already-sorted order, each new node just extends one side, producing a straight chain — structurally a linked list wearing a tree's name, with search back down to O(n). <strong>Self-balancing</strong> BSTs (AVL, red-black) detect this kind of skew during insertion and restructure locally (rotations) to keep height near log n regardless of insertion order — mechanics deferred for now; the concept to hold onto is that balance has to be actively maintained, not assumed.</p>
-  <p>Two ways to walk a tree, and both reuse structures already covered here: <strong>depth-first (DFS)</strong> commits to one branch all the way down before backtracking to a sibling — powered by a stack, either explicit or the call stack recursion provides for free. <strong>Breadth-first (BFS)</strong> checks all of a node's children before moving to the next level — powered by a queue, since children are enqueued as discovered and processed in that order.</p>
+  <p>Chaining insertion stays O(1) regardless of load factor — a collision just extends the bucket's list, no searching required to write. Chaining lookup slows in proportion to chain length. Open addressing is different in kind: a lookup retraces the exact same probe sequence used at insertion, so insert and lookup cost aren't separate — they're the same walk, meaning whatever slows one slows the other identically. Occupied slots also tend to bunch into runs (<strong>primary clustering</strong>) — think of cars forced into the next open spot when their assigned one is taken: a cluster of collisions swallows the next arrival too, and grows. This is why open addressing tends to degrade <em>faster</em> than chaining as the table fills.</p>
+  <p><strong>The precise claim, and its limit:</strong> "open addressing degrades faster than chaining at the same load factor" is an <em>average-case</em> statement that assumes a well-distributed (simple uniform) hash function — each key equally likely to land in any bucket. Under that assumption chain lengths cluster tightly around the load factor, so a long chain is rare. But chaining has no structural cap: a bad or adversarial hash function (<strong>hash flooding</strong> — deliberately choosing keys that all collide, a real denial-of-service technique used against web frameworks with predictable hash seeds) can put every key in one bucket, giving O(n) worst-case lookup. Open addressing can't do that — since each slot holds exactly one key, no lookup ever needs more than <em>m</em> probes (the table size), regardless of hash quality. So worst-case, the ranking flips: chaining's downside is unbounded, open addressing's isn't. <em>Uniform hashing</em> and <em>hash flooding</em> haven't been studied in depth yet — flagged here as the natural next layer when hash functions themselves come up.</p>
 
   <h2>Where things stand</h2>
-  <p>Arrays through Hash Tables: basics reviewed and solid. Trees: in progress — terminology, the BST invariant, DFS/BFS traversal, and the balance concept are taught and holding up on fresh probes; BST search-direction mechanics and self-balancing rotation details still ahead. After Trees: Graphs, Heaps, or Tries.</p>
+  <p>Arrays through Hash Tables: basics reviewed and solid. Trees has grown into its own page — see <a href="trees.html">Trees</a> for status.</p>
 
   <h2>Coverage log (spaced repetition)</h2>
   <div class="table-scroll">
@@ -69,14 +70,14 @@
     <tr><td>Queues (FIFO)</td><td>2026-08-30</td><td>1</td></tr>
     <tr><td>Big O — growth rate as the core concept</td><td>2026-08-30</td><td>1</td></tr>
     <tr><td>Hash tables — collision resolution, load factor, rehashing</td><td>2026-08-30</td><td>1 (relearned)</td></tr>
-    <tr><td>Trees — terminology, BST invariant, balance concept</td><td>2026-08-31</td><td>1</td></tr>
-    <tr><td>Tree traversal — DFS via stack, BFS via queue</td><td>2026-08-31</td><td>1</td></tr>
+    <tr><td>Hash tables — chaining vs. open addressing degradation, uniform hashing assumption, hash flooding (forward pointer)</td><td>2026-09-05</td><td>1 (reset)</td></tr>
   </table>
   </div>
 
   <div class="related">
     <h2>Related pages</h2>
     <ul>
+      <li><a href="trees.html">Trees</a> — grew out of this page 2026-09-02; reuses Stacks and Queues covered here for traversal.</li>
       <li><a href="../backend/apis.html">APIs</a> — the "likes" race condition and hash-table collision resolution are both instances of "two things want the same slot, now what?"</li>
       <li><a href="../review-schedule.html">Review Schedule</a> — spaced-repetition status.</li>
     </ul>

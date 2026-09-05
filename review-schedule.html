@@ -135,8 +135,8 @@
   </table>
   </div>
 
-  <h2>Foundations — Data Structures, reviewed 2026-08-30</h2>
-  <p>After an estimated ~104-day gap. Five of six retained cleanly; hash tables needed full re-teaching.</p>
+  <h2>Foundations — Data Structures, reviewed 2026-08-30 (Hash Tables deepened 2026-09-05)</h2>
+  <p>After an estimated ~104-day gap. Five of six retained cleanly; hash tables needed full re-teaching. Hash Tables reviewed again 2026-09-05 — chaining vs. open addressing degradation, one guided correction (open-addressing lookup cost), then Craig independently caught the unstated uniform-hashing assumption behind the comparison.</p>
   <div class="table-scroll">
   <table>
     <tr><th>Subtopic</th><th>Topic</th><th>Last covered</th><th>Reviewed</th><th>Next due</th><th>Status</th></tr>
@@ -176,25 +176,55 @@
       <td>2026-08-30</td><td>1</td><td>2026-09-02</td>
       <td><span class="status-fresh">Relearned</span></td>
     </tr>
+    <tr>
+      <td>Hash tables — chaining vs. open addressing degradation, average- vs. worst-case, uniform hashing / hash flooding (forward pointer)</td>
+      <td><a href="foundations/data-structures.html">Data Structures</a></td>
+      <td>2026-09-05</td><td>1 (reset)</td><td>2026-09-08</td>
+      <td><span class="status-fresh">Reset — initial open-addressing read-cost misconception, self-corrected within the same session</span></td>
+    </tr>
   </table>
   </div>
 
-  <h2>Foundations — Data Structures, Trees, started 2026-08-31</h2>
-  <p>New topic, not a review — first coverage. Session still open (BST search-direction mechanics in progress).</p>
+  <h2>Foundations — Trees, started 2026-08-31 (own page since 2026-09-02)</h2>
+  <p>Promoted out of Data Structures 2026-09-02 — grew enough sub-depth (BST mechanics) to need its own page and its own <code>#bst</code> section node. BST deletion still in progress (successor property derived, splice not yet executed).</p>
   <div class="table-scroll">
   <table>
     <tr><th>Subtopic</th><th>Topic</th><th>Last covered</th><th>Reviewed</th><th>Next due</th><th>Status</th></tr>
     <tr>
-      <td>Trees — terminology, BST invariant, balance concept</td>
-      <td><a href="foundations/data-structures.html">Data Structures</a></td>
+      <td>Terminology, BST invariant (vocabulary), balance concept</td>
+      <td><a href="foundations/trees.html">Trees</a></td>
       <td>2026-08-31</td><td>1</td><td>2026-09-03</td>
       <td><span class="status-fresh">Fresh</span></td>
     </tr>
     <tr>
-      <td>Tree traversal — DFS via stack, BFS via queue</td>
-      <td><a href="foundations/data-structures.html">Data Structures</a></td>
+      <td>Traversal — DFS via stack, BFS via queue</td>
+      <td><a href="foundations/trees.html">Trees</a></td>
       <td>2026-08-31</td><td>1</td><td>2026-09-03</td>
       <td><span class="status-fresh">Fresh</span></td>
+    </tr>
+    <tr>
+      <td>BST search direction (left/right from ordering invariant)</td>
+      <td><a href="foundations/trees.html#bst">Trees — BST</a></td>
+      <td>2026-09-01</td><td>1</td><td>2026-09-04</td>
+      <td><span class="status-fresh">Fresh</span></td>
+    </tr>
+    <tr>
+      <td>BST minimum-finding (root-to-leftmost, local vs. global scoping)</td>
+      <td><a href="foundations/trees.html#bst">Trees — BST</a></td>
+      <td>2026-09-01</td><td>1 (reset)</td><td>2026-09-04</td>
+      <td><span class="status-fresh">Reset — conflated local vs. global minimum</span></td>
+    </tr>
+    <tr>
+      <td>BST insertion (walk-and-plant, no displacement)</td>
+      <td><a href="foundations/trees.html#bst">Trees — BST</a></td>
+      <td>2026-09-01</td><td>1 (reset)</td><td>2026-09-04</td>
+      <td><span class="status-fresh">Reset — thought insertion displaces existing nodes</span></td>
+    </tr>
+    <tr>
+      <td>BST deletion, two children — successor property derived, splice not yet done</td>
+      <td><a href="foundations/trees.html#bst">Trees — BST</a></td>
+      <td>2026-09-01</td><td>0 (in progress)</td><td>—</td>
+      <td><span class="status-fresh">In progress</span></td>
     </tr>
   </table>
   </div>

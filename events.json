@@ -904,7 +904,7 @@
     "verb": "quiz_answered",
     "node_id": "concept:websockets-real-time-transport",
     "payload": {
-      "score": 0.0,
+      "score": 0,
       "prior_score": null,
       "questions_asked": 1,
       "max_level_reached": "recall",
@@ -1268,7 +1268,7 @@
     "ts": "2026-08-31T17:50:34+05:30",
     "actor": "teacher",
     "verb": "taught",
-    "node_id": "book:foundations/data-structures",
+    "node_id": "book:foundations/trees",
     "source": "book",
     "payload": {
       "date": "2026-08-31",
@@ -1291,7 +1291,7 @@
     "ts": "2026-08-31T18:05:34+05:30",
     "actor": "quizmaster",
     "verb": "quiz_answered",
-    "node_id": "book:foundations/data-structures",
+    "node_id": "book:foundations/trees",
     "source": "book",
     "payload": {
       "date": "2026-08-31",
@@ -1302,6 +1302,181 @@
         "DFS/stack vs. BFS/queue traversal correspondence wasn't spontaneously drawn on the first (org-chart) question \u2014 the traversal behavior described was correct, but the structural link to Stacks/Queues needed to be taught explicitly rather than self-generated. Applied correctly and independently on the very next (file-system BFS) question once introduced, so treated as informational rather than a wrong answer."
       ],
       "note": "Cold diagnostic before any Trees teaching: (1) correctly guessed O(log n) search cost from ordering intuition alone, transferring binary-search logic unprompted; (2) correctly described narrowing to a subtree, though the DFS/stack vs BFS/queue framing needed to be supplied (see gaps). After terminology + traversal + balance were taught, two fresh probe questions both answered correctly with precise reasoning: skewed BST insertion order producing a degenerate O(n) chain (with exact step count), and BFS/queue as the correct structure for shallowest-match search. Session continues into BST invariant mechanics."
+    }
+  },
+  {
+    "id": 68,
+    "ts": "2026-09-01T11:43:53.074Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:foundations/trees#bst",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-01",
+      "questions_asked": 4,
+      "correct": 3,
+      "wrong": 1,
+      "gaps": [
+        "BST search-direction scenario (target 42, root 60) answered correctly with precise invariant reasoning (left subtree < node < right subtree).",
+        "Misconception surfaced on a follow-up: concluded that a node with no left child (search for 42 terminated at node 50) must be the minimum of the *entire* tree. Corrected via a constructed counterexample (root 60, left child 20, 20 right child 50, 50 no left child) showing 20 < 50, so 50 is only the minimum of its own subtree, not the whole tree. Root-cause: conflated \"no smaller value found on the path taken\" with \"no smaller value exists anywhere.\"",
+        "Correctly recovered the general rule unprompted (start at root, always go left until no left child = tree minimum), flagged own uncertainty appropriately rather than overclaiming.",
+        "Follow-up gut-check (why does always-go-left work from the root but not from an arbitrary node like 50) answered with the right core idea \u2014 non-root subtrees exclude ancestors and their other branches \u2014 phrasing needed sharpening (root subtree = whole tree; going left only ever discards provably-larger material, going right risks discarding smaller material) but the underlying intuition was sound."
+      ],
+      "note": "Continuation of the 2026-08-31 Trees session into BST search-direction and minimum-finding mechanics. Session moved next into deletion (node with two children)."
+    }
+  },
+  {
+    "id": 69,
+    "ts": "2026-09-01T14:16:43.104Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:foundations/trees#bst",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-01",
+      "questions_asked": 6,
+      "correct": 4,
+      "wrong": 2,
+      "gaps": [
+        "BST deletion (node with two children), first attempt: proposed the parent directly adopting both children (\"grandparent inherits\"), which is mechanically impossible \u2014 a node only has one child-pointer slot per side, so two subtrees cannot be attached to one slot. Corrected via a concrete example (deleting 50 with children 30 and 60 under parent 70).",
+        "Second attempt: proposed always promoting the immediate right child (60) into the deleted node's spot. Works only when that right child itself has no left child; extending the scenario (giving 60 a left child, 55) exposed the collision (60 could not take both 55 and 30 as left child). Craig then correctly derived, from a hint tying back to the earlier min-finding rule, that walking left-until-empty inside the right subtree always lands on a node with at most one child (a right child, or none) \u2014 the general-purpose successor property that makes deletion always safe. Deletion itself (splicing the successor value into place) was paused before being fully executed, to be picked up next session.",
+        "BST insertion, first scenario (insert 35): walked the comparison path correctly (50 \u2192 30 \u2192 40) but concluded the new value \"displaces\" the existing node 40, making 40 a child of 35 \u2014 a genuine misconception (insertion never moves existing nodes; the walk always terminates at an empty pointer, never an occupied node). Corrected explicitly.",
+        "BST insertion, second scenario (insert 45) and a follow-up narration request: both answered correctly and precisely (right-child placement under 40, full three-step comparison walk restated accurately), confirming the displacement misconception was resolved rather than just pattern-matched."
+      ],
+      "note": "Continuation of the 2026-09-01 Trees session (after event id 68). Backed up from deletion to insertion mid-session at Craig's request, since deletion built on insertion mechanics that hadn't been explicitly taught yet. Session paused here for the day, with the successor property already correctly derived \u2014 next session should resume by applying it to actually complete a two-children deletion, then work through the one-child and leaf deletion cases."
+    }
+  },
+  {
+    "id": 70,
+    "ts": "2026-09-01T14:16:43.104Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:foundations/trees#bst",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-01",
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/foundations/data-structures.html",
+      "concepts_written": [
+        "BST search-direction mechanics (invariant-driven left/right walk on a fresh scenario)",
+        "BST minimum-finding \u2014 general rule (start at root, always go left until no left child), and why it requires starting at the root specifically",
+        "Local vs. global minimum \u2014 a node with no left child is only the minimum of its own subtree, not necessarily the whole tree (taught via a constructed counterexample after a genuine misconception)",
+        "BST insertion \u2014 walk like a search, insert at the first empty slot; existing nodes never move or get displaced",
+        "BST deletion (node with two children), introductory \u2014 why naive approaches (parent adopting both children; always promoting the immediate right child) fail, and the successor property (leftmost node in the right subtree has at most one child) that makes deletion always safe; splicing the successor in to complete an actual deletion was not yet covered"
+      ],
+      "session_depth": "deep",
+      "catalog_video": null,
+      "note": "Continuation of the 2026-08-31 Trees session. Covers search/min-finding (graded in quiz_answered id 68), then a mid-session pivot from deletion to insertion at Craig's request since deletion depended on insertion mechanics that hadn't been explicitly taught yet (both graded together in quiz_answered id 69). Session paused for the day with the successor property already derived; next session resumes by executing an actual two-children deletion, then the simpler one-child and leaf cases."
+    }
+  },
+  {
+    "id": 71,
+    "ts": "2026-09-03T16:20:00.000Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:foundations/trees#bst",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-03",
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/foundations/trees.html",
+      "concepts_written": [
+        "BST deletion \u2014 explicit two-constraint framing: (1) value fit (bigger than everything in the left subtree, smaller than everything in the right) and (2) structural safety (removable without a collision, i.e. at most one child of its own)",
+        "BST deletion, leaf and one-child cases \u2014 retaught as short labeled blocks with minimal ASCII diagrams rather than one combined paragraph",
+        "BST deletion, two children \u2014 completed: successor (leftmost of the right subtree) satisfies both constraints by construction; splice = copy the successor value up, then delete the original successor node via the one-child/leaf case it always reduces to",
+        "Predecessor (rightmost of the left subtree) named as the symmetric alternative to successor",
+        "Why promoting a child directly generally fails constraint 2 \u2014 shown via a counterexample extending Craig's own proposed approach (promoting the left child), mirroring the earlier promote-the-right-child-directly misconception from the opposite side"
+      ],
+      "session_depth": "deep",
+      "catalog_video": null,
+      "note": "Continuation of the 2026-09-01 Trees/BST session, picked up mid-deletion. First pass restated the successor splice in dense paragraph form; Craig asked for it reorganized ELI10-style with a simple visual tree per case, which landed better. Craig then pushed on the remaining gap in intuition: why not just promote the left child (30) directly into the deleted node's spot? This surfaced the same naive-promotion misconception as an earlier session's promote-the-right-child attempt, now from the other side, and led to naming the two constraints explicitly (value fit + structural safety) and showing why direct child promotion only reliably satisfies the first. Craig then correctly derived the fix on his own. All three deletion cases (leaf, one child, two children) are now taught end to end."
+    }
+  },
+  {
+    "id": 72,
+    "ts": "2026-09-03T16:22:49.000Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:foundations/trees#bst",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-03",
+      "questions": [
+        {
+          "tag": "predict",
+          "correct": true,
+          "note": "Fresh two-children deletion scenario (delete node 40, children 20 and 60, from a tree rooted at 80) \u2014 asked to identify the successor and state what replaces 40."
+        }
+      ],
+      "questions_asked": 1,
+      "correct": 1,
+      "wrong": 0,
+      "gaps": [
+        "Confirmed the successor pick (60) but did not walk the final splice step (65, 60's only child, sliding up into 60's vacated slot) \u2014 worth a quick confirm-only check on that step at the next review, not a full re-teach."
+      ],
+      "note": "Fresh scenario, not previously discussed: tree with root 80 (children 40 and 90); 40 has children 20 and 60; 60 has a right child 65 (no left child). Asked to delete 40 (two children). Correctly identified the successor as 60 (leftmost node of 40's right subtree \u2014 already leftmost since it has no left child of its own) and correctly stated 60 takes 40's place. Reached this independently, right after working out for himself why naive direct-child-promotion fails and arriving at the two-constraint framing unprompted."
+    }
+  },
+  {
+    "id": 73,
+    "ts": "2026-09-05T16:24:31.763Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:foundations/data-structures#hash-tables",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-05",
+      "questions": [
+        {
+          "tag": "recall",
+          "correct": true,
+          "note": "Computed load factor (12/16=0.75) correctly and correctly identified that load factor alone does not indicate trouble without knowing the collision-resolution strategy."
+        },
+        {
+          "tag": "explain",
+          "correct": true,
+          "note": "Correctly explained chaining: collision extends the bucket's chain, insertion stays O(1) since it never searches before writing, lookup slows in proportion to chain length (tracks load factor)."
+        },
+        {
+          "tag": "predict",
+          "correct": false,
+          "note": "Initial claim that open-addressing lookups 'remain low until all buckets are full' was incorrect \u2014 corrected via a concrete linear-probing counterexample (3 keys colliding into slots 0,1,2) showing lookup retraces the identical probe sequence used at insertion, so read and write costs are tied together, not independent. Also corrected the framing that open addressing has a hard one-key-per-slot capacity ceiling (forces resize before load factor reaches 1.0), unlike chaining's unbounded buckets."
+        },
+        {
+          "tag": "predict",
+          "correct": true,
+          "note": "After the correction, independently reasoned that open addressing insertion degrades faster than chaining at the same load factor due to primary clustering (occupied slots bunching into runs that swallow more of the new arrivals), and correctly noted chaining insertion stays O(1) regardless. Needed one explicit nudge to extend this same reasoning to lookups (since lookup and insertion share the identical probe walk in open addressing, lookup must degrade by the same mechanism and magnitude) rather than treating lookup as requiring separate new math."
+        }
+      ],
+      "questions_asked": 4,
+      "correct": 3,
+      "wrong": 1,
+      "gaps": [
+        "Initially believed open-addressing lookups stay fast independent of write cost \u2014 now corrected, but worth a light confirm-only check next review to make sure the insert/lookup-share-a-probe-walk equivalence stuck without a prompt."
+      ],
+      "note": "Part of the 2026-09-05 spaced-repetition review of all six Data Structures subtopics (all overdue since 2026-09-02), logged at section granularity this time rather than page-level. Session went deeper than the original 2026-08-30 review: worked through chaining vs. open addressing insert/lookup cost tradeoffs via a scenario (16-bucket table, 12 keys, load factor 0.75), corrected a genuine misconception about open-addressing read costs staying flat, explained primary clustering via a parking-lot analogy after Craig asked for simpler terms, and Craig then correctly derived the insertion-degrades-faster conclusion on his own before needing one nudge to transfer it to lookups."
+    }
+  },
+  {
+    "id": 74,
+    "ts": "2026-09-05T16:32:18.239Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:foundations/data-structures#hash-tables",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-05",
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/foundations/data-structures.html",
+      "concepts_written": [
+        "The chaining-degrades-more-gracefully claim implicitly assumes simple uniform hashing (each key equally likely to land in any bucket, independent of others) \u2014 stated explicitly after Craig questioned it",
+        "Under that assumption chain lengths cluster tightly around the load factor (Poisson-ish), so long chains are rare in practice \u2014 but chaining has no structural cap on chain length: a bad or adversarial hash function (hash-flooding attacks) can put all n keys in one bucket, giving O(n) worst-case lookup",
+        "Open addressing has a structural cap chaining lacks: since each slot holds exactly one key, no lookup can ever need more than m probes (table size) \u2014 worst case is bounded regardless of hash function quality",
+        "Net correction: 'open addressing degrades faster than chaining at the same load factor' is an average-case claim conditioned on a reasonable hash function, not a worst-case guarantee \u2014 worst-case the ranking flips, since chaining's downside is unbounded (can exceed table size m) and open addressing's is not"
+      ],
+      "session_depth": "deep",
+      "catalog_video": null,
+      "note": "Immediate follow-up to quiz_answered event 73 in the same session. Craig pushed back on the average-case open-addressing-degrades-faster claim: what stops one chaining bucket from holding dozens of keys, which could make chaining lookup worse than open addressing's? This correctly identified an unstated assumption (uniform hashing) underlying the whole prior comparison. Walked through why the assumption usually holds in practice (Poisson-distributed chain lengths at a given load factor), then conceded the real point: chaining has no structural bound on chain length (vulnerable to bad hash functions / hash-flooding attacks, unbounded by table size m), while open addressing lookup is structurally capped at m probes regardless of hash quality \u2014 so the earlier ranking is an average-case-under-uniform-hashing statement, not a worst-case one, and worst-case the ranking actually reverses. Good example of Craig catching an implicit assumption rather than accepting the stated conclusion at face value."
     }
   }
 ]

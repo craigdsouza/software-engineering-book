@@ -1,0 +1,160 @@
+{
+  "generated_at": "2026-09-05T16:41:47.708Z",
+  "nodes": [
+    {
+      "id": "book:foundations/data-structures",
+      "title": "Data Structures",
+      "materialization": "page",
+      "parent": null,
+      "children": [
+        "book:foundations/data-structures#arrays",
+        "book:foundations/data-structures#linked-lists",
+        "book:foundations/data-structures#stacks",
+        "book:foundations/data-structures#queues",
+        "book:foundations/data-structures#big-o",
+        "book:foundations/data-structures#hash-tables"
+      ],
+      "deps": [],
+      "contrasts": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 1,
+        "lastScored": "2026-08-30",
+        "lastSuccess": null,
+        "dueDate": null
+      }
+    },
+    {
+      "id": "book:foundations/data-structures#arrays",
+      "title": "Arrays",
+      "materialization": "section",
+      "parent": "book:foundations/data-structures",
+      "children": [],
+      "deps": [],
+      "contrasts": [
+        "Linked Lists"
+      ],
+      "unlocks": 1,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "book:foundations/data-structures#linked-lists",
+      "title": "Linked Lists",
+      "materialization": "section",
+      "parent": "book:foundations/data-structures",
+      "children": [],
+      "deps": [],
+      "contrasts": [
+        "Arrays"
+      ],
+      "unlocks": 1,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "book:foundations/data-structures#stacks",
+      "title": "Stacks",
+      "materialization": "section",
+      "parent": "book:foundations/data-structures",
+      "children": [],
+      "deps": [],
+      "contrasts": [
+        "Queues"
+      ],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "book:foundations/data-structures#queues",
+      "title": "Queues",
+      "materialization": "section",
+      "parent": "book:foundations/data-structures",
+      "children": [],
+      "deps": [],
+      "contrasts": [
+        "Stacks"
+      ],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "book:foundations/data-structures#big-o",
+      "title": "Big O Notation",
+      "materialization": "section",
+      "parent": "book:foundations/data-structures",
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "book:foundations/data-structures#hash-tables",
+      "title": "Hash Tables",
+      "materialization": "section",
+      "parent": "book:foundations/data-structures",
+      "children": [],
+      "deps": [
+        "Arrays"
+      ],
+      "contrasts": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 1,
+        "lastScored": "2026-09-05",
+        "lastSuccess": null,
+        "dueDate": null
+      }
+    },
+    {
+      "id": "book:foundations/trees",
+      "title": "Trees",
+      "materialization": "page",
+      "parent": "book:foundations/data-structures",
+      "children": [
+        "book:foundations/trees#bst"
+      ],
+      "deps": [
+        "Linked Lists"
+      ],
+      "contrasts": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 1,
+        "lastScored": "2026-08-31",
+        "lastSuccess": "2026-08-31",
+        "dueDate": "2026-09-02"
+      }
+    },
+    {
+      "id": "book:foundations/trees#bst",
+      "title": "Binary Search Trees (BST)",
+      "materialization": "section",
+      "parent": "book:foundations/trees",
+      "children": [],
+      "deps": [],
+      "contrasts": [
+        "Hash Tables"
+      ],
+      "unlocks": 0,
+      "status": "solid",
+      "direct": {
+        "status": "solid",
+        "timesReviewed": 2,
+        "lastScored": "2026-09-03",
+        "lastSuccess": "2026-09-03",
+        "dueDate": "2026-09-09"
+      }
+    }
+  ]
+}
