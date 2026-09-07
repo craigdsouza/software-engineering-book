@@ -5,14 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Review Schedule — Web + Mobile Dev Book</title>
 <link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 <header class="site-header">
   <div class="inner">
     <a class="brand" href="index.html">Software Engineering — A Study Book</a>
     <nav class="tracks">
-      <a href="index.html#foundations">Foundations</a>
-      <a href="index.html#web-mobile-dev">Web + Mobile Dev</a>
+      <a href="index.html">Home</a>
       <a class="active" href="review-schedule.html">Review Schedule</a>
       <a href="activity.html">Activity</a>
       <a href="about/teaching-style.html">Teaching Style</a>
@@ -24,6 +26,58 @@
   <div class="breadcrumb"><a href="index.html">Home</a> / Review Schedule</div>
   <h1>Spaced Repetition Review Schedule</h1>
   <p class="subtitle">Every subtopic tracks when it was last covered and how many times it's been reviewed. The gap before the next review grows each time recall is confirmed — and resets if a review reveals shaky understanding.</p>
+
+  <div class="pv">
+    <!-- BUILD-PROGRESS:START duestrip -->
+<section class="duestrip" aria-label="Review debt">
+      <div class="duestrip-head">
+        <h2>Review debt</h2>
+        <span class="pv-section-note">3 / 7 / 14 / 30 / 60 intervals</span>
+      </div>
+      <p class="duestrip-lead">Scheduled nodes sit on the axis. Overdue ones hang below the line — the drop is the debt, and it only clears by answering.</p>
+      <div class="duestrip-card">
+        <div class="due-plot">
+          <div class="due-axis-line"></div>
+          <div class="due-today" style="left:33.33%;"></div>
+          <span class="due-today-label" style="left:33.33%;">today</span>
+          <div class="due-pin" data-status="fresh" style="left:38.10%;top:86px;">
+            <span class="due-stem" style="height:10px;top:4px;"></span>
+            <span class="due-dot"></span>
+            <span class="due-label"><span class="due-label-title">Arrays</span><span class="due-label-when">in 1d</span></span>
+          </div>
+          <div class="due-pin" data-status="solid" style="left:42.86%;top:56px;">
+            <span class="due-stem" style="height:40px;top:4px;"></span>
+            <span class="due-dot"></span>
+            <span class="due-label"><span class="due-label-title">Binary Search Trees</span><span class="due-label-when">in 2d</span></span>
+          </div>
+          <div class="due-pin" data-status="needs-review" data-late style="left:9.52%;top:114px;">
+            <span class="due-stem" style="height:10px;top:-14px;"></span>
+            <span class="due-dot"></span>
+            <span class="due-label"><span class="due-label-title">Trees</span><span class="due-label-when">5d overdue</span></span>
+          </div>
+          <div class="due-axis-labels"><span>aug 31</span><span>sep 21</span></div>
+        </div>
+      </div>
+      <div class="due-lists">
+        <div class="due-unscheduled">
+          <p class="due-unscheduled-head">Unscheduled · answer to schedule</p>
+          <ul>
+            <li><span class="due-unscheduled-title">Hash Tables</span><span class="due-unscheduled-last">scored 09-05</span></li>
+            <li><span class="due-unscheduled-title">Data Structures</span><span class="due-unscheduled-last">scored 08-30</span></li>
+            <li><span class="due-unscheduled-title">Linked Lists</span><span class="due-unscheduled-last">never scored</span></li>
+            <li><span class="due-unscheduled-title">Stacks</span><span class="due-unscheduled-last">never scored</span></li>
+            <li><span class="due-unscheduled-title">Queues</span><span class="due-unscheduled-last">never scored</span></li>
+            <li><span class="due-unscheduled-title">Big O Notation</span><span class="due-unscheduled-last">never scored</span></li>
+          </ul>
+        </div>
+        <div class="due-advice">
+          <p class="due-advice-head">Clearing it</p>
+          <p>Six nodes carry no due date because they've never been scored on their own — a page-level review graded the whole page at once. One section-level check each converts them from debt into a schedule.</p>
+        </div>
+      </div>
+    </section>
+    <!-- BUILD-PROGRESS:END duestrip -->
+  </div>
 
   <div class="table-scroll">
   <table>
@@ -135,16 +189,22 @@
   </table>
   </div>
 
-  <h2>Foundations — Data Structures, reviewed 2026-08-30 (Hash Tables deepened 2026-09-05)</h2>
-  <p>After an estimated ~104-day gap. Five of six retained cleanly; hash tables needed full re-teaching. Hash Tables reviewed again 2026-09-05 — chaining vs. open addressing degradation, one guided correction (open-addressing lookup cost), then Craig independently caught the unstated uniform-hashing assumption behind the comparison.</p>
+  <h2>Foundations — Data Structures, reviewed 2026-08-30 (Hash Tables deepened 2026-09-05; Arrays reviewed + extended 2026-09-06)</h2>
+  <p>After an estimated ~104-day gap. Five of six retained cleanly; hash tables needed full re-teaching. Hash Tables reviewed again 2026-09-05 — chaining vs. open addressing degradation, one guided correction (open-addressing lookup cost), then Craig independently caught the unstated uniform-hashing assumption behind the comparison. Arrays reviewed again 2026-09-06 — indexed-access mechanics confirmed cleanly, then extended into dynamic-array amortized doubling; this is Arrays' first section-level confirmation (fresh, not yet solid), and it surfaced a flagged prerequisite gap (general geometric/arithmetic series intuition) rather than an Arrays misunderstanding.</p>
   <div class="table-scroll">
   <table>
     <tr><th>Subtopic</th><th>Topic</th><th>Last covered</th><th>Reviewed</th><th>Next due</th><th>Status</th></tr>
     <tr>
       <td>Arrays vs. linked lists — indexed access tradeoffs</td>
       <td><a href="foundations/data-structures.html">Data Structures</a></td>
-      <td>2026-08-30</td><td>1</td><td>2026-09-02</td>
-      <td><span class="status-solid">Confirmed solid</span></td>
+      <td>2026-09-06</td><td>1</td><td>2026-09-08</td>
+      <td><span class="status-fresh">Fresh — first section-level confirmation</span></td>
+    </tr>
+    <tr>
+      <td>Dynamic array amortized doubling vs. fixed-increment growth (forward pointer: general geometric/arithmetic series intuition)</td>
+      <td><a href="foundations/data-structures.html">Data Structures</a></td>
+      <td>2026-09-06</td><td>0 (in progress)</td><td>—</td>
+      <td><span class="status-fresh">In progress — blocked on series-summation intuition, not an arrays misunderstanding</span></td>
     </tr>
     <tr>
       <td>Linked lists — middle insert/delete tradeoffs</td>

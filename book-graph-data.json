@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-06T07:45:36.897Z",
+  "generated_at": "2026-09-07T14:20:27.467Z",
   "nodes": [
     {
       "id": "book:foundations/data-structures",
@@ -37,8 +37,14 @@
         "Linked Lists"
       ],
       "unlocks": 1,
-      "status": "needs-review",
-      "direct": null
+      "status": "fresh",
+      "direct": {
+        "status": "fresh",
+        "timesReviewed": 1,
+        "lastScored": "2026-09-06",
+        "lastSuccess": "2026-09-06",
+        "dueDate": "2026-09-08"
+      }
     },
     {
       "id": "book:foundations/data-structures#linked-lists",

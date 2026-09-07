@@ -11,8 +11,7 @@
   <div class="inner">
     <a class="brand" href="../index.html">Software Engineering — A Study Book</a>
     <nav class="tracks">
-      <a class="active" href="../index.html#foundations">Foundations</a>
-      <a href="../index.html#web-mobile-dev">Web + Mobile Dev</a>
+      <a href="../index.html">Home</a>
       <a href="../review-schedule.html">Review Schedule</a>
       <a href="../activity.html">Activity</a>
       <a href="../about/teaching-style.html">Teaching Style</a>
@@ -23,7 +22,11 @@
 <main>
   <div class="breadcrumb"><a href="../index.html">Home</a> / Foundations / Data Structures</div>
   <h1>Data Structures</h1>
-  <p class="subtitle">Status: Arrays, Linked Lists, Stacks, Queues, Big O <span class="status-solid">reviewed and solid</span> (2026-08-30) · Hash Tables <span class="status-fresh">reset — one wrong sub-answer, corrected same session</span> (2026-09-05) · Trees moved to <a href="trees.html">its own page</a> 2026-09-02</p>
+  <p class="subtitle">Status: Arrays <span class="status-fresh">reviewed again, extended — fresh (first section-level confirmation)</span> (2026-09-06) · Linked Lists, Stacks, Queues, Big O <span class="status-solid">reviewed and solid</span> (2026-08-30) · Hash Tables <span class="status-fresh">reset — one wrong sub-answer, corrected same session</span> (2026-09-05) · Trees moved to <a href="trees.html">its own page</a> 2026-09-02</p>
+
+  <div class="callout">
+    <strong>Arrays reviewed again 2026-09-06.</strong> Clean confirmation on indexed-access mechanics (address = base + index × element size, correctly reasoned as arithmetic replacing a search). Extended into dynamic-array amortized doubling — see the Arrays section below for the worked comparison against fixed-increment growth. Surfaced a genuine prerequisite gap along the way: Craig correctly predicted that a ×1.5 growth factor would also be amortized O(1), but couldn't yet justify why — the missing piece is the general fact that a geometric series with any ratio &gt; 1 sums to a bounded multiple of its largest term, which hasn't been taught yet. Flagged as a forward pointer, not an Arrays misunderstanding; session paused here at Craig's request.
+  </div>
 
   <div class="callout">
     <strong>Hash Tables reviewed again 2026-09-05</strong>, deeper than the 2026-08-30 pass. Worked a concrete scenario (16-bucket table, 12 keys, load factor 0.75) comparing chaining vs. open addressing. Corrected a genuine misconception — that open-addressing lookups stay fast independent of write cost — via a probe-sequence counterexample, then explained primary clustering with a parking-lot analogy. Craig then independently derived that open addressing degrades faster than chaining at a given load factor, before catching an unstated assumption in that very claim: it only holds under a reasonably uniform hash function. See the Hash Tables section below for the corrected, precise version.
@@ -38,7 +41,9 @@
   </div>
 
   <h2>Arrays</h2>
-  <p>Contiguous memory layout — elements sit back-to-back in memory, which is what makes indexed access O(1): the address of element <em>i</em> can be computed directly from the base address, no searching required. That same contiguity is the cost: inserting or resizing can require shifting or copying everything, O(n).</p>
+  <p>Contiguous memory layout — elements sit back-to-back in memory, which is what makes indexed access O(1): the address of element <em>i</em> can be computed directly from the base address (base + <em>i</em> × element size), no searching required. That same contiguity is the cost: inserting or resizing can require shifting or copying everything, O(n).</p>
+  <p><strong>Dynamic arrays</strong> (the kind behind Python's <code>list</code>, Java's <code>ArrayList</code>, etc.) hide that resize cost behind an amortized guarantee: append is "amortized O(1)" even though any individual append might trigger a full copy. The reason is specifically the <em>doubling</em> growth strategy, not just "resizing infrequently." Growing by a fixed increment each time (say, +4 slots) makes the resize copy-costs an arithmetic sequence — 4, 8, 12, 16, ... — that sums to roughly n²/(2k) over n appends: the average cost per append keeps climbing as n grows, which is O(n), not O(1). Growing by doubling makes the copy-costs a geometric sequence — 1, 2, 4, 8, ... — that sums to roughly 2n: bounded by a constant multiple of n forever, so the average cost per append settles at a constant (around 2 units of work per append) no matter how large the array gets. Worked both by hand over 16 appends (step-by-step: fixed growth totaled 40, doubling totaled 31) and projected to n=64 to see the trend diverge — fixed growth's average kept climbing (≈8.5) while doubling's stayed flat (≈1.98). The dividing line is arithmetic vs. geometric growth in the resize schedule, not resize frequency alone.</p>
+  <p><em>Open question, flagged 2026-09-06:</em> a growth factor of ×1.5 (used by some real implementations, to waste less memory than doubling) should, by the same logic, also give amortized O(1) — Craig predicted this correctly on intuition alone. Justifying it in general requires knowing that a geometric series with <em>any</em> ratio &gt; 1 sums to a bounded multiple of its largest term, which hasn't been taught yet. Revisit once general series behavior is covered (Discrete Math, later in the Foundations track) or sooner if it blocks something else.</p>
 
   <h2>Linked Lists</h2>
   <p>Nodes scattered anywhere in memory, connected by pointers rather than physical adjacency. Access to an arbitrary element is O(n) — there's no address arithmetic shortcut, you have to walk the chain. Insertion is O(1) once you're at the right spot, since it's just re-pointing a couple of links rather than shifting anything.</p>
@@ -58,13 +63,14 @@
   <p><strong>The precise claim, and its limit:</strong> "open addressing degrades faster than chaining at the same load factor" is an <em>average-case</em> statement that assumes a well-distributed (simple uniform) hash function — each key equally likely to land in any bucket. Under that assumption chain lengths cluster tightly around the load factor, so a long chain is rare. But chaining has no structural cap: a bad or adversarial hash function (<strong>hash flooding</strong> — deliberately choosing keys that all collide, a real denial-of-service technique used against web frameworks with predictable hash seeds) can put every key in one bucket, giving O(n) worst-case lookup. Open addressing can't do that — since each slot holds exactly one key, no lookup ever needs more than <em>m</em> probes (the table size), regardless of hash quality. So worst-case, the ranking flips: chaining's downside is unbounded, open addressing's isn't. <em>Uniform hashing</em> and <em>hash flooding</em> haven't been studied in depth yet — flagged here as the natural next layer when hash functions themselves come up.</p>
 
   <h2>Where things stand</h2>
-  <p>Arrays through Hash Tables: basics reviewed and solid. Trees has grown into its own page — see <a href="trees.html">Trees</a> for status.</p>
+  <p>Arrays: reviewed again and extended with dynamic-array amortized analysis — the core doubling-vs-fixed-increment mechanics land cleanly, but this is only its first section-level confirmation (fresh, not yet solid), and general series justification for arbitrary growth factors is a flagged gap, not yet taught. Linked Lists through Hash Tables: basics reviewed and solid. Trees has grown into its own page — see <a href="trees.html">Trees</a> for status.</p>
 
   <h2>Coverage log (spaced repetition)</h2>
   <div class="table-scroll">
   <table>
     <tr><th>Subtopic</th><th>Last covered</th><th>Times reviewed</th></tr>
-    <tr><td>Arrays vs. linked lists — indexed access tradeoffs</td><td>2026-08-30</td><td>1</td></tr>
+    <tr><td>Arrays vs. linked lists — indexed access tradeoffs</td><td>2026-09-06</td><td>1 (first section-level confirmation)</td></tr>
+    <tr><td>Dynamic array amortized doubling vs. fixed-increment growth (forward pointer: general geometric/arithmetic series intuition, not yet taught)</td><td>2026-09-06</td><td>0 (in progress)</td></tr>
     <tr><td>Linked lists — middle insert/delete tradeoffs</td><td>2026-08-30</td><td>1</td></tr>
     <tr><td>Stacks (LIFO), tested via independent scenarios</td><td>2026-08-30</td><td>1</td></tr>
     <tr><td>Queues (FIFO)</td><td>2026-08-30</td><td>1</td></tr>
