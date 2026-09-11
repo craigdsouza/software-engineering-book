@@ -6,11 +6,18 @@
   "contrasts": [],
   "sections": [
     { "id": "arrays", "title": "Arrays", "deps": [], "contrasts": ["Linked Lists"] },
-    { "id": "linked-lists", "title": "Linked Lists", "deps": [], "contrasts": ["Arrays"] },
+    { "id": "linked-lists", "title": "Linked Lists", "deps": [], "contrasts": ["Arrays", "Doubly-Linked Lists"] },
+    { "id": "doubly-linked-lists", "title": "Doubly-Linked Lists", "deps": ["Linked Lists"], "contrasts": ["Linked Lists"] },
     { "id": "stacks", "title": "Stacks", "deps": [], "contrasts": ["Queues"] },
     { "id": "queues", "title": "Queues", "deps": [], "contrasts": ["Stacks"] },
     { "id": "big-o", "title": "Big O Notation", "deps": [], "contrasts": [] },
     { "id": "hash-tables", "title": "Hash Tables", "deps": ["Arrays"], "contrasts": [] }
   ],
-  "note": "Sections declared here for future fine-grained logging. Existing events (ids 63, 64) predate this granularity and remain logged at the page level (book:foundations/data-structures) rather than retroactively split, per the same rationale used for the Trees/BST retag: only split when the source content clearly separates."
+  "note": "Sections declared here for future fine-grained logging. Existing events (ids 63, 64) predate this granularity and remain logged at the page level (book:foundations/data-structures) rather than retroactively split, per the same rationale used for the Trees/BST retag: only split when the source content clearly separates.",
+  "forward_pointers": [
+    { "id": "amortized-series-summation", "title": "General geometric/arithmetic series summation", "tier": "intermediate", "under": "arrays", "note": "Needed to justify amortized O(1) for growth factors other than doubling (e.g. ×1.5). Natural fit once Discrete Math covers series." },
+    { "id": "uniform-hashing-hash-flooding", "title": "Uniform hashing assumption & hash flooding", "tier": "advanced", "under": "hash-tables", "note": "Why the chaining-vs-open-addressing comparison assumes a well-distributed hash function, and how adversarial input (a real DoS technique) breaks that assumption." },
+    { "id": "cache-locality", "title": "Cache locality (contiguous vs. pointer-chasing memory access)", "tier": "intermediate", "under": "linked-lists", "note": "Why arrays tend to beat linked lists in wall-clock time even at equal Big-O, once real hardware/cache behavior enters the picture." },
+    { "id": "lru-cache", "title": "LRU cache (hash map + doubly-linked list)", "tier": "advanced", "under": "doubly-linked-lists", "note": "The canonical applied pattern combining O(1) hash-map lookup with O(1) doubly-linked-list splice -- composes two already-taught structures into one." }
+  ]
 }

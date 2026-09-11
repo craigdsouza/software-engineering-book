@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #fdfcfa; }
+  a { color: #1c4f8b; text-decoration: none; }
+  a:hover { color: #8a5a2b; }
+</style>
+</helmet>
+
+<div style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #26241f; background: #fdfcfa; min-height: 100vh; padding: 0 0 80px;">
+
+  <div style="max-width: 940px; margin: 0 auto; padding: 0 32px;">
+
+    <div style="padding: 46px 0 34px; border-bottom: 1px solid #26241f;">
+      <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #8a5a2b; margin: 0 0 14px;">software engineering · book</p>
+      <h1 style="font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(30px, 4.4vw, 44px); line-height: 1.08; letter-spacing: -.02em; margin: 0;">What I know, in the order I'm learning it</h1>
+    </div>
+
+    <!-- cadence -->
+    <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 30px; align-items: end; padding: 26px 0 30px; border-bottom: 1px solid #ddd8cb;">
+      <div style="min-width: 0;">
+        <div style="display: flex; gap: 3px; margin-bottom: 9px;">
+          <sc-for list="{{ days }}" as="d" hint-placeholder-count="28">
+            <span title="{{ d.label }}" style="flex: 1; height: 30px; border-radius: 2px; background: {{ d.fill }}; border: 1px solid {{ d.edge }};"></span>
+          </sc-for>
+        </div>
+        <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #5b5847; margin: 0; display: flex; justify-content: space-between;">
+          <span>{{ firstDay }}</span>
+          <span>today</span>
+        </p>
+      </div>
+      <div style="display: flex; gap: 26px;">
+        <div>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 30px; font-weight: 300; line-height: 1; margin: 0; font-variant-numeric: tabular-nums;">{{ activeDays }}</p>
+          <p style="font-size: 12px; color: #5b5847; margin: 4px 0 0;">active days</p>
+        </div>
+        <div>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 30px; font-weight: 300; line-height: 1; margin: 0; font-variant-numeric: tabular-nums;">{{ bestRun }}</p>
+          <p style="font-size: 12px; color: #5b5847; margin: 4px 0 0;">longest run</p>
+        </div>
+        <div>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 30px; font-weight: 300; line-height: 1; margin: 0; color: #8a5a2b; font-variant-numeric: tabular-nums;">{{ sinceLast }}</p>
+          <p style="font-size: 12px; color: #5b5847; margin: 4px 0 0;">since last</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- next up -->
+    <div style="background: #2b2a26; color: #fdfcfa; border-radius: 12px; padding: 28px 30px 26px; margin: 30px 0 0;">
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 26px; align-items: center;">
+        <div style="min-width: 0;">
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #d99a5c; margin: 0 0 12px;">{{ next.kicker }}</p>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 30px; font-weight: 400; line-height: 1.12; letter-spacing: -.015em; margin: 0 0 6px;">{{ next.title }}</p>
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em; color: #b3ae9d; margin: 0 0 12px;">{{ next.path }}</p>
+          <p style="font-size: 15px; line-height: 1.6; color: #cfcbbe; margin: 0; max-width: 58ch; text-wrap: pretty;">{{ next.why }}</p>
+        </div>
+        <a href="{{ next.href }}" style="display: inline-flex; align-items: center; background: #8a5a2b; color: #fdfcfa; font-size: 15px; font-weight: 600; padding: 0 24px; min-height: 46px; border-radius: 6px; white-space: nowrap;">Open →</a>
+      </div>
+
+      <div style="border-top: 1px solid #4a473e; margin-top: 22px; padding-top: 18px;">
+        <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #b3ae9d; margin: 0 0 10px;">Why this one · the rule, in order</p>
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <sc-for list="{{ next.rule }}" as="r" hint-placeholder-count="4">
+            <div style="display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 12px; align-items: baseline;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: {{ r.color }};">{{ r.mark }}</span>
+              <span style="font-size: 13px; line-height: 1.55; color: {{ r.ink }}; text-wrap: pretty;">{{ r.text }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <!-- spine -->
+    <div style="padding: 46px 0 0;">
+      <div style="display: flex; align-items: baseline; gap: 14px; border-bottom: 1px solid #26241f; padding-bottom: 10px; margin-bottom: 0; flex-wrap: wrap;">
+        <h2 style="font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 26px; margin: 0; letter-spacing: -.01em;">The spine</h2>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #5b5847; margin-left: auto;">curriculum order · click to open</span>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; padding: 16px 0 6px;">
+        <sc-for list="{{ legend }}" as="l" hint-placeholder-count="5">
+          <span style="display: flex; align-items: center; gap: 7px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: #5b5847;">
+            <span style="width: 10px; height: 10px; border-radius: 2px; background: {{ l.fill }}; border: 1px solid {{ l.edge }};"></span>
+            {{ l.label }}
+          </span>
+        </sc-for>
+      </div>
+
+      <sc-for list="{{ tracks }}" as="tk" hint-placeholder-count="3">
+        <div style="margin-top: 30px;">
+          <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px;">
+            <h3 style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #26241f; margin: 0;">{{ tk.name }}</h3>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #5b5847;">{{ tk.meta }}</span>
+          </div>
+
+          <sc-for list="{{ tk.units }}" as="u" hint-placeholder-count="5">
+            <div style="border-top: 1px solid #ddd8cb;">
+              <div role="button" tabindex="0" onClick="{{ u.toggle }}" onKeyDown="{{ u.key }}" style="display: grid; grid-template-columns: 34px 22px minmax(130px, 1fr) minmax(0, 1.2fr) auto; gap: 14px; align-items: center; padding: 15px 12px 15px 14px; cursor: {{ u.cursor }}; border-left: 2px solid {{ u.edge }}; background: {{ u.bg }}; min-height: 44px;" style-hover="{{ u.hover }}">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #5b5847; font-variant-numeric: tabular-nums;">{{ u.ord }}</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: {{ u.caretColor }};">{{ u.caret }}</span>
+                <div style="min-width: 0;">
+                  <p style="font-size: 16px; font-weight: 600; margin: 0; letter-spacing: -.005em; color: {{ u.titleColor }};">{{ u.title }}</p>
+                  <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: {{ u.noteColor }}; margin: 4px 0 0;">{{ u.note }}</p>
+                </div>
+                <div style="display: flex; gap: 3px; min-width: 0; opacity: {{ u.dim }};">
+                  <sc-for list="{{ u.ticks }}" as="t" hint-placeholder-count="6">
+                    <span title="{{ t.title }}" style="flex: 1; height: 22px; border-radius: 2px; background: {{ t.fill }}; border: 1px solid {{ t.edge }};"></span>
+                  </sc-for>
+                </div>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5b5847; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums;">{{ u.count }}</span>
+              </div>
+
+              <sc-if value="{{ u.open }}" hint-placeholder-val="{{ false }}">
+                <div style="background: #f3f1ec; border-left: 2px solid #8a5a2b; padding: 20px 22px 22px 60px;">
+                  <div style="display: grid; grid-template-columns: minmax(140px, 1.3fr) repeat(3, 62px) minmax(0, 1.4fr); gap: 16px; padding-bottom: 8px; border-bottom: 1px solid #ddd8cb;">
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #5b5847;">section</span>
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #5b5847;">recall</span>
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #5b5847;">explain</span>
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #5b5847;">predict</span>
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #5b5847;">where it stands</span>
+                  </div>
+
+                  <sc-for list="{{ u.rows }}" as="r" hint-placeholder-count="6">
+                    <div style="display: grid; grid-template-columns: minmax(140px, 1.3fr) repeat(3, 62px) minmax(0, 1.4fr); gap: 16px; align-items: center; padding: 13px 0; border-bottom: 1px solid #ddd8cb;">
+                      <div style="min-width: 0; padding-left: {{ r.indent }};">
+                        <p style="font-size: 15px; font-weight: {{ r.weight }}; margin: 0; color: {{ r.ink }};">{{ r.title }}</p>
+                        <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .08em; color: {{ r.metaColor }}; margin: 4px 0 0;">{{ r.meta }}</p>
+                      </div>
+                      <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="3">
+                        <div title="{{ c.title }}" style="background: {{ c.bg }}; border: 1px solid {{ c.edge }}; border-radius: 3px; height: 34px; display: flex; align-items: center; justify-content: center;">
+                          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: {{ c.ink }}; font-variant-numeric: tabular-nums;">{{ c.label }}</span>
+                        </div>
+                      </sc-for>
+                      <span style="font-size: 13px; line-height: 1.55; color: #5b5847; text-wrap: pretty;">{{ r.stands }}</span>
+                    </div>
+                  </sc-for>
+
+                  <p style="font-size: 13px; line-height: 1.6; color: #5b5847; margin: 16px 0 0; text-wrap: pretty;">{{ u.footnote }}</p>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+
+      <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; line-height: 1.8; letter-spacing: .04em; color: #5b5847; margin: 36px 0 0; padding-top: 16px; border-top: 1px solid #ddd8cb;">{{ provenance }}</p>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;cadenceDays&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 28, &quot;min&quot;: 14, &quot;max&quot;: 84, &quot;step&quot;: 7, &quot;unit&quot;: &quot;days&quot;, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Cadence&quot;}, &quot;frontierRule&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;review-first&quot;, &quot;order-first&quot;], &quot;default&quot;: &quot;review-first&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Next up&quot;}}">
+const TODAY = "2026-09-07";
+const RAMP = ["#ddd8cb", "#dbe8de", "#a9cdb7", "#6ba585", "#3a7d5c"];
+const SESSIONS = { "2026-08-25": 7, "2026-08-28": 3, "2026-08-29": 13, "2026-08-30": 11, "2026-08-31": 6, "2026-09-01": 10, "2026-09-03": 1, "2026-09-05": 4, "2026-09-06": 3 };
+
+const TICK = {
+  solid: { fill: "#3a7d5c", edge: "#3a7d5c" },
+  fresh: { fill: "#a9cdb7", edge: "#6ba585" },
+  "needs-review": { fill: "#f1e6d8", edge: "#8a5a2b" },
+  ungraded: { fill: "#ddd8cb", edge: "#5b5847" },
+  unwritten: { fill: "transparent", edge: "#ddd8cb" }
+};
+
+const STATUS_LABEL = { solid: "solid", fresh: "fresh", "needs-review": "needs review", ungraded: "written · ungraded", unwritten: "not written" };
+
+// One row per graph node. cells: [recall, explain, predict] as [right, asked]; null = never asked.
+const DS_ROWS = [
+  { title: "Arrays", kind: "section", status: "fresh", meta: "due 09-08 · reviewed 1x",
+    cells: [[1, 1], null, [2, 2]],
+    stands: "Address arithmetic and amortized doubling both clean. Predicts correct but one was unjustified — geometric-series grounding is missing, flagged forward to Discrete Math." },
+  { title: "Linked Lists", kind: "section", status: "needs-review", meta: "never scored on its own",
+    cells: [null, null, null],
+    stands: "Confirmed inside the 08-30 page-level review, but has no evidence of its own. Blocks Trees as a declared dep." },
+  { title: "Stacks", kind: "section", status: "needs-review", meta: "never scored on its own",
+    cells: [null, null, null],
+    stands: "LIFO confirmed via five independently-sorted scenarios on 08-30, page-level only." },
+  { title: "Queues", kind: "section", status: "needs-review", meta: "never scored on its own",
+    cells: [null, null, null],
+    stands: "Confirmed 08-30 at page level. Contrasts with Stacks, which is the check worth running." },
+  { title: "Big O Notation", kind: "section", status: "needs-review", meta: "never scored on its own",
+    cells: [null, null, null],
+    stands: "Underpins every other section here, and is the only one with no contrast partner declared." },
+  { title: "Hash Tables", kind: "section", status: "needs-review", meta: "scored 09-05 · reviewed 1x",
+    cells: [[1, 1], [1, 1], [1, 2]],
+    stands: "Predict is the gap: open-addressing read cost was assumed independent of write cost. Corrected in session, not yet re-confirmed unprompted." },
+  { title: "Trees", kind: "page", status: "needs-review", meta: "page · 5d overdue · deps: Linked Lists",
+    cells: [null, null, null],
+    stands: "Taught 08-31 and scored 4/4, but before per-question tags existed — the score has no shape to read." },
+  { title: "Binary Search Trees", kind: "section", status: "solid", meta: "under Trees · due 09-09 · reviewed 2x", depth: 1,
+    cells: [null, null, [1, 1]],
+    stands: "Search, insert, min-finding and all three deletion cases taught end to end. Solid rests on one predict question — recall and explain were never asked directly." }
+];
+
+function iso(d) { return d.toISOString().slice(0, 10); }
+function shift(base, n) { const d = new Date(base + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d; }
+
+class Component extends DCLogic {
+  state = { open: { "1.1": true } };
+
+  toggle(key) { this.setState(s => ({ open: Object.assign({}, s.open, { [key]: !s.open[key] }) })); }
+
+  cadence() {
+    const n = this.props.cadenceDays ?? 28;
+    const days = [];
+    for (let i = n - 1; i >= 0; i--) {
+      const date = iso(shift(TODAY, -i));
+      const c = SESSIONS[date] || 0;
+      const level = c === 0 ? 0 : c <= 2 ? 1 : c <= 5 ? 2 : c <= 9 ? 3 : 4;
+      days.push({ date, count: c, fill: RAMP[level], edge: level ? "transparent" : "#ddd8cb", label: date + (c ? " · " + c + " questions" : " · nothing logged") });
+    }
+    let best = 0, run = 0, since = 0, seen = false;
+    days.forEach(d => { if (d.count) { run++; best = Math.max(best, run); } else { run = 0; } });
+    for (let i = days.length - 1; i >= 0; i--) { if (days[i].count) { seen = true; break; } since++; }
+    return { days, best, since: seen ? since + "d" : "—", active: days.filter(d => d.count).length + " / " + n, first: days[0].date };
+  }
+
+  // ---- the frontier rule, in priority order --------------------------------
+  // Encoded here so the generator script can port it verbatim.
+  frontier() {
+    const reviewFirst = (this.props.frontierRule ?? "review-first") === "review-first";
+    const dim = "#b3ae9d", lit = "#f0ede4";
+
+    const overdue = { mark: "1", text: "Any node past its due date — oldest first. Trees has been due since 2026-09-02." };
+    const order = { mark: "2", text: "Otherwise walk tracks in curriculum order, then units, then sections, and take the first node that isn't solid." };
+    const deps = { mark: "3", text: "If that node has a declared dep that isn't solid, the dep is taken instead — Hash Tables defers to Arrays." };
+    const tie = { mark: "4", text: "Sections before their parent page: a page's status is a roll-up, so it can't be cleared directly." };
+
+    const rows = [overdue, order, deps, tie];
+    const hitIndex = reviewFirst ? 0 : 1;
+
+    const rule = rows.map((r, i) => ({
+      mark: i === hitIndex ? "→" : r.mark,
+      text: r.text,
+      color: i === hitIndex ? "#d99a5c" : dim,
+      ink: i === hitIndex ? lit : dim
+    }));
+
+    return reviewFirst
+      ? { kicker: "Next up · overdue review", title: "Trees", path: "Foundations → 1.1 Data Structures → Trees", href: "foundations/trees.html", rule,
+          why: "Five days overdue, and the only node in the book that is. Its dep Linked Lists has never been scored on its own, so this is also the check that gives that section its first evidence." }
+      : { kicker: "Next up · curriculum order", title: "Arrays", path: "Foundations → 1.1 Data Structures → Arrays", href: "foundations/data-structures.html#arrays", rule,
+          why: "First section of the first unit of the first track that isn't solid yet. Fresh since 09-06 and due tomorrow — one clean check turns the book's second node solid." };
+  }
+
+  cell(pair, tag) {
+    if (!pair) return { label: "—", bg: "#fdfcfa", edge: "#ddd8cb", ink: "#5b5847", title: tag + " · never asked" };
+    const all = pair[0] === pair[1];
+    return {
+      label: pair[0] + "/" + pair[1],
+      bg: all ? "#3a7d5c" : "#f1e6d8",
+      edge: all ? "#3a7d5c" : "#8a5a2b",
+      ink: all ? "#fdfcfa" : "#8a5a2b",
+      title: tag + " · " + pair[0] + " of " + pair[1] + " correct"
+    };
+  }
+
+  unit(u) {
+    const key = u.ord;
+    const open = !!this.state.open[key] && !!u.rows;
+    const rows = (u.rows || []).map(r => ({
+      title: r.title,
+      meta: STATUS_LABEL[r.status] + " · " + r.meta,
+      metaColor: r.status === "needs-review" ? "#8a5a2b" : r.status === "solid" ? "#3a7d5c" : "#5b5847",
+      ink: "#26241f",
+      weight: r.kind === "page" ? 700 : 500,
+      indent: (r.depth ? 18 : 0) + "px",
+      cells: [this.cell(r.cells[0], "recall"), this.cell(r.cells[1], "explain"), this.cell(r.cells[2], "predict")],
+      stands: r.stands
+    }));
+
+    const ticks = (u.rows || []).map(r => ({ title: r.title + " · " + STATUS_LABEL[r.status], fill: TICK[r.status].fill, edge: TICK[r.status].edge }));
+    const blanks = Array.from({ length: u.blank || 0 }, () => ({ title: "not written yet", fill: TICK.unwritten.fill, edge: TICK.unwritten.edge }));
+
+    return {
+      ord: u.ord, title: u.title, note: u.note, count: u.count,
+      open, rows, footnote: u.footnote,
+      ticks: ticks.length ? ticks : blanks,
+      caret: u.rows ? (open ? "▾" : "▸") : "·",
+      caretColor: u.rows ? "#8a5a2b" : "#5b5847",
+      cursor: u.rows ? "pointer" : "default",
+      bg: open ? "#f3f1ec" : "transparent",
+      hover: u.rows ? { background: "#f3f1ec" } : {},
+      edge: u.here ? "#8a5a2b" : "transparent",
+      dim: u.rows ? 1 : u.count === "—" ? 0.5 : 0.85,
+      titleColor: u.rows ? "#26241f" : u.count === "—" ? "#5b5847" : "#26241f",
+      noteColor: u.here ? "#8a5a2b" : "#5b5847",
+      toggle: u.rows ? () => this.toggle(key) : undefined,
+      key: u.rows ? (e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.toggle(key); } }) : undefined
+    };
+  }
+
+  renderVals() {
+    const c = this.cadence();
+
+    const foundations = [
+      { ord: "1.1", title: "Data Structures", note: "you are here · 8 nodes", count: "1 / 8 solid", here: true, rows: DS_ROWS,
+        footnote: "Six of these eight have never been scored on their own — the 08-30 review graded the whole page in one aggregate. Per-question tags only start at 09-03, so most rows have no shape to read yet." },
+      { ord: "1.2", title: "Algorithms", note: "opens when 1.1 is solid", count: "—", blank: 6 },
+      { ord: "1.3", title: "Complexity Theory", note: "queued", count: "—", blank: 5 },
+      { ord: "1.4", title: "Discrete Math", note: "queued · holds a flagged gap", count: "—", blank: 5 },
+      { ord: "1.5", title: "Programming Concepts", note: "queued", count: "—", blank: 5 }
+    ];
+
+    const later = ["Systems", "Mathematics", "Software Engineering", "Theory"].map((n, i) => ({
+      ord: (i + 2) + ".0", title: n, note: "not started", count: "—", blank: 6
+    }));
+
+    const spec = [{ ord: "6.1", title: "Web + Mobile Dev", note: "4 pages · taught ahead of order", count: "outside graph",
+      rows: [
+        { title: "APIs", kind: "page", status: "ungraded", meta: "taught 08-25 · quizzed 3x", cells: [null, null, null], stands: "No .graph.json sidecar, so scan-book.mjs can't score it. Three quiz rounds logged with nowhere to land." },
+        { title: "Auth", kind: "page", status: "ungraded", meta: "taught 08-25, 08-28 · quizzed 4x", cells: [null, null, null], stands: "Deepest-covered page in the book and the only one with a reset logged — invisible to the graph." },
+        { title: "State & Caching", kind: "page", status: "ungraded", meta: "taught 08-25 · quizzed 2x", cells: [null, null, null], stands: "One live gap from 08-29: client state conflated with server-side caching layers." },
+        { title: "Databases", kind: "page", status: "ungraded", meta: "taught 08-29 · quizzed 1x", cells: [null, null, null], stands: "7/7 on the day it was taught, across eight concepts. No follow-up since." }
+      ],
+      footnote: "Adding a .graph.json sidecar to each of these four pages would pull them into the spine with real status instead of written-but-ungraded." }];
+
+    return {
+      days: c.days, activeDays: c.active, bestRun: c.best, sinceLast: c.since, firstDay: c.first,
+      next: this.frontier(),
+      legend: ["solid", "fresh", "needs-review", "ungraded", "unwritten"].map(k => ({
+        label: STATUS_LABEL[k], fill: TICK[k].fill, edge: TICK[k].edge
+      })),
+      tracks: [
+        { name: "Foundations", meta: "track 1 · in progress", units: foundations.map(u => this.unit(u)) },
+        { name: "Systems → Theory", meta: "tracks 2–5 · gated by track order", units: later.map(u => this.unit(u)) },
+        { name: "Specialization", meta: "track 6", units: spec.map(u => this.unit(u)) }
+      ],
+      provenance: "Generated from book-graph-data.json (2026-09-06T16:24Z) and events 51–76. No status on this page is hand-written."
+    };
+  }
+}
+
+</script>
+</body>
+</html>

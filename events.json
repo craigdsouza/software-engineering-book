@@ -25,7 +25,7 @@
     "node_id": "concept:cpu-cache-hierarchy",
     "payload": {
       "score": 0.25,
-      "score_note": "recomputed 2026-07-04: 5/5 Recall × ceiling 0.25 (formula corrected from additive to level-ceiling)",
+      "score_note": "recomputed 2026-07-04: 5/5 Recall \u00d7 ceiling 0.25 (formula corrected from additive to level-ceiling)",
       "prior_score": null,
       "questions_asked": 5,
       "max_level_reached": "recall",
@@ -543,7 +543,7 @@
       ],
       "session_depth": "explain",
       "catalog_video": null,
-      "note": "Decorated existing raw nginx notes with #concept tags for Reverse Proxy (genuinely missing from the graph — Load Balancers only covers one of its two functions) and redirects/rewrites; rest left as plain reference material, per Craig 2026-07-08 note-by-note pass through study/."
+      "note": "Decorated existing raw nginx notes with #concept tags for Reverse Proxy (genuinely missing from the graph \u2014 Load Balancers only covers one of its two functions) and redirects/rewrites; rest left as plain reference material, per Craig 2026-07-08 note-by-note pass through study/."
     }
   },
   {
@@ -561,7 +561,7 @@
       ],
       "session_depth": "explain",
       "catalog_video": null,
-      "note": "Decorated existing raw how-the-internet-works notes with two #concept groupings split at the existing LAN/WAN content boundary (no reordering) — Local Networks & Routing, Wide Area Networks & ISPs — since nothing in the graph yet covers physical/organizational internet infrastructure beneath the IP layer. Per Craig 2026-07-08 note-by-note pass through study/."
+      "note": "Decorated existing raw how-the-internet-works notes with two #concept groupings split at the existing LAN/WAN content boundary (no reordering) \u2014 Local Networks & Routing, Wide Area Networks & ISPs \u2014 since nothing in the graph yet covers physical/organizational internet infrastructure beneath the IP layer. Per Craig 2026-07-08 note-by-note pass through study/."
     }
   },
   {
@@ -614,7 +614,7 @@
       ],
       "session_depth": "explain",
       "catalog_video": null,
-      "note": "Craig asked to split the combined skills-vs-mcp-vs-plugin.md into one file per singular concept; the combined file (and its taught event 32) is now superseded — skills.md, mcp.md, and claude-cowork-plugins.md are the current homes for these three concepts."
+      "note": "Craig asked to split the combined skills-vs-mcp-vs-plugin.md into one file per singular concept; the combined file (and its taught event 32) is now superseded \u2014 skills.md, mcp.md, and claude-cowork-plugins.md are the current homes for these three concepts."
     }
   },
   {
@@ -631,7 +631,7 @@
       ],
       "session_depth": "explain",
       "catalog_video": null,
-      "note": "Craig asked to split the combined skills-vs-mcp-vs-plugin.md into one file per singular concept; the combined file (and its taught event 32) is now superseded — skills.md, mcp.md, and claude-cowork-plugins.md are the current homes for these three concepts."
+      "note": "Craig asked to split the combined skills-vs-mcp-vs-plugin.md into one file per singular concept; the combined file (and its taught event 32) is now superseded \u2014 skills.md, mcp.md, and claude-cowork-plugins.md are the current homes for these three concepts."
     }
   },
   {
@@ -648,7 +648,7 @@
       ],
       "session_depth": "explain",
       "catalog_video": null,
-      "note": "Craig asked to split the combined skills-vs-mcp-vs-plugin.md into one file per singular concept; the combined file (and its taught event 32) is now superseded — skills.md, mcp.md, and claude-cowork-plugins.md are the current homes for these three concepts."
+      "note": "Craig asked to split the combined skills-vs-mcp-vs-plugin.md into one file per singular concept; the combined file (and its taught event 32) is now superseded \u2014 skills.md, mcp.md, and claude-cowork-plugins.md are the current homes for these three concepts."
     }
   },
   {
@@ -665,7 +665,7 @@
       ],
       "session_depth": "explain",
       "catalog_video": null,
-      "note": "New standalone fundamentals note per Craig 2026-07-08 — LLMs underpin RAG, embeddings, and agents, so it earns its own note rather than staying inline."
+      "note": "New standalone fundamentals note per Craig 2026-07-08 \u2014 LLMs underpin RAG, embeddings, and agents, so it earns its own note rather than staying inline."
     }
   },
   {
@@ -750,7 +750,7 @@
       ],
       "session_depth": "explain",
       "catalog_video": null,
-      "note": "Solutions Engineer interview prep (Flytbase) session, 2026-07-09 — domain-generic geospatial altitude framing."
+      "note": "Solutions Engineer interview prep (Flytbase) session, 2026-07-09 \u2014 domain-generic geospatial altitude framing."
     }
   },
   {
@@ -769,7 +769,7 @@
       ],
       "session_depth": "explain",
       "catalog_video": null,
-      "note": "Solutions Engineer interview prep (Flytbase) session, 2026-07-09 — bundled messaging/integration cluster."
+      "note": "Solutions Engineer interview prep (Flytbase) session, 2026-07-09 \u2014 bundled messaging/integration cluster."
     }
   },
   {
@@ -820,7 +820,7 @@
       ],
       "session_depth": "deep",
       "catalog_video": null,
-      "note": "SE interview prep 2026-07-09 — augmented existing note with handshake walkthrough, 3 cert failure types, openssl s_client recipe before quizzing."
+      "note": "SE interview prep 2026-07-09 \u2014 augmented existing note with handshake walkthrough, 3 cert failure types, openssl s_client recipe before quizzing."
     }
   },
   {
@@ -838,10 +838,10 @@
       "wrong": 3,
       "gaps": [
         "Conflated certificate VALIDATION (client-side, after receipt) with certificate SELECTION (server-side, why SNI must precede encryption)",
-        "Assumed RTSPS TLS auth is bidirectional by default; it is one-directional (server presents cert, client validates) — client-to-server auth is typically RTSP-level embedded credentials, not a second TLS cert",
-        "Conflated UDP per-packet loss (expected, tolerable) with NAT/firewall idle-timeout silently dropping an entire idle session (same root cause as the WebSocket idle-drop pattern) — corrected via analogy transfer"
+        "Assumed RTSPS TLS auth is bidirectional by default; it is one-directional (server presents cert, client validates) \u2014 client-to-server auth is typically RTSP-level embedded credentials, not a second TLS cert",
+        "Conflated UDP per-packet loss (expected, tolerable) with NAT/firewall idle-timeout silently dropping an entire idle session (same root cause as the WebSocket idle-drop pattern) \u2014 corrected via analogy transfer"
       ],
-      "note": "Session paused by Craig after Level 2 completed 5/5 (score clamped to ceiling before L2 finished — formula saturates fast on 0.20/question at Level 2). Level 3 (Predict) was entered, one question posed (clock drift + cert validity window) but not answered before pausing. Resume at Level 3 if revisiting this topic. RESCORED 2026-07-10 under the redesigned mastery formula (25 reps/level target, no single-session ceiling) — see life-os-quizmaster SKILL.md Step 4 design notes. Old score was 1.0 under the deprecated formula; new lifetime mastery score is 0.07. Gating status: Level 1 and Level 2 both cleared (5/5 recent correct each), Level 3 unlocked but 0/5 recent correct so far (one question posed, unanswered).",
+      "note": "Session paused by Craig after Level 2 completed 5/5 (score clamped to ceiling before L2 finished \u2014 formula saturates fast on 0.20/question at Level 2). Level 3 (Predict) was entered, one question posed (clock drift + cert validity window) but not answered before pausing. Resume at Level 3 if revisiting this topic. RESCORED 2026-07-10 under the redesigned mastery formula (25 reps/level target, no single-session ceiling) \u2014 see life-os-quizmaster SKILL.md Step 4 design notes. Old score was 1.0 under the deprecated formula; new lifetime mastery score is 0.07. Gating status: Level 1 and Level 2 both cleared (5/5 recent correct each), Level 3 unlocked but 0/5 recent correct so far (one question posed, unanswered).",
       "level_breakdown": {
         "recall": {
           "correct": 5,
@@ -894,7 +894,7 @@
         }
       },
       "gaps": [],
-      "note": "Resumed Level 3 (Predict) from event 47's pending clock-drift-vs-cert-validity question. Original question phrasing was ambiguous ('its' could refer to the dock's own cert or the cloud's) — Craig caught the ambiguity, it was resolved in conversation (dock is the TLS client here, validating the cloud's server cert against its own drifted clock), and his original reasoning was confirmed correct once clarified, so the miss was struck rather than counted against him. Interleaved with WebSockets (event 49) and MQTT (event 50) per Craig's 2026-07-11 request to rotate between topics rather than finish one before starting the next. Level 3 gating: 1/5 recent correct, 4 more needed to unlock Level 4."
+      "note": "Resumed Level 3 (Predict) from event 47's pending clock-drift-vs-cert-validity question. Original question phrasing was ambiguous ('its' could refer to the dock's own cert or the cloud's) \u2014 Craig caught the ambiguity, it was resolved in conversation (dock is the TLS client here, validating the cloud's server cert against its own drifted clock), and his original reasoning was confirmed correct once clarified, so the miss was struck rather than counted against him. Interleaved with WebSockets (event 49) and MQTT (event 50) per Craig's 2026-07-11 request to rotate between topics rather than finish one before starting the next. Level 3 gating: 1/5 recent correct, 4 more needed to unlock Level 4."
     }
   },
   {
@@ -930,9 +930,9 @@
       },
       "gaps": [
         "Correctly named the Upgrade: websocket header, but described the server-side mechanism for persistence as application-level ping/pong heartbeats (which actually solve a downstream NAT/LB idle-timeout problem) rather than the core fact: the server responds 101 Switching Protocols and drops HTTP's request/response turn-taking, holding the same TCP connection open indefinitely.",
-        "On a second attempt, described this as the server 'making the TCP connection full duplex' — TCP connections are already full-duplex by default; the actual change is at the application layer (HTTP's one-request-one-response discipline is dropped), not the transport layer."
+        "On a second attempt, described this as the server 'making the TCP connection full duplex' \u2014 TCP connections are already full-duplex by default; the actual change is at the application layer (HTTP's one-request-one-response discipline is dropped), not the transport layer."
       ],
-      "note": "First quiz session on this node. Paused after 1 question — interleaved with TLS (event 48) and MQTT (event 50) per Craig's 2026-07-11 request to rotate between topics. Level 1 gating: 0/5 recent correct so far."
+      "note": "First quiz session on this node. Paused after 1 question \u2014 interleaved with TLS (event 48) and MQTT (event 50) per Craig's 2026-07-11 request to rotate between topics. Level 1 gating: 0/5 recent correct so far."
     }
   },
   {
@@ -967,7 +967,7 @@
         }
       },
       "gaps": [
-        "Described LWT registration as consisting of 'keep-alive interval + message' rather than 'will topic + will payload' — merged two separate CONNECT-packet fields (keep-alive interval governs timeout detection; will topic/payload is the message content itself).",
+        "Described LWT registration as consisting of 'keep-alive interval + message' rather than 'will topic + will payload' \u2014 merged two separate CONNECT-packet fields (keep-alive interval governs timeout detection; will topic/payload is the message content itself).",
         "Described will registration as happening 'immediately after CONNECT is sent' rather than as fields carried within the CONNECT packet itself, as a single message."
       ],
       "note": "First quiz session on this node. Preceded by a life-os-teacher re-teach pass (small-bites re-explanation of the same already-taught concept, no new vault write or taught event, per skill hard rule against editing/duplicating existing vault content) requested by Craig mid-quiz because the existing dense note was hard to digest before answering. Interleaved with TLS (event 48) and WebSockets (event 49) per Craig's 2026-07-11 rotation request. Level 1 gating: 2/5 recent correct, 3 more needed to unlock Level 2 (3-question minimum already met)."
@@ -991,7 +991,7 @@
       ],
       "session_depth": "explain",
       "catalog_video": null,
-      "note": "Reconstructed from conversation review, not a precise timestamped log — see README.md in the book repo."
+      "note": "Reconstructed from conversation review, not a precise timestamped log \u2014 see README.md in the book repo."
     }
   },
   {
@@ -1007,7 +1007,7 @@
       "correct": 1,
       "wrong": 0,
       "gaps": [],
-      "note": "Aggregated per-topic-per-day, reconstructed from conversation review (no per-question timestamps captured live). Score/level fields intentionally omitted — this quizzing didn't follow the Recall/Explain/Predict/Design leveled scheme, so a fabricated score would misrepresent what quizmaster scores mean elsewhere in this file."
+      "note": "Aggregated per-topic-per-day, reconstructed from conversation review (no per-question timestamps captured live). Score/level fields intentionally omitted \u2014 this quizzing didn't follow the Recall/Explain/Predict/Design leveled scheme, so a fabricated score would misrepresent what quizmaster scores mean elsewhere in this file."
     }
   },
   {
@@ -1224,7 +1224,7 @@
       ],
       "session_depth": "explain",
       "catalog_video": null,
-      "note": "ESTIMATED date, not exact — inferred from a memory file's reported age (~104 days) at the start of this conversation. This session predates the book and the events log entirely; original conversation content is not available, only a brief summary."
+      "note": "ESTIMATED date, not exact \u2014 inferred from a memory file's reported age (~104 days) at the start of this conversation. This session predates the book and the events log entirely; original conversation content is not available, only a brief summary."
     }
   },
   {
@@ -1240,7 +1240,7 @@
       "correct": 10,
       "wrong": 1,
       "gaps": [
-        "Hash table collision resolution strategies (chaining vs. open addressing) and load factor/rehashing were fully forgotten after the ~104-day gap — re-taught from scratch, then correctly reasoned about in a follow-up check."
+        "Hash table collision resolution strategies (chaining vs. open addressing) and load factor/rehashing were fully forgotten after the ~104-day gap \u2014 re-taught from scratch, then correctly reasoned about in a follow-up check."
       ],
       "note": "Review after an estimated 104-day gap. Arrays, Linked Lists, Big O, Queues confirmed directly; Stacks (LIFO) confirmed via 5 independently-sorted scenarios after Craig objected that testing recall of a specific prior example isn't testing the concept (see quiz-design preference). Aggregated, reconstructed from conversation review."
     }
@@ -1258,7 +1258,7 @@
       "correct": 1,
       "wrong": 1,
       "gaps": [
-        "Fresh scenario (lookalike phishing domain) tested with the cookie value framing; conflated domain scoping with SameSite/CSRF on first pass — corrected after clarification that a cookie is never sent to a domain other than the one that set it, independent of any flag. Confirmed understood on follow-up: distinguished domain scoping (wrong-domain case), SameSite (forged request to right domain from elsewhere), and HttpOnly (partial protection against same-origin XSS) as three separate guarantees."
+        "Fresh scenario (lookalike phishing domain) tested with the cookie value framing; conflated domain scoping with SameSite/CSRF on first pass \u2014 corrected after clarification that a cookie is never sent to a domain other than the one that set it, independent of any flag. Confirmed understood on follow-up: distinguished domain scoping (wrong-domain case), SameSite (forged request to right domain from elsewhere), and HttpOnly (partial protection against same-origin XSS) as three separate guarantees."
       ],
       "note": "Recall check on cookie security model + CSRF/XSS distinction, both due 2026-08-31 per review-schedule.html. Two fresh scenarios never discussed before, per quiz-design preference (test the concept, not memory of a prior example). Reset to review count 1 given the domain-scoping gap surfaced mid-check."
     }
@@ -1275,7 +1275,7 @@
       "mode": "curriculum",
       "vault_note": "software-engineering-book/foundations/data-structures.html",
       "concepts_written": [
-        "Trees — terminology (root/leaf/depth/height)",
+        "Trees \u2014 terminology (root/leaf/depth/height)",
         "Binary search tree ordering invariant",
         "DFS traversal via stack/recursion",
         "BFS traversal via queue",
@@ -1283,7 +1283,7 @@
       ],
       "session_depth": "explain",
       "catalog_video": null,
-      "note": "First Trees session, opened with a cold diagnostic (no prior teaching) rather than starting from definitions. Session still open — BST search-direction question posed, not yet answered at time of this log."
+      "note": "First Trees session, opened with a cold diagnostic (no prior teaching) rather than starting from definitions. Session still open \u2014 BST search-direction question posed, not yet answered at time of this log."
     }
   },
   {
@@ -1299,7 +1299,7 @@
       "correct": 4,
       "wrong": 0,
       "gaps": [
-        "DFS/stack vs. BFS/queue traversal correspondence wasn't spontaneously drawn on the first (org-chart) question — the traversal behavior described was correct, but the structural link to Stacks/Queues needed to be taught explicitly rather than self-generated. Applied correctly and independently on the very next (file-system BFS) question once introduced, so treated as informational rather than a wrong answer."
+        "DFS/stack vs. BFS/queue traversal correspondence wasn't spontaneously drawn on the first (org-chart) question \u2014 the traversal behavior described was correct, but the structural link to Stacks/Queues needed to be taught explicitly rather than self-generated. Applied correctly and independently on the very next (file-system BFS) question once introduced, so treated as informational rather than a wrong answer."
       ],
       "note": "Cold diagnostic before any Trees teaching: (1) correctly guessed O(log n) search cost from ordering intuition alone, transferring binary-search logic unprompted; (2) correctly described narrowing to a subtree, though the DFS/stack vs BFS/queue framing needed to be supplied (see gaps). After terminology + traversal + balance were taught, two fresh probe questions both answered correctly with precise reasoning: skewed BST insertion order producing a degenerate O(n) chain (with exact step count), and BFS/queue as the correct structure for shallowest-match search. Session continues into BST invariant mechanics."
     }
@@ -1320,7 +1320,7 @@
         "BST search-direction scenario (target 42, root 60) answered correctly with precise invariant reasoning (left subtree < node < right subtree).",
         "Misconception surfaced on a follow-up: concluded that a node with no left child (search for 42 terminated at node 50) must be the minimum of the *entire* tree. Corrected via a constructed counterexample (root 60, left child 20, 20 right child 50, 50 no left child) showing 20 < 50, so 50 is only the minimum of its own subtree, not the whole tree. Root-cause: conflated \"no smaller value found on the path taken\" with \"no smaller value exists anywhere.\"",
         "Correctly recovered the general rule unprompted (start at root, always go left until no left child = tree minimum), flagged own uncertainty appropriately rather than overclaiming.",
-        "Follow-up gut-check (why does always-go-left work from the root but not from an arbitrary node like 50) answered with the right core idea — non-root subtrees exclude ancestors and their other branches — phrasing needed sharpening (root subtree = whole tree; going left only ever discards provably-larger material, going right risks discarding smaller material) but the underlying intuition was sound."
+        "Follow-up gut-check (why does always-go-left work from the root but not from an arbitrary node like 50) answered with the right core idea \u2014 non-root subtrees exclude ancestors and their other branches \u2014 phrasing needed sharpening (root subtree = whole tree; going left only ever discards provably-larger material, going right risks discarding smaller material) but the underlying intuition was sound."
       ],
       "note": "Continuation of the 2026-08-31 Trees session into BST search-direction and minimum-finding mechanics. Session moved next into deletion (node with two children)."
     }
@@ -1338,12 +1338,12 @@
       "correct": 4,
       "wrong": 2,
       "gaps": [
-        "BST deletion (node with two children), first attempt: proposed the parent directly adopting both children (\"grandparent inherits\"), which is mechanically impossible — a node only has one child-pointer slot per side, so two subtrees cannot be attached to one slot. Corrected via a concrete example (deleting 50 with children 30 and 60 under parent 70).",
-        "Second attempt: proposed always promoting the immediate right child (60) into the deleted node's spot. Works only when that right child itself has no left child; extending the scenario (giving 60 a left child, 55) exposed the collision (60 could not take both 55 and 30 as left child). Craig then correctly derived, from a hint tying back to the earlier min-finding rule, that walking left-until-empty inside the right subtree always lands on a node with at most one child (a right child, or none) — the general-purpose successor property that makes deletion always safe. Deletion itself (splicing the successor value into place) was paused before being fully executed, to be picked up next session.",
-        "BST insertion, first scenario (insert 35): walked the comparison path correctly (50 → 30 → 40) but concluded the new value \"displaces\" the existing node 40, making 40 a child of 35 — a genuine misconception (insertion never moves existing nodes; the walk always terminates at an empty pointer, never an occupied node). Corrected explicitly.",
+        "BST deletion (node with two children), first attempt: proposed the parent directly adopting both children (\"grandparent inherits\"), which is mechanically impossible \u2014 a node only has one child-pointer slot per side, so two subtrees cannot be attached to one slot. Corrected via a concrete example (deleting 50 with children 30 and 60 under parent 70).",
+        "Second attempt: proposed always promoting the immediate right child (60) into the deleted node's spot. Works only when that right child itself has no left child; extending the scenario (giving 60 a left child, 55) exposed the collision (60 could not take both 55 and 30 as left child). Craig then correctly derived, from a hint tying back to the earlier min-finding rule, that walking left-until-empty inside the right subtree always lands on a node with at most one child (a right child, or none) \u2014 the general-purpose successor property that makes deletion always safe. Deletion itself (splicing the successor value into place) was paused before being fully executed, to be picked up next session.",
+        "BST insertion, first scenario (insert 35): walked the comparison path correctly (50 \u2192 30 \u2192 40) but concluded the new value \"displaces\" the existing node 40, making 40 a child of 35 \u2014 a genuine misconception (insertion never moves existing nodes; the walk always terminates at an empty pointer, never an occupied node). Corrected explicitly.",
         "BST insertion, second scenario (insert 45) and a follow-up narration request: both answered correctly and precisely (right-child placement under 40, full three-step comparison walk restated accurately), confirming the displacement misconception was resolved rather than just pattern-matched."
       ],
-      "note": "Continuation of the 2026-09-01 Trees session (after event id 68). Backed up from deletion to insertion mid-session at Craig's request, since deletion built on insertion mechanics that hadn't been explicitly taught yet. Session paused here for the day, with the successor property already correctly derived — next session should resume by applying it to actually complete a two-children deletion, then work through the one-child and leaf deletion cases."
+      "note": "Continuation of the 2026-09-01 Trees session (after event id 68). Backed up from deletion to insertion mid-session at Craig's request, since deletion built on insertion mechanics that hadn't been explicitly taught yet. Session paused here for the day, with the successor property already correctly derived \u2014 next session should resume by applying it to actually complete a two-children deletion, then work through the one-child and leaf deletion cases."
     }
   },
   {
@@ -1359,10 +1359,10 @@
       "vault_note": "software-engineering-book/foundations/data-structures.html",
       "concepts_written": [
         "BST search-direction mechanics (invariant-driven left/right walk on a fresh scenario)",
-        "BST minimum-finding — general rule (start at root, always go left until no left child), and why it requires starting at the root specifically",
-        "Local vs. global minimum — a node with no left child is only the minimum of its own subtree, not necessarily the whole tree (taught via a constructed counterexample after a genuine misconception)",
-        "BST insertion — walk like a search, insert at the first empty slot; existing nodes never move or get displaced",
-        "BST deletion (node with two children), introductory — why naive approaches (parent adopting both children; always promoting the immediate right child) fail, and the successor property (leftmost node in the right subtree has at most one child) that makes deletion always safe; splicing the successor in to complete an actual deletion was not yet covered"
+        "BST minimum-finding \u2014 general rule (start at root, always go left until no left child), and why it requires starting at the root specifically",
+        "Local vs. global minimum \u2014 a node with no left child is only the minimum of its own subtree, not necessarily the whole tree (taught via a constructed counterexample after a genuine misconception)",
+        "BST insertion \u2014 walk like a search, insert at the first empty slot; existing nodes never move or get displaced",
+        "BST deletion (node with two children), introductory \u2014 why naive approaches (parent adopting both children; always promoting the immediate right child) fail, and the successor property (leftmost node in the right subtree has at most one child) that makes deletion always safe; splicing the successor in to complete an actual deletion was not yet covered"
       ],
       "session_depth": "deep",
       "catalog_video": null,
@@ -1381,11 +1381,11 @@
       "mode": "curriculum",
       "vault_note": "software-engineering-book/foundations/trees.html",
       "concepts_written": [
-        "BST deletion — explicit two-constraint framing: (1) value fit (bigger than everything in the left subtree, smaller than everything in the right) and (2) structural safety (removable without a collision, i.e. at most one child of its own)",
-        "BST deletion, leaf and one-child cases — retaught as short labeled blocks with minimal ASCII diagrams rather than one combined paragraph",
-        "BST deletion, two children — completed: successor (leftmost of the right subtree) satisfies both constraints by construction; splice = copy the successor value up, then delete the original successor node via the one-child/leaf case it always reduces to",
+        "BST deletion \u2014 explicit two-constraint framing: (1) value fit (bigger than everything in the left subtree, smaller than everything in the right) and (2) structural safety (removable without a collision, i.e. at most one child of its own)",
+        "BST deletion, leaf and one-child cases \u2014 retaught as short labeled blocks with minimal ASCII diagrams rather than one combined paragraph",
+        "BST deletion, two children \u2014 completed: successor (leftmost of the right subtree) satisfies both constraints by construction; splice = copy the successor value up, then delete the original successor node via the one-child/leaf case it always reduces to",
         "Predecessor (rightmost of the left subtree) named as the symmetric alternative to successor",
-        "Why promoting a child directly generally fails constraint 2 — shown via a counterexample extending Craig's own proposed approach (promoting the left child), mirroring the earlier promote-the-right-child-directly misconception from the opposite side"
+        "Why promoting a child directly generally fails constraint 2 \u2014 shown via a counterexample extending Craig's own proposed approach (promoting the left child), mirroring the earlier promote-the-right-child-directly misconception from the opposite side"
       ],
       "session_depth": "deep",
       "catalog_video": null,
@@ -1405,16 +1405,16 @@
         {
           "tag": "predict",
           "correct": true,
-          "note": "Fresh two-children deletion scenario (delete node 40, children 20 and 60, from a tree rooted at 80) — asked to identify the successor and state what replaces 40."
+          "note": "Fresh two-children deletion scenario (delete node 40, children 20 and 60, from a tree rooted at 80) \u2014 asked to identify the successor and state what replaces 40."
         }
       ],
       "questions_asked": 1,
       "correct": 1,
       "wrong": 0,
       "gaps": [
-        "Confirmed the successor pick (60) but did not walk the final splice step (65, 60's only child, sliding up into 60's vacated slot) — worth a quick confirm-only check on that step at the next review, not a full re-teach."
+        "Confirmed the successor pick (60) but did not walk the final splice step (65, 60's only child, sliding up into 60's vacated slot) \u2014 worth a quick confirm-only check on that step at the next review, not a full re-teach."
       ],
-      "note": "Fresh scenario, not previously discussed: tree with root 80 (children 40 and 90); 40 has children 20 and 60; 60 has a right child 65 (no left child). Asked to delete 40 (two children). Correctly identified the successor as 60 (leftmost node of 40's right subtree — already leftmost since it has no left child of its own) and correctly stated 60 takes 40's place. Reached this independently, right after working out for himself why naive direct-child-promotion fails and arriving at the two-constraint framing unprompted."
+      "note": "Fresh scenario, not previously discussed: tree with root 80 (children 40 and 90); 40 has children 20 and 60; 60 has a right child 65 (no left child). Asked to delete 40 (two children). Correctly identified the successor as 60 (leftmost node of 40's right subtree \u2014 already leftmost since it has no left child of its own) and correctly stated 60 takes 40's place. Reached this independently, right after working out for himself why naive direct-child-promotion fails and arriving at the two-constraint framing unprompted."
     }
   },
   {
@@ -1440,7 +1440,7 @@
         {
           "tag": "predict",
           "correct": false,
-          "note": "Initial claim that open-addressing lookups 'remain low until all buckets are full' was incorrect — corrected via a concrete linear-probing counterexample (3 keys colliding into slots 0,1,2) showing lookup retraces the identical probe sequence used at insertion, so read and write costs are tied together, not independent. Also corrected the framing that open addressing has a hard one-key-per-slot capacity ceiling (forces resize before load factor reaches 1.0), unlike chaining's unbounded buckets."
+          "note": "Initial claim that open-addressing lookups 'remain low until all buckets are full' was incorrect \u2014 corrected via a concrete linear-probing counterexample (3 keys colliding into slots 0,1,2) showing lookup retraces the identical probe sequence used at insertion, so read and write costs are tied together, not independent. Also corrected the framing that open addressing has a hard one-key-per-slot capacity ceiling (forces resize before load factor reaches 1.0), unlike chaining's unbounded buckets."
         },
         {
           "tag": "predict",
@@ -1452,7 +1452,7 @@
       "correct": 3,
       "wrong": 1,
       "gaps": [
-        "Initially believed open-addressing lookups stay fast independent of write cost — now corrected, but worth a light confirm-only check next review to make sure the insert/lookup-share-a-probe-walk equivalence stuck without a prompt."
+        "Initially believed open-addressing lookups stay fast independent of write cost \u2014 now corrected, but worth a light confirm-only check next review to make sure the insert/lookup-share-a-probe-walk equivalence stuck without a prompt."
       ],
       "note": "Part of the 2026-09-05 spaced-repetition review of all six Data Structures subtopics (all overdue since 2026-09-02), logged at section granularity this time rather than page-level. Session went deeper than the original 2026-08-30 review: worked through chaining vs. open addressing insert/lookup cost tradeoffs via a scenario (16-bucket table, 12 keys, load factor 0.75), corrected a genuine misconception about open-addressing read costs staying flat, explained primary clustering via a parking-lot analogy after Craig asked for simpler terms, and Craig then correctly derived the insertion-degrades-faster conclusion on his own before needing one nudge to transfer it to lookups."
     }
@@ -1469,14 +1469,14 @@
       "mode": "curriculum",
       "vault_note": "software-engineering-book/foundations/data-structures.html",
       "concepts_written": [
-        "The chaining-degrades-more-gracefully claim implicitly assumes simple uniform hashing (each key equally likely to land in any bucket, independent of others) — stated explicitly after Craig questioned it",
-        "Under that assumption chain lengths cluster tightly around the load factor (Poisson-ish), so long chains are rare in practice — but chaining has no structural cap on chain length: a bad or adversarial hash function (hash-flooding attacks) can put all n keys in one bucket, giving O(n) worst-case lookup",
-        "Open addressing has a structural cap chaining lacks: since each slot holds exactly one key, no lookup can ever need more than m probes (table size) — worst case is bounded regardless of hash function quality",
-        "Net correction: 'open addressing degrades faster than chaining at the same load factor' is an average-case claim conditioned on a reasonable hash function, not a worst-case guarantee — worst-case the ranking flips, since chaining's downside is unbounded (can exceed table size m) and open addressing's is not"
+        "The chaining-degrades-more-gracefully claim implicitly assumes simple uniform hashing (each key equally likely to land in any bucket, independent of others) \u2014 stated explicitly after Craig questioned it",
+        "Under that assumption chain lengths cluster tightly around the load factor (Poisson-ish), so long chains are rare in practice \u2014 but chaining has no structural cap on chain length: a bad or adversarial hash function (hash-flooding attacks) can put all n keys in one bucket, giving O(n) worst-case lookup",
+        "Open addressing has a structural cap chaining lacks: since each slot holds exactly one key, no lookup can ever need more than m probes (table size) \u2014 worst case is bounded regardless of hash function quality",
+        "Net correction: 'open addressing degrades faster than chaining at the same load factor' is an average-case claim conditioned on a reasonable hash function, not a worst-case guarantee \u2014 worst-case the ranking flips, since chaining's downside is unbounded (can exceed table size m) and open addressing's is not"
       ],
       "session_depth": "deep",
       "catalog_video": null,
-      "note": "Immediate follow-up to quiz_answered event 73 in the same session. Craig pushed back on the average-case open-addressing-degrades-faster claim: what stops one chaining bucket from holding dozens of keys, which could make chaining lookup worse than open addressing's? This correctly identified an unstated assumption (uniform hashing) underlying the whole prior comparison. Walked through why the assumption usually holds in practice (Poisson-distributed chain lengths at a given load factor), then conceded the real point: chaining has no structural bound on chain length (vulnerable to bad hash functions / hash-flooding attacks, unbounded by table size m), while open addressing lookup is structurally capped at m probes regardless of hash quality — so the earlier ranking is an average-case-under-uniform-hashing statement, not a worst-case one, and worst-case the ranking actually reverses. Good example of Craig catching an implicit assumption rather than accepting the stated conclusion at face value."
+      "note": "Immediate follow-up to quiz_answered event 73 in the same session. Craig pushed back on the average-case open-addressing-degrades-faster claim: what stops one chaining bucket from holding dozens of keys, which could make chaining lookup worse than open addressing's? This correctly identified an unstated assumption (uniform hashing) underlying the whole prior comparison. Walked through why the assumption usually holds in practice (Poisson-distributed chain lengths at a given load factor), then conceded the real point: chaining has no structural bound on chain length (vulnerable to bad hash functions / hash-flooding attacks, unbounded by table size m), while open addressing lookup is structurally capped at m probes regardless of hash quality \u2014 so the earlier ranking is an average-case-under-uniform-hashing statement, not a worst-case one, and worst-case the ranking actually reverses. Good example of Craig catching an implicit assumption rather than accepting the stated conclusion at face value."
     }
   },
   {
@@ -1497,22 +1497,22 @@
         {
           "tag": "predict",
           "correct": true,
-          "note": "Correctly identified that amortized O(1) comes from expensive resizes being rare relative to cheap appends; did not yet justify why doubling specifically (vs. any \"infrequent\" resize schedule) produces a bounded average rather than merely a lower one — see gaps."
+          "note": "Correctly identified that amortized O(1) comes from expensive resizes being rare relative to cheap appends; did not yet justify why doubling specifically (vs. any \"infrequent\" resize schedule) produces a bounded average rather than merely a lower one \u2014 see gaps."
         },
         {
           "tag": "predict",
           "correct": true,
-          "note": "Correctly predicted a x1.5 growth factor would still be amortized O(1), matching the actual answer, but by his own account with no supporting reasoning — see gaps."
+          "note": "Correctly predicted a x1.5 growth factor would still be amortized O(1), matching the actual answer, but by his own account with no supporting reasoning \u2014 see gaps."
         }
       ],
       "questions_asked": 3,
       "correct": 3,
       "wrong": 0,
       "gaps": [
-        "Q2: intuition for amortized cost is correct in shape (rare expensive operations average out) but not yet grounded in why — doesn't yet distinguish \"infrequent\" from \"infrequent in a way that sums to a bounded multiple of n\". Resolved via the fixed-increment vs. doubling worked comparison taught immediately after (see taught event).",
-        "Q3: correct prediction, zero justification — surfaced as a genuine prerequisite gap, not an Arrays-specific misunderstanding. Craig has not yet been taught that a geometric series with any ratio > 1 sums to a bounded constant multiple of its largest term (the general fact that would let him prove the x1.5 case rather than guess it). Flagged for revisit — natural home is Discrete Math (sequences/series) later in the Foundations track, but worth a lighter early pass here given it is already blocking dynamic-array reasoning specifically."
+        "Q2: intuition for amortized cost is correct in shape (rare expensive operations average out) but not yet grounded in why \u2014 doesn't yet distinguish \"infrequent\" from \"infrequent in a way that sums to a bounded multiple of n\". Resolved via the fixed-increment vs. doubling worked comparison taught immediately after (see taught event).",
+        "Q3: correct prediction, zero justification \u2014 surfaced as a genuine prerequisite gap, not an Arrays-specific misunderstanding. Craig has not yet been taught that a geometric series with any ratio > 1 sums to a bounded constant multiple of its largest term (the general fact that would let him prove the x1.5 case rather than guess it). Flagged for revisit \u2014 natural home is Discrete Math (sequences/series) later in the Foundations track, but worth a lighter early pass here given it is already blocking dynamic-array reasoning specifically."
       ],
-      "note": "Diagnostic + extension quiz on Arrays, prompted by the Frontier pick after the 2026-08-30 aggregated review left Arrays without its own confirmed evidence (one wrong answer elsewhere in that batch — Hash Tables — pulled the whole page-level score down without isolating Arrays). Q1 (recall): asked to compute the address of index 42 in a 100-int array starting at 1000 with 4-byte ints, and explain why that computation replaces a search. Answered exactly right with the correct underlying reasoning. Q2 (predict): asked why dynamic-array append is called \"amortized O(1)\" despite an occasional O(n) resize-copy. Correctly identified that resizes are infrequent and most appends are cheap, but stopped short of justifying why doubling specifically produces a constant average rather than merely a lower one — used as the hook for the teaching that followed. Q3 (predict, asked after the doubling-vs-fixed-increment teaching): asked whether a x1.5 growth factor would still give amortized O(1). Craig correctly guessed yes but explicitly could not justify it, naming the actual blocker himself (no general grounding in geometric/arithmetic series behavior). Session paused here at Craig's request rather than pushing through the justification."
+      "note": "Diagnostic + extension quiz on Arrays, prompted by the Frontier pick after the 2026-08-30 aggregated review left Arrays without its own confirmed evidence (one wrong answer elsewhere in that batch \u2014 Hash Tables \u2014 pulled the whole page-level score down without isolating Arrays). Q1 (recall): asked to compute the address of index 42 in a 100-int array starting at 1000 with 4-byte ints, and explain why that computation replaces a search. Answered exactly right with the correct underlying reasoning. Q2 (predict): asked why dynamic-array append is called \"amortized O(1)\" despite an occasional O(n) resize-copy. Correctly identified that resizes are infrequent and most appends are cheap, but stopped short of justifying why doubling specifically produces a constant average rather than merely a lower one \u2014 used as the hook for the teaching that followed. Q3 (predict, asked after the doubling-vs-fixed-increment teaching): asked whether a x1.5 growth factor would still give amortized O(1). Craig correctly guessed yes but explicitly could not justify it, naming the actual blocker himself (no general grounding in geometric/arithmetic series behavior). Session paused here at Craig's request rather than pushing through the justification."
     }
   },
   {
@@ -1527,15 +1527,254 @@
       "mode": "curriculum",
       "vault_note": "software-engineering-book/foundations/data-structures.html",
       "concepts_written": [
-        "Dynamic array amortized doubling — why append is \"amortized O(1)\" despite occasional O(n) resize-copies",
-        "Fixed-increment growth (+k) produces resize copy-costs as an arithmetic sequence, summing to ~n^2/(2k) over n appends — average cost per append grows without bound as n grows (O(n), not O(1))",
-        "Doubling growth produces resize copy-costs as a geometric sequence, summing to ~2n over n appends — average cost per append settles at a constant regardless of n (true amortized O(1))",
+        "Dynamic array amortized doubling \u2014 why append is \"amortized O(1)\" despite occasional O(n) resize-copies",
+        "Fixed-increment growth (+k) produces resize copy-costs as an arithmetic sequence, summing to ~n^2/(2k) over n appends \u2014 average cost per append grows without bound as n grows (O(n), not O(1))",
+        "Doubling growth produces resize copy-costs as a geometric sequence, summing to ~2n over n appends \u2014 average cost per append settles at a constant regardless of n (true amortized O(1))",
         "Worked both growth strategies by hand over 16 appends (step-by-step tables) to ground the asymptotic claim in concrete arithmetic, then projected to n=64 to show the fixed-increment average climbing while doubling stayed flat",
-        "Flagged open gap: general fact that a geometric series with any ratio > 1 sums to a bounded multiple of its largest term (needed to justify that x1.5 growth generalizes the same way) — not yet taught"
+        "Flagged open gap: general fact that a geometric series with any ratio > 1 sums to a bounded multiple of its largest term (needed to justify that x1.5 growth generalizes the same way) \u2014 not yet taught"
       ],
       "session_depth": "deep",
       "catalog_video": null,
-      "note": "Frontier pick: Arrays, selected because the 2026-08-30 aggregated review left it without page/section-level evidence of its own. Diagnostic confirmed existing content (contiguous memory, O(1) indexed access via address arithmetic) cleanly, then extended into new territory: why dynamic-array append is amortized O(1). Built the contrast from Craig's own request for a \"simple visual way of understanding\" the frontier-selection reasoning (delivered as an ASCII dependency diagram), then, when the arithmetic-vs-geometric-series claim wasn't landing from the compressed formula alone, from a request to \"break down the examples further\" — walked both fixed-increment (+4) and doubling growth through the same 16 appends step-by-step, then projected to n=64 to make the diverging trend visible rather than asserted. Session surfaced a genuine prerequisite gap: Craig correctly guessed a x1.5 growth factor would still be amortized O(1) but had no way to justify it, naming the missing general fact himself. Paused here at Craig's request rather than teaching that fact immediately — flagged as a forward pointer, natural home is Discrete Math later in Foundations, but likely to resurface sooner given it is already blocking dynamic-array reasoning."
+      "note": "Frontier pick: Arrays, selected because the 2026-08-30 aggregated review left it without page/section-level evidence of its own. Diagnostic confirmed existing content (contiguous memory, O(1) indexed access via address arithmetic) cleanly, then extended into new territory: why dynamic-array append is amortized O(1). Built the contrast from Craig's own request for a \"simple visual way of understanding\" the frontier-selection reasoning (delivered as an ASCII dependency diagram), then, when the arithmetic-vs-geometric-series claim wasn't landing from the compressed formula alone, from a request to \"break down the examples further\" \u2014 walked both fixed-increment (+4) and doubling growth through the same 16 appends step-by-step, then projected to n=64 to make the diverging trend visible rather than asserted. Session surfaced a genuine prerequisite gap: Craig correctly guessed a x1.5 growth factor would still be amortized O(1) but had no way to justify it, naming the missing general fact himself. Paused here at Craig's request rather than teaching that fact immediately \u2014 flagged as a forward pointer, natural home is Discrete Math later in Foundations, but likely to resurface sooner given it is already blocking dynamic-array reasoning."
+    }
+  },
+  {
+    "id": 77,
+    "ts": "2026-09-08T12:30:00.000Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:foundations/data-structures#big-o",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-08",
+      "questions": [
+        {
+          "tag": "explain",
+          "correct": true,
+          "note": "Asked how much more work O(n) does than O(log n) at n=1,000,000, and why. Got the magnitude right (used log base 10, ~6, vs the conventional base 2, ~20 -- a base choice, not an error, since bases only differ by a constant factor) and captured the core intuition (logs invert exponential growth) but did not yet articulate the halving mechanism (doubling n costs one more step) -- resolved in the teaching that followed, then independently restated correctly afterward."
+        },
+        {
+          "tag": "recall",
+          "correct": true,
+          "note": "Correctly identified a loop-within-a-loop (both 0..n) as O(n^2), with correct reasoning: n outer iterations times n inner iterations = n^2 total operations."
+        },
+        {
+          "tag": "explain",
+          "correct": false,
+          "note": "Asked whether an unspecified Big-O (e.g. O(n^2)) describes best, worst, or average case, and why we pick one instead of saying \"it depends\". Answered \"average case\" with low confidence and no justification -- genuine misconception. Corrected to worst case (the convention when unspecified, since it does not depend on assumptions about input distribution), taught via a labeled best/worst/average breakdown of linear search. Craig independently and correctly restated the corrected reasoning afterward, unprompted, in his own words."
+        }
+      ],
+      "questions_asked": 3,
+      "correct": 2,
+      "wrong": 1,
+      "gaps": [
+        "Q3 initial miss (worst-case-by-default convention) was corrected within the session and Craig restated it correctly unprompted afterward -- worth a light confirm-only check next review rather than a full re-teach.",
+        "The concrete example that would make the best/worst-vs-average distinction matter beyond linear search (an algorithm whose average case beats its worst case) was deferred -- Craig does not yet know quicksort, which was the planned vehicle."
+      ],
+      "note": "Diagnostic quiz on Big O Notation, prompted by the Frontier pick (never individually scored -- 08-30 evidence was page-level aggregate only). Three questions: (1) magnitude comparison of O(n) vs O(log n) at n=1M and why, (2) Big-O of a nested n x n loop, (3) which case (best/worst/average) an unspecified Big-O describes and why. Two of three correct; the case-convention question surfaced a genuine, now-corrected misconception."
+    }
+  },
+  {
+    "id": 78,
+    "ts": "2026-09-08T12:35:00.000Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:foundations/data-structures#big-o",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-08",
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/foundations/data-structures.html",
+      "concepts_written": [
+        "Constant factors are dropped in Big-O -- O(log2 n) and O(log10 n) are the same class, differing only by a constant multiplier; convention uses base 2 because most log-time algorithms work by repeated halving",
+        "The halving mechanism: log_b(n) counts halvings, not items, so doubling n costs exactly one more step in log time versus n/2 more steps in linear time -- the actual mechanical reason logs are cheap",
+        "Best/worst/average case are a separate axis from growth-rate class; any of O(1)/O(log n)/O(n)/O(n^2) can carry any of the three",
+        "Unspecified Big-O defaults to worst case by convention, since it is the only guarantee that does not depend on assumptions about input distribution -- corrected from an initial average-case guess",
+        "Labeled best/worst/average breakdown of linear search (target at index 0 vs. index n-1/absent vs. uniformly distributed), worked as three short cases rather than one combined paragraph",
+        "Flagged not-yet-covered: O(n log n), and its connection to amortized analysis (the Arrays forward pointer) -- deferred because the planned example (quicksort) needs background not yet taught"
+      ],
+      "session_depth": "deep",
+      "catalog_video": null,
+      "note": "Frontier pick, chosen by Craig from four ranked candidates (Linked Lists, Stacks, Queues, Big O) after Linked Lists was flagged as top-ranked by unlocks. Diagnostic (quiz_answered event above) surfaced one genuine misconception (worst-vs-average-case default) and one reasoning gap (log-base magnitude correct, halving mechanism not yet articulated) against an otherwise-thin existing page (previously one sentence: growth-rate classes listed with no worked mechanics). Taught the log-base/constant-factor equivalence, the halving mechanism, and the best/worst/average distinction via a linear-search breakdown. Craig independently and correctly restated both corrected points afterward. Session paused before O(n log n) and the amortized-analysis connection at Craig's own request (he asked to log the session and move on to deciding what is next) -- explicitly deferred rather than rushed, since the intended example (quicksort) requires background he does not have yet. Per the mid-topic-continuation rule, the next Big O session should resume here rather than the Frontier picking a new topic."
+    }
+  },
+  {
+    "id": 79,
+    "ts": "2026-09-10T15:00:00.000Z",
+    "actor": "quizmaster",
+    "verb": "quiz_answered",
+    "node_id": "book:foundations/data-structures#big-o",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-10",
+      "questions": [
+        {
+          "tag": "explain",
+          "correct": true,
+          "note": "Asked whether merge sort's O(n log n) is uniform cost. Correctly and independently identified it as uniform in best, worst, and average case: splits are always down the middle (log n levels), and comparison work at each level is always proportional to n."
+        },
+        {
+          "tag": "explain",
+          "correct": true,
+          "note": "Asked to place quicksort's O(n log n) vs O(n^2) split using the worst/average-case framing from the prior session. Correctly identified the mechanism: a badly-chosen pivot against an imbalanced structure produces ~n operations per level across n levels (O(n^2) worst case), while a well-chosen pivot keeps it O(n log n) (average and best case)."
+        },
+        {
+          "tag": "explain",
+          "correct": false,
+          "note": "Same answer went on to guess quicksort's O(n^2) worst case should be called \"amortized,\" reasoning it describes a spiky, unpredictable cost. Genuine misconception: amortized analysis smooths a skewed sequence of many operations, not variation in a single run's cost depending on input. Quicksort's worst case is best/worst/average-case variation within one sort call, not amortized smoothing. Corrected using the uniform-vs-skewed-sequence tell from the tree-build example."
+        }
+      ],
+      "questions_asked": 3,
+      "correct": 2,
+      "wrong": 1,
+      "gaps": [
+        "The best/worst/average axis (varies by input, within a single run) vs. the amortized axis (varies by operation, smoothed across a sequence) was conflated once -- worth a light confirm-only check next review, since the mechanism itself was already correct."
+      ],
+      "note": "Follow-up quiz continuing the 2026-09-08 Big O session, after teaching O(n log n) via a balanced-tree build, then merge sort and quicksort mechanics on request. Two of three correct; the one miss was a conceptual-axis mix-up, not a mechanism error."
+    }
+  },
+  {
+    "id": 80,
+    "ts": "2026-09-10T15:10:00.000Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:foundations/data-structures#big-o",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-10",
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/foundations/data-structures.html",
+      "concepts_written": [
+        "O(n log n) as uniform-cost: n operations each independently costing O(log n), worked via a balanced-tree build (n inserts, i-th insert costs ~log2(i)), table totaled by hand for n=8 and projected to n=64",
+        "The exact sum (log2(n!)) vs. the naive n*log2(n) estimate differs by a lower-order term, dropped by Big-O the same way constant factors are",
+        "Why the tree-build case is NOT amortized analysis: amortized analysis smooths a skewed sequence (rare expensive ops, many cheap ones); the tree build has no skew, every insert costs the same O(log n)",
+        "Merge sort mechanics and why its O(n log n) is uniform across best/worst/average case: log n levels, O(n) merge work per level regardless of split",
+        "Merge sort use cases: guaranteed worst-case bound, stability, sequential access (linked lists, external sorting), O(n) extra space",
+        "Quicksort mechanics and its worst (O(n^2), imbalanced pivot) vs. average/best (O(n log n), balanced pivot) split",
+        "Quicksort use cases: in-place, cache locality, common stdlib default with pivot mitigation, not stable",
+        "Quicksort as the concrete example grounding the 2026-09-08 'unspecified Big-O defaults to worst case' convention",
+        "Corrected misconception: quicksort's O(n^2) worst case is best/worst/average-case variation within a single run, not amortized smoothing across a sequence of operations"
+      ],
+      "session_depth": "deep",
+      "catalog_video": null,
+      "note": "Direct continuation of the 2026-09-08 Big O session. Taught O(n log n) via balanced-tree build, then merge sort and quicksort from scratch (Craig knew neither). Craig independently derived merge sort's uniform O(n log n) shape. Quicksort's mechanism was correct but its worst case was misclassified as amortized -- corrected. Closes the forward pointer from 2026-09-08."
+    }
+  },
+  {
+    "id": 81,
+    "ts": "2026-09-11T04:30:00.000Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:foundations/data-structures#linked-lists",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-11",
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/foundations/data-structures.html",
+      "concepts_written": [
+        "Node structure (data + next pointer) and why nodes can be scattered anywhere in memory rather than adjacent",
+        "Pointer vs. reference distinction (address-holding, reassignable, no arithmetic vs. alias) -- clarified since Craig could describe the concept but not name the distinction",
+        "Traversal is O(n): no address-arithmetic shortcut exists for a linked list the way base+index*size works for arrays",
+        "Insert/delete broken into explicit cases: at head (O(1)), at tail (O(1) with a tail pointer, O(n) without), in the middle (O(1) splice once located, O(n) to locate)",
+        "The singly-linked deletion gotcha: given a direct pointer to the node to delete, deletion is still O(n) because the predecessor (needed to relink around it) cannot be reached backward -- no back-pointer exists. Walked through with concrete addresses (0x1A00/0x3000/0x5000) after an initial misconception (assuming a pointer to the node also grants access to its predecessor)",
+        "Connections: contrasts directly with Arrays (contiguous+O(1) index vs. scattered+O(1) splice-at-known-point); unlocks Trees (a tree node is a linked-list node with two 'next' pointers instead of one)"
+      ],
+      "session_depth": "deep",
+      "catalog_video": null,
+      "note": "First coverage of Linked Lists at this depth -- the 2026-08-30 entry was a page-level summary only. Genuine diagnostic (necklace analogy, correct array-shift mechanism, pointer 'sort of') showed strong prior intuition, so skipped basic buildup and went straight to formalizing structure and per-case operation costs, per delivery-style guidance (multi-case procedures get their own labeled block with diagrams). Two scenario-question misconceptions surfaced afterward and were corrected same session (see quiz_answered event same date)."
+    }
+  },
+  {
+    "id": 82,
+    "ts": "2026-09-11T04:45:00.000Z",
+    "actor": "teacher",
+    "verb": "quiz_answered",
+    "node_id": "book:foundations/data-structures#linked-lists",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-11",
+      "questions": [
+        {
+          "tag": "predict",
+          "correct": false,
+          "note": "Correctly chose array for the music-queue scenario and correctly explained why appends are cheap there, but claimed a singly-linked list's manual reorders would be 'much cheaper' -- missed that locating a node by content/identity still requires an O(n) traversal from head, so the linked list pays the same O(n) order as the array's shift; the splice itself is O(1) but only once you're already at the right node. Corrected in follow-up."
+        },
+        {
+          "tag": "explain",
+          "correct": false,
+          "note": "Initial answer conflated 'given a pointer to node 6000' with 'given node 5999' (the predecessor), assuming access to the target node also grants access to its predecessor. Required a from-scratch walkthrough with concrete addresses to see that a pointer to node 6000 cannot reach node 5999's memory location at all in a singly-linked list -- no back-link exists. Correctly restated the conclusion afterward: without the predecessor, node 6000 cannot be deleted in O(1); a full head-to-node traversal is required regardless of already holding a direct pointer to the target."
+        },
+        {
+          "tag": "explain",
+          "correct": true,
+          "note": "Correctly identified that the O(1)-insertion claim only holds when the splice location is already known (no lookup needed) and fails when a search is required first. Independently extended the analysis to a case not directly taught: inserting near the end of an array is cheap (few elements to shift) while reaching near the end of an unindexed linked list is expensive (near-full traversal), correctly noting this can flip the usual 'linked list insertion is cheap' framing for that specific position."
+        }
+      ],
+      "questions_asked": 3,
+      "correct": 1,
+      "wrong": 2,
+      "gaps": [
+        "Two related misconceptions surfaced: (1) assuming a linked list's O(1) splice cost applies to 'reorder by content' operations that still require an O(n) search; (2) assuming a pointer to a node in a singly-linked list also grants access to the pointer that would need to change to delete it (its predecessor). Both stem from under-weighting the 'do I already have the pointer I need' precondition -- worth a light confirm-only check next review."
+      ],
+      "note": "Follow-up scenario check immediately after Linked Lists teaching, same session. Two of three surfaced genuine misconceptions (both resolved with correction), one showed a strong independent extension beyond what was taught."
+    }
+  },
+  {
+    "id": 83,
+    "ts": "2026-09-11T05:00:00.000Z",
+    "actor": "teacher",
+    "verb": "taught",
+    "node_id": "book:foundations/data-structures#doubly-linked-lists",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-11",
+      "mode": "curriculum",
+      "vault_note": "software-engineering-book/foundations/data-structures.html",
+      "concepts_written": [
+        "prev/data/next node structure -- the direct fix for the singly-linked deletion gotcha, since the predecessor is now reachable from the node itself",
+        "Cost of the fix: pointer overhead roughly doubles per node (8 vs. 16 bytes on a typical 64-bit system), and every splice touches more pointers -- 4 for insertion (new node's prev+next, plus each neighbor's one link), 2 for middle-node deletion -- corrected mid-session after Craig cross-checked the general claim against the worked diagram and found insertion and deletion were being conflated",
+        "Deletion cases worked with diagrams: middle (2 pointer writes), head (skip the predecessor-side write -- no B.prev.next step exists), tail (mirror of head), single-node list (both neighbor-side writes are absent simultaneously -- needs an explicit guard, not just the two 'standard' branches)",
+        "Misconception flagged: doubly-linked fixes navigation direction and O(1) deletion-by-pointer, not random access -- indexed lookup is still O(n)",
+        "Deps: Linked Lists. Contrasts: Linked Lists (singly vs. doubly)."
+      ],
+      "session_depth": "deep",
+      "catalog_video": null,
+      "note": "New section, split out of the Linked Lists teaching in the same session (not in the sidecar before today). Directly motivated by the singly-linked deletion gotcha from the Linked Lists session immediately prior. Craig's follow-up-quiz answer caught a real overgeneralization in the teaching material (see quiz_answered event same date) -- corrected on the spot."
+    }
+  },
+  {
+    "id": 84,
+    "ts": "2026-09-11T05:20:00.000Z",
+    "actor": "teacher",
+    "verb": "quiz_answered",
+    "node_id": "book:foundations/data-structures#doubly-linked-lists",
+    "source": "book",
+    "payload": {
+      "date": "2026-09-11",
+      "questions": [
+        {
+          "tag": "predict",
+          "correct": true,
+          "note": "Correctly identified undo/redo as O(1) via prev/next respectively, and correctly explained a singly-linked list would fail this specific pattern since it has no way back to the previous state from a direct pointer to the current one."
+        },
+        {
+          "tag": "explain",
+          "correct": true,
+          "note": "Correctly derived the two-node head-deletion case (head=A.next, B.prev=null) unprompted, matching the head-deletion pattern taught earlier -- and caught a genuine imprecision in the teaching material: the earlier claim that 'every insert/delete touches four pointers' was true of insertion (new node's prev+next, plus each neighbor's link) but not of middle-node deletion, which the worked diagram itself showed as two writes. Corrected in follow-up."
+        },
+        {
+          "tag": "explain",
+          "correct": false,
+          "note": "Produced a mostly-sound framework (arrays for random access and near-end operations; singly-linked for cheap insertion near a known point; doubly-linked for cheap deletion near a known point) but omitted the precondition threaded through the whole session: all of those 'cheap' operations assume the node/position is already held, not searched for by content -- without it, insertion/deletion collapses back to O(n) regardless of list type. Also didn't name bidirectional-traversal-need (e.g. the undo/redo case just answered) as a driver independent of deletion speed."
+        }
+      ],
+      "questions_asked": 3,
+      "correct": 2,
+      "wrong": 1,
+      "gaps": [
+        "The 'already holding the pointer vs. need to search for it' precondition -- the throughline of this whole session -- wasn't named as part of the general decision rule when asked to state one explicitly. Worth checking directly next review rather than assuming it transferred from the specific scenarios."
+      ],
+      "note": "Follow-on quiz immediately after Doubly-Linked Lists teaching, same session as Linked Lists above. Two of three correct, including an instance of Craig catching an imprecision in the teaching material itself (see concepts_written on the taught event)."
     }
   }
 ]

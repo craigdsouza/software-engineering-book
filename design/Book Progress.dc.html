@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #f5efe3; }
+  a { color: #1c4f8b; text-decoration: none; }
+  a:hover { color: #b0512c; }
+</style>
+</helmet>
+
+<div style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #101b28; background: #f5efe3; min-height: 100vh;">
+
+  <div style="background: #101b28; color: #f5efe3; padding: 52px 40px 40px;">
+    <div style="max-width: 1040px; margin: 0 auto;">
+      <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: #8aa6c4; margin: 0 0 20px;">swe-teacher · swe-quizmaster · progress</p>
+      <h1 style="font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(32px, 5vw, 54px); line-height: 1.06; letter-spacing: -.02em; margin: 0 0 18px; max-width: 24ch;">What you've proved, and what it opens</h1>
+      <p style="font-size: 17px; line-height: 1.6; color: #b8c6d6; max-width: 60ch; margin: 0 0 36px; text-wrap: pretty;">Every session moves something here. Status is never written by hand — it's computed from the event log, so this page is the record, not a claim about it.</p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px 32px; border-top: 1px solid #2a3644; padding-top: 24px;">
+        <div>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 40px; font-weight: 300; line-height: .95; margin: 0; font-variant-numeric: tabular-nums;">{{ tracked }}</p>
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8aa6c4; margin: 8px 0 0;">nodes tracked</p>
+        </div>
+        <div>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 40px; font-weight: 300; line-height: .95; margin: 0; color: #7fc3a0; font-variant-numeric: tabular-nums;">{{ solid }}</p>
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8aa6c4; margin: 8px 0 0;">solid</p>
+        </div>
+        <div>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 40px; font-weight: 300; line-height: .95; margin: 0; color: #e29a72; font-variant-numeric: tabular-nums;">{{ needsReview }}</p>
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8aa6c4; margin: 8px 0 0;">needs review</p>
+        </div>
+        <div>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 40px; font-weight: 300; line-height: .95; margin: 0; color: #9cc4ae; font-variant-numeric: tabular-nums;">1</p>
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8aa6c4; margin: 8px 0 0;">fresh</p>
+        </div>
+        <div>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 40px; font-weight: 300; line-height: .95; margin: 0; font-variant-numeric: tabular-nums;">{{ checksWeek }}</p>
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8aa6c4; margin: 8px 0 0;">checks this week</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 01 cadence -->
+  <div style="max-width: 1040px; margin: 0 auto; padding: 60px 40px 0;">
+    <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #101b28; padding-bottom: 10px; margin-bottom: 28px; flex-wrap: wrap;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em; color: #b0512c;">01</span>
+      <h2 style="font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 30px; margin: 0; letter-spacing: -.01em;">Cadence</h2>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #3f4c5a; margin-left: auto;">from events.json · one cell per day</span>
+    </div>
+
+    <div style="background: #fbf7ef; border: 1px solid #e0d8c8; border-radius: 14px; padding: 26px 28px 22px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end;">
+      <div style="min-width: 0;">
+        <div style="display: flex; gap: 4px; margin-bottom: 10px;">
+          <sc-for list="{{ days }}" as="d" hint-placeholder-count="21">
+            <span title="{{ d.label }}" style="flex: 1; height: 34px; border-radius: 3px; background: {{ d.fill }}; border: 1px solid {{ d.edge }};"></span>
+          </sc-for>
+        </div>
+        <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #8b8474; margin: 0; display: flex; justify-content: space-between;">
+          <span>{{ firstDayLabel }}</span>
+          <span>today</span>
+        </p>
+      </div>
+      <div style="display: flex; gap: 28px; flex-wrap: wrap;">
+        <div>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 34px; font-weight: 300; line-height: 1; margin: 0; font-variant-numeric: tabular-nums;">{{ activeDays }}</p>
+          <p style="font-size: 13px; color: #3f4c5a; margin: 4px 0 0;">active days</p>
+        </div>
+        <div>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 34px; font-weight: 300; line-height: 1; margin: 0; font-variant-numeric: tabular-nums;">{{ bestRun }}</p>
+          <p style="font-size: 13px; color: #3f4c5a; margin: 4px 0 0;">longest run</p>
+        </div>
+        <div>
+          <p style="font-family: Newsreader, Georgia, serif; font-size: 34px; font-weight: 300; line-height: 1; margin: 0; color: #b0512c; font-variant-numeric: tabular-nums;">{{ sinceLast }}</p>
+          <p style="font-size: 13px; color: #3f4c5a; margin: 4px 0 0;">days since last</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 spine -->
+  <div style="max-width: 1040px; margin: 0 auto; padding: 64px 40px 0;">
+    <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #101b28; padding-bottom: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em; color: #b0512c;">02</span>
+      <h2 style="font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 30px; margin: 0; letter-spacing: -.01em;">The spine</h2>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #3f4c5a; margin-left: auto;">curriculum order · never re-sorted</span>
+    </div>
+    <p style="font-size: 15px; line-height: 1.65; color: #3f4c5a; margin: 0 0 8px; max-width: 66ch; text-wrap: pretty;">Units in the fixed track order, one tick per page or section. A tick never moves, so the shape of the spine stays a place you know your way around.</p>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 18px; margin: 0 0 30px;">
+      <sc-for list="{{ legend }}" as="l" hint-placeholder-count="4">
+        <span style="display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: #3f4c5a;">
+          <span style="width: 11px; height: 11px; border-radius: 2px; background: {{ l.fill }}; border: 1px solid {{ l.edge }};"></span>
+          {{ l.label }}
+        </span>
+      </sc-for>
+    </div>
+
+    <sc-for list="{{ tracks }}" as="tk" hint-placeholder-count="3">
+      <div style="margin-bottom: 34px;">
+        <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px;">
+          <h3 style="font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 22px; margin: 0; letter-spacing: -.01em;">{{ tk.name }}</h3>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #8b8474;">{{ tk.meta }}</span>
+        </div>
+
+        <sc-for list="{{ tk.units }}" as="u" hint-placeholder-count="4">
+          <div style="display: grid; grid-template-columns: 52px minmax(140px, 1.1fr) minmax(0, 1.4fr) 96px; gap: 16px; align-items: center; padding: 14px 0 14px 14px; border-top: 1px solid #e0d8c8; border-left: 2px solid {{ u.spineEdge }};">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #3f4c5a; font-variant-numeric: tabular-nums;">{{ u.ord }}</span>
+            <div style="min-width: 0;">
+              <p style="font-size: 17px; font-weight: 600; margin: 0; letter-spacing: -.005em; color: {{ u.titleColor }};">{{ u.title }}</p>
+              <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: {{ u.noteColor }}; margin: 5px 0 0;">{{ u.note }}</p>
+            </div>
+            <div style="display: flex; gap: 3px; min-width: 0; opacity: {{ u.dim }};">
+              <sc-for list="{{ u.nodes }}" as="n" hint-placeholder-count="6">
+                <span title="{{ n.title }}" style="flex: 1; height: 24px; border-radius: 2px; background: {{ n.fill }}; border: 1px solid {{ n.edge }};"></span>
+              </sc-for>
+            </div>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #3f4c5a; text-align: right; font-variant-numeric: tabular-nums;">{{ u.count }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </sc-for>
+
+    <p style="font-size: 14px; line-height: 1.65; color: #3f4c5a; margin: 0; padding: 16px 18px; background: #fbf7ef; border: 1px solid #e0d8c8; border-radius: 6px; max-width: 76ch; text-wrap: pretty;">{{ sidecarNote }}</p>
+  </div>
+
+  <!-- 03 unlocks -->
+  <div style="max-width: 1040px; margin: 0 auto; padding: 64px 40px 0;">
+    <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #101b28; padding-bottom: 10px; margin-bottom: 28px; flex-wrap: wrap;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em; color: #b0512c;">03</span>
+      <h2 style="font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 30px; margin: 0; letter-spacing: -.01em;">What the next one opens</h2>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #3f4c5a; margin-left: auto;">deps-inverse · not containment</span>
+    </div>
+
+    <a href="#next" style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; background: #101b28; color: #f5efe3; border-radius: 14px; padding: 26px 28px; margin-bottom: 24px;">
+      <div style="min-width: 0;">
+        <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: #d99b76; margin: 0 0 10px;">Next up</p>
+        <p style="font-family: Newsreader, Georgia, serif; font-size: 30px; font-weight: 400; line-height: 1.15; letter-spacing: -.015em; margin: 0 0 10px;">{{ next.title }}</p>
+        <p style="font-size: 15px; line-height: 1.6; color: #a8b3bf; margin: 0; max-width: 56ch; text-wrap: pretty;">{{ next.why }}</p>
+      </div>
+      <span style="display: inline-flex; align-items: center; background: #1c4f8b; color: #f5efe3; font-size: 15px; font-weight: 600; padding: 0 22px; min-height: 44px; border-radius: 6px; white-space: nowrap;">Resume →</span>
+    </a>
+
+    <div style="display: flex; flex-direction: column;">
+      <sc-for list="{{ ledger }}" as="row" hint-placeholder-count="3">
+        <div style="display: grid; grid-template-columns: minmax(150px, 1fr) 150px minmax(0, 1.3fr); gap: 20px; align-items: center; padding: 16px 0; border-top: 1px solid #e0d8c8;">
+          <span style="font-size: 16px; font-weight: 600;">{{ row.node }}</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: {{ row.statusColor }};">{{ row.status }}</span>
+          <span style="font-size: 15px; line-height: 1.55; color: #3f4c5a; text-wrap: pretty;">{{ row.opens }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- 04 due strip -->
+  <div style="max-width: 1040px; margin: 0 auto; padding: 64px 40px 0;">
+    <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #101b28; padding-bottom: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em; color: #b0512c;">04</span>
+      <h2 style="font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 30px; margin: 0; letter-spacing: -.01em;">Review debt</h2>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #3f4c5a; margin-left: auto;">3 / 7 / 14 / 30 / 60 intervals</span>
+    </div>
+    <p style="font-size: 15px; line-height: 1.65; color: #3f4c5a; margin: 0 0 26px; max-width: 66ch; text-wrap: pretty;">Scheduled nodes sit on the axis. Overdue ones hang below the line — the drop is the debt, and it only clears by answering.</p>
+
+    <div style="background: #fbf7ef; border: 1px solid #e0d8c8; border-radius: 14px; padding: 30px 28px 22px;">
+      <div style="position: relative; height: 210px; margin-bottom: 6px;">
+        <div style="position: absolute; left: 0; right: 0; top: 100px; height: 1px; background: #101b28;"></div>
+        <div style="position: absolute; top: 18px; bottom: 34px; left: {{ due.todayPct }}; width: 1px; background: #b0512c;"></div>
+        <span style="position: absolute; top: 0; left: {{ due.todayPct }}; transform: translateX(-50%); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #b0512c;">today</span>
+
+        <sc-for list="{{ due.pins }}" as="p" hint-placeholder-count="3">
+          <div style="position: absolute; left: {{ p.left }}; top: {{ p.top }}; width: 0; height: 0;">
+            <span style="position: absolute; left: -1px; top: {{ p.stemTop }}; width: 1px; height: {{ p.stem }}; background: {{ p.color }};"></span>
+            <span style="position: absolute; left: -5px; top: -5px; width: 9px; height: 9px; border-radius: 50%; background: {{ p.color }};"></span>
+            <span style="position: absolute; left: 12px; top: -9px; display: flex; align-items: baseline; gap: 8px; white-space: nowrap;">
+              <span style="font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 600; color: {{ p.color }};">{{ p.title }}</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .08em; color: {{ p.whenColor }};">{{ p.when }}</span>
+            </span>
+          </div>
+        </sc-for>
+
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #8b8474;">
+          <span>{{ due.axisStart }}</span>
+          <span>{{ due.axisEnd }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 22px;">
+      <div style="background: #101b28; color: #f5efe3; border-radius: 10px; padding: 20px 22px;">
+        <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #d99b76; margin: 0 0 12px;">Unscheduled · answer to schedule</p>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <sc-for list="{{ due.unscheduled }}" as="u" hint-placeholder-count="6">
+            <div style="display: flex; justify-content: space-between; gap: 14px; align-items: baseline;">
+              <span style="font-size: 14px; font-weight: 500;">{{ u.title }}</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8aa6c4; white-space: nowrap;">{{ u.last }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background: #fbf7ef; border: 1px solid #e0d8c8; border-radius: 10px; padding: 20px 22px;">
+        <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #b0512c; margin: 0 0 12px;">Clearing it</p>
+        <p style="font-size: 15px; line-height: 1.6; color: #3f4c5a; margin: 0; text-wrap: pretty;">{{ due.advice }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 tag ladder -->
+  <div style="max-width: 1040px; margin: 0 auto; padding: 64px 40px 0;">
+    <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #101b28; padding-bottom: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em; color: #b0512c;">05</span>
+      <h2 style="font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 30px; margin: 0; letter-spacing: -.01em;">Shape of understanding</h2>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #3f4c5a; margin-left: auto;">recall · explain · predict</span>
+    </div>
+    <p style="font-size: 15px; line-height: 1.65; color: #3f4c5a; margin: 0 0 26px; max-width: 66ch; text-wrap: pretty;">One status word hides where a node is weak. Per-question tags say whether you can state it, explain it, or use it on something you haven't seen.</p>
+
+    <div style="display: flex; flex-direction: column;">
+      <div style="display: grid; grid-template-columns: minmax(140px, 1.2fr) repeat(3, 92px) minmax(0, 1.5fr); gap: 18px; padding-bottom: 10px; border-bottom: 1px solid #101b28;">
+        <span></span>
+        <sc-for list="{{ ladderHeads }}" as="h" hint-placeholder-count="3">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #3f4c5a;">{{ h }}</span>
+        </sc-for>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #3f4c5a;">weakest link</span>
+      </div>
+
+      <sc-for list="{{ ladder }}" as="row" hint-placeholder-count="4">
+        <div style="display: grid; grid-template-columns: minmax(140px, 1.2fr) repeat(3, 92px) minmax(0, 1.5fr); gap: 18px; align-items: center; padding: 16px 0; border-bottom: 1px solid #e0d8c8;">
+          <div style="min-width: 0;">
+            <p style="font-size: 16px; font-weight: 600; margin: 0;">{{ row.title }}</p>
+            <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #8b8474; margin: 4px 0 0;">{{ row.kind }}</p>
+          </div>
+          <sc-for list="{{ row.cells }}" as="c" hint-placeholder-count="3">
+            <div style="background: {{ c.bg }}; border: 1px solid {{ c.edge }}; border-radius: 4px; height: 40px; display: flex; align-items: center; justify-content: center;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: {{ c.ink }}; font-variant-numeric: tabular-nums;">{{ c.label }}</span>
+            </div>
+          </sc-for>
+          <span style="font-size: 14px; line-height: 1.55; color: #3f4c5a; text-wrap: pretty;">{{ row.weak }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <p style="font-size: 14px; line-height: 1.65; color: #3f4c5a; margin: 22px 0 0; padding: 16px 18px; background: #fbf7ef; border: 1px solid #e0d8c8; border-radius: 6px; max-width: 76ch; text-wrap: pretty;">{{ ladderNote }}</p>
+  </div>
+
+  <!-- 06 growth -->
+  <div style="max-width: 1040px; margin: 0 auto; padding: 64px 40px 0;">
+    <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #101b28; padding-bottom: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em; color: #b0512c;">06</span>
+      <h2 style="font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 30px; margin: 0; letter-spacing: -.01em;">The book itself</h2>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #3f4c5a; margin-left: auto;">concepts written per week</span>
+    </div>
+    <p style="font-size: 15px; line-height: 1.65; color: #3f4c5a; margin: 0 0 26px; max-width: 66ch; text-wrap: pretty;">The most honest progress signal is the artifact getting bigger. Dark bars are new ground; pale ones are passes that went deeper on something already written.</p>
+
+    <div style="background: #fbf7ef; border: 1px solid #e0d8c8; border-radius: 14px; padding: 28px 28px 20px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 14px; align-items: end; height: 200px;">
+        <sc-for list="{{ growth.weeks }}" as="w" hint-placeholder-count="5">
+          <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%; gap: 8px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: #101b28; text-align: center; font-variant-numeric: tabular-nums;">{{ w.total }}</span>
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+              <div style="height: {{ w.deepH }}; background: #cfe3d5; border: 1px solid #9cc4ae; border-radius: 3px 3px 0 0;"></div>
+              <div style="height: {{ w.newH }}; background: #2c6e49; border-radius: 0 0 3px 3px;"></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 14px; border-top: 1px solid #101b28; padding-top: 10px; margin-top: 8px;">
+        <sc-for list="{{ growth.weeks }}" as="w" hint-placeholder-count="5">
+          <div style="text-align: center;">
+            <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #3f4c5a; margin: 0;">{{ w.label }}</p>
+            <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #8b8474; margin: 3px 0 0;">{{ w.sub }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 22px;">
+      <sc-for list="{{ growth.milestones }}" as="m" hint-placeholder-count="3">
+        <div style="border-top: 2px solid #101b28; padding-top: 14px;">
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #b0512c; margin: 0 0 8px;">{{ m.when }}</p>
+          <p style="font-size: 15px; line-height: 1.55; color: #101b28; margin: 0; text-wrap: pretty;">{{ m.what }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- 07 receipt -->
+  <div style="background: #101b28; margin-top: 72px; padding: 60px 0 64px;">
+    <div style="max-width: 1040px; margin: 0 auto; padding: 0 40px;">
+      <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #3f4c5a; padding-bottom: 10px; margin-bottom: 30px; flex-wrap: wrap;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em; color: #d99b76;">07</span>
+        <h2 style="font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 30px; margin: 0; letter-spacing: -.01em; color: #f5efe3;">Last session receipt</h2>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8aa6c4; margin-left: auto;">printed at the end of every session</span>
+      </div>
+
+      <div style="background: #fbf7ef; border-radius: 6px; padding: 28px 30px 26px; max-width: 720px; box-shadow: 0 2px 40px rgba(16,27,40,.24);">
+        <div style="display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #b0512c; margin-bottom: 18px;">
+          <span>{{ receipt.date }}</span>
+          <span>{{ receipt.actors }}</span>
+        </div>
+
+        <p style="font-family: Newsreader, Georgia, serif; font-size: 26px; font-weight: 400; line-height: 1.2; letter-spacing: -.01em; margin: 0 0 4px;">{{ receipt.title }}</p>
+        <p style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #3f4c5a; margin: 0 0 22px; word-break: break-all;">{{ receipt.nodeId }}</p>
+
+        <div style="display: flex; flex-direction: column; border-top: 1px dashed #d6ccb8; padding-top: 14px;">
+          <sc-for list="{{ receipt.questions }}" as="q" hint-placeholder-count="4">
+            <div style="display: grid; grid-template-columns: 22px 84px minmax(0, 1fr); gap: 14px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid #ece4d5;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; color: {{ q.color }};">{{ q.glyph }}</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #3f4c5a;">{{ q.tag }}</span>
+              <span style="font-size: 14px; line-height: 1.55; color: #101b28; text-wrap: pretty;">{{ q.note }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 18px; border-top: 1px dashed #d6ccb8; margin-top: 18px; padding-top: 18px;">
+          <sc-for list="{{ receipt.stats }}" as="s" hint-placeholder-count="4">
+            <div>
+              <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #8b8474; margin: 0 0 6px;">{{ s.label }}</p>
+              <p style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; color: {{ s.color }}; margin: 0; font-variant-numeric: tabular-nums;">{{ s.value }}</p>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="border-top: 1px dashed #d6ccb8; margin-top: 18px; padding-top: 16px;">
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #8b8474; margin: 0 0 8px;">Carried forward</p>
+          <p style="font-size: 14px; line-height: 1.6; color: #3f4c5a; margin: 0; text-wrap: pretty;">{{ receipt.gap }}</p>
+        </div>
+      </div>
+
+      <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.7; color: #8aa6c4; margin: 26px 0 0; max-width: 68ch;">{{ provenance }}</p>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1120}, &quot;cadenceDays&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 21, &quot;min&quot;: 14, &quot;max&quot;: 84, &quot;step&quot;: 7, &quot;unit&quot;: &quot;days&quot;, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Cadence&quot;}, &quot;showEmptyTracks&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Spine&quot;}, &quot;receiptDetail&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;full&quot;, &quot;gaps-only&quot;], &quot;default&quot;: &quot;full&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Receipt&quot;}}">
+const TODAY = "2026-09-07";
+const RAMP = ["#e0d8c8", "#cfe3d5", "#9cc4ae", "#5c9c7b", "#2c6e49"];
+// questions asked per day, from events.json
+const SESSIONS = { "2026-08-25": 7, "2026-08-28": 3, "2026-08-29": 13, "2026-08-30": 11, "2026-08-31": 6, "2026-09-01": 10, "2026-09-03": 1, "2026-09-05": 4, "2026-09-06": 3 };
+
+const FILLS = {
+  solid: { fill: "#2c6e49", edge: "#2c6e49" },
+  fresh: { fill: "#9cc4ae", edge: "#78ab92" },
+  "needs-review": { fill: "#e0d8c8", edge: "#b0512c" },
+  untracked: { fill: "#f5efe3", edge: "#e0d8c8" },
+  empty: { fill: "transparent", edge: "#e0d8c8" }
+};
+
+function iso(d) { return d.toISOString().slice(0, 10); }
+function shift(base, n) { const d = new Date(base + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d; }
+
+class Component extends DCLogic {
+  cadence() {
+    const n = this.props.cadenceDays ?? 21;
+    const days = [];
+    for (let i = n - 1; i >= 0; i--) {
+      const date = iso(shift(TODAY, -i));
+      const c = SESSIONS[date] || 0;
+      const level = c === 0 ? 0 : c <= 2 ? 1 : c <= 5 ? 2 : c <= 9 ? 3 : 4;
+      days.push({ date, level, count: c, fill: RAMP[level], edge: level ? "transparent" : "#e0d8c8", label: date + (c ? " · " + c + " questions" : " · nothing logged") });
+    }
+    let best = 0, run = 0, since = 0, seen = false;
+    days.forEach(d => { if (d.count) { run++; best = Math.max(best, run); } else { run = 0; } });
+    for (let i = days.length - 1; i >= 0; i--) { if (days[i].count) { seen = true; break; } since++; }
+    return { days, best, since: seen ? since : "—", active: days.filter(d => d.count).length, first: days[0].date };
+  }
+
+  spine() {
+    const s = k => FILLS[k];
+    const nodes = arr => arr.map(([title, k]) => ({ title: title + " · " + k, fill: s(k).fill, edge: s(k).edge }));
+    const blank = n => Array.from({ length: n }, () => ({ title: "not written yet", fill: FILLS.empty.fill, edge: FILLS.empty.edge }));
+
+    const foundations = [
+      { ord: "1.1", title: "Data Structures", note: "you are here · 6 sections + Trees + BST", count: "1 / 8 solid", here: true,
+        nodes: nodes([["Arrays", "fresh"], ["Linked Lists", "needs-review"], ["Stacks", "needs-review"], ["Queues", "needs-review"], ["Big O Notation", "needs-review"], ["Hash Tables", "needs-review"]]).concat(nodes([["Trees (page)", "needs-review"], ["Binary Search Trees", "solid"]])) },
+      { ord: "1.2", title: "Algorithms", note: "queued · opens on 1.1", count: "—", nodes: blank(6) },
+      { ord: "1.3", title: "Complexity Theory", note: "queued", count: "—", nodes: blank(5) },
+      { ord: "1.4", title: "Discrete Math", note: "queued", count: "—", nodes: blank(5) },
+      { ord: "1.5", title: "Programming Concepts", note: "queued", count: "—", nodes: blank(5) }
+    ];
+
+    const later = ["Systems", "Mathematics", "Software Engineering", "Theory"].map((n, i) => ({
+      ord: (i + 2) + ".0", title: n, note: "not started", count: "—", nodes: blank(6)
+    }));
+
+    const spec = [{ ord: "6.1", title: "Web + Mobile Dev", note: "4 pages written · no sidecars yet", count: "outside graph",
+      nodes: nodes([["APIs", "untracked"], ["Auth", "untracked"], ["State & Caching", "untracked"], ["Databases", "untracked"]]) }];
+
+    const decorate = u => Object.assign({}, u, {
+      dim: u.here ? 1 : u.count === "—" ? 0.5 : 0.85,
+      spineEdge: u.here ? "#b0512c" : "transparent",
+      titleColor: u.here ? "#101b28" : u.count === "—" ? "#3f4c5a" : "#101b28",
+      noteColor: u.here ? "#b0512c" : "#8b8474"
+    });
+
+    return [
+      { name: "Foundations", meta: "track 1 · in progress", units: foundations.map(decorate) },
+      { name: "Systems · Mathematics · Software Engineering · Theory", meta: "tracks 2–5 · gated by track order", units: later.map(decorate) },
+      { name: "Specialization", meta: "track 6 · taught ahead of order", units: spec.map(decorate) }
+    ];
+  }
+
+  dueStrip() {
+    const back = 7, fwd = 14, span = back + fwd;
+    const dayOf = d => Math.round((new Date(d + "T00:00:00Z") - new Date(TODAY + "T00:00:00Z")) / 86400000);
+    const pct = n => ((n + back) / span * 100).toFixed(2) + "%";
+
+    const scheduled = [
+      { title: "Trees", due: "2026-09-02", status: "needs-review" },
+      { title: "Arrays", due: "2026-09-08", status: "fresh" },
+      { title: "Binary Search Trees", due: "2026-09-09", status: "solid" }
+    ].map(n => {
+      const off = dayOf(n.due), late = off < 0;
+      return {
+        title: n.title, left: pct(off), off: off, late: late,
+        when: late ? Math.abs(off) + "d overdue" : off === 0 ? "due today" : "in " + off + "d",
+        whenColor: late ? "#b0512c" : "#8b8474",
+        color: late ? "#b0512c" : n.status === "solid" ? "#2c6e49" : "#1c4f8b"
+      };
+    });
+
+    // A day is only ~36px of travel but labels run 40-120px wide, so every pin gets its own
+    // 30px lane and its label grows rightward from the dot — no horizontal collision possible.
+    const AXIS = 100, LANE = 30;
+    const lanes = (list, dir) => list.map((p, i) => {
+      const top = AXIS + dir * (14 + i * LANE);
+      const stem = Math.abs(AXIS - top) - 4;
+      return Object.assign({}, p, {
+        top: top + "px",
+        stem: Math.max(stem, 0) + "px",
+        stemTop: (dir < 0 ? 4 : -(stem + 4)) + "px"
+      });
+    });
+
+    const pins = lanes(scheduled.filter(p => !p.late).sort((a, b) => a.off - b.off), -1)
+      .concat(lanes(scheduled.filter(p => p.late).sort((a, b) => b.off - a.off), 1));
+
+    return {
+      todayPct: pct(0), axisStart: "aug 31", axisEnd: "sep 21", pins: pins,
+      unscheduled: [
+        { title: "Hash Tables", last: "scored 09-05" },
+        { title: "Data Structures", last: "scored 08-30" },
+        { title: "Linked Lists", last: "never scored" },
+        { title: "Stacks", last: "never scored" },
+        { title: "Queues", last: "never scored" },
+        { title: "Big O Notation", last: "never scored" }
+      ],
+      advice: "Six nodes carry no due date because they've never been scored on their own — the 08-30 review graded the whole page at once. One section-level check each converts them from debt into a schedule."
+    };
+  }
+
+  ladderRows() {
+    const cell = (right, total) => {
+      if (!total) return { label: "—", bg: "#f5efe3", edge: "#e0d8c8", ink: "#8b8474" };
+      const all = right === total;
+      return {
+        label: right + "/" + total,
+        bg: all ? "#2c6e49" : "#f7e6da",
+        edge: all ? "#2c6e49" : "#b0512c",
+        ink: all ? "#fbf7ef" : "#b0512c"
+      };
+    };
+    return [
+      { title: "Arrays", kind: "section · fresh", r: [1, 1], e: [0, 0], p: [2, 2],
+        weak: "Explain untested. Predicts correct but unjustified — geometric-series grounding missing, flagged forward to Discrete Math." },
+      { title: "Hash Tables", kind: "section · needs review", r: [1, 1], e: [1, 1], p: [1, 2],
+        weak: "Predict is the gap: open-addressing read cost assumed independent of write cost. Corrected, not yet re-confirmed." },
+      { title: "Binary Search Trees", kind: "section · solid", r: [0, 0], e: [0, 0], p: [1, 1],
+        weak: "Strong on predict, but recall and explain were never asked directly — solid rests on one tag." },
+      { title: "Trees", kind: "page · needs review", r: [0, 0], e: [0, 0], p: [0, 0],
+        weak: "Pre-ladder session (08-31), logged as an aggregate 4/4. No tags to read." },
+      { title: "Data Structures", kind: "page · needs review", r: [0, 0], e: [0, 0], p: [0, 0],
+        weak: "Pre-ladder aggregate 10/11 across six subtopics — the one wrong answer pulled the whole page down without naming which section." }
+    ].map(n => Object.assign({}, n, { cells: [cell(n.r[0], n.r[1]), cell(n.e[0], n.e[1]), cell(n.p[0], n.p[1])] }));
+  }
+
+  growthData() {
+    const weeks = [
+      { label: "may 11", sub: "1 page", nw: 6, dp: 0 },
+      { label: "aug 24", sub: "4 pages", nw: 18, dp: 4 },
+      { label: "aug 31", sub: "1 page", nw: 10, dp: 5 },
+      { label: "sep 7", sub: "in progress", nw: 0, dp: 9 }
+    ];
+    const max = Math.max.apply(null, weeks.map(w => w.nw + w.dp));
+    return {
+      weeks: weeks.map(w => ({
+        label: w.label, sub: w.sub, total: w.nw + w.dp,
+        newH: (w.nw / max * 150).toFixed(0) + "px",
+        deepH: (w.dp / max * 150).toFixed(0) + "px"
+      })),
+      milestones: [
+        { when: "2026-08-31", what: "Trees split out of the Data Structures page into a page of its own, with BST as its first section — the first promotion in the book." },
+        { when: "2026-09-05", what: "Hash Tables rewritten to name its own assumption: the chaining-degrades-gracefully claim only holds under uniform hashing." },
+        { when: "2026-09-06", what: "Arrays gained the amortized-doubling derivation, and surfaced a missing prerequisite that now points forward to Discrete Math." }
+      ]
+    };
+  }
+
+  renderVals() {
+    const c = this.cadence();
+    const tracks = this.spine().filter(t => (this.props.showEmptyTracks ?? true) ? true : t.name !== "Systems · Mathematics · Software Engineering · Theory");
+    const full = (this.props.receiptDetail ?? "full") === "full";
+
+    const questions = [
+      { tag: "recall", correct: true, note: "Load factor 12/16 = 0.75, and that the number alone says nothing without the collision strategy." },
+      { tag: "explain", correct: true, note: "Chaining: insert stays O(1) because it never searches before writing; lookup tracks chain length." },
+      { tag: "predict", correct: false, note: "Claimed open-addressing lookups stay flat until the table fills — corrected with a linear-probing counterexample." },
+      { tag: "predict", correct: true, note: "Derived that primary clustering degrades open addressing faster at the same load factor." }
+    ];
+
+    return {
+      due: this.dueStrip(),
+      ladder: this.ladderRows(),
+      ladderHeads: ["recall", "explain", "predict"],
+      ladderNote: "Only three nodes have tag-level data — the ladder starts at event 72 (2026-09-03), when quizmaster began logging a questions[] array instead of an aggregate score. Everything before that is a total with no shape, which is exactly the argument for keeping the new format.",
+      growth: this.growthData(),
+      tracked: 9, solid: 1, needsReview: 7, checksWeek: 7,
+      days: c.days, activeDays: c.active + " / " + c.days.length, bestRun: c.best, sinceLast: c.since, firstDayLabel: c.first,
+      legend: [
+        { label: "solid", fill: FILLS.solid.fill, edge: FILLS.solid.edge },
+        { label: "fresh", fill: FILLS.fresh.fill, edge: FILLS.fresh.edge },
+        { label: "needs review", fill: FILLS["needs-review"].fill, edge: FILLS["needs-review"].edge },
+        { label: "written, ungraded", fill: FILLS.untracked.fill, edge: FILLS.untracked.edge },
+        { label: "not written", fill: FILLS.empty.fill, edge: FILLS.empty.edge }
+      ],
+      tracks,
+      sidecarNote: "Four Specialization pages (APIs, Auth, State & Caching, Databases) have taught and quizzed events but no .graph.json sidecar, so scan-book.mjs can't score them — they show as written-but-ungraded. Adding sidecars would pull 4 pages and their subtopics into the spine.",
+      next: {
+        title: "Hash Tables",
+        why: "Earliest unit in track order that isn't solid, and the only Data Structures section with a live gap: the insert/lookup-share-a-probe-walk equivalence, flagged confirm-only on 2026-09-05."
+      },
+      ledger: [
+        { node: "Hash Tables", status: "needs review", statusColor: "#b0512c", opens: "Nothing downstream yet — but it's the last section blocking Data Structures from going solid." },
+        { node: "Arrays", status: "fresh · due 09-08", statusColor: "#1c4f8b", opens: "→ Hash Tables (declared dep). One clean check tomorrow turns the book's second node solid." },
+        { node: "Linked Lists", status: "needs review", statusColor: "#b0512c", opens: "→ Trees (declared dep) → Binary Search Trees, already solid and due 2026-09-09." },
+        { node: "Data Structures (all 8)", status: "1 / 8 solid", statusColor: "#3f4c5a", opens: "→ unlocks track 1.2 Algorithms, and with it the rest of Foundations." }
+      ],
+      receipt: {
+        date: "2026-09-05 · 16:24–16:32",
+        actors: "quizmaster → teacher",
+        title: "Hash Tables",
+        nodeId: "book:foundations/data-structures#hash-tables",
+        questions: (full ? questions : questions.filter(q => !q.correct)).map(q => ({
+          tag: q.tag, note: q.note, glyph: q.correct ? "✓" : "✗", color: q.correct ? "#2c6e49" : "#b0512c"
+        })),
+        stats: [
+          { label: "score", value: "3 / 4", color: "#101b28" },
+          { label: "status", value: "→ needs-review", color: "#b0512c" },
+          { label: "streak", value: "reset to 1", color: "#b0512c" },
+          { label: "next due", value: "on next pass", color: "#101b28" }
+        ],
+        gap: "Open-addressing insert and lookup share one probe walk — worth a confirm-only check next review to make sure it stuck without a prompt. The follow-up teach also added the uniform-hashing assumption behind the whole comparison."
+      },
+      provenance: "Prototype · not yet wired into the skills. Numbers read from book-graph-data.json (generated 2026-09-06T12:00:40Z) and events 51–74 in events.json. Nothing on this page is hand-written status: scan-book.mjs computes it."
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,28 +1,8 @@
 {
-  "generated_at": "2026-09-07T14:20:27.475Z",
-  "today": "2026-09-07",
+  "generated_at": "2026-09-11T15:11:50.316Z",
+  "today": "2026-09-11",
   "cadence": {
     "days": [
-      {
-        "date": "2026-06-16",
-        "questions": 0,
-        "level": 0
-      },
-      {
-        "date": "2026-06-17",
-        "questions": 0,
-        "level": 0
-      },
-      {
-        "date": "2026-06-18",
-        "questions": 0,
-        "level": 0
-      },
-      {
-        "date": "2026-06-19",
-        "questions": 0,
-        "level": 0
-      },
       {
         "date": "2026-06-20",
         "questions": 0,
@@ -422,11 +402,31 @@
         "date": "2026-09-07",
         "questions": 0,
         "level": 0
+      },
+      {
+        "date": "2026-09-08",
+        "questions": 3,
+        "level": 2
+      },
+      {
+        "date": "2026-09-09",
+        "questions": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-10",
+        "questions": 3,
+        "level": 2
+      },
+      {
+        "date": "2026-09-11",
+        "questions": 6,
+        "level": 3
       }
     ],
-    "active_days": 9,
+    "active_days": 12,
     "longest_run": 5,
-    "days_since_last": 1
+    "days_since_last": 0
   },
   "next": {
     "node_id": "book:foundations/trees",
@@ -439,11 +439,11 @@
     "href": "foundations/trees.html",
     "clause": 1,
     "kicker": "Next up · overdue review",
-    "why": "Five days overdue, and the only node in the book that is. Its dep Linked Lists has never been scored on its own, so this is also the check that gives that section its first evidence.",
+    "why": "Eight days overdue — the oldest of three nodes past due.",
     "clauses": [
       {
         "n": 1,
-        "text": "Any node past its due date — oldest first. Trees has been due since 2026-09-02.",
+        "text": "Any node past its due date — oldest first. Trees has been due since 2026-09-03.",
         "fired": true
       },
       {
@@ -471,18 +471,19 @@
         {
           "ord": "1.1",
           "title": "Data Structures",
-          "note": "you are here · 8 nodes",
-          "count": "1 / 8 solid",
+          "note": "you are here · 9 nodes",
+          "count": "0 / 9 solid",
           "here": true,
-          "footnote": "Five of these eight have no per-question tags yet — the 2026-08-30 review graded the whole page in one aggregate, and tagged questions only start at 2026-09-03. Most rows have no shape to read yet.",
+          "href": "foundations/data-structures.html",
+          "footnote": "Three of these nine have no per-question tags yet — the 2026-08-30 review graded the whole page in one aggregate, and tagged questions only start at 2026-09-03. Most rows have no shape to read yet.",
           "nodes": [
             {
               "node_id": "book:foundations/data-structures#arrays",
               "title": "Arrays",
               "kind": "section",
               "depth": 0,
-              "status": "fresh",
-              "meta": "due 09-08 · reviewed 1x",
+              "status": "needs-review",
+              "meta": "2d overdue · reviewed 1x",
               "tags": {
                 "recall": [
                   1,
@@ -494,7 +495,8 @@
                   2
                 ]
               },
-              "stands": "Q2: intuition for amortized cost is correct in shape (rare expensive operations average out) but not yet grounded in why — doesn't yet distinguish \"infrequent\" from \"infrequent in a way that sums to a bounded multiple of…"
+              "stands": "Q2: intuition for amortized cost is correct in shape (rare expensive operations average out) but not yet grounded in why — doesn't yet distinguish \"infrequent\" from \"infrequent in a way that sums to a bounded multiple of…",
+              "href": "foundations/data-structures.html#arrays"
             },
             {
               "node_id": "book:foundations/data-structures#linked-lists",
@@ -502,13 +504,41 @@
               "kind": "section",
               "depth": 0,
               "status": "needs-review",
-              "meta": "never scored on its own",
+              "meta": "scored 09-11 · reviewed 1x",
               "tags": {
                 "recall": null,
-                "explain": null,
-                "predict": null
+                "explain": [
+                  1,
+                  2
+                ],
+                "predict": [
+                  0,
+                  1
+                ]
               },
-              "stands": "Covered in the 08-30 page-level review of Data Structures; no section-level check of its own yet."
+              "stands": "Two related misconceptions surfaced: (1) assuming a linked list's O(1) splice cost applies to 'reorder by content' operations that still require an O(n) search;",
+              "href": "foundations/data-structures.html#linked-lists"
+            },
+            {
+              "node_id": "book:foundations/data-structures#doubly-linked-lists",
+              "title": "Doubly-Linked Lists",
+              "kind": "section",
+              "depth": 0,
+              "status": "needs-review",
+              "meta": "scored 09-11 · reviewed 1x · deps: Linked Lists",
+              "tags": {
+                "recall": null,
+                "explain": [
+                  1,
+                  2
+                ],
+                "predict": [
+                  1,
+                  1
+                ]
+              },
+              "stands": "The 'already holding the pointer vs. need to search for it' precondition -- the throughline of this whole session -- wasn't named as part of the general decision rule when asked to state one explicitly.",
+              "href": "foundations/data-structures.html#doubly-linked-lists"
             },
             {
               "node_id": "book:foundations/data-structures#stacks",
@@ -522,7 +552,8 @@
                 "explain": null,
                 "predict": null
               },
-              "stands": "Covered in the 08-30 page-level review of Data Structures; no section-level check of its own yet."
+              "stands": "Covered in the 08-30 page-level review of Data Structures; no section-level check of its own yet.",
+              "href": "foundations/data-structures.html#stacks"
             },
             {
               "node_id": "book:foundations/data-structures#queues",
@@ -536,7 +567,8 @@
                 "explain": null,
                 "predict": null
               },
-              "stands": "Covered in the 08-30 page-level review of Data Structures; no section-level check of its own yet."
+              "stands": "Covered in the 08-30 page-level review of Data Structures; no section-level check of its own yet.",
+              "href": "foundations/data-structures.html#queues"
             },
             {
               "node_id": "book:foundations/data-structures#big-o",
@@ -544,13 +576,20 @@
               "kind": "section",
               "depth": 0,
               "status": "needs-review",
-              "meta": "never scored on its own",
+              "meta": "scored 09-10 · reviewed 1x",
               "tags": {
-                "recall": null,
-                "explain": null,
+                "recall": [
+                  1,
+                  1
+                ],
+                "explain": [
+                  3,
+                  5
+                ],
                 "predict": null
               },
-              "stands": "Covered in the 08-30 page-level review of Data Structures; no section-level check of its own yet."
+              "stands": "The best/worst/average axis (varies by input, within a single run) vs. the amortized axis (varies by operation, smoothed across a sequence) was conflated once -- worth a light confirm-only check next review, since the me…",
+              "href": "foundations/data-structures.html#big-o"
             },
             {
               "node_id": "book:foundations/data-structures#hash-tables",
@@ -573,7 +612,8 @@
                   2
                 ]
               },
-              "stands": "Initially believed open-addressing lookups stay fast independent of write cost — now corrected, but worth a light confirm-only check next review to make sure the insert/lookup-share-a-probe-walk equivalence stuck without…"
+              "stands": "Initially believed open-addressing lookups stay fast independent of write cost — now corrected, but worth a light confirm-only check next review to make sure the insert/lookup-share-a-probe-walk equivalence stuck without…",
+              "href": "foundations/data-structures.html#hash-tables"
             },
             {
               "node_id": "book:foundations/trees",
@@ -581,21 +621,22 @@
               "kind": "page",
               "depth": 0,
               "status": "needs-review",
-              "meta": "page · 5d overdue · reviewed 1x · deps: Linked Lists",
+              "meta": "page · 8d overdue · reviewed 1x · deps: Linked Lists",
               "tags": {
                 "recall": null,
                 "explain": null,
                 "predict": null
               },
-              "stands": "DFS/stack vs. BFS/queue traversal correspondence wasn't spontaneously drawn on the first (org-chart) question — the traversal behavior described was correct, but the structural link to Stacks/Queues needed to be taught e…"
+              "stands": "DFS/stack vs. BFS/queue traversal correspondence wasn't spontaneously drawn on the first (org-chart) question — the traversal behavior described was correct, but the structural link to Stacks/Queues needed to be taught e…",
+              "href": "foundations/trees.html"
             },
             {
               "node_id": "book:foundations/trees#bst",
               "title": "Binary Search Trees (BST)",
               "kind": "section",
               "depth": 1,
-              "status": "solid",
-              "meta": "under Trees · due 09-09 · reviewed 2x",
+              "status": "needs-review",
+              "meta": "under Trees · 1d overdue · reviewed 2x",
               "tags": {
                 "recall": null,
                 "explain": null,
@@ -604,7 +645,8 @@
                   1
                 ]
               },
-              "stands": "Confirmed the successor pick (60) but did not walk the final splice step (65, 60's only child, sliding up into 60's vacated slot) — worth a quick confirm-only check on that step at the next review, not a full re-teach."
+              "stands": "Confirmed the successor pick (60) but did not walk the final splice step (65, 60's only child, sliding up into 60's vacated slot) — worth a quick confirm-only check on that step at the next review, not a full re-teach.",
+              "href": "foundations/trees.html#bst"
             }
           ]
         },
@@ -704,7 +746,8 @@
                 "explain": null,
                 "predict": null
               },
-              "stands": "Quizzed 2x with no gaps logged; no .graph.json sidecar, so scan-book.mjs can't score it."
+              "stands": "Quizzed 2x with no gaps logged; no .graph.json sidecar, so scan-book.mjs can't score it.",
+              "href": "backend/apis.html"
             },
             {
               "node_id": "book:backend/auth",
@@ -718,7 +761,8 @@
                 "explain": null,
                 "predict": null
               },
-              "stands": "Fresh scenario (lookalike phishing domain) tested with the cookie value framing; conflated domain scoping with SameSite/CSRF on first pass — corrected after clarification that a cookie is never sent to a domain other tha…"
+              "stands": "Fresh scenario (lookalike phishing domain) tested with the cookie value framing; conflated domain scoping with SameSite/CSRF on first pass — corrected after clarification that a cookie is never sent to a domain other tha…",
+              "href": "backend/auth.html"
             },
             {
               "node_id": "book:backend/state-caching",
@@ -732,7 +776,8 @@
                 "explain": null,
                 "predict": null
               },
-              "stands": "Conflated client state with an unrelated concept (server-side caching layers in front of a database) when explaining why the caching strategies covered don't apply to client state."
+              "stands": "Conflated client state with an unrelated concept (server-side caching layers in front of a database) when explaining why the caching strategies covered don't apply to client state.",
+              "href": "backend/state-caching.html"
             },
             {
               "node_id": "book:backend/databases",
@@ -746,7 +791,8 @@
                 "explain": null,
                 "predict": null
               },
-              "stands": "Quizzed 1x with no gaps logged; no .graph.json sidecar, so scan-book.mjs can't score it."
+              "stands": "Quizzed 1x with no gaps logged; no .graph.json sidecar, so scan-book.mjs can't score it.",
+              "href": "backend/databases.html"
             }
           ]
         }
@@ -758,26 +804,41 @@
       {
         "node_id": "book:foundations/trees",
         "title": "Trees",
-        "due": "2026-09-02",
+        "due": "2026-09-03",
         "status": "needs-review",
-        "offset_days": -5
+        "offset_days": -8
       },
       {
         "node_id": "book:foundations/data-structures#arrays",
         "title": "Arrays",
-        "due": "2026-09-08",
-        "status": "fresh",
-        "offset_days": 1
+        "due": "2026-09-09",
+        "status": "needs-review",
+        "offset_days": -2
       },
       {
         "node_id": "book:foundations/trees#bst",
         "title": "Binary Search Trees",
-        "due": "2026-09-09",
-        "status": "solid",
-        "offset_days": 2
+        "due": "2026-09-10",
+        "status": "needs-review",
+        "offset_days": -1
       }
     ],
     "unscheduled": [
+      {
+        "node_id": "book:foundations/data-structures#doubly-linked-lists",
+        "title": "Doubly-Linked Lists",
+        "last": "scored 09-11"
+      },
+      {
+        "node_id": "book:foundations/data-structures#linked-lists",
+        "title": "Linked Lists",
+        "last": "scored 09-11"
+      },
+      {
+        "node_id": "book:foundations/data-structures#big-o",
+        "title": "Big O Notation",
+        "last": "scored 09-10"
+      },
       {
         "node_id": "book:foundations/data-structures#hash-tables",
         "title": "Hash Tables",
@@ -789,11 +850,6 @@
         "last": "scored 08-30"
       },
       {
-        "node_id": "book:foundations/data-structures#linked-lists",
-        "title": "Linked Lists",
-        "last": "never scored"
-      },
-      {
         "node_id": "book:foundations/data-structures#stacks",
         "title": "Stacks",
         "last": "never scored"
@@ -802,14 +858,9 @@
         "node_id": "book:foundations/data-structures#queues",
         "title": "Queues",
         "last": "never scored"
-      },
-      {
-        "node_id": "book:foundations/data-structures#big-o",
-        "title": "Big O Notation",
-        "last": "never scored"
       }
     ],
-    "advice": "Six nodes carry no due date because they've never been scored on their own — a page-level review graded the whole page at once. One section-level check each converts them from debt into a schedule."
+    "advice": "Seven nodes carry no due date because they've never been scored on their own — a page-level review graded the whole page at once. One section-level check each converts them from debt into a schedule."
   },
-  "provenance": "Generated from book-graph-data.json and events 51–76 (latest 2026-09-06) across 2 sidecars. No status on this page is hand-written."
+  "provenance": "Generated from book-graph-data.json and events 51–84 (latest 2026-09-11) across 2 sidecars. No status on this page is hand-written."
 }

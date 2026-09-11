@@ -667,6 +667,18 @@ summary.unit-summary:focus-visible { outline: 2px solid var(--accent); outline-o
   margin: 4px 0 0;
 }
 .unit[data-here] .unit-note { color: var(--accent); }
+.unit-open {
+  display: inline-block;
+  margin: 5px 0 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.unit-open:hover { border-bottom-color: var(--accent); }
 .unit-ticks {
   display: flex;
   gap: 3px;
@@ -728,6 +740,12 @@ summary.unit-summary:focus-visible { outline: 2px solid var(--accent); outline-o
   margin: 0;
   color: var(--text);
 }
+.panel-row-title a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.panel-row-title a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 .panel-row[data-kind="page"] .panel-row-title { font-weight: 700; }
 .panel-row[data-depth="1"] .panel-row-head { padding-left: 18px; }
 .panel-row-meta {

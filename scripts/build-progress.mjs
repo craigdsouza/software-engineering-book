@@ -139,9 +139,10 @@ function renderPanel(unit) {
   const rows = unit.nodes
     .map((n) => {
       const t = n.tags || {};
+      const titleInner = n.href ? `<a href="${esc(n.href)}">${esc(n.title)}</a>` : esc(n.title);
       return `<div class="panel-row" data-kind="${n.kind}" data-depth="${n.depth || 0}" data-status="${n.status}">
               <div class="panel-row-head">
-                <p class="panel-row-title">${esc(n.title)}</p>
+                <p class="panel-row-title">${titleInner}</p>
                 <p class="panel-row-meta">${esc(STATUS_LABEL[n.status] + (n.meta ? " · " + n.meta : ""))}</p>
               </div>
               ${renderCell(t.recall)}
@@ -166,11 +167,12 @@ function renderUnitSummaryInner(unit, interactive) {
     ? unit.nodes.map((n) => `<span class="tick" data-status="${n.status}" title="${esc(n.title + " · " + STATUS_LABEL[n.status])}"></span>`)
     : Array.from({ length: unit.blank || 0 }, () => `<span class="tick" data-status="unwritten" title="not written yet"></span>`)
   ).join("");
+  const openLink = unit.href ? `\n            <a class="unit-open" href="${esc(unit.href)}">Open page →</a>` : "";
   return `<span class="unit-ord">${esc(unit.ord)}</span>
           <span class="unit-caret">${caret}</span>
           <span class="unit-headtext">
             <span class="unit-title">${esc(unit.title)}</span>
-            <span class="unit-note">${esc(unit.note || "")}</span>
+            <span class="unit-note">${esc(unit.note || "")}</span>${openLink}
           </span>
           <span class="unit-ticks">${ticks}</span>
           <span class="unit-count">${esc(unit.count || "—")}</span>`;

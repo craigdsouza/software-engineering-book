@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T14:20:27.467Z",
+  "generated_at": "2026-09-11T15:41:28.402Z",
   "nodes": [
     {
       "id": "book:foundations/data-structures",
@@ -9,6 +9,7 @@
       "children": [
         "book:foundations/data-structures#arrays",
         "book:foundations/data-structures#linked-lists",
+        "book:foundations/data-structures#doubly-linked-lists",
         "book:foundations/data-structures#stacks",
         "book:foundations/data-structures#queues",
         "book:foundations/data-structures#big-o",
@@ -37,13 +38,13 @@
         "Linked Lists"
       ],
       "unlocks": 1,
-      "status": "fresh",
+      "status": "needs-review",
       "direct": {
-        "status": "fresh",
+        "status": "needs-review",
         "timesReviewed": 1,
         "lastScored": "2026-09-06",
         "lastSuccess": "2026-09-06",
-        "dueDate": "2026-09-08"
+        "dueDate": "2026-09-09"
       }
     },
     {
@@ -54,11 +55,40 @@
       "children": [],
       "deps": [],
       "contrasts": [
-        "Arrays"
+        "Arrays",
+        "Doubly-Linked Lists"
       ],
-      "unlocks": 1,
+      "unlocks": 2,
       "status": "needs-review",
-      "direct": null
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 1,
+        "lastScored": "2026-09-11",
+        "lastSuccess": null,
+        "dueDate": null
+      }
+    },
+    {
+      "id": "book:foundations/data-structures#doubly-linked-lists",
+      "title": "Doubly-Linked Lists",
+      "materialization": "section",
+      "parent": "book:foundations/data-structures",
+      "children": [],
+      "deps": [
+        "Linked Lists"
+      ],
+      "contrasts": [
+        "Linked Lists"
+      ],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 1,
+        "lastScored": "2026-09-11",
+        "lastSuccess": null,
+        "dueDate": null
+      }
     },
     {
       "id": "book:foundations/data-structures#stacks",
@@ -98,7 +128,13 @@
       "contrasts": [],
       "unlocks": 0,
       "status": "needs-review",
-      "direct": null
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 1,
+        "lastScored": "2026-09-10",
+        "lastSuccess": null,
+        "dueDate": null
+      }
     },
     {
       "id": "book:foundations/data-structures#hash-tables",
@@ -139,7 +175,7 @@
         "timesReviewed": 1,
         "lastScored": "2026-08-31",
         "lastSuccess": "2026-08-31",
-        "dueDate": "2026-09-02"
+        "dueDate": "2026-09-03"
       }
     },
     {
@@ -153,14 +189,48 @@
         "Hash Tables"
       ],
       "unlocks": 0,
-      "status": "solid",
+      "status": "needs-review",
       "direct": {
-        "status": "solid",
+        "status": "needs-review",
         "timesReviewed": 2,
         "lastScored": "2026-09-03",
         "lastSuccess": "2026-09-03",
-        "dueDate": "2026-09-09"
+        "dueDate": "2026-09-10"
       }
+    }
+  ],
+  "forward_pointers": [
+    {
+      "id": "amortized-series-summation",
+      "title": "General geometric/arithmetic series summation",
+      "tier": "intermediate",
+      "page_id": "book:foundations/data-structures",
+      "under": "book:foundations/data-structures#arrays",
+      "note": "Needed to justify amortized O(1) for growth factors other than doubling (e.g. ×1.5). Natural fit once Discrete Math covers series."
+    },
+    {
+      "id": "uniform-hashing-hash-flooding",
+      "title": "Uniform hashing assumption & hash flooding",
+      "tier": "advanced",
+      "page_id": "book:foundations/data-structures",
+      "under": "book:foundations/data-structures#hash-tables",
+      "note": "Why the chaining-vs-open-addressing comparison assumes a well-distributed hash function, and how adversarial input (a real DoS technique) breaks that assumption."
+    },
+    {
+      "id": "cache-locality",
+      "title": "Cache locality (contiguous vs. pointer-chasing memory access)",
+      "tier": "intermediate",
+      "page_id": "book:foundations/data-structures",
+      "under": "book:foundations/data-structures#linked-lists",
+      "note": "Why arrays tend to beat linked lists in wall-clock time even at equal Big-O, once real hardware/cache behavior enters the picture."
+    },
+    {
+      "id": "lru-cache",
+      "title": "LRU cache (hash map + doubly-linked list)",
+      "tier": "advanced",
+      "page_id": "book:foundations/data-structures",
+      "under": "book:foundations/data-structures#doubly-linked-lists",
+      "note": "The canonical applied pattern combining O(1) hash-map lookup with O(1) doubly-linked-list splice -- composes two already-taught structures into one."
     }
   ]
 }

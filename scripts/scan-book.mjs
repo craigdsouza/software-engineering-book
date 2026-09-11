@@ -115,6 +115,39 @@ function buildNodes(sidecarPaths) {
   return nodes;
 }
 
+// ---------- 2b. Forward pointers (authored, optional per sidecar) ----------
+// Concepts mentioned in passing during teaching that are genuinely relevant but
+// beyond the page's current curriculum depth -- tracked so they don't evaporate
+// as untracked prose, and so every page renders a consistent "Intermediate &
+// Advanced Topics" catalog instead of ad hoc "flagged here" asides scattered
+// through the text. Never scored -- these aren't curriculum nodes (no events,
+// no status), just an authored memory of what to come back to on purpose.
+// Added 2026-09-11 alongside the Linked Lists / Doubly-Linked Lists session.
+function buildForwardPointers(sidecarPaths) {
+  const out = [];
+  for (const path of sidecarPaths) {
+    let sidecar;
+    try {
+      sidecar = JSON.parse(readFileSync(path, "utf8"));
+    } catch {
+      continue;
+    }
+    const pageId = `book:${sidecar.page}`;
+    for (const fp of sidecar.forward_pointers || []) {
+      const underId = fp.under ? `${pageId}#${fp.under}` : pageId;
+      out.push({
+        id: fp.id,
+        title: fp.title,
+        tier: fp.tier === "advanced" ? "advanced" : "intermediate",
+        page_id: pageId,
+        under: underId,
+        note: fp.note || "",
+      });
+    }
+  }
+  return out;
+}
+
 // ---------- 3. Load book: events, grouped by node_id ----------
 
 function loadBookEvents(root) {
@@ -501,6 +534,7 @@ function buildSpine(nodes, eventsByNode, rawEvents, today, H) {
             meta: metaBits.join(" · "),
             tags: aggregateTags(quizEvs),
             stands,
+            href: hrefFor(id),
           };
         });
         units.push({
@@ -532,6 +566,7 @@ function buildSpine(nodes, eventsByNode, rawEvents, today, H) {
           meta: H.rowMeta(n, depth),
           tags: aggregateTags(eventsByNode.get(n.id)),
           stands: H.composeStands(n),
+          href: hrefFor(n.id),
         });
       };
       for (const secId of pageNode ? pageNode.children : []) pushRow(nodes.get(secId), 0);
@@ -556,6 +591,7 @@ function buildSpine(nodes, eventsByNode, rawEvents, today, H) {
         note: `you are here · ${rows.length} nodes`,
         count: `${solid} / ${rows.length} solid`,
         here: false, // set once the frontier pick is known
+        href: hrefFor(unitPageId),
         footnote:
           `${cap(word(noTags))} of these ${word(rows.length)} have no per-question tags yet — the 2026-08-30 review graded the ` +
           `whole page in one aggregate, and tagged questions only start at 2026-09-03. Most rows have no shape to read yet.`,
@@ -771,6 +807,7 @@ function main() {
 
   computeAll(nodes, eventsByNode);
   computeUnlocks(nodes);
+  const forwardPointers = buildForwardPointers(sidecars);
 
   const out = {
     generated_at: new Date().toISOString(),
@@ -786,13 +823,20 @@ function main() {
       status: n._status,
       direct: n._direct, // null if this node has never been quizzed directly
     })),
+    forward_pointers: forwardPointers, // never scored -- authored structure only, see buildForwardPointers
   };
 
   const outPath = join(root, "book-graph-data.json");
   writeFileSync(outPath, JSON.stringify(out, null, 2) + "\n");
-  console.log(`Wrote ${outPath} — ${out.nodes.length} nodes.`);
+  console.log(`Wrote ${outPath} — ${out.nodes.length} nodes, ${forwardPointers.length} forward pointers.`);
   for (const n of out.nodes) {
     console.log(`  ${n.id.padEnd(40)} ${n.status.padEnd(13)} (${n.materialization})`);
+  }
+  if (forwardPointers.length) {
+    console.log(`  forward pointers:`);
+    for (const fp of forwardPointers) {
+      console.log(`    [${fp.tier}] ${fp.title} (under ${fp.under})`);
+    }
   }
 
   // ---- derived VIEW data for the progress pages ----

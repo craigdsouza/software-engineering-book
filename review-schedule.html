@@ -38,36 +38,36 @@
       <div class="duestrip-card">
         <div class="due-plot">
           <div class="due-axis-line"></div>
-          <div class="due-today" style="left:33.33%;"></div>
-          <span class="due-today-label" style="left:33.33%;">today</span>
-          <div class="due-pin" data-status="fresh" style="left:38.10%;top:86px;">
-            <span class="due-stem" style="height:10px;top:4px;"></span>
-            <span class="due-dot"></span>
-            <span class="due-label"><span class="due-label-title">Arrays</span><span class="due-label-when">in 1d</span></span>
-          </div>
-          <div class="due-pin" data-status="solid" style="left:42.86%;top:56px;">
-            <span class="due-stem" style="height:40px;top:4px;"></span>
-            <span class="due-dot"></span>
-            <span class="due-label"><span class="due-label-title">Binary Search Trees</span><span class="due-label-when">in 2d</span></span>
-          </div>
-          <div class="due-pin" data-status="needs-review" data-late style="left:9.52%;top:114px;">
+          <div class="due-today" style="left:36.36%;"></div>
+          <span class="due-today-label" style="left:36.36%;">today</span>
+          <div class="due-pin" data-status="needs-review" data-late style="left:31.82%;top:114px;">
             <span class="due-stem" style="height:10px;top:-14px;"></span>
             <span class="due-dot"></span>
-            <span class="due-label"><span class="due-label-title">Trees</span><span class="due-label-when">5d overdue</span></span>
+            <span class="due-label"><span class="due-label-title">Binary Search Trees</span><span class="due-label-when">1d overdue</span></span>
           </div>
-          <div class="due-axis-labels"><span>aug 31</span><span>sep 21</span></div>
+          <div class="due-pin" data-status="needs-review" data-late style="left:27.27%;top:144px;">
+            <span class="due-stem" style="height:40px;top:-44px;"></span>
+            <span class="due-dot"></span>
+            <span class="due-label"><span class="due-label-title">Arrays</span><span class="due-label-when">2d overdue</span></span>
+          </div>
+          <div class="due-pin" data-status="needs-review" data-late style="left:0.00%;top:174px;">
+            <span class="due-stem" style="height:70px;top:-74px;"></span>
+            <span class="due-dot"></span>
+            <span class="due-label"><span class="due-label-title">Trees</span><span class="due-label-when">8d overdue</span></span>
+          </div>
+          <div class="due-axis-labels"><span>sep 3</span><span>sep 25</span></div>
         </div>
       </div>
       <div class="due-lists">
         <div class="due-unscheduled">
           <p class="due-unscheduled-head">Unscheduled · answer to schedule</p>
           <ul>
+            <li><span class="due-unscheduled-title">Big O Notation</span><span class="due-unscheduled-last">scored 09-10</span></li>
             <li><span class="due-unscheduled-title">Hash Tables</span><span class="due-unscheduled-last">scored 09-05</span></li>
             <li><span class="due-unscheduled-title">Data Structures</span><span class="due-unscheduled-last">scored 08-30</span></li>
             <li><span class="due-unscheduled-title">Linked Lists</span><span class="due-unscheduled-last">never scored</span></li>
             <li><span class="due-unscheduled-title">Stacks</span><span class="due-unscheduled-last">never scored</span></li>
             <li><span class="due-unscheduled-title">Queues</span><span class="due-unscheduled-last">never scored</span></li>
-            <li><span class="due-unscheduled-title">Big O Notation</span><span class="due-unscheduled-last">never scored</span></li>
           </ul>
         </div>
         <div class="due-advice">
@@ -189,8 +189,8 @@
   </table>
   </div>
 
-  <h2>Foundations — Data Structures, reviewed 2026-08-30 (Hash Tables deepened 2026-09-05; Arrays reviewed + extended 2026-09-06)</h2>
-  <p>After an estimated ~104-day gap. Five of six retained cleanly; hash tables needed full re-teaching. Hash Tables reviewed again 2026-09-05 — chaining vs. open addressing degradation, one guided correction (open-addressing lookup cost), then Craig independently caught the unstated uniform-hashing assumption behind the comparison. Arrays reviewed again 2026-09-06 — indexed-access mechanics confirmed cleanly, then extended into dynamic-array amortized doubling; this is Arrays' first section-level confirmation (fresh, not yet solid), and it surfaced a flagged prerequisite gap (general geometric/arithmetic series intuition) rather than an Arrays misunderstanding.</p>
+  <h2>Foundations — Data Structures, reviewed 2026-08-30 (Hash Tables deepened 2026-09-05; Arrays reviewed + extended 2026-09-06; Big O reviewed + extended 2026-09-08 and 2026-09-10; Linked Lists deepened + Doubly-Linked Lists added 2026-09-11)</h2>
+  <p>After an estimated ~104-day gap. Five of six retained cleanly; hash tables needed full re-teaching. Hash Tables reviewed again 2026-09-05 — chaining vs. open addressing degradation, one guided correction (open-addressing lookup cost), then Craig independently caught the unstated uniform-hashing assumption behind the comparison. Arrays reviewed again 2026-09-06 — indexed-access mechanics confirmed cleanly, then extended into dynamic-array amortized doubling; this is Arrays' first section-level confirmation (fresh, not yet solid), and it surfaced a flagged prerequisite gap (general geometric/arithmetic series intuition) rather than an Arrays misunderstanding. Big O reviewed again 2026-09-08 — log-base/constant-factor equivalence and the halving mechanism confirmed cleanly; one genuine misconception corrected (unspecified Big-O defaults to worst case, not average case), worked via a labeled best/worst/average breakdown of linear search and independently restated afterward. Continued 2026-09-10 — O(n log n) via a balanced-tree build (uniform cost, correctly distinguished from amortized analysis), then merge sort and quicksort. Merge sort's uniform O(n log n) shape was self-derived correctly and unprompted; quicksort's worst-vs-average split was mechanically correct but its O(n²) worst case was initially mislabeled "amortized," a genuine best/worst/average-vs-amortized mix-up, corrected same session. Linked Lists deepened 2026-09-11 — node structure, per-case operation costs, and the singly-linked deletion gotcha (a direct pointer to a node still can't reach its predecessor); two scenario-question misconceptions surfaced and were corrected. Doubly-Linked Lists added the same session, split out directly to patch that gotcha — prev-pointer deletion cases (middle/head/tail/single-node) landed, with one gap flagged: the "already holding the pointer" precondition wasn't generalized into a stated decision rule unprompted.</p>
   <div class="table-scroll">
   <table>
     <tr><th>Subtopic</th><th>Topic</th><th>Last covered</th><th>Reviewed</th><th>Next due</th><th>Status</th></tr>
@@ -213,6 +213,18 @@
       <td><span class="status-solid">Confirmed solid</span></td>
     </tr>
     <tr>
+      <td>Linked lists — node structure, traversal, insert/delete by case (head/tail/middle), singly-linked deletion gotcha</td>
+      <td><a href="foundations/data-structures.html#linked-lists">Data Structures — Linked Lists</a></td>
+      <td>2026-09-11</td><td>1 (reset)</td><td>2026-09-14</td>
+      <td><span class="status-fresh">Reset — two misconceptions surfaced (reorder-by-content still needs an O(n) search; a node pointer doesn't reach its predecessor), both corrected same session</span></td>
+    </tr>
+    <tr>
+      <td>Doubly-linked lists — prev pointer, O(1) deletion-by-pointer, memory/bookkeeping trade-off, deletion edge cases (new)</td>
+      <td><a href="foundations/data-structures.html#doubly-linked-lists">Data Structures — Doubly-Linked Lists</a></td>
+      <td>2026-09-11</td><td>1 (reset)</td><td>2026-09-14</td>
+      <td><span class="status-fresh">Reset — "already holding the pointer" precondition not generalized into a stated rule unprompted; also caught a teaching overgeneralization (insertion vs. deletion pointer counts)</span></td>
+    </tr>
+    <tr>
       <td>Stacks (LIFO), tested via independent scenarios</td>
       <td><a href="foundations/data-structures.html">Data Structures</a></td>
       <td>2026-08-30</td><td>1</td><td>2026-09-02</td>
@@ -225,10 +237,16 @@
       <td><span class="status-solid">Confirmed solid</span></td>
     </tr>
     <tr>
-      <td>Big O — growth rate as the core concept</td>
+      <td>Big O — growth rate as core concept, log-base/constant-factor equivalence, halving mechanism, best/worst/average case (linear search)</td>
       <td><a href="foundations/data-structures.html">Data Structures</a></td>
-      <td>2026-08-30</td><td>1</td><td>2026-09-02</td>
-      <td><span class="status-solid">Confirmed solid</span></td>
+      <td>2026-09-08</td><td>1 (reset)</td><td>2026-09-11</td>
+      <td><span class="status-fresh">Reset — initial worst-vs-average-case misconception, self-corrected within the same session</span></td>
+    </tr>
+    <tr>
+      <td>Big O — O(n log n) via balanced-tree build (uniform cost, not amortized); merge sort and quicksort mechanics and use cases; quicksort worst-vs-average grounds the "unspecified = worst case" convention</td>
+      <td><a href="foundations/data-structures.html">Data Structures</a></td>
+      <td>2026-09-10</td><td>1 (reset)</td><td>2026-09-13</td>
+      <td><span class="status-fresh">Reset — quicksort's O(n²) worst case initially mislabeled "amortized"; corrected same session</span></td>
     </tr>
     <tr>
       <td>Hash tables — collision resolution, load factor, rehashing</td>
