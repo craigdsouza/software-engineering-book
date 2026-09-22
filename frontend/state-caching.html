@@ -21,7 +21,7 @@
 </header>
 
 <main>
-  <div class="breadcrumb"><a href="../index.html">Home</a> / Backend / State &amp; Caching</div>
+  <div class="breadcrumb"><a href="../index.html">Home</a> / Frontend / State &amp; Caching</div>
   <h1>State &amp; Caching</h1>
   <p class="subtitle">Status: <span class="status-solid">basics solid</span> · Last covered 2026-08-29</p>
 
@@ -44,7 +44,7 @@
   <p>Polling means resending a full HTTP request (headers, cookies, everything) on a fixed timer, whether or not anything changed — most of those calls are wasted. A <strong>WebSocket</strong> connection is set up once, then stays open as a passive, reserved slot in server memory — no repeated transmission required to "keep it open." When there's actually something to send, the server pushes it down the already-open pipe. The only recurring cost is an occasional small heartbeat frame to detect a silently-dead connection — orders of magnitude cheaper than re-polling every second.</p>
 
   <div class="callout">
-    <strong>Same idea, one layer down:</strong> this exact staleness tradeoff reappears in database replication. See <a href="databases.html#replication">Databases — Replication</a> — an asynchronous replica lagging behind the primary is the same "known vs. guessed freshness" shape as stale-while-revalidate, just applied to database copies instead of client caches.
+    <strong>Same idea, one layer down:</strong> this exact staleness tradeoff reappears in database replication. See <a href="../databases/fundamentals.html#replication">Databases — Replication</a> — an asynchronous replica lagging behind the primary is the same "known vs. guessed freshness" shape as stale-while-revalidate, just applied to database copies instead of client caches.
   </div>
 
   <h2>Where things stand</h2>
@@ -63,8 +63,8 @@
   <div class="related">
     <h2>Related pages</h2>
     <ul>
-      <li><a href="databases.html">Databases</a> — replication lag is this same staleness problem, one layer down.</li>
-      <li><a href="apis.html">APIs</a> — optimistic updates are usually paired with a write to a REST endpoint.</li>
+      <li><a href="../databases/fundamentals.html">Databases</a> — replication lag is this same staleness problem, one layer down.</li>
+      <li><a href="../backend/apis.html">APIs</a> — optimistic updates are usually paired with a write to a REST endpoint.</li>
       <li><a href="../review-schedule.html">Review Schedule</a> — client vs. server state is due again soon.</li>
     </ul>
   </div>

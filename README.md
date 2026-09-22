@@ -39,8 +39,7 @@ GitHub Pages redeploys automatically on every push to `main`.
 - `about/architecture.html` — clickable diagram of how `events.json`, `nodes.json`, the scripts and the generated JSON feed each page
 - `review-schedule.html` — spaced-repetition tracker across all topics (fully generated; no hand-edited tables)
 - `activity.html` — GitHub-style daily activity grid, built from `events.json`
-- `foundations/*.html` — Computer Science topic pages (Data Structures, Trees); the folder name predates the domain reorg
-- `backend/*.html` — Web + Mobile Development / Backend topics (APIs, Auth, State & Caching, Databases)
+- Topic pages live at `{node id}.html`, so the path mirrors `nodes.json`: `computer-science/data-structures.html`, `computer-science/data-structures/trees.html`, `databases/fundamentals.html`, `backend/apis.html`, `backend/auth.html`, `frontend/state-caching.html`. Smaller topics are `#anchors` on their parent's page.
 - `style.css` — shared styling, light/dark aware
 - `events.json` — event log of teaching, reading and quiz activity (schema 1)
 - `nodes.json` — the topic registry: domains, topics, pages, deps, contrasts, also_in

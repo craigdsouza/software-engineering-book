@@ -21,7 +21,7 @@
 </header>
 
 <main>
-  <div class="breadcrumb"><a href="../index.html">Home</a> / Backend / Databases</div>
+  <div class="breadcrumb"><a href="../index.html">Home</a> / Databases / Database Fundamentals</div>
   <h1>Databases</h1>
   <p class="subtitle">Status: basics and "beyond" layer both <span class="status-solid">covered</span> · Last covered 2026-08-29</p>
 
@@ -36,7 +36,7 @@
   <p>A <strong>transaction</strong> groups multiple operations so the database guarantees they behave as one indivisible unit — <strong>Atomicity</strong> (all or nothing), <strong>Consistency</strong> (only valid states), <strong>Isolation</strong> (concurrent transactions can't corrupt each other's view of the data), <strong>Durability</strong> (once confirmed, survives a crash).</p>
 
   <div class="callout">
-    <strong>This is the general-purpose fix for the "likes" race condition.</strong> See <a href="apis.html">APIs — the "like" case study</a>: two concurrent PATCH-array likes could silently lose one update. <em>Isolation</em> is the database property specifically designed to prevent exactly that class of bug.
+    <strong>This is the general-purpose fix for the "likes" race condition.</strong> See <a href="../backend/apis.html">APIs — the "like" case study</a>: two concurrent PATCH-array likes could silently lose one update. <em>Isolation</em> is the database property specifically designed to prevent exactly that class of bug.
   </div>
 
   <h3>Isolation is a dial, not a switch</h3>
@@ -80,7 +80,7 @@ Txn B:                  BEGIN ── insert new $150 order ── COMMIT
   <p><strong>Synchronous</strong> replication — the leader waits for replicas to confirm before acknowledging the write (safe, slower). <strong>Asynchronous</strong> — the leader confirms immediately, replicates in the background (fast, but replicas can lag).</p>
 
   <div class="callout">
-    <strong>Same shape as caching staleness.</strong> See <a href="state-caching.html">State &amp; Caching</a> — an async replica serving a slightly-behind read is the same "known vs. guessed freshness" tradeoff as stale-while-revalidate, just one layer down in the stack.
+    <strong>Same shape as caching staleness.</strong> See <a href="../frontend/state-caching.html">State &amp; Caching</a> — an async replica serving a slightly-behind read is the same "known vs. guessed freshness" tradeoff as stale-while-revalidate, just one layer down in the stack.
   </div>
 
   <h2 id="sharding">Sharding</h2>
@@ -114,8 +114,8 @@ Txn B:                  BEGIN ── insert new $150 order ── COMMIT
   <div class="related">
     <h2>Related pages</h2>
     <ul>
-      <li><a href="apis.html">APIs</a> — the "like" race condition that isolation generalizes.</li>
-      <li><a href="state-caching.html">State &amp; Caching</a> — replication lag as staleness, one layer down.</li>
+      <li><a href="../backend/apis.html">APIs</a> — the "like" race condition that isolation generalizes.</li>
+      <li><a href="../frontend/state-caching.html">State &amp; Caching</a> — replication lag as staleness, one layer down.</li>
       <li><a href="../review-schedule.html">Review Schedule</a> — spaced-repetition status for this topic.</li>
     </ul>
   </div>

@@ -291,12 +291,12 @@ const D = {
     lean: "Order of study is not stored here: the study path (which domain comes first) lives in scan-book.mjs, so the hierarchy only says what a topic is, not when to learn it.",
     leanOk: true,
     exLabel: "Two entries",
-    ex: "{\n  \"id\": \"computer-science/data-structures/hash-tables\",\n  \"title\": \"Hash Tables\",\n  \"page\": \"foundations/data-structures.html#hash-tables\",\n  \"deps\": [\"computer-science/data-structures/arrays\"],\n  \"contrasts\": [],\n  \"also_in\": []\n}\n\n{ \"id\": \"backend/auth\", \"title\": \"Auth\", \"page\": \"backend/auth.html\",\n  \"deps\": [], \"contrasts\": [], \"also_in\": [\"security\"] }"
+    ex: "{\n  \"id\": \"computer-science/data-structures/hash-tables\",\n  \"title\": \"Hash Tables\",\n  \"page\": \"computer-science/data-structures.html#hash-tables\",\n  \"deps\": [\"computer-science/data-structures/arrays\"],\n  \"contrasts\": [],\n  \"also_in\": []\n}\n\n{ \"id\": \"backend/auth\", \"title\": \"Auth\", \"page\": \"backend/auth.html\",\n  \"deps\": [], \"contrasts\": [], \"also_in\": [\"security\"] }"
   },
   pages: {
-    title: "foundations/*.html, backend/*.html",
+    title: "Topic pages (e.g. computer-science/data-structures.html)",
     kind: "Hand-written content — also repeats status",
-    file: "../foundations/data-structures.html",
+    file: "../computer-science/data-structures.html",
     role: "The actual teaching material. Besides the prose, each page carries a status subtitle, a summary paragraph and a \"Coverage log (spaced repetition)\" table, all typed by the skill.",
     writes: "swe-teacher",
     reads: "You. No script reads these files.",
@@ -341,7 +341,7 @@ study path: computer-science → computer-architecture → operating-systems →
     lean: "Fine as is. It's the file an outside agent would query for \"what do I know?\", the natural thing to expose later through a read-only API.",
     leanOk: true,
     exLabel: "The Linked Lists node",
-    ex: "{\n  \"id\": \"computer-science/data-structures/linked-lists\",\n  \"title\": \"Linked Lists\",\n  \"materialization\": \"section\",\n  \"page\": \"foundations/data-structures.html#linked-lists\",\n  \"parent\": \"computer-science/data-structures\",\n  \"children\": [],\n  \"deps\": [],\n  \"contrasts\": [\"computer-science/data-structures/arrays\",\n                \"computer-science/data-structures/doubly-linked-lists\"],\n  \"also_in\": [],\n  \"unlocks\": 2,\n  \"status\": \"solid\",\n  \"direct\": { \"status\": \"solid\", \"timesReviewed\": 2, \"lastScored\": \"2026-09-17\",\n              \"lastSuccess\": \"2026-09-17\", \"dueDate\": \"2026-09-24\" }\n}"
+    ex: "{\n  \"id\": \"computer-science/data-structures/linked-lists\",\n  \"title\": \"Linked Lists\",\n  \"materialization\": \"section\",\n  \"page\": \"computer-science/data-structures.html#linked-lists\",\n  \"parent\": \"computer-science/data-structures\",\n  \"children\": [],\n  \"deps\": [],\n  \"contrasts\": [\"computer-science/data-structures/arrays\",\n                \"computer-science/data-structures/doubly-linked-lists\"],\n  \"also_in\": [],\n  \"unlocks\": 2,\n  \"status\": \"solid\",\n  \"direct\": { \"status\": \"solid\", \"timesReviewed\": 2, \"lastScored\": \"2026-09-17\",\n              \"lastSuccess\": \"2026-09-17\", \"dueDate\": \"2026-09-24\" }\n}"
   },
   progress: {
     title: "progress-data.json",

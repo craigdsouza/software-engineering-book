@@ -21,12 +21,12 @@
 </header>
 
 <main>
-  <div class="breadcrumb"><a href="../index.html">Home</a> / Foundations / Data Structures</div>
+  <div class="breadcrumb"><a href="../index.html">Home</a> / Computer Science / Data Structures</div>
   <h1>Data Structures</h1>
-  <p class="subtitle">Status: most sections <span class="status-fresh">needs-review</span>, Linked Lists <span class="status-solid">solid</span> — see Coverage log below for what's overdue vs. never scored on its own · Linked Lists reconfirmed 2026-09-17 · Trees moved to <a href="trees.html">its own page</a> · Last covered 2026-09-17</p>
+  <p class="subtitle">Status: most sections <span class="status-fresh">needs-review</span>, Linked Lists <span class="status-solid">solid</span> — see Coverage log below for what's overdue vs. never scored on its own · Linked Lists reconfirmed 2026-09-17 · Trees moved to <a href="data-structures/trees.html">its own page</a> · Last covered 2026-09-17</p>
 
   <div class="callout">
-    <strong>Trees is now its own page</strong> (promoted 2026-09-02 — it outgrew being a section here, with BST mechanics deep enough to need a section of its own). See <a href="trees.html">Trees</a>.
+    <strong>Trees is now its own page</strong> (promoted 2026-09-02 — it outgrew being a section here, with BST mechanics deep enough to need a section of its own). See <a href="data-structures/trees.html">Trees</a>.
   </div>
 
   <h2 id="arrays">Arrays</h2>
@@ -51,7 +51,7 @@ Delete, given target only:   O(n) in a singly-linked list — see below</pre>
     <li><strong>Paired with O(1) lookup:</strong> a hash map from key → node pointer hands you the splice point for free — the pattern behind an LRU cache (advanced — see below).</li>
     <li><strong>Merging/splitting whole lists:</strong> relink a few pointers instead of copying every element — part of why merge sort works well on linked lists.</li>
   </ul>
-  <p>Contrasts directly with <a href="#arrays">Arrays</a>: contiguous + O(1) index vs. scattered + O(1) splice-at-a-known-point. Unlocks <a href="trees.html">Trees</a> — a tree node is a linked-list node with two <code>next</code> pointers (left, right) instead of one, and everything about pointer-chasing and no-random-access here carries straight over. See also <a href="#doubly-linked-lists">Doubly-Linked Lists</a>, added specifically to patch the deletion gotcha above.</p>
+  <p>Contrasts directly with <a href="#arrays">Arrays</a>: contiguous + O(1) index vs. scattered + O(1) splice-at-a-known-point. Unlocks <a href="data-structures/trees.html">Trees</a> — a tree node is a linked-list node with two <code>next</code> pointers (left, right) instead of one, and everything about pointer-chasing and no-random-access here carries straight over. See also <a href="#doubly-linked-lists">Doubly-Linked Lists</a>, added specifically to patch the deletion gotcha above.</p>
 
   <h2 id="doubly-linked-lists">Doubly-Linked Lists</h2>
   <p>Each node adds a third field, <code>prev</code>, alongside <code>data</code> and <code>next</code> — every node now knows both what comes after it and what comes before it. This directly patches the <a href="#linked-lists">singly-linked deletion gotcha</a>: given a direct pointer to a node, its predecessor is sitting right there in <code>.prev</code>, no traversal required. Deletion given a direct node pointer becomes genuinely O(1).</p>
@@ -136,7 +136,7 @@ Average case: target equally likely anywhere          → ~n/2 comparisons → O
   </div>
 
   <h2>Where things stand</h2>
-  <p>Arrays: reviewed again and extended with dynamic-array amortized analysis — the core doubling-vs-fixed-increment mechanics land cleanly, but this is only its first section-level confirmation (needs-review, not yet solid), and general series justification for arbitrary growth factors is a flagged gap, not yet taught. Linked Lists: substantially deepened 2026-09-11 — node structure, per-case operation costs, and the singly-linked deletion gotcha are understood; two scenario-question misconceptions surfaced that session (both corrected), so status reset to needs-review pending a clean recheck. Rechecked 2026-09-17 with a light confirm-only quiz targeting exactly those two spots (middle-node deletion given a direct pointer; head-node deletion) — both answered correctly with sound reasoning, so status is now solid. Doubly-Linked Lists: new section 2026-09-11, split out of the same session — the prev-pointer fix and its deletion edge cases land, with one gap flagged (the "already holding the pointer" precondition wasn't generalized into a stated rule unprompted). Stacks and Queues have never been scored on their own (page-level review only, 2026-08-30). Big O and Hash Tables carry flagged gaps from their own last reviews — see Coverage log. Trees has grown into its own page — see <a href="trees.html">Trees</a> for status.</p>
+  <p>Arrays: reviewed again and extended with dynamic-array amortized analysis — the core doubling-vs-fixed-increment mechanics land cleanly, but this is only its first section-level confirmation (needs-review, not yet solid), and general series justification for arbitrary growth factors is a flagged gap, not yet taught. Linked Lists: substantially deepened 2026-09-11 — node structure, per-case operation costs, and the singly-linked deletion gotcha are understood; two scenario-question misconceptions surfaced that session (both corrected), so status reset to needs-review pending a clean recheck. Rechecked 2026-09-17 with a light confirm-only quiz targeting exactly those two spots (middle-node deletion given a direct pointer; head-node deletion) — both answered correctly with sound reasoning, so status is now solid. Doubly-Linked Lists: new section 2026-09-11, split out of the same session — the prev-pointer fix and its deletion edge cases land, with one gap flagged (the "already holding the pointer" precondition wasn't generalized into a stated rule unprompted). Stacks and Queues have never been scored on their own (page-level review only, 2026-08-30). Big O and Hash Tables carry flagged gaps from their own last reviews — see Coverage log. Trees has grown into its own page — see <a href="data-structures/trees.html">Trees</a> for status.</p>
 
   <h2>Coverage log (spaced repetition)</h2>
   <div class="table-scroll">
@@ -159,7 +159,7 @@ Average case: target equally likely anywhere          → ~n/2 comparisons → O
   <div class="related">
     <h2>Related pages</h2>
     <ul>
-      <li><a href="trees.html">Trees</a> — grew out of this page 2026-09-02; reuses Stacks and Queues covered here for traversal.</li>
+      <li><a href="data-structures/trees.html">Trees</a> — grew out of this page 2026-09-02; reuses Stacks and Queues covered here for traversal.</li>
       <li><a href="../backend/apis.html">APIs</a> — the "likes" race condition and hash-table collision resolution are both instances of "two things want the same slot, now what?"</li>
       <li><a href="../review-schedule.html">Review Schedule</a> — spaced-repetition status.</li>
     </ul>

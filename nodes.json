@@ -58,7 +58,7 @@
     {
       "id": "computer-science/complexity/big-o",
       "title": "Big O Notation",
-      "page": "foundations/data-structures.html#big-o",
+      "page": "computer-science/data-structures.html#big-o",
       "deps": [],
       "contrasts": [],
       "also_in": [
@@ -68,7 +68,7 @@
     {
       "id": "computer-science/data-structures",
       "title": "Data Structures",
-      "page": "foundations/data-structures.html",
+      "page": "computer-science/data-structures.html",
       "deps": [],
       "contrasts": [],
       "also_in": []
@@ -76,7 +76,7 @@
     {
       "id": "computer-science/data-structures/arrays",
       "title": "Arrays",
-      "page": "foundations/data-structures.html#arrays",
+      "page": "computer-science/data-structures.html#arrays",
       "deps": [],
       "contrasts": [
         "computer-science/data-structures/linked-lists"
@@ -86,7 +86,7 @@
     {
       "id": "computer-science/data-structures/doubly-linked-lists",
       "title": "Doubly-Linked Lists",
-      "page": "foundations/data-structures.html#doubly-linked-lists",
+      "page": "computer-science/data-structures.html#doubly-linked-lists",
       "deps": [
         "computer-science/data-structures/linked-lists"
       ],
@@ -98,7 +98,7 @@
     {
       "id": "computer-science/data-structures/hash-tables",
       "title": "Hash Tables",
-      "page": "foundations/data-structures.html#hash-tables",
+      "page": "computer-science/data-structures.html#hash-tables",
       "deps": [
         "computer-science/data-structures/arrays"
       ],
@@ -108,7 +108,7 @@
     {
       "id": "computer-science/data-structures/linked-lists",
       "title": "Linked Lists",
-      "page": "foundations/data-structures.html#linked-lists",
+      "page": "computer-science/data-structures.html#linked-lists",
       "deps": [],
       "contrasts": [
         "computer-science/data-structures/arrays",
@@ -119,7 +119,7 @@
     {
       "id": "computer-science/data-structures/queues",
       "title": "Queues",
-      "page": "foundations/data-structures.html#queues",
+      "page": "computer-science/data-structures.html#queues",
       "deps": [],
       "contrasts": [
         "computer-science/data-structures/stacks"
@@ -129,7 +129,7 @@
     {
       "id": "computer-science/data-structures/stacks",
       "title": "Stacks",
-      "page": "foundations/data-structures.html#stacks",
+      "page": "computer-science/data-structures.html#stacks",
       "deps": [],
       "contrasts": [
         "computer-science/data-structures/queues"
@@ -139,7 +139,7 @@
     {
       "id": "computer-science/data-structures/trees",
       "title": "Trees",
-      "page": "foundations/trees.html",
+      "page": "computer-science/data-structures/trees.html",
       "deps": [
         "computer-science/data-structures/linked-lists"
       ],
@@ -149,7 +149,7 @@
     {
       "id": "computer-science/data-structures/trees/bst",
       "title": "Binary Search Trees (BST)",
-      "page": "foundations/trees.html#bst",
+      "page": "computer-science/data-structures/trees.html#bst",
       "deps": [],
       "contrasts": [
         "computer-science/data-structures/hash-tables"
@@ -168,7 +168,7 @@
     {
       "id": "databases/fundamentals",
       "title": "Database Fundamentals",
-      "page": "backend/databases.html",
+      "page": "databases/fundamentals.html",
       "deps": [],
       "contrasts": [],
       "also_in": [
@@ -205,7 +205,7 @@
     {
       "id": "frontend/state-caching",
       "title": "State & Caching",
-      "page": "backend/state-caching.html",
+      "page": "frontend/state-caching.html",
       "deps": [],
       "contrasts": [],
       "also_in": [

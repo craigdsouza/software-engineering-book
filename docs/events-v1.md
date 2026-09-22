@@ -5,6 +5,9 @@ is computed from it; nothing else is hand-written. `scripts/validate-events.mjs`
 everything below, and the REST API will run the same checks on every write.
 
 Files: `events.json` (the log), `nodes.json` (the node registry every `node_id` must come from).
+A page node's prose lives at `{id}.html` (e.g. `computer-science/data-structures.html`); a section node is an
+`#anchor` on its parent's page. One deliberate exception: `computer-science/complexity/big-o` still lives at
+`computer-science/data-structures.html#big-o`, where it was taught.
 
 ## Outer fields (every event)
 

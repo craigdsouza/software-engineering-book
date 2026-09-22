@@ -4,36 +4,36 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trees — Software Engineering Book</title>
-<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../../style.css">
 </head>
 <body>
 <header class="site-header">
   <div class="inner">
-    <a class="brand" href="../index.html">Software Engineering — A Study Book</a>
+    <a class="brand" href="../../index.html">Software Engineering — A Study Book</a>
     <nav class="tracks">
-      <a href="../index.html">Home</a>
-      <a href="../review-schedule.html">Review Schedule</a>
-      <a href="../activity.html">Activity</a>
-      <a href="../about/teaching-style.html">Teaching Style</a>
-      <a href="../about/architecture.html">Architecture</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../review-schedule.html">Review Schedule</a>
+      <a href="../../activity.html">Activity</a>
+      <a href="../../about/teaching-style.html">Teaching Style</a>
+      <a href="../../about/architecture.html">Architecture</a>
     </nav>
   </div>
 </header>
 
 <main>
-  <div class="breadcrumb"><a href="../index.html">Home</a> / Foundations / <a href="data-structures.html">Data Structures</a> / Trees</div>
+  <div class="breadcrumb"><a href="../../index.html">Home</a> / Computer Science / <a href="../data-structures.html">Data Structures</a> / Trees</div>
   <h1>Trees</h1>
   <p class="subtitle">Status: terminology, traversal, balance <span class="status-solid">solid</span> · BST mechanics <span class="status-fresh">fresh</span> · Last covered 2026-09-03</p>
 
   <div class="callout">
-    <strong>Promoted to its own page 2026-09-02.</strong> Trees started as a section of <a href="data-structures.html">Data Structures</a> but outgrew it — multiple sessions' worth of terminology, traversal, and now deep BST mechanics (search, insertion, deletion). Still conceptually a child of Data Structures; just materialized as its own page now that it has sections of its own.
+    <strong>Promoted to its own page 2026-09-02.</strong> Trees started as a section of <a href="../data-structures.html">Data Structures</a> but outgrew it — multiple sessions' worth of terminology, traversal, and now deep BST mechanics (search, insertion, deletion). Still conceptually a child of Data Structures; just materialized as its own page now that it has sections of its own.
   </div>
 
   <h2>Terminology</h2>
   <p>A tree is a linked structure where each node can have more than one child, with one designated <strong>root</strong> (no parent) and any number of <strong>leaves</strong> (no children). A node's <strong>depth</strong> is its distance from the root; the tree's <strong>height</strong> is the depth of its deepest leaf. A <strong>binary tree</strong> caps every node at two children; a <strong>binary search tree (BST)</strong> adds an ordering invariant — for any node, everything in its left subtree is smaller and everything in its right subtree is larger — which is what makes search fast: each comparison discards an entire half of the remaining tree, the same logic as binary search. BST mechanics (search, insertion, deletion) are covered in their own section below, since they've grown enough depth to warrant it.</p>
 
   <h2>Traversal</h2>
-  <p>Two ways to walk a tree, and both reuse structures already covered under <a href="data-structures.html">Data Structures</a>: <strong>depth-first (DFS)</strong> commits to one branch all the way down before backtracking to a sibling — powered by a stack, either explicit or the call stack recursion provides for free. <strong>Breadth-first (BFS)</strong> checks all of a node's children before moving to the next level — powered by a queue, since children are enqueued as discovered and processed in that order.</p>
+  <p>Two ways to walk a tree, and both reuse structures already covered under <a href="../data-structures.html">Data Structures</a>: <strong>depth-first (DFS)</strong> commits to one branch all the way down before backtracking to a sibling — powered by a stack, either explicit or the call stack recursion provides for free. <strong>Breadth-first (BFS)</strong> checks all of a node's children before moving to the next level — powered by a queue, since children are enqueued as discovered and processed in that order.</p>
 
   <h2>Balance</h2>
   <p>Speed isn't automatic. If values are inserted in already-sorted order, each new node just extends one side, producing a straight chain — structurally a linked list wearing a tree's name, with search back down to O(n). <strong>Self-balancing</strong> BSTs (AVL, red-black) detect this kind of skew during insertion and restructure locally (rotations) to keep height near log n regardless of insertion order — mechanics deferred for now; the concept to hold onto is that balance has to be actively maintained, not assumed.</p>
@@ -84,8 +84,8 @@
   <div class="related">
     <h2>Related pages</h2>
     <ul>
-      <li><a href="data-structures.html">Data Structures</a> — parent page; traversal reuses Stacks and Queues covered there.</li>
-      <li><a href="../review-schedule.html">Review Schedule</a> — spaced-repetition status.</li>
+      <li><a href="../data-structures.html">Data Structures</a> — parent page; traversal reuses Stacks and Queues covered there.</li>
+      <li><a href="../../review-schedule.html">Review Schedule</a> — spaced-repetition status.</li>
     </ul>
   </div>
 </main>
