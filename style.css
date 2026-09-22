@@ -588,7 +588,6 @@ footer.site-footer {
   border: 1px solid var(--border);
 }
 .swatch[data-status="solid"] { background: var(--status-solid); border-color: var(--status-solid); }
-.swatch[data-status="fresh"] { background: var(--status-fresh); border-color: var(--status-faint); }
 .swatch[data-status="needs-review"] { background: var(--accent-bg); border-color: var(--accent); }
 .swatch[data-status="ungraded"] { background: var(--border); border-color: var(--text-dim); }
 .swatch[data-status="unwritten"] { background: transparent; border-color: var(--border); }
@@ -693,7 +692,6 @@ summary.unit-summary:focus-visible { outline: 2px solid var(--accent); outline-o
   border: 1px solid var(--border);
 }
 .tick[data-status="solid"] { background: var(--status-solid); border-color: var(--status-solid); }
-.tick[data-status="fresh"] { background: var(--status-fresh); border-color: var(--status-faint); }
 .tick[data-status="needs-review"] { background: var(--accent-bg); border-color: var(--accent); }
 .tick[data-status="ungraded"] { background: var(--border); border-color: var(--text-dim); }
 .tick[data-status="unwritten"] { background: transparent; border-color: var(--border); }
@@ -771,12 +769,17 @@ summary.unit-summary:focus-visible { outline: 2px solid var(--accent); outline-o
   color: var(--text-dim);
   font-variant-numeric: tabular-nums;
 }
-.cell[data-state="all"] {
+/* Reuses the same solid/needs-review colors as .swatch and .tick below --
+   as of 2026-09-18 the tag grid is a rolling-window pass/fail (see
+   aggregateTags() in scan-book.mjs), the same kind of "in good shape right
+   now" signal as the node tick, just at a finer grain. Deliberately not a
+   separate palette. */
+.cell[data-state="solid"] {
   background: var(--status-solid);
   border-color: var(--status-solid);
   color: var(--bg);
 }
-.cell[data-state="partial"] {
+.cell[data-state="needs-review"] {
   background: var(--accent-bg);
   border-color: var(--accent);
   color: var(--accent);

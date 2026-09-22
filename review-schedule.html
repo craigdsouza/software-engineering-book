@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Review Schedule — Web + Mobile Dev Book</title>
+<title>Review Schedule — Software Engineering Book</title>
 <link rel="stylesheet" href="style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +18,7 @@
       <a class="active" href="review-schedule.html">Review Schedule</a>
       <a href="activity.html">Activity</a>
       <a href="about/teaching-style.html">Teaching Style</a>
+      <a href="about/architecture.html">Architecture</a>
     </nav>
   </div>
 </header>
@@ -25,7 +26,7 @@
 <main>
   <div class="breadcrumb"><a href="index.html">Home</a> / Review Schedule</div>
   <h1>Spaced Repetition Review Schedule</h1>
-  <p class="subtitle">Every subtopic tracks when it was last covered and how many times it's been reviewed. The gap before the next review grows each time recall is confirmed — and resets if a review reveals shaky understanding.</p>
+  <p class="subtitle">Every topic in the book's graph tracks when it was last quizzed and how many times in a row recall has held up. The gap before the next review grows each time recall is confirmed — and resets if a review reveals shaky understanding.</p>
 
   <div class="pv">
     <!-- BUILD-PROGRESS:START duestrip -->
@@ -36,43 +37,64 @@
       </div>
       <p class="duestrip-lead">Scheduled nodes sit on the axis. Overdue ones hang below the line — the drop is the debt, and it only clears by answering.</p>
       <div class="duestrip-card">
-        <div class="due-plot">
+        <div class="due-plot" style="height:320px;">
           <div class="due-axis-line"></div>
-          <div class="due-today" style="left:36.36%;"></div>
-          <span class="due-today-label" style="left:36.36%;">today</span>
-          <div class="due-pin" data-status="needs-review" data-late style="left:31.82%;top:114px;">
+          <div class="due-today" style="left:60.00%;"></div>
+          <span class="due-today-label" style="left:60.00%;">today</span>
+          <div class="due-pin" data-status="solid" style="left:68.57%;top:86px;">
+            <span class="due-stem" style="height:10px;top:4px;"></span>
+            <span class="due-dot"></span>
+            <span class="due-label"><span class="due-label-title">Linked Lists</span><span class="due-label-when">in 3d</span></span>
+          </div>
+          <div class="due-pin" data-status="needs-review" data-late style="left:28.57%;top:114px;">
             <span class="due-stem" style="height:10px;top:-14px;"></span>
             <span class="due-dot"></span>
-            <span class="due-label"><span class="due-label-title">Binary Search Trees</span><span class="due-label-when">1d overdue</span></span>
+            <span class="due-label"><span class="due-label-title">Binary Search Trees</span><span class="due-label-when">11d overdue</span></span>
           </div>
-          <div class="due-pin" data-status="needs-review" data-late style="left:27.27%;top:144px;">
+          <div class="due-pin" data-status="needs-review" data-late style="left:25.71%;top:144px;">
             <span class="due-stem" style="height:40px;top:-44px;"></span>
             <span class="due-dot"></span>
-            <span class="due-label"><span class="due-label-title">Arrays</span><span class="due-label-when">2d overdue</span></span>
+            <span class="due-label"><span class="due-label-title">Arrays</span><span class="due-label-when">12d overdue</span></span>
           </div>
-          <div class="due-pin" data-status="needs-review" data-late style="left:0.00%;top:174px;">
+          <div class="due-pin" data-status="needs-review" data-late style="left:14.29%;top:174px;">
             <span class="due-stem" style="height:70px;top:-74px;"></span>
             <span class="due-dot"></span>
-            <span class="due-label"><span class="due-label-title">Trees</span><span class="due-label-when">8d overdue</span></span>
+            <span class="due-label"><span class="due-label-title">APIs</span><span class="due-label-when">16d overdue</span></span>
           </div>
-          <div class="due-axis-labels"><span>sep 3</span><span>sep 25</span></div>
+          <div class="due-pin" data-status="needs-review" data-late style="left:8.57%;top:204px;">
+            <span class="due-stem" style="height:100px;top:-104px;"></span>
+            <span class="due-dot"></span>
+            <span class="due-label"><span class="due-label-title">Trees</span><span class="due-label-when">18d overdue</span></span>
+          </div>
+          <div class="due-pin" data-status="needs-review" data-late style="left:2.86%;top:234px;">
+            <span class="due-stem" style="height:130px;top:-134px;"></span>
+            <span class="due-dot"></span>
+            <span class="due-label"><span class="due-label-title">Database Fundamentals</span><span class="due-label-when">20d overdue</span></span>
+          </div>
+          <div class="due-pin" data-status="needs-review" data-late style="left:0.00%;top:264px;">
+            <span class="due-stem" style="height:160px;top:-164px;"></span>
+            <span class="due-dot"></span>
+            <span class="due-label"><span class="due-label-title">Auth</span><span class="due-label-when">21d overdue</span></span>
+          </div>
+          <div class="due-axis-labels"><span>aug 31</span><span>oct 5</span></div>
         </div>
       </div>
       <div class="due-lists">
         <div class="due-unscheduled">
           <p class="due-unscheduled-head">Unscheduled · answer to schedule</p>
           <ul>
+            <li><span class="due-unscheduled-title">Doubly-Linked Lists</span><span class="due-unscheduled-last">scored 09-11</span></li>
             <li><span class="due-unscheduled-title">Big O Notation</span><span class="due-unscheduled-last">scored 09-10</span></li>
             <li><span class="due-unscheduled-title">Hash Tables</span><span class="due-unscheduled-last">scored 09-05</span></li>
             <li><span class="due-unscheduled-title">Data Structures</span><span class="due-unscheduled-last">scored 08-30</span></li>
-            <li><span class="due-unscheduled-title">Linked Lists</span><span class="due-unscheduled-last">never scored</span></li>
-            <li><span class="due-unscheduled-title">Stacks</span><span class="due-unscheduled-last">never scored</span></li>
+            <li><span class="due-unscheduled-title">State &amp; Caching</span><span class="due-unscheduled-last">scored 08-29</span></li>
             <li><span class="due-unscheduled-title">Queues</span><span class="due-unscheduled-last">never scored</span></li>
+            <li><span class="due-unscheduled-title">Stacks</span><span class="due-unscheduled-last">never scored</span></li>
           </ul>
         </div>
         <div class="due-advice">
           <p class="due-advice-head">Clearing it</p>
-          <p>Six nodes carry no due date because they've never been scored on their own — a page-level review graded the whole page at once. One section-level check each converts them from debt into a schedule.</p>
+          <p>Seven nodes carry no due date: either they've never had a clean review of their own (a whole-page review scored the page, not them), or every review so far had a miss. One clean check each converts them into a schedule.</p>
         </div>
       </div>
     </section>
@@ -90,224 +112,9 @@
   </table>
   </div>
 
-  <h2>Status as of 2026-08-31</h2>
-  <p>Sorted by next review due.</p>
-
-  <div class="table-scroll">
-  <table>
-    <tr><th>Subtopic</th><th>Topic</th><th>Last covered</th><th>Reviewed</th><th>Next due</th><th>Status</th></tr>
-    <tr>
-      <td>Client vs. server state; TTL/SWR/invalidate/push</td>
-      <td><a href="backend/state-caching.html">State &amp; Caching</a></td>
-      <td>2026-08-29</td><td>1 (reset)</td><td>2026-09-01</td>
-      <td><span class="status-fresh">Reset</span></td>
-    </tr>
-    <tr>
-      <td>Sessions vs. tokens, OAuth, why mobile favors tokens</td>
-      <td><a href="backend/auth.html">Auth</a></td>
-      <td>2026-08-29</td><td>1 (reset)</td><td>2026-09-01</td>
-      <td><span class="status-fresh">Reset</span></td>
-    </tr>
-    <tr>
-      <td>Why databases exist; relational vs. non-relational; normalization</td>
-      <td><a href="backend/databases.html">Databases</a></td>
-      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
-      <td><span class="status-fresh">Fresh</span></td>
-    </tr>
-    <tr>
-      <td>ACID/transactions/isolation (tied to likes race condition)</td>
-      <td><a href="backend/databases.html">Databases</a></td>
-      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
-      <td><span class="status-fresh">Fresh</span></td>
-    </tr>
-    <tr>
-      <td>Indexes</td>
-      <td><a href="backend/databases.html">Databases</a></td>
-      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
-      <td><span class="status-fresh">Fresh</span></td>
-    </tr>
-    <tr>
-      <td>Isolation levels (dirty/non-repeatable/phantom, locking vs. MVCC)</td>
-      <td><a href="backend/databases.html">Databases</a></td>
-      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
-      <td><span class="status-fresh">Fresh</span></td>
-    </tr>
-    <tr>
-      <td>Replication (sync vs. async, staleness link to caching)</td>
-      <td><a href="backend/databases.html">Databases</a></td>
-      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
-      <td><span class="status-fresh">Fresh</span></td>
-    </tr>
-    <tr>
-      <td>Sharding and scatter-gather</td>
-      <td><a href="backend/databases.html">Databases</a></td>
-      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
-      <td><span class="status-fresh">Fresh</span></td>
-    </tr>
-    <tr>
-      <td>CAP theorem (CP vs. AP)</td>
-      <td><a href="backend/databases.html">Databases</a></td>
-      <td>2026-08-29</td><td>1</td><td>2026-09-01</td>
-      <td><span class="status-fresh">Fresh</span></td>
-    </tr>
-    <tr>
-      <td>Cookie security model (domain scoping/HttpOnly/Secure/SameSite) + XSS/CSRF mechanics</td>
-      <td><a href="backend/auth.html">Auth</a></td>
-      <td>2026-08-31</td><td>1 (reset)</td><td>2026-09-03</td>
-      <td><span class="status-fresh">Reset — domain scoping conflated with SameSite/CSRF</span></td>
-    </tr>
-    <tr>
-      <td>CSRF vs. XSS deeper distinction (SameSite only stops CSRF)</td>
-      <td><a href="backend/auth.html">Auth</a></td>
-      <td>2026-08-31</td><td>2</td><td>2026-09-07</td>
-      <td><span class="status-solid">Confirmed solid</span></td>
-    </tr>
-    <tr>
-      <td>REST resource modeling, verbs, status codes</td>
-      <td><a href="backend/apis.html">APIs</a></td>
-      <td>2026-08-29</td><td>2</td><td>2026-09-05</td>
-      <td><span class="status-solid">Confirmed solid</span></td>
-    </tr>
-    <tr>
-      <td>"Like" case study — event vs. state, race conditions</td>
-      <td><a href="backend/apis.html">APIs</a></td>
-      <td>2026-08-29</td><td>2</td><td>2026-09-05</td>
-      <td><span class="status-solid">Confirmed solid</span></td>
-    </tr>
-    <tr>
-      <td>Optimistic updates vs. SWR vs. invalidate-on-mutation</td>
-      <td><a href="backend/state-caching.html">State &amp; Caching</a></td>
-      <td>2026-08-29</td><td>2</td><td>2026-09-05</td>
-      <td><span class="status-solid">Confirmed solid</span></td>
-    </tr>
-    <tr>
-      <td>Push vs. polling / WebSocket connection mechanics</td>
-      <td><a href="backend/state-caching.html">State &amp; Caching</a></td>
-      <td>2026-08-29</td><td>2</td><td>2026-09-05</td>
-      <td><span class="status-solid">Confirmed solid</span></td>
-    </tr>
-  </table>
-  </div>
-
-  <h2>Foundations — Data Structures, reviewed 2026-08-30 (Hash Tables deepened 2026-09-05; Arrays reviewed + extended 2026-09-06; Big O reviewed + extended 2026-09-08 and 2026-09-10; Linked Lists deepened + Doubly-Linked Lists added 2026-09-11)</h2>
-  <p>After an estimated ~104-day gap. Five of six retained cleanly; hash tables needed full re-teaching. Hash Tables reviewed again 2026-09-05 — chaining vs. open addressing degradation, one guided correction (open-addressing lookup cost), then Craig independently caught the unstated uniform-hashing assumption behind the comparison. Arrays reviewed again 2026-09-06 — indexed-access mechanics confirmed cleanly, then extended into dynamic-array amortized doubling; this is Arrays' first section-level confirmation (fresh, not yet solid), and it surfaced a flagged prerequisite gap (general geometric/arithmetic series intuition) rather than an Arrays misunderstanding. Big O reviewed again 2026-09-08 — log-base/constant-factor equivalence and the halving mechanism confirmed cleanly; one genuine misconception corrected (unspecified Big-O defaults to worst case, not average case), worked via a labeled best/worst/average breakdown of linear search and independently restated afterward. Continued 2026-09-10 — O(n log n) via a balanced-tree build (uniform cost, correctly distinguished from amortized analysis), then merge sort and quicksort. Merge sort's uniform O(n log n) shape was self-derived correctly and unprompted; quicksort's worst-vs-average split was mechanically correct but its O(n²) worst case was initially mislabeled "amortized," a genuine best/worst/average-vs-amortized mix-up, corrected same session. Linked Lists deepened 2026-09-11 — node structure, per-case operation costs, and the singly-linked deletion gotcha (a direct pointer to a node still can't reach its predecessor); two scenario-question misconceptions surfaced and were corrected. Doubly-Linked Lists added the same session, split out directly to patch that gotcha — prev-pointer deletion cases (middle/head/tail/single-node) landed, with one gap flagged: the "already holding the pointer" precondition wasn't generalized into a stated decision rule unprompted.</p>
-  <div class="table-scroll">
-  <table>
-    <tr><th>Subtopic</th><th>Topic</th><th>Last covered</th><th>Reviewed</th><th>Next due</th><th>Status</th></tr>
-    <tr>
-      <td>Arrays vs. linked lists — indexed access tradeoffs</td>
-      <td><a href="foundations/data-structures.html">Data Structures</a></td>
-      <td>2026-09-06</td><td>1</td><td>2026-09-08</td>
-      <td><span class="status-fresh">Fresh — first section-level confirmation</span></td>
-    </tr>
-    <tr>
-      <td>Dynamic array amortized doubling vs. fixed-increment growth (forward pointer: general geometric/arithmetic series intuition)</td>
-      <td><a href="foundations/data-structures.html">Data Structures</a></td>
-      <td>2026-09-06</td><td>0 (in progress)</td><td>—</td>
-      <td><span class="status-fresh">In progress — blocked on series-summation intuition, not an arrays misunderstanding</span></td>
-    </tr>
-    <tr>
-      <td>Linked lists — middle insert/delete tradeoffs</td>
-      <td><a href="foundations/data-structures.html">Data Structures</a></td>
-      <td>2026-08-30</td><td>1</td><td>2026-09-02</td>
-      <td><span class="status-solid">Confirmed solid</span></td>
-    </tr>
-    <tr>
-      <td>Linked lists — node structure, traversal, insert/delete by case (head/tail/middle), singly-linked deletion gotcha</td>
-      <td><a href="foundations/data-structures.html#linked-lists">Data Structures — Linked Lists</a></td>
-      <td>2026-09-11</td><td>1 (reset)</td><td>2026-09-14</td>
-      <td><span class="status-fresh">Reset — two misconceptions surfaced (reorder-by-content still needs an O(n) search; a node pointer doesn't reach its predecessor), both corrected same session</span></td>
-    </tr>
-    <tr>
-      <td>Doubly-linked lists — prev pointer, O(1) deletion-by-pointer, memory/bookkeeping trade-off, deletion edge cases (new)</td>
-      <td><a href="foundations/data-structures.html#doubly-linked-lists">Data Structures — Doubly-Linked Lists</a></td>
-      <td>2026-09-11</td><td>1 (reset)</td><td>2026-09-14</td>
-      <td><span class="status-fresh">Reset — "already holding the pointer" precondition not generalized into a stated rule unprompted; also caught a teaching overgeneralization (insertion vs. deletion pointer counts)</span></td>
-    </tr>
-    <tr>
-      <td>Stacks (LIFO), tested via independent scenarios</td>
-      <td><a href="foundations/data-structures.html">Data Structures</a></td>
-      <td>2026-08-30</td><td>1</td><td>2026-09-02</td>
-      <td><span class="status-solid">Confirmed solid</span></td>
-    </tr>
-    <tr>
-      <td>Queues (FIFO)</td>
-      <td><a href="foundations/data-structures.html">Data Structures</a></td>
-      <td>2026-08-30</td><td>1</td><td>2026-09-02</td>
-      <td><span class="status-solid">Confirmed solid</span></td>
-    </tr>
-    <tr>
-      <td>Big O — growth rate as core concept, log-base/constant-factor equivalence, halving mechanism, best/worst/average case (linear search)</td>
-      <td><a href="foundations/data-structures.html">Data Structures</a></td>
-      <td>2026-09-08</td><td>1 (reset)</td><td>2026-09-11</td>
-      <td><span class="status-fresh">Reset — initial worst-vs-average-case misconception, self-corrected within the same session</span></td>
-    </tr>
-    <tr>
-      <td>Big O — O(n log n) via balanced-tree build (uniform cost, not amortized); merge sort and quicksort mechanics and use cases; quicksort worst-vs-average grounds the "unspecified = worst case" convention</td>
-      <td><a href="foundations/data-structures.html">Data Structures</a></td>
-      <td>2026-09-10</td><td>1 (reset)</td><td>2026-09-13</td>
-      <td><span class="status-fresh">Reset — quicksort's O(n²) worst case initially mislabeled "amortized"; corrected same session</span></td>
-    </tr>
-    <tr>
-      <td>Hash tables — collision resolution, load factor, rehashing</td>
-      <td><a href="foundations/data-structures.html">Data Structures</a></td>
-      <td>2026-08-30</td><td>1</td><td>2026-09-02</td>
-      <td><span class="status-fresh">Relearned</span></td>
-    </tr>
-    <tr>
-      <td>Hash tables — chaining vs. open addressing degradation, average- vs. worst-case, uniform hashing / hash flooding (forward pointer)</td>
-      <td><a href="foundations/data-structures.html">Data Structures</a></td>
-      <td>2026-09-05</td><td>1 (reset)</td><td>2026-09-08</td>
-      <td><span class="status-fresh">Reset — initial open-addressing read-cost misconception, self-corrected within the same session</span></td>
-    </tr>
-  </table>
-  </div>
-
-  <h2>Foundations — Trees, started 2026-08-31 (own page since 2026-09-02)</h2>
-  <p>Promoted out of Data Structures 2026-09-02 — grew enough sub-depth (BST mechanics) to need its own page and its own <code>#bst</code> section node. BST deletion still in progress (successor property derived, splice not yet executed).</p>
-  <div class="table-scroll">
-  <table>
-    <tr><th>Subtopic</th><th>Topic</th><th>Last covered</th><th>Reviewed</th><th>Next due</th><th>Status</th></tr>
-    <tr>
-      <td>Terminology, BST invariant (vocabulary), balance concept</td>
-      <td><a href="foundations/trees.html">Trees</a></td>
-      <td>2026-08-31</td><td>1</td><td>2026-09-03</td>
-      <td><span class="status-fresh">Fresh</span></td>
-    </tr>
-    <tr>
-      <td>Traversal — DFS via stack, BFS via queue</td>
-      <td><a href="foundations/trees.html">Trees</a></td>
-      <td>2026-08-31</td><td>1</td><td>2026-09-03</td>
-      <td><span class="status-fresh">Fresh</span></td>
-    </tr>
-    <tr>
-      <td>BST search direction (left/right from ordering invariant)</td>
-      <td><a href="foundations/trees.html#bst">Trees — BST</a></td>
-      <td>2026-09-01</td><td>1</td><td>2026-09-04</td>
-      <td><span class="status-fresh">Fresh</span></td>
-    </tr>
-    <tr>
-      <td>BST minimum-finding (root-to-leftmost, local vs. global scoping)</td>
-      <td><a href="foundations/trees.html#bst">Trees — BST</a></td>
-      <td>2026-09-01</td><td>1 (reset)</td><td>2026-09-04</td>
-      <td><span class="status-fresh">Reset — conflated local vs. global minimum</span></td>
-    </tr>
-    <tr>
-      <td>BST insertion (walk-and-plant, no displacement)</td>
-      <td><a href="foundations/trees.html#bst">Trees — BST</a></td>
-      <td>2026-09-01</td><td>1 (reset)</td><td>2026-09-04</td>
-      <td><span class="status-fresh">Reset — thought insertion displaces existing nodes</span></td>
-    </tr>
-    <tr>
-      <td>BST deletion, two children — successor property derived, splice not yet done</td>
-      <td><a href="foundations/trees.html#bst">Trees — BST</a></td>
-      <td>2026-09-01</td><td>0 (in progress)</td><td>—</td>
-      <td><span class="status-fresh">In progress</span></td>
-    </tr>
-  </table>
-  </div>
-
-  <p><em>Maintained alongside internal memory used across sessions — update both when a subtopic is reviewed.</em></p>
+  <h2>Where this comes from</h2>
+  <p>Nothing on this page is typed by hand. The chart above is rebuilt by <code>scripts/build-progress.mjs</code> from status that <code>scripts/scan-book.mjs</code> computes out of <code>events.json</code> (what happened in each session) and <code>nodes.json</code> (which topics exist). To see why a topic is where it is, open its page: the coverage log there has the session-by-session detail. The <a href="about/architecture.html">Architecture</a> page shows how the files fit together.</p>
+  <p>The hand-maintained per-subtopic tables that used to sit here were retired on 2026-09-20, once every written page was scored and so appears in the chart. They are still in the git history.</p>
 </main>
 <footer class="site-footer">Built topic by topic. Depth over completion.</footer>
 </body>

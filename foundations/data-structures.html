@@ -15,6 +15,7 @@
       <a href="../review-schedule.html">Review Schedule</a>
       <a href="../activity.html">Activity</a>
       <a href="../about/teaching-style.html">Teaching Style</a>
+      <a href="../about/architecture.html">Architecture</a>
     </nav>
   </div>
 </header>
@@ -22,7 +23,7 @@
 <main>
   <div class="breadcrumb"><a href="../index.html">Home</a> / Foundations / Data Structures</div>
   <h1>Data Structures</h1>
-  <p class="subtitle">Status: every section <span class="status-fresh">needs-review</span> — see Coverage log below for what's overdue vs. never scored on its own · Linked Lists deepened and Doubly-Linked Lists (new) added 2026-09-11 · Trees moved to <a href="trees.html">its own page</a> · Last covered 2026-09-11</p>
+  <p class="subtitle">Status: most sections <span class="status-fresh">needs-review</span>, Linked Lists <span class="status-solid">solid</span> — see Coverage log below for what's overdue vs. never scored on its own · Linked Lists reconfirmed 2026-09-17 · Trees moved to <a href="trees.html">its own page</a> · Last covered 2026-09-17</p>
 
   <div class="callout">
     <strong>Trees is now its own page</strong> (promoted 2026-09-02 — it outgrew being a section here, with BST mechanics deep enough to need a section of its own). See <a href="trees.html">Trees</a>.
@@ -135,7 +136,7 @@ Average case: target equally likely anywhere          → ~n/2 comparisons → O
   </div>
 
   <h2>Where things stand</h2>
-  <p>Arrays: reviewed again and extended with dynamic-array amortized analysis — the core doubling-vs-fixed-increment mechanics land cleanly, but this is only its first section-level confirmation (needs-review, not yet solid), and general series justification for arbitrary growth factors is a flagged gap, not yet taught. Linked Lists: substantially deepened 2026-09-11 — node structure, per-case operation costs, and the singly-linked deletion gotcha are understood, but two scenario-question misconceptions surfaced this session (both corrected), so status resets to needs-review pending a clean recheck. Doubly-Linked Lists: new section 2026-09-11, split out of the same session — the prev-pointer fix and its deletion edge cases land, with one gap flagged (the "already holding the pointer" precondition wasn't generalized into a stated rule unprompted). Stacks and Queues have never been scored on their own (page-level review only, 2026-08-30). Big O and Hash Tables carry flagged gaps from their own last reviews — see Coverage log. Trees has grown into its own page — see <a href="trees.html">Trees</a> for status.</p>
+  <p>Arrays: reviewed again and extended with dynamic-array amortized analysis — the core doubling-vs-fixed-increment mechanics land cleanly, but this is only its first section-level confirmation (needs-review, not yet solid), and general series justification for arbitrary growth factors is a flagged gap, not yet taught. Linked Lists: substantially deepened 2026-09-11 — node structure, per-case operation costs, and the singly-linked deletion gotcha are understood; two scenario-question misconceptions surfaced that session (both corrected), so status reset to needs-review pending a clean recheck. Rechecked 2026-09-17 with a light confirm-only quiz targeting exactly those two spots (middle-node deletion given a direct pointer; head-node deletion) — both answered correctly with sound reasoning, so status is now solid. Doubly-Linked Lists: new section 2026-09-11, split out of the same session — the prev-pointer fix and its deletion edge cases land, with one gap flagged (the "already holding the pointer" precondition wasn't generalized into a stated rule unprompted). Stacks and Queues have never been scored on their own (page-level review only, 2026-08-30). Big O and Hash Tables carry flagged gaps from their own last reviews — see Coverage log. Trees has grown into its own page — see <a href="trees.html">Trees</a> for status.</p>
 
   <h2>Coverage log (spaced repetition)</h2>
   <div class="table-scroll">
@@ -145,6 +146,7 @@ Average case: target equally likely anywhere          → ~n/2 comparisons → O
     <tr><td>Dynamic array amortized doubling vs. fixed-increment growth (forward pointer: general geometric/arithmetic series intuition, not yet taught)</td><td>2026-09-06</td><td>0 (in progress)</td></tr>
     <tr><td>Linked lists — middle insert/delete tradeoffs</td><td>2026-08-30</td><td>1</td></tr>
     <tr><td>Linked lists — node structure, traversal, insert/delete by case (head/tail/middle), singly-linked deletion gotcha</td><td>2026-09-11</td><td>1 (reset)</td></tr>
+    <tr><td>Linked lists — confirm-only recheck (predecessor-lookup precondition: middle-node vs. head-node deletion)</td><td>2026-09-17</td><td>2 (confirmed solid)</td></tr>
     <tr><td>Doubly-linked lists — prev pointer, O(1) deletion-by-pointer, memory/bookkeeping trade-off, deletion edge cases (new)</td><td>2026-09-11</td><td>1 (reset)</td></tr>
     <tr><td>Stacks (LIFO), tested via independent scenarios</td><td>2026-08-30</td><td>1</td></tr>
     <tr><td>Queues (FIFO)</td><td>2026-08-30</td><td>1</td></tr>

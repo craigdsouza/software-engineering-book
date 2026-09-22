@@ -1,131 +1,124 @@
 {
-  "generated_at": "2026-09-11T15:41:28.402Z",
+  "generated_at": "2026-09-21T08:51:04.553Z",
   "nodes": [
     {
-      "id": "book:foundations/data-structures",
-      "title": "Data Structures",
-      "materialization": "page",
+      "id": "backend",
+      "title": "Backend",
+      "materialization": "group",
+      "page": null,
       "parent": null,
       "children": [
-        "book:foundations/data-structures#arrays",
-        "book:foundations/data-structures#linked-lists",
-        "book:foundations/data-structures#doubly-linked-lists",
-        "book:foundations/data-structures#stacks",
-        "book:foundations/data-structures#queues",
-        "book:foundations/data-structures#big-o",
-        "book:foundations/data-structures#hash-tables"
+        "backend/apis",
+        "backend/auth"
       ],
       "deps": [],
       "contrasts": [],
-      "unlocks": 0,
-      "status": "needs-review",
-      "direct": {
-        "status": "needs-review",
-        "timesReviewed": 1,
-        "lastScored": "2026-08-30",
-        "lastSuccess": null,
-        "dueDate": null
-      }
-    },
-    {
-      "id": "book:foundations/data-structures#arrays",
-      "title": "Arrays",
-      "materialization": "section",
-      "parent": "book:foundations/data-structures",
-      "children": [],
-      "deps": [],
-      "contrasts": [
-        "Linked Lists"
-      ],
-      "unlocks": 1,
-      "status": "needs-review",
-      "direct": {
-        "status": "needs-review",
-        "timesReviewed": 1,
-        "lastScored": "2026-09-06",
-        "lastSuccess": "2026-09-06",
-        "dueDate": "2026-09-09"
-      }
-    },
-    {
-      "id": "book:foundations/data-structures#linked-lists",
-      "title": "Linked Lists",
-      "materialization": "section",
-      "parent": "book:foundations/data-structures",
-      "children": [],
-      "deps": [],
-      "contrasts": [
-        "Arrays",
-        "Doubly-Linked Lists"
-      ],
-      "unlocks": 2,
-      "status": "needs-review",
-      "direct": {
-        "status": "needs-review",
-        "timesReviewed": 1,
-        "lastScored": "2026-09-11",
-        "lastSuccess": null,
-        "dueDate": null
-      }
-    },
-    {
-      "id": "book:foundations/data-structures#doubly-linked-lists",
-      "title": "Doubly-Linked Lists",
-      "materialization": "section",
-      "parent": "book:foundations/data-structures",
-      "children": [],
-      "deps": [
-        "Linked Lists"
-      ],
-      "contrasts": [
-        "Linked Lists"
-      ],
-      "unlocks": 0,
-      "status": "needs-review",
-      "direct": {
-        "status": "needs-review",
-        "timesReviewed": 1,
-        "lastScored": "2026-09-11",
-        "lastSuccess": null,
-        "dueDate": null
-      }
-    },
-    {
-      "id": "book:foundations/data-structures#stacks",
-      "title": "Stacks",
-      "materialization": "section",
-      "parent": "book:foundations/data-structures",
-      "children": [],
-      "deps": [],
-      "contrasts": [
-        "Queues"
-      ],
+      "also_in": [],
       "unlocks": 0,
       "status": "needs-review",
       "direct": null
     },
     {
-      "id": "book:foundations/data-structures#queues",
-      "title": "Queues",
-      "materialization": "section",
-      "parent": "book:foundations/data-structures",
+      "id": "backend/apis",
+      "title": "APIs",
+      "materialization": "page",
+      "page": "backend/apis.html",
+      "parent": "backend",
       "children": [],
       "deps": [],
-      "contrasts": [
-        "Stacks"
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 2,
+        "lastScored": "2026-08-29",
+        "lastSuccess": "2026-08-29",
+        "dueDate": "2026-09-05"
+      }
+    },
+    {
+      "id": "backend/auth",
+      "title": "Auth",
+      "materialization": "page",
+      "page": "backend/auth.html",
+      "parent": "backend",
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [
+        "security"
       ],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 1,
+        "lastScored": "2026-08-31",
+        "lastSuccess": "2026-08-28",
+        "dueDate": "2026-08-31"
+      }
+    },
+    {
+      "id": "computer-architecture",
+      "title": "Computer Architecture",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
       "unlocks": 0,
       "status": "needs-review",
       "direct": null
     },
     {
-      "id": "book:foundations/data-structures#big-o",
+      "id": "computer-science",
+      "title": "Computer Science",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [
+        "computer-science/complexity",
+        "computer-science/data-structures"
+      ],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "computer-science/complexity",
+      "title": "Complexity",
+      "materialization": "group",
+      "page": null,
+      "parent": "computer-science",
+      "children": [
+        "computer-science/complexity/big-o"
+      ],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "computer-science/complexity/big-o",
       "title": "Big O Notation",
       "materialization": "section",
-      "parent": "book:foundations/data-structures",
+      "page": "foundations/data-structures.html#big-o",
+      "parent": "computer-science/complexity",
       "children": [],
       "deps": [],
       "contrasts": [],
+      "also_in": [
+        "computer-science/data-structures"
+      ],
       "unlocks": 0,
       "status": "needs-review",
       "direct": {
@@ -137,15 +130,91 @@
       }
     },
     {
-      "id": "book:foundations/data-structures#hash-tables",
-      "title": "Hash Tables",
+      "id": "computer-science/data-structures",
+      "title": "Data Structures",
+      "materialization": "page",
+      "page": "foundations/data-structures.html",
+      "parent": "computer-science",
+      "children": [
+        "computer-science/data-structures/arrays",
+        "computer-science/data-structures/doubly-linked-lists",
+        "computer-science/data-structures/hash-tables",
+        "computer-science/data-structures/linked-lists",
+        "computer-science/data-structures/queues",
+        "computer-science/data-structures/stacks",
+        "computer-science/data-structures/trees"
+      ],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 1,
+        "lastScored": "2026-08-30",
+        "lastSuccess": null,
+        "dueDate": null
+      }
+    },
+    {
+      "id": "computer-science/data-structures/arrays",
+      "title": "Arrays",
       "materialization": "section",
-      "parent": "book:foundations/data-structures",
+      "page": "foundations/data-structures.html#arrays",
+      "parent": "computer-science/data-structures",
+      "children": [],
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/linked-lists"
+      ],
+      "also_in": [],
+      "unlocks": 1,
+      "status": "needs-review",
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 1,
+        "lastScored": "2026-09-06",
+        "lastSuccess": "2026-09-06",
+        "dueDate": "2026-09-09"
+      }
+    },
+    {
+      "id": "computer-science/data-structures/doubly-linked-lists",
+      "title": "Doubly-Linked Lists",
+      "materialization": "section",
+      "page": "foundations/data-structures.html#doubly-linked-lists",
+      "parent": "computer-science/data-structures",
       "children": [],
       "deps": [
-        "Arrays"
+        "computer-science/data-structures/linked-lists"
+      ],
+      "contrasts": [
+        "computer-science/data-structures/linked-lists"
+      ],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 1,
+        "lastScored": "2026-09-11",
+        "lastSuccess": null,
+        "dueDate": null
+      }
+    },
+    {
+      "id": "computer-science/data-structures/hash-tables",
+      "title": "Hash Tables",
+      "materialization": "section",
+      "page": "foundations/data-structures.html#hash-tables",
+      "parent": "computer-science/data-structures",
+      "children": [],
+      "deps": [
+        "computer-science/data-structures/arrays"
       ],
       "contrasts": [],
+      "also_in": [],
       "unlocks": 0,
       "status": "needs-review",
       "direct": {
@@ -157,17 +226,74 @@
       }
     },
     {
-      "id": "book:foundations/trees",
+      "id": "computer-science/data-structures/linked-lists",
+      "title": "Linked Lists",
+      "materialization": "section",
+      "page": "foundations/data-structures.html#linked-lists",
+      "parent": "computer-science/data-structures",
+      "children": [],
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/arrays",
+        "computer-science/data-structures/doubly-linked-lists"
+      ],
+      "also_in": [],
+      "unlocks": 2,
+      "status": "solid",
+      "direct": {
+        "status": "solid",
+        "timesReviewed": 2,
+        "lastScored": "2026-09-17",
+        "lastSuccess": "2026-09-17",
+        "dueDate": "2026-09-24"
+      }
+    },
+    {
+      "id": "computer-science/data-structures/queues",
+      "title": "Queues",
+      "materialization": "section",
+      "page": "foundations/data-structures.html#queues",
+      "parent": "computer-science/data-structures",
+      "children": [],
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/stacks"
+      ],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "computer-science/data-structures/stacks",
+      "title": "Stacks",
+      "materialization": "section",
+      "page": "foundations/data-structures.html#stacks",
+      "parent": "computer-science/data-structures",
+      "children": [],
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/queues"
+      ],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "computer-science/data-structures/trees",
       "title": "Trees",
       "materialization": "page",
-      "parent": "book:foundations/data-structures",
+      "page": "foundations/trees.html",
+      "parent": "computer-science/data-structures",
       "children": [
-        "book:foundations/trees#bst"
+        "computer-science/data-structures/trees/bst"
       ],
       "deps": [
-        "Linked Lists"
+        "computer-science/data-structures/linked-lists"
       ],
       "contrasts": [],
+      "also_in": [],
       "unlocks": 0,
       "status": "needs-review",
       "direct": {
@@ -179,15 +305,17 @@
       }
     },
     {
-      "id": "book:foundations/trees#bst",
+      "id": "computer-science/data-structures/trees/bst",
       "title": "Binary Search Trees (BST)",
       "materialization": "section",
-      "parent": "book:foundations/trees",
+      "page": "foundations/trees.html#bst",
+      "parent": "computer-science/data-structures/trees",
       "children": [],
       "deps": [],
       "contrasts": [
-        "Hash Tables"
+        "computer-science/data-structures/hash-tables"
       ],
+      "also_in": [],
       "unlocks": 0,
       "status": "needs-review",
       "direct": {
@@ -197,6 +325,222 @@
         "lastSuccess": "2026-09-03",
         "dueDate": "2026-09-10"
       }
+    },
+    {
+      "id": "databases",
+      "title": "Databases",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [
+        "databases/fundamentals"
+      ],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "databases/fundamentals",
+      "title": "Database Fundamentals",
+      "materialization": "page",
+      "page": "backend/databases.html",
+      "parent": "databases",
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [
+        "distributed-systems"
+      ],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 1,
+        "lastScored": "2026-08-29",
+        "lastSuccess": "2026-08-29",
+        "dueDate": "2026-09-01"
+      }
+    },
+    {
+      "id": "devops-cloud",
+      "title": "DevOps & Cloud",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "distributed-systems",
+      "title": "Distributed Systems",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "frontend",
+      "title": "Frontend",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [
+        "frontend/state-caching"
+      ],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "frontend/state-caching",
+      "title": "State & Caching",
+      "materialization": "page",
+      "page": "backend/state-caching.html",
+      "parent": "frontend",
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [
+        "backend"
+      ],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": {
+        "status": "needs-review",
+        "timesReviewed": 1,
+        "lastScored": "2026-08-29",
+        "lastSuccess": null,
+        "dueDate": null
+      }
+    },
+    {
+      "id": "machine-learning",
+      "title": "Machine Learning",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "mathematics",
+      "title": "Mathematics",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "mobile",
+      "title": "Mobile",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "networking",
+      "title": "Networking",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "operating-systems",
+      "title": "Operating Systems",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "programming-languages",
+      "title": "Programming Languages",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "security",
+      "title": "Security",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
+    },
+    {
+      "id": "software-engineering",
+      "title": "Software Engineering",
+      "materialization": "group",
+      "page": null,
+      "parent": null,
+      "children": [],
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "unlocks": 0,
+      "status": "needs-review",
+      "direct": null
     }
   ],
   "forward_pointers": [
@@ -204,32 +548,28 @@
       "id": "amortized-series-summation",
       "title": "General geometric/arithmetic series summation",
       "tier": "intermediate",
-      "page_id": "book:foundations/data-structures",
-      "under": "book:foundations/data-structures#arrays",
+      "under": "computer-science/data-structures/arrays",
       "note": "Needed to justify amortized O(1) for growth factors other than doubling (e.g. ×1.5). Natural fit once Discrete Math covers series."
     },
     {
       "id": "uniform-hashing-hash-flooding",
       "title": "Uniform hashing assumption & hash flooding",
       "tier": "advanced",
-      "page_id": "book:foundations/data-structures",
-      "under": "book:foundations/data-structures#hash-tables",
+      "under": "computer-science/data-structures/hash-tables",
       "note": "Why the chaining-vs-open-addressing comparison assumes a well-distributed hash function, and how adversarial input (a real DoS technique) breaks that assumption."
     },
     {
       "id": "cache-locality",
       "title": "Cache locality (contiguous vs. pointer-chasing memory access)",
       "tier": "intermediate",
-      "page_id": "book:foundations/data-structures",
-      "under": "book:foundations/data-structures#linked-lists",
+      "under": "computer-science/data-structures/linked-lists",
       "note": "Why arrays tend to beat linked lists in wall-clock time even at equal Big-O, once real hardware/cache behavior enters the picture."
     },
     {
       "id": "lru-cache",
       "title": "LRU cache (hash map + doubly-linked list)",
       "tier": "advanced",
-      "page_id": "book:foundations/data-structures",
-      "under": "book:foundations/data-structures#doubly-linked-lists",
+      "under": "computer-science/data-structures/doubly-linked-lists",
       "note": "The canonical applied pattern combining O(1) hash-map lookup with O(1) doubly-linked-list splice -- composes two already-taught structures into one."
     }
   ]

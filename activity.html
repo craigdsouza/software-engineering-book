@@ -15,6 +15,7 @@
       <a href="review-schedule.html">Review Schedule</a>
       <a class="active" href="activity.html">Activity</a>
       <a href="about/teaching-style.html">Teaching Style</a>
+      <a href="about/architecture.html">Architecture</a>
     </nav>
   </div>
 </header>
@@ -22,11 +23,8 @@
 <main>
   <div class="breadcrumb"><a href="index.html">Home</a> / Activity</div>
   <h1>Study Activity</h1>
-  <p class="subtitle">A day-by-day log of teaching and quiz events across every curriculum tracked here, in the same shape as a GitHub contribution graph. Built from <code>events.json</code> — the same event log used by the life-os knowledge-graph project, merged here under the <code>book:</code> node namespace.</p>
+  <p class="subtitle">A day-by-day log of teaching and quiz events across every curriculum tracked here, in the same shape as a GitHub contribution graph. Built from <code>events.json</code>.</p>
 
-  <div class="callout">
-    <strong>Two sources, one log:</strong> events prefixed <code>concept:</code> come from the life-os vault (Claude teaching sessions on the knowledge graph); events prefixed <code>book:</code> come from tutoring sessions in this book. They share one timeline so a full picture of study activity shows in one place, but <code>book:</code> quiz events don't carry the leveled Recall→Explain→Predict→Design mastery scoring that life-os quizzes do — see the note on the <a href="#methodology">data below</a>.
-  </div>
 
   <div id="stats" class="stat-grid"></div>
 
@@ -38,7 +36,7 @@
 
   <h2 id="methodology">How this is built</h2>
   <p>Each square is one calendar day (UTC), colored by how many events — teaching sessions and quiz attempts combined — landed on it. This page loads <code>events.json</code> directly in the browser, so it reflects whatever is in that file at the time it's viewed; no separate build step regenerates it.</p>
-  <p>Book-sourced <code>quiz_answered</code> events record <code>questions_asked</code>/<code>correct</code>/<code>wrong</code>/<code>gaps</code> but omit <code>score</code>, <code>max_level_reached</code>, and <code>level_breakdown</code> — those fields depend on life-os's leveled mastery formula (5-in-a-row per level to advance Recall→Explain→Predict→Design), which book tutoring sessions don't follow. Rather than fabricate numbers to fit the schema, those fields are left off entirely for <code>book:</code> events.</p>
+  <p>Each square counts <code>taught</code>, <code>read</code> and <code>quiz_answered</code> events for that day; accuracy is right answers over questions asked, across every quiz. The event format is described in <code>docs/events-v1.md</code>. History starts on 2026-08-25, the first session logged against this book.</p>
 
   <div class="related">
     <h2>Related pages</h2>
@@ -57,10 +55,13 @@
   const logEl = document.getElementById('event-log');
 
   let events;
+  const TITLES = {};
   try {
     const res = await fetch('events.json');
     if (!res.ok) throw new Error('fetch failed: ' + res.status);
     events = await res.json();
+    // topic titles come from the registry; fall back to prettifying the id
+    try { const r = await fetch('nodes.json'); if (r.ok) for (const n of (await r.json()).nodes) TITLES[n.id] = n.title; } catch (e) {}
   } catch (err) {
     container.innerHTML = '<p class="callout">Could not load <code>events.json</code> (' + err.message +
       '). If you\'re opening this file directly from disk, some browsers block local fetches — try running a static server (e.g. <code>python3 -m http.server</code>) in this folder, or view the page once it\'s published to GitHub Pages.</p>';
@@ -73,6 +74,7 @@
 
   const ACRONYMS = ['API', 'APIs', 'TLS', 'CPU', 'HTTP', 'DOM', 'CSS', 'SQL', 'DNS', 'OAuth', 'ACID', 'CAP', 'JS', 'CSRF', 'XSS', 'TTL', 'SWR'];
   function prettyNode(nodeId) {
+    if (TITLES[nodeId]) return TITLES[nodeId];
     const withoutPrefix = nodeId.includes(':') ? nodeId.split(':').slice(1).join(':') : nodeId;
     const last = withoutPrefix.split('/').pop();
     let words = last.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
@@ -85,10 +87,10 @@
   // Aggregate by day
   const byDay = new Map(); // key -> { taught: [], quiz: [] }
   for (const e of events) {
-    const key = dayKey(e.ts);
+    const key = e.date || dayKey(e.ts);
     if (!byDay.has(key)) byDay.set(key, { taught: [], quiz: [] });
     const bucket = byDay.get(key);
-    if (e.verb === 'taught') bucket.taught.push(e);
+    if (e.verb === 'taught' || e.verb === 'read') bucket.taught.push(e);
     else if (e.verb === 'quiz_answered') bucket.quiz.push(e);
   }
 
@@ -98,9 +100,9 @@
   const activeDays = byDay.size;
   let correctSum = 0, gradedSum = 0;
   for (const e of events) {
-    if (e.verb === 'quiz_answered' && typeof e.payload.correct === 'number') {
-      correctSum += e.payload.correct;
-      gradedSum += e.payload.correct + (e.payload.wrong || 0);
+    if (e.verb === 'quiz_answered' && Array.isArray(e.payload.questions)) {
+      correctSum += e.payload.questions.filter(q => q.correct === true).length;
+      gradedSum += e.payload.questions.length;
     }
   }
   const accuracy = gradedSum ? Math.round((correctSum / gradedSum) * 100) : null;
@@ -213,6 +215,9 @@
     [0, 1, 2, 3, 4].map(l => '<div class="contrib-cell" data-level="' + l + '"></div>').join('') +
     'More</div>' +
     '</div>';
+  // the grid is wider than the page: start scrolled to the most recent weeks
+  const wrap = container.querySelector('.contrib-wrap');
+  if (wrap) wrap.scrollLeft = wrap.scrollWidth;
 
   // ---- Recent day-by-day log ----
   const sortedDesc = [...byDay.keys()].sort().reverse().slice(0, 20);
@@ -220,13 +225,14 @@
     const bucket = byDay.get(key);
     const lines = [];
     for (const e of bucket.taught) {
-      lines.push('Taught — ' + prettyNode(e.node_id) + (e.payload.session_depth ? ' (' + e.payload.session_depth + ')' : ''));
+      lines.push((e.verb === 'read' ? 'Read — ' : 'Taught — ') + prettyNode(e.node_id) + (e.payload.depth ? ' (' + e.payload.depth + ')' : ''));
     }
     for (const e of bucket.quiz) {
       const p = e.payload;
       let line = 'Quiz — ' + prettyNode(e.node_id);
-      if (typeof p.correct === 'number') line += ': ' + p.correct + ' correct, ' + (p.wrong || 0) + ' wrong';
-      if (p.score !== undefined && p.score !== null) line += ' (score ' + p.score + ')';
+      const qs = p.questions || [];
+      const right = qs.filter(q => q.correct === true).length;
+      if (qs.length) line += ': ' + right + ' correct, ' + (qs.length - right) + ' wrong';
       lines.push(line);
     }
     return '<div class="event-day"><div class="event-date">' + key + '</div><ul>' +

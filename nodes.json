@@ -1,0 +1,318 @@
+{
+  "schema": 1,
+  "note": "Node registry. id = domain/concept/sub-concept (1-4 segments); parent = the id minus its last segment. page = where the prose lives (null for grouping nodes). deps/contrasts/also_in hold node ids. Status is never stored here.",
+  "nodes": [
+    {
+      "id": "backend",
+      "title": "Backend",
+      "summary": "APIs, auth flows, server-side caching.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/apis",
+      "title": "APIs",
+      "page": "backend/apis.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/auth",
+      "title": "Auth",
+      "page": "backend/auth.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": [
+        "security"
+      ]
+    },
+    {
+      "id": "computer-architecture",
+      "title": "Computer Architecture",
+      "summary": "CPUs, the memory hierarchy, caches, GPUs.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science",
+      "title": "Computer Science",
+      "summary": "Data structures, algorithms, complexity, computability, automata.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/complexity",
+      "title": "Complexity",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/complexity/big-o",
+      "title": "Big O Notation",
+      "page": "foundations/data-structures.html#big-o",
+      "deps": [],
+      "contrasts": [],
+      "also_in": [
+        "computer-science/data-structures"
+      ]
+    },
+    {
+      "id": "computer-science/data-structures",
+      "title": "Data Structures",
+      "page": "foundations/data-structures.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/arrays",
+      "title": "Arrays",
+      "page": "foundations/data-structures.html#arrays",
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/linked-lists"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/doubly-linked-lists",
+      "title": "Doubly-Linked Lists",
+      "page": "foundations/data-structures.html#doubly-linked-lists",
+      "deps": [
+        "computer-science/data-structures/linked-lists"
+      ],
+      "contrasts": [
+        "computer-science/data-structures/linked-lists"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/hash-tables",
+      "title": "Hash Tables",
+      "page": "foundations/data-structures.html#hash-tables",
+      "deps": [
+        "computer-science/data-structures/arrays"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/linked-lists",
+      "title": "Linked Lists",
+      "page": "foundations/data-structures.html#linked-lists",
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/arrays",
+        "computer-science/data-structures/doubly-linked-lists"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/queues",
+      "title": "Queues",
+      "page": "foundations/data-structures.html#queues",
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/stacks"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/stacks",
+      "title": "Stacks",
+      "page": "foundations/data-structures.html#stacks",
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/queues"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/trees",
+      "title": "Trees",
+      "page": "foundations/trees.html",
+      "deps": [
+        "computer-science/data-structures/linked-lists"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/trees/bst",
+      "title": "Binary Search Trees (BST)",
+      "page": "foundations/trees.html#bst",
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/hash-tables"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "databases",
+      "title": "Databases",
+      "summary": "Data models, transactions, indexes, query engines.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/fundamentals",
+      "title": "Database Fundamentals",
+      "page": "backend/databases.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": [
+        "distributed-systems"
+      ]
+    },
+    {
+      "id": "devops-cloud",
+      "title": "DevOps & Cloud",
+      "summary": "CI/CD, containers, infrastructure as code.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "distributed-systems",
+      "title": "Distributed Systems",
+      "summary": "Replication, consensus, CAP, sharding.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend",
+      "title": "Frontend",
+      "summary": "The browser, rendering, client state.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/state-caching",
+      "title": "State & Caching",
+      "page": "backend/state-caching.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": [
+        "backend"
+      ]
+    },
+    {
+      "id": "machine-learning",
+      "title": "Machine Learning",
+      "summary": "Classical ML, deep learning, LLMs.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics",
+      "title": "Mathematics",
+      "summary": "Discrete maths, linear algebra, probability & statistics, calculus.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mobile",
+      "title": "Mobile",
+      "summary": "Native and cross-platform apps.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "networking",
+      "title": "Networking",
+      "summary": "TCP/IP, DNS, TLS, HTTP.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "operating-systems",
+      "title": "Operating Systems",
+      "summary": "Processes, scheduling, virtual memory, concurrency.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "programming-languages",
+      "title": "Programming Languages",
+      "summary": "Type systems, paradigms, compilers, runtimes.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security",
+      "title": "Security",
+      "summary": "Cryptography, authentication, web security.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering",
+      "title": "Software Engineering",
+      "summary": "Design patterns, testing, architecture, version control.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    }
+  ],
+  "forward_pointers": [
+    {
+      "id": "amortized-series-summation",
+      "title": "General geometric/arithmetic series summation",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/arrays",
+      "note": "Needed to justify amortized O(1) for growth factors other than doubling (e.g. ×1.5). Natural fit once Discrete Math covers series."
+    },
+    {
+      "id": "uniform-hashing-hash-flooding",
+      "title": "Uniform hashing assumption & hash flooding",
+      "tier": "advanced",
+      "under": "computer-science/data-structures/hash-tables",
+      "note": "Why the chaining-vs-open-addressing comparison assumes a well-distributed hash function, and how adversarial input (a real DoS technique) breaks that assumption."
+    },
+    {
+      "id": "cache-locality",
+      "title": "Cache locality (contiguous vs. pointer-chasing memory access)",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/linked-lists",
+      "note": "Why arrays tend to beat linked lists in wall-clock time even at equal Big-O, once real hardware/cache behavior enters the picture."
+    },
+    {
+      "id": "lru-cache",
+      "title": "LRU cache (hash map + doubly-linked list)",
+      "tier": "advanced",
+      "under": "computer-science/data-structures/doubly-linked-lists",
+      "note": "The canonical applied pattern combining O(1) hash-map lookup with O(1) doubly-linked-list splice -- composes two already-taught structures into one."
+    }
+  ]
+}

@@ -56,7 +56,8 @@ const dateMs = (k) => new Date(k + "T00:00:00").getTime();
 function loadBookLearningEvents(root) {
   let all = [];
   try {
-    all = JSON.parse(readFileSync(join(root, "events.json"), "utf8"));
+    // events.json moved to schema 1 on 2026-09-21; life-os still reads the frozen pre-v1 log.
+    all = JSON.parse(readFileSync(join(root, "events.pre-v1-backup-2026-09-20.json"), "utf8"));
   } catch {
     return [];
   }

@@ -40,7 +40,6 @@ const prettyDate = (iso) => {
 
 const STATUS_LABEL = {
   solid: "solid",
-  fresh: "fresh",
   "needs-review": "needs review",
   ungraded: "written · ungraded",
   unwritten: "not written",
@@ -120,7 +119,7 @@ function renderNext(next) {
 // ---------- spine ----------
 
 function renderLegend() {
-  return ["solid", "fresh", "needs-review", "ungraded", "unwritten"]
+  return ["solid", "needs-review", "ungraded", "unwritten"]
     .map(
       (k) =>
         `<span class="legend-item"><span class="swatch" data-status="${k}"></span>${esc(STATUS_LABEL[k])}</span>`
@@ -130,9 +129,15 @@ function renderLegend() {
 
 function renderCell(pair) {
   if (!pair) return `<span class="cell" data-state="none" title="never asked">—</span>`;
-  const [right, asked] = pair;
-  const state = right === asked ? "all" : "partial";
-  return `<span class="cell" data-state="${state}" title="${right} of ${asked} correct">${right}/${asked}</span>`;
+  const { right, asked, meetsBar } = pair;
+  // Reuses the node tick's own solid/needs-review colors on purpose (see the
+  // aggregateTags comment in scan-book.mjs) -- both are now "in good shape
+  // right now" signals, just at different grains.
+  const state = meetsBar ? "solid" : "needs-review";
+  const title = asked < 5
+    ? `${right} of last ${asked} correct — fewer than 5 asked, not enough yet to call it`
+    : `${right} of last ${asked} correct`;
+  return `<span class="cell" data-state="${state}" title="${esc(title)}">${right}/${asked}</span>`;
 }
 
 function renderPanel(unit) {
@@ -210,7 +215,7 @@ function renderSpine(data) {
   return `<section class="spine" aria-label="The spine">
       <div class="spine-head">
         <h2>The spine</h2>
-        <span class="pv-section-note">curriculum order · click to open</span>
+        <span class="pv-section-note">study-path order · click to open</span>
       </div>
       <div class="legend">
         ${renderLegend()}
@@ -267,6 +272,11 @@ function renderDueStrip(data) {
     1
   );
 
+  // Grow the plot to fit every overdue lane (the CSS default of 210px holds 3);
+  // without this, a 4th+ overdue pin hangs out of the card.
+  const lastTop = overdue.length ? overdue[overdue.length - 1].top : AXIS;
+  const plotHeight = Math.max(210, lastTop + 56);
+
   const pinHtml = [...upcoming, ...overdue]
     .map((p) => {
       const late = p.offset_days < 0;
@@ -306,7 +316,7 @@ function renderDueStrip(data) {
       </div>
       <p class="duestrip-lead">Scheduled nodes sit on the axis. Overdue ones hang below the line — the drop is the debt, and it only clears by answering.</p>
       <div class="duestrip-card">
-        <div class="due-plot">
+        <div class="due-plot" style="height:${plotHeight}px;">
           <div class="due-axis-line"></div>
           <div class="due-today" style="left:${pct(0)};"></div>
           <span class="due-today-label" style="left:${pct(0)};">today</span>
