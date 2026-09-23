@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-22T02:02:56.305Z",
+  "generated_at": "2026-09-23T03:37:22.392Z",
   "nodes": [
     {
       "id": "backend",
@@ -55,9 +55,9 @@
       "direct": {
         "status": "needs-review",
         "timesReviewed": 1,
-        "lastScored": "2026-08-31",
+        "lastScored": "2026-09-22",
         "lastSuccess": "2026-08-28",
-        "dueDate": "2026-08-31"
+        "dueDate": "2026-09-25"
       }
     },
     {
@@ -126,7 +126,7 @@
         "timesReviewed": 1,
         "lastScored": "2026-09-10",
         "lastSuccess": null,
-        "dueDate": null
+        "dueDate": "2026-09-13"
       }
     },
     {
@@ -154,7 +154,7 @@
         "timesReviewed": 1,
         "lastScored": "2026-08-30",
         "lastSuccess": null,
-        "dueDate": null
+        "dueDate": "2026-09-02"
       }
     },
     {
@@ -200,7 +200,7 @@
         "timesReviewed": 1,
         "lastScored": "2026-09-11",
         "lastSuccess": null,
-        "dueDate": null
+        "dueDate": "2026-09-14"
       }
     },
     {
@@ -222,7 +222,7 @@
         "timesReviewed": 1,
         "lastScored": "2026-09-05",
         "lastSuccess": null,
-        "dueDate": null
+        "dueDate": "2026-09-08"
       }
     },
     {
@@ -427,7 +427,7 @@
         "timesReviewed": 1,
         "lastScored": "2026-08-29",
         "lastSuccess": null,
-        "dueDate": null
+        "dueDate": "2026-09-01"
       }
     },
     {

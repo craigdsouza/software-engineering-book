@@ -27,12 +27,14 @@ A page node's prose lives at `{id}.html` (e.g. `computer-science/data-structures
 
 **taught** — `{ depth, content, notes }`
 - `depth`: `intro` (undergrad) \| `intermediate` (grad) \| `advanced` (beyond grad), the agent's judgement
-- `content`: a paragraph on what was taught for this node
+- `content`: everything taught for this node, complete enough to write the page from — `swe-editor` builds
+  the page's prose from it (see `docs/prose-format.md`). Several paragraphs and text diagrams are fine.
 - `notes`: anything else worth keeping
 
 **quiz_answered** — `{ depth, questions[], gaps[], notes }`
 - `questions[]`: `{ tag: recall|explain|predict, question, answer, correct: true|false, node_id, feedback }`
-  - `question` is the full text asked; `answer` summarises Craig's reply; `feedback` is the agent's response
+  - `question` is the full text asked; `answer` summarises Craig's reply; `feedback` is the agent's response,
+    including any explanation given after a miss (the editor writes that into the page)
   - each question names its own `node_id`, so one quiz (e.g. on a paper) can score several nodes
 - `gaps[]`: `{ id, node_id, text }`, with `id` like `g86-1` (event id + position)
 
@@ -42,7 +44,8 @@ A page node's prose lives at `{id}.html` (e.g. `computer-science/data-structures
 
 Per node: a quiz event counts as a review of every node its questions name. A review with any
 wrong answer for that node resets its streak to 1; a clean one adds 1. Streak → next review gap:
-1→3d, 2→7d, 3→14d, 4→30d, 5+→60d. `taught` and `read` never change status.
+1→3d, 2→7d, 3→14d, 4→30d, 5+→60d. The gap is counted from the node's latest review, clean or missed, so a
+miss on 09-22 makes the node due on 09-25. A node that has never been quizzed has no due date. `taught` and `read` never change status.
 
 ## Migration notes (2026-09-21, `scripts/migrate-to-v1.mjs`)
 

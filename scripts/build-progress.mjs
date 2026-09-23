@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 // build-progress.mjs — renders the derived progress views into the site.
 //
-// Reads ONLY progress-data.json (emitted by scan-book.mjs). It never re-derives
+// Reads ONLY progress-data.json (emitted by scan-book.mjs). Also fills the
+// status line and coverage log on every topic page (regions page-status /
+// page-coverage), so no page carries hand-typed status. It never re-derives
 // status and never reads events.json — every number and sentence on the page is
 // already composed upstream. This file is pure presentation: it turns the view
 // data into static HTML and splices it between marker comments in two pages.
@@ -339,6 +341,64 @@ function renderDueStrip(data) {
     </section>`;
 }
 
+// ---- topic pages: generated status line + coverage log (added 2026-09-22) ----
+const STATUS_CLASS = (r) => (r.status === "solid" ? "status-solid" : r.overdue ? "status-overdue" : "status-upcoming");
+const dueText = (due, today) => {
+  if (!due) return "not scheduled";
+  const off = Math.round((Date.parse(due + "T00:00:00Z") - Date.parse(today + "T00:00:00Z")) / 86400000);
+  return off < 0 ? `${due} · ${-off}d overdue` : off === 0 ? `${due} · today` : `${due} · in ${off}d`;
+};
+
+function renderPageStatus(p, today) {
+  const s = p.summary;
+  let lead;
+  if (p.rows.length === 1) {
+    const r = p.rows[0];
+    lead = `<span class="${STATUS_CLASS(r)}">${esc(STATUS_LABEL[r.status] || r.status)}</span>` +
+      (r.due ? ` · next review ${esc(dueText(r.due, today))}` : "");
+  } else {
+    lead = `<span class="${s.solid === s.total ? "status-solid" : s.overdue ? "status-overdue" : "status-upcoming"}">${s.solid} of ${s.total} solid</span>` +
+      (s.overdue ? ` · ${s.overdue} overdue` : "");
+  }
+  const b = p.prose?.backlog || [];
+  const behind = b.length
+    ? ` · <span class="status-upcoming">${b.length} event${b.length > 1 ? "s" : ""} not yet written up (${b.map((id) => "#" + id).join(", ")})</span>`
+    : "";
+  return `  <p class="subtitle">Status: ${lead}${s.last_covered ? ` · last covered ${esc(s.last_covered)}` : ""}${behind} · computed from the event log</p>`;
+}
+
+function renderPageCoverage(p, today) {
+  const cell = (r) => (r.anchor ? `<a href="${esc(r.anchor)}">${esc(r.title)}</a>` : esc(r.title));
+  const rows = p.rows
+    .map(
+      (r) => `      <tr><td>${cell(r)}</td><td>${esc(r.last_taught || "—")}</td><td>${esc(r.last_quizzed ? `${r.last_quizzed} (${r.last_result})` : "—")}</td><td>${r.streak}${r.reset ? " (reset)" : ""}</td><td>${esc(dueText(r.due, today))}</td><td><span class="${STATUS_CLASS(r)}">${esc(STATUS_LABEL[r.status] || r.status)}</span></td></tr>`
+    )
+    .join("\n");
+  const hist = p.history
+    .map((h) => {
+      const what = h.verb === "taught" ? `Taught${h.depth ? ` (${h.depth})` : ""}` : h.verb === "read" ? "Read" : `Quiz ${h.result}`;
+      const gaps = h.gaps.length ? h.gaps.map((g) => esc(g)).join("<br>") : "";
+      return `        <tr><td>${esc(h.date)}</td><td>${cell(h)}</td><td>${esc(what)}</td><td>${gaps}</td></tr>`;
+    })
+    .join("\n");
+  return `  <p>Each row is one topic on this page. The review streak sets the gap before the next review (1 → 3 days, 2 → 7, 3 → 14, 4 → 30, 5+ → 60); a review with any wrong answer resets it to 1, so a missed topic comes back 3 days after that review.</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Topic</th><th>Last taught</th><th>Last quizzed</th><th>Review streak</th><th>Next review</th><th>Status</th></tr>
+${rows}
+    </table>
+  </div>
+  <details>
+    <summary>Session history (${p.history.length} events)</summary>
+    <div class="table-scroll">
+      <table>
+        <tr><th>Date</th><th>Topic</th><th>Event</th><th>Gaps noted</th></tr>
+${hist}
+      </table>
+    </div>
+  </details>`;
+}
+
 function shiftIso(baseStr, n) {
   const d = new Date(baseStr + "T00:00:00Z");
   d.setUTCDate(d.getUTCDate() + n);
@@ -354,6 +414,10 @@ function main() {
     { file: "index.html", name: "home", body: renderHome(data) },
     { file: "review-schedule.html", name: "duestrip", body: renderDueStrip(data) },
   ];
+  for (const [file, p] of Object.entries(data.pages || {})) {
+    targets.push({ file, name: "page-status", body: renderPageStatus(p, data.today) });
+    targets.push({ file, name: "page-coverage", body: renderPageCoverage(p, data.today) });
+  }
 
   for (const t of targets) {
     const path = join(ROOT, t.file);

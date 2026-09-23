@@ -39,7 +39,7 @@ GitHub Pages redeploys automatically on every push to `main`.
 - `about/architecture.html` — clickable diagram of how `events.json`, `nodes.json`, the scripts and the generated JSON feed each page
 - `review-schedule.html` — spaced-repetition tracker across all topics (fully generated; no hand-edited tables)
 - `activity.html` — GitHub-style daily activity grid, built from `events.json`
-- Topic pages live at `{node id}.html`, so the path mirrors `nodes.json`: `computer-science/data-structures.html`, `computer-science/data-structures/trees.html`, `databases/fundamentals.html`, `backend/apis.html`, `backend/auth.html`, `frontend/state-caching.html`. Smaller topics are `#anchors` on their parent's page.
+- Topic pages live at `{node id}.html`, generated from hand-written prose in `{node id}.md` next to them (format: [`docs/prose-format.md`](docs/prose-format.md)), so the path mirrors `nodes.json`: `computer-science/data-structures.html`, `computer-science/data-structures/trees.html`, `databases/fundamentals.html`, `backend/apis.html`, `backend/auth.html`, `frontend/state-caching.html`. Smaller topics are `#anchors` on their parent's page.
 - `style.css` — shared styling, light/dark aware
 - `events.json` — event log of teaching, reading and quiz activity (schema 1)
 - `nodes.json` — the topic registry: domains, topics, pages, deps, contrasts, also_in
@@ -54,10 +54,18 @@ and what changed when the old log was migrated on 2026-09-21, is in [`docs/event
 After appending an event:
 
 ```
-node scripts/validate-events.mjs events.json   # format + node ids
-node scripts/scan-book.mjs                      # status per node -> book-graph-data.json, progress-data.json
-node scripts/build-progress.mjs                 # renders index.html + review-schedule.html
+node scripts/rebuild.mjs   # validate-events -> scan-book -> render-pages -> build-progress, stops at the first failure
 ```
+
+`render-pages.mjs` builds each topic page's shell (head, nav, breadcrumb, title) around the prose in its
+`.md`; `build-progress.mjs` then fills every generated region: the home page, the review-debt chart, and each
+topic page's status line and coverage log. The only hand-written content is the `.md` prose — never edit a
+topic `.html` directly, the next rebuild overwrites it.
+
+The `.md` prose has a single writer, the `swe-editor` skill; every other agent only appends events. Each
+`.md` records how far it has caught up (`prose_through`), a page's status line shows any events not yet
+written up, and `node scripts/prose-backlog.mjs` prints them for the editor. Details in
+[`docs/prose-format.md`](docs/prose-format.md).
 
 The pre-migration log is kept as `events.pre-v1-backup-2026-09-20.json`; the separate life-os project
 reads that file, and `scripts/build-dashboard-state.mjs` (life-os only) still builds from it.

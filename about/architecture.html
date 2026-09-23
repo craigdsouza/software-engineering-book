@@ -96,21 +96,22 @@
 <main>
   <div class="breadcrumb"><a href="../index.html">Home</a> / Architecture</div>
   <h1>How the Book's Data Fits Together</h1>
-  <p class="subtitle">Every JSON, script, and generated page in this repo, and which one feeds which. Click any box for what the file holds, who writes it, who reads it, and a real excerpt. Snapshot taken 2026-09-21 (events 51–85, 30 nodes).</p>
+  <p class="subtitle">Every JSON, script, and generated page in this repo, and which one feeds which. Click any box for what the file holds, who writes it, who reads it, and a real excerpt. Snapshot taken 2026-09-21 (events 51–85, 30 nodes); prose pipeline added 2026-09-23.</p>
 
   <h2>One session, end to end</h2>
   <ol class="arch-steps">
     <li>A Claude skill (<code>swe-teacher</code> / <code>swe-quizmaster</code>) teaches or quizzes you, then <strong>appends one event</strong> to <code>events.json</code>. Example: event #85, a Linked Lists quiz on 2026-09-17 with 2 right and 0 wrong.</li>
-    <li>If the session added a topic, the skill also adds it to <code>nodes.json</code> (structure only) and <strong>hand-writes</strong> the page prose and its coverage log.</li>
+    <li>If the session added a topic, the skill also adds it to <code>nodes.json</code> (structure only, with no page yet). It does <strong>not</strong> write page prose: the event's <code>content</code> is the raw material.</li>
     <li>The skill runs <code>scan-book.mjs</code>. It replays every Linked Lists quiz (09-11 had 2 wrong, so the streak reset to 1; 09-17 was clean, so the streak is 2). A streak of 2 means a 7-day gap, so the topic is due 09-24 and its status is <strong>solid</strong>. The script writes <code>book-graph-data.json</code> and <code>progress-data.json</code>.</li>
-    <li>The skill runs <code>build-progress.mjs</code>, which pastes HTML built from <code>progress-data.json</code> between marker comments in <code>index.html</code> and <code>review-schedule.html</code>.</li>
+    <li><code>render-pages.mjs</code> builds each topic page from its prose file (<code>{id}.md</code>) plus <code>nodes.json</code> (title, breadcrumb). Then <code>build-progress.mjs</code> pastes HTML built from <code>progress-data.json</code> between marker comments in <code>index.html</code>, <code>review-schedule.html</code> and each topic page's status line and coverage log. (<code>rebuild.mjs</code> runs all four scripts in order.)</li>
+    <li>The new event is now <strong>backlog</strong>: the page's <code>.md</code> says <code>prose_through: 85</code>, so the status line reads "1 event not yet written up (#86)". <code>swe-editor</code> — the only prose writer — runs <code>prose-backlog.mjs</code>, folds the event into the <code>.md</code>, sets <code>prose_through: 86</code> and rebuilds.</li>
     <li><code>activity.html</code> needs no build step: it loads <code>events.json</code> in your browser each time you open it.</li>
   </ol>
 
   <h2>The diagram</h2>
   <div class="arch-stage">
     <div class="arch-scroll">
-      <svg id="arch" viewBox="0 0 1000 400" role="group" aria-label="Architecture diagram of the book's data files and scripts">
+      <svg id="arch" viewBox="0 0 1000 450" role="group" aria-label="Architecture diagram of the book's data files and scripts">
         <defs>
           <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0,0 L10,5 L0,10 z"/>
@@ -140,18 +141,23 @@
         <path class="e" d="M580,222 L635,222" marker-end="url(#ah)"/>
         <!-- build-progress -> pages -->
         <path class="e" d="M785,212 L840,150" marker-end="url(#ah)"/>
-        <path class="e" d="M785,232 L840,250" marker-end="url(#ah)"/>
-        <text class="el" x="640" y="264">pastes HTML between</text>
-        <text class="el" x="640" y="277">marker comments</text>
+        <path class="e" d="M785,223 L840,223" marker-end="url(#ah)"/>
+        <path class="e" d="M785,240 L840,288" marker-end="url(#ah)"/>
+        <text class="el" x="640" y="176">pastes HTML into</text>
+        <text class="el" x="640" y="189">marker regions</text>
+        <!-- prose .md -> render-pages -> topic pages -->
+        <path class="e" d="M170,300 L635,300" marker-end="url(#ah)"/>
+        <text class="el" x="420" y="294">prose + nodes.json → full page</text>
+        <path class="e" d="M785,306 L840,306" marker-end="url(#ah)"/>
         <!-- events -> activity (browser fetch) via channel -->
-        <path class="e" d="M170,222 L202,222 L202,356 L838,356" marker-end="url(#ah)"/>
-        <text class="el" x="560" y="350">fetch() in your browser, every page load</text>
+        <path class="e" d="M170,222 L202,222 L202,412 L838,412" marker-end="url(#ah)"/>
+        <text class="el" x="560" y="406">fetch() in your browser, every page load</text>
 
         <!-- actor -->
         <g class="node k-actor" data-id="skills" tabindex="0" role="button" aria-label="Teacher and quizmaster skills">
           <rect x="20" y="14" width="560" height="46"/>
-          <text class="t" x="34" y="34">swe-teacher · swe-quizmaster</text>
-          <text class="s" x="34" y="51">Claude skills — today the only writers; they also run the two scripts</text>
+          <text class="t" x="34" y="34">swe-teacher · swe-quizmaster · swe-editor</text>
+          <text class="s" x="34" y="51">Claude skills — teacher and quizmaster append events; only swe-editor writes prose</text>
         </g>
 
         <!-- column 0: hand-written -->
@@ -165,10 +171,10 @@
           <text class="t" x="30" y="206">events.json</text>
           <text class="s" x="30" y="224">85 events · append-only</text>
         </g>
-        <g class="node k-dup" data-id="pages" tabindex="0" role="button" aria-label="Topic pages">
+        <g class="node k-source" data-id="prose" tabindex="0" role="button" aria-label="Topic prose files">
           <rect x="20" y="262" width="150" height="54"/>
-          <text class="t" x="30" y="284">topic pages</text>
-          <text class="s" x="30" y="302">prose + typed-in status</text>
+          <text class="t" x="30" y="284">{id}.md prose</text>
+          <text class="s" x="30" y="302">6 files · swe-editor only</text>
         </g>
 
         <!-- column 1 -->
@@ -194,7 +200,12 @@
         <g class="node k-script" data-id="buildprogress" tabindex="0" role="button" aria-label="build-progress.mjs">
           <rect x="635" y="196" width="150" height="54"/>
           <text class="t" x="645" y="218" style="font-size:12px">build-progress.mjs</text>
-          <text class="s" x="645" y="236">renderer · 366 lines</text>
+          <text class="s" x="645" y="236">renderer · 431 lines</text>
+        </g>
+        <g class="node k-script" data-id="render" tabindex="0" role="button" aria-label="render-pages.mjs">
+          <rect x="635" y="274" width="150" height="54"/>
+          <text class="t" x="645" y="296" style="font-size:12px">render-pages.mjs</text>
+          <text class="s" x="645" y="314">.md → topic page</text>
         </g>
 
         <!-- column 4: pages -->
@@ -204,14 +215,19 @@
           <text class="s" x="850" y="158">home: next up + spine</text>
         </g>
         <g class="node k-page" data-id="rsstrip" tabindex="0" role="button" aria-label="review-schedule.html due strip">
-          <rect x="840" y="224" width="150" height="54"/>
-          <text class="t" x="850" y="246" style="font-size:12px">review-schedule</text>
-          <text class="s" x="850" y="264">review-debt chart</text>
+          <rect x="840" y="196" width="150" height="54"/>
+          <text class="t" x="850" y="218" style="font-size:12px">review-schedule</text>
+          <text class="s" x="850" y="236">review-debt chart</text>
+        </g>
+        <g class="node k-page" data-id="topicpages" tabindex="0" role="button" aria-label="Topic pages">
+          <rect x="840" y="274" width="150" height="54"/>
+          <text class="t" x="850" y="296">topic pages</text>
+          <text class="s" x="850" y="314">{id}.html · all generated</text>
         </g>
         <g class="node k-page" data-id="activity" tabindex="0" role="button" aria-label="activity.html">
-          <rect x="840" y="330" width="150" height="54"/>
-          <text class="t" x="850" y="352">activity.html</text>
-          <text class="s" x="850" y="370">contribution grid</text>
+          <rect x="840" y="386" width="150" height="54"/>
+          <text class="t" x="850" y="408">activity.html</text>
+          <text class="s" x="850" y="426">contribution grid</text>
         </g>
       </svg>
     </div>
@@ -228,12 +244,13 @@
   <section id="detail" class="detail" aria-live="polite"></section>
 
   <h2>Lean check</h2>
-  <p>Without the typed-in status, the whole system is one pipeline: <strong>two inputs</strong> (<code>events.json</code> and <code>nodes.json</code>) → <strong>one script that computes status</strong> (<code>scan-book.mjs</code>) → <strong>two JSON files</strong> → <strong>one renderer</strong> (<code>build-progress.mjs</code>) → pages. Everything outside that line is a candidate to cut or fold in:</p>
+  <p>Without the typed-in status, the whole system is one pipeline: <strong>two inputs</strong> (<code>events.json</code> and <code>nodes.json</code>) → <strong>one script that computes status</strong> (<code>scan-book.mjs</code>) → <strong>two JSON files</strong> → <strong>one renderer</strong> (<code>build-progress.mjs</code>) → pages. Prose runs alongside it: <code>{id}.md</code> (one writer, <code>swe-editor</code>) → <code>render-pages.mjs</code> → the topic page's shell and body. Everything outside that line is a candidate to cut or fold in:</p>
   <table class="arch-table">
     <thead><tr><th>Piece</th><th>Why it's extra</th><th>Option</th></tr></thead>
     <tbody>
       <tr><td>events 1–50 (<code>concept:</code>)</td><td>Older sessions from before this book, with thin notes.</td><td><strong>Done 2026-09-21:</strong> dropped in the schema-1 migration; kept in the pre-v1 backup file.</td></tr>
-      <tr><td>Topic-page status lines + coverage logs</td><td>Typed-in copies of what scan-book computes; they can disagree.</td><td>Keep the prose; generate the status and log with marker regions like index.html.</td></tr>
+      <tr><td>Topic-page status lines + coverage logs</td><td>Typed-in copies of what scan-book computes.</td><td><strong>Done 2026-09-22:</strong> both are generated regions now.</td></tr>
+      <tr><td>Hand-written topic-page HTML</td><td>Prose, nav and breadcrumb were typed into each page; only Claude with repo access could edit it, and two agents could overwrite each other.</td><td><strong>Done 2026-09-23:</strong> prose moved to <code>{id}.md</code>, everything else generated; one prose writer (<code>swe-editor</code>), backlog tracked by <code>prose_through</code>.</td></tr>
       <tr><td>review-schedule lower tables</td><td>Duplicated the due strip, and were the only record for backend topics.</td><td><strong>Done 2026-09-20:</strong> 4 backend sidecars added, tables removed.</td></tr>
       <tr><td>activity.html's own counting</td><td>Recounts events per day in the browser; <code>progress-data.json</code> already has a <code>cadence</code> per day.</td><td>Optional: read cadence instead, or leave it (it's harmless and always live).</td></tr>
     </tbody>
@@ -253,19 +270,21 @@
 const D = {
   skills: {
     verbs: true,
-    title: "swe-teacher · swe-quizmaster",
+    title: "swe-teacher · swe-quizmaster · swe-editor",
     kind: "Actor — Claude skills",
-    role: "The only thing that writes to this repo today. After a session, a skill appends an event, may add a topic to nodes.json and edit page prose, then runs the two scripts in order.",
-    writes: "events.json, nodes.json, topic pages (prose + coverage log)",
+    role: "The only things that write to this repo today. swe-teacher and swe-quizmaster append events (and the teacher may add a topic to nodes.json); swe-editor is the single prose writer — it folds events past each page's prose_through into the page's .md. Any of them runs rebuild.mjs afterwards.",
+    writes: "events.json, nodes.json (teacher: new topics; editor: page placement, forward pointers), {id}.md (editor only)",
     reads: "book-graph-data.json (to pick the next topic and check status), events.json (a topic's last quiz)",
     when: "End of every teaching or quiz session",
-    lean: "Both skills stick to this repo's own pipeline: append an event, keep nodes.json and page prose current, then run scan-book.mjs and build-progress.mjs. Status is never typed in by hand anywhere else.",
+    lean: "Events are append-only, so any number of agents can add them at once; prose is rewritten in place, so it has exactly one writer. That split is what lets non-Claude agents (Gemini through the API) contribute later without clobbering the pages.",
     leanOk: true,
     exLabel: "Post-session steps, as the skills spell them out",
     ex: `1. append event            → events.json
-2. node scripts/scan-book.mjs           → book-graph-data.json, progress-data.json
-3. node scripts/build-progress.mjs      → index.html, review-schedule.html (marker regions)
-4. git commit`
+2. node scripts/rebuild.mjs
+     validate-events → scan-book → render-pages → build-progress
+3. swe-editor: node scripts/prose-backlog.mjs  → edit {id}.md, bump prose_through
+4. node scripts/rebuild.mjs  (again)
+5. git commit`
   },
   events: {
     title: "events.json",
@@ -285,27 +304,65 @@ const D = {
     kind: "Source of truth — the topic registry",
     file: "../nodes.json",
     role: "Every topic an event can point at: 15 subject domains (computer-science, databases, backend, …) and the topics under them. The id is the path (domain/concept/sub-concept, 1–4 parts), so a topic's parent is its id minus the last part. Each entry says where its prose lives (page), what it depends on and contrasts with, and which other domains it also belongs to (also_in). It never holds scores. Replaced the six *.graph.json sidecars on 2026-09-21.",
-    writes: "swe-teacher, when a topic is added or moved",
-    reads: "scan-book.mjs, validate-events.mjs (every event's node ids must exist here)",
+    writes: "swe-teacher, when a topic is added or moved (page left null); swe-editor sets page when it places a topic",
+    reads: "scan-book.mjs, validate-events.mjs (every event's node ids must exist here), render-pages.mjs (titles, breadcrumbs, section anchors)",
     when: "Only when the shape of the book changes",
     lean: "Order of study is not stored here: the study path (which domain comes first) lives in scan-book.mjs, so the hierarchy only says what a topic is, not when to learn it.",
     leanOk: true,
     exLabel: "Two entries",
     ex: "{\n  \"id\": \"computer-science/data-structures/hash-tables\",\n  \"title\": \"Hash Tables\",\n  \"page\": \"computer-science/data-structures.html#hash-tables\",\n  \"deps\": [\"computer-science/data-structures/arrays\"],\n  \"contrasts\": [],\n  \"also_in\": []\n}\n\n{ \"id\": \"backend/auth\", \"title\": \"Auth\", \"page\": \"backend/auth.html\",\n  \"deps\": [], \"contrasts\": [], \"also_in\": [\"security\"] }"
   },
-  pages: {
+  prose: {
+    title: "Topic prose (e.g. computer-science/data-structures.md)",
+    kind: "Source of truth — the book's prose, one writer",
+    file: "../computer-science/data-structures/trees.md",
+    role: "Everything hand-written about a topic, in a small strict markdown subset (docs/prose-format.md), next to the page it becomes: {node id}.md → {node id}.html. Front matter records prose_through, the last event already written in; later events that touch the page are its backlog, shown on the page's status line.",
+    writes: "swe-editor only",
+    reads: "render-pages.mjs, scan-book.mjs (prose_through only), the skills (for context)",
+    when: "Whenever swe-editor folds a backlog — at the end of every teaching session, or on demand",
+    lean: "Raw HTML is rejected, so prose can't break the layout, and the file is plain enough to fix from a phone. Learner state lives only in \"Where things stand\"; the rest explains the topic, without dates.",
+    leanOk: true,
+    exLabel: "The top of backend/auth.md",
+    ex: `---
+prose_through: 85
+---
+
+## Authentication vs. authorization
+
+**Authentication** is "who are you" (logging in). **Authorization** is …`
+  },
+  render: {
+    verbs: true,
+    title: "scripts/render-pages.mjs",
+    kind: "Script — builds topic pages",
+    file: "../scripts/render-pages.mjs",
+    role: "For every page node in nodes.json, turns {id}.md into {id}.html: generates the head, nav, breadcrumb and title from nodes.json, renders the prose, and carries the two status regions over for build-progress.mjs to refresh. Fails loudly on raw HTML, a missing front matter, or a section node whose {#anchor} heading is missing.",
+    writes: "every topic page ({id}.html)",
+    reads: "{id}.md, nodes.json",
+    when: "Every rebuild, between scan-book.mjs and build-progress.mjs",
+    lean: "No dependencies: a ~240-line renderer for exactly the markdown the book uses. --check reports pages out of date with their .md without writing.",
+    leanOk: true,
+    exLabel: "What it turns a callout into",
+    ex: `:::callout
+**Same idea, one layer down:** … see [Databases](../databases/fundamentals.html#replication)
+:::
+        ↓
+<div class="callout">
+  <strong>Same idea, one layer down:</strong> … see <a href="../databases/fundamentals.html#replication">Databases</a>
+</div>`
+  },
+  topicpages: {
     title: "Topic pages (e.g. computer-science/data-structures.html)",
-    kind: "Hand-written content — also repeats status",
+    kind: "Page — fully generated",
     file: "../computer-science/data-structures.html",
-    role: "The actual teaching material. Besides the prose, each page carries a status subtitle, a summary paragraph and a \"Coverage log (spaced repetition)\" table, all typed by the skill.",
-    writes: "swe-teacher",
-    reads: "You. No script reads these files.",
-    when: "Every session that touches the topic",
-    lean: "The prose belongs here. The status line and coverage log don't: they restate what scan-book computes, and if a skill forgets to update them they silently disagree with the home page. Candidate: generate them into marker regions, the way index.html works.",
-    exLabel: "Typed-in status subtitle on data-structures.html",
-    ex: `<p class="subtitle">Status: most sections <span class="status-fresh">needs-review</span>,
-Linked Lists <span class="status-solid">solid</span> — see Coverage log below …
-· Linked Lists reconfirmed 2026-09-17 · Trees moved to its own page · Last covered 2026-09-17</p>`
+    role: "The teaching material, at {node id}.html. Since 2026-09-23 nothing in it is hand-edited: render-pages.mjs writes the shell and prose from the .md, and build-progress.mjs fills the status line (including any \"not yet written up\" backlog) and the coverage log.",
+    writes: "render-pages.mjs (shell + prose), build-progress.mjs (page-status, page-coverage)",
+    reads: "You",
+    when: "Every rebuild",
+    lean: "Editing the .html directly is pointless now — the next rebuild overwrites it. Edit the .md.",
+    leanOk: true,
+    exLabel: "The generated status line for Auth, with backlog",
+    ex: "Status: needs review · next review 2026-08-31 · 23d overdue · last covered 2026-09-22 · 1 event not yet written up (#86) · computed from the event log"
   },
   scan: {
     verbs: true,
@@ -313,18 +370,18 @@ Linked Lists <span class="status-solid">solid</span> — see Coverage log below 
     kind: "Script — computes all status",
     file: "../scripts/scan-book.mjs",
     role: "Reads nodes.json plus events.json and works out, for each topic, a status (solid / needs-review), review streak, and next due date. A parent topic takes the weaker of its own status and its children's. It also writes every sentence the home page prints.",
-    writes: "book-graph-data.json, progress-data.json",
-    reads: "nodes.json, events.json",
+    writes: "book-graph-data.json, progress-data.json (including each page's prose backlog)",
+    reads: "nodes.json, events.json, each {id}.md's prose_through",
     when: "Run by the skill after every session (by hand today)",
     lean: "This is the one place status rules live, which is what keeps the system honest. Keep it that way: nothing else should decide what \"solid\" means.",
     leanOk: true,
     exLabel: "How it scores Linked Lists",
     ex: `quiz events naming computer-science/data-structures/linked-lists
   #82  2026-09-11  wrong 2   → streak resets to 1
-  #85  2026-09-17  wrong 0   → streak 2, last clean = 09-17
+  #85  2026-09-17  wrong 0   → streak 2, latest review = 09-17
 
 gap by streak:  1→3d  2→7d  3→14d  4→30d  5+→60d
-due     = 09-17 + 7d = 2026-09-24
+due     = latest review + gap = 09-17 + 7d = 2026-09-24
 status  = last quiz clean AND today ≤ due  → solid
 parent  = weakest(own, children) → Data Structures stays needs-review
 
@@ -362,7 +419,7 @@ study path: computer-science → computer-architecture → operating-systems →
     kind: "Script — renderer",
     file: "../scripts/build-progress.mjs",
     role: "Turns progress-data.json into HTML and pastes it between marker comments in two pages. It never reads events and never decides status. Re-running it with the same data changes nothing.",
-    writes: "index.html (region \"home\"), review-schedule.html (region \"duestrip\")",
+    writes: "index.html (home), review-schedule.html (duestrip), every topic page (page-status, page-coverage)",
     reads: "progress-data.json",
     when: "Run by the skill after scan-book.mjs",
     lean: "This marker-region pattern is the tool for removing the typed-in status on topic pages: add a region there too and let this script fill it.",

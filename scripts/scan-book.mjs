@@ -165,10 +165,14 @@ function directStatus(events, today = new Date()) {
   }
 
   const lastScored = eventDate(quizzes[quizzes.length - 1]);
+  // Due date = the latest review, clean or missed, plus the gap for the current streak. A miss
+  // resets the streak to 1, so a topic missed on 09-22 is due again on 09-25 (09-22 + 3d).
+  // (Until 2026-09-23 this counted from the last *clean* review, so Auth — clean 08-28, missed
+  // 09-22 — showed "due 08-31, 23d overdue", a date earlier than its own latest review.)
   let dueDate = null;
-  if (lastSuccessDate) {
-    const due = new Date(lastSuccessDate + "T00:00:00");
-    due.setDate(due.getDate() + intervalFor(streak));
+  if (lastScored) {
+    const due = new Date(lastScored + "T00:00:00Z"); // UTC on both ends, so the date can't shift a day in IST
+    due.setUTCDate(due.getUTCDate() + intervalFor(streak));
     dueDate = due.toISOString().slice(0, 10);
   }
 
@@ -697,10 +701,109 @@ function buildDue(nodes, today) {
   unscheduled.forEach((u) => delete u._rank);
 
   const advice =
-    `${cap(word(unscheduled.length))} nodes carry no due date: either they've never had a clean review of their own ` +
-    `(a whole-page review scored the page, not them), or every review so far had a miss. One clean check each converts them into a schedule.`;
+    `${cap(word(unscheduled.length))} nodes carry no due date: they've never been quizzed on their own ` +
+    `(a whole-page review scored the page, not them). One quiz each puts them on a schedule.`;
 
   return { scheduled, unscheduled, advice };
+}
+
+// ---- per-page views: the status line and coverage log on each topic page ----
+// Replaces the hand-typed "Status: …" subtitles and coverage-log tables
+// (2026-09-22): both restated what this script computes and drifted from it.
+// One entry per page file; rows = the nodes whose prose lives on that page.
+function buildPages(nodes, eventsByNode, rawEvents, today) {
+  const byFile = new Map();
+  for (const n of nodes.values()) {
+    if (!n.page) continue;
+    const file = n.page.split("#")[0];
+    if (!byFile.has(file)) byFile.set(file, []);
+    byFile.get(file).push(n);
+  }
+  const pages = {};
+  for (const [file, list] of byFile) {
+    list.sort((a, b) => (a.page.includes("#") ? 1 : 0) - (b.page.includes("#") ? 1 : 0)); // page node first
+    const ids = new Set(list.map((n) => n.id));
+    const rows = list.map((n) => {
+      const evs = eventsByNode.get(n.id) || [];
+      const taught = evs.filter((e) => e.verb === "taught").map(eventDate).sort().pop() || null;
+      const quizzes = evs.filter((e) => e.verb === "quiz_answered" && e.payload?.questions?.length);
+      const lq = quizzes[quizzes.length - 1];
+      const d = n._direct;
+      return {
+        node_id: n.id,
+        title: n.title,
+        anchor: n.page.includes("#") ? "#" + n.page.split("#")[1] : null,
+        last_taught: taught,
+        last_quizzed: lq ? eventDate(lq) : null,
+        last_result: lq ? `${eventCorrect(lq)} / ${eventAsked(lq)}` : null,
+        streak: d ? d.timesReviewed : 0,
+        reset: !!(lq && eventWrongCount(lq) > 0), // last review had a miss -> streak was reset to 1
+        due: d ? d.dueDate : null,
+        overdue: !!(d && d.dueDate && d.dueDate < today),
+        status: n._status,
+      };
+    });
+    const history = rawEvents
+      .filter((e) => ids.has(e.node_id) || (e.payload?.questions || []).some((q) => ids.has(q.node_id)))
+      .map((e) => {
+        const qs = (e.payload?.questions || []).filter((q) => ids.has(q.node_id || e.node_id));
+        const gaps = (e.payload?.gaps || []).filter((g) => ids.has(g.node_id || e.node_id));
+        return {
+          date: eventDate(e),
+          title: nodes.get(e.node_id)?.title || e.node_id,
+          anchor: ids.has(e.node_id) && nodes.get(e.node_id).page.includes("#") ? "#" + nodes.get(e.node_id).page.split("#")[1] : null,
+          verb: e.verb,
+          depth: e.payload?.depth || null,
+          result: e.verb === "quiz_answered" ? `${qs.filter((q) => q.correct === true).length} / ${qs.length}` : null,
+          gaps: gaps.map((g) => g.text),
+          agent: e.agent?.name || null,
+        };
+      })
+      .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+    const solid = rows.filter((r) => r.status === "solid").length;
+    const overdue = rows.filter((r) => r.overdue).length;
+    const last = history.length ? history[0].date : null;
+    pages[file] = { rows, history, summary: { solid, total: rows.length, overdue, last_covered: last }, prose: proseState(file, ids, rawEvents) };
+  }
+  return pages;
+}
+
+// ---- prose backlog (added 2026-09-23) ----
+// A page's prose lives in {page}.md, whose front matter says how far it has caught up with the
+// log (prose_through: <event id>). Every later event that touches one of the page's nodes is
+// backlog for the editor (swe-editor) to fold into the prose. See docs/prose-format.md.
+function eventTouches(e, ids) {
+  const p = e.payload || {};
+  return ids.has(e.node_id) ||
+    (p.questions || []).some((q) => ids.has(q.node_id)) ||
+    (p.gaps || []).some((g) => ids.has(g.node_id)) ||
+    (p.nodes || []).some((x) => ids.has(x.node_id));
+}
+
+function proseState(file, ids, rawEvents) {
+  const md = join(findBookRoot(), file.replace(/\.html$/, ".md"));
+  let through = null;
+  try {
+    const m = readFileSync(md, "utf8").match(/^---\r?\n[\s\S]*?prose_through:\s*(\d+)/);
+    if (m) through = Number(m[1]);
+  } catch { /* no .md yet — render-pages.mjs reports it */ }
+  const backlog = rawEvents
+    .filter((e) => typeof e.id === "number" && (through === null || e.id > through) && eventTouches(e, ids))
+    .map((e) => e.id)
+    .sort((a, b) => a - b);
+  return { through, backlog };
+}
+
+// Nodes that have events but no page yet: the editor must place them (a section on an existing
+// page, or a page of their own) before their prose can exist.
+function buildUnplaced(nodes, rawEvents) {
+  const out = [];
+  for (const n of nodes.values()) {
+    if (n.page) continue;
+    const evs = rawEvents.filter((e) => eventTouches(e, new Set([n.id]))).map((e) => e.id);
+    if (evs.length) out.push({ node_id: n.id, events: evs });
+  }
+  return out;
 }
 
 function buildProgressData(nodes, eventsByNode, rawEvents) {
@@ -732,6 +835,8 @@ function buildProgressData(nodes, eventsByNode, rawEvents) {
     next,
     spine: groups,
     due: buildDue(nodes, today),
+    pages: buildPages(nodes, eventsByNode, rawEvents, today),
+    prose_unplaced: buildUnplaced(nodes, rawEvents),
     provenance,
   };
 }
