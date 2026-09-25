@@ -6,13 +6,14 @@
 // page-coverage), so no page carries hand-typed status. It never re-derives
 // status and never reads events.json — every number and sentence on the page is
 // already composed upstream. This file is pure presentation: it turns the view
-// data into static HTML and splices it between marker comments in two pages.
+// data into static HTML and splices it between marker comments.
 //
-//   progress-data.json ──▶ index.html          (cadence · next up · spine)
-//                     └──▶ review-schedule.html (due strip, at the top)
+//   progress-data.json ──▶ _site/index.html          (cadence · next up · spine)
+//                     ├──▶ _site/review-schedule.html (due strip, at the top)
+//                     └──▶ _site/{id}.html            (status line, coverage log)
 //
-// Idempotent: re-running with an unchanged progress-data.json rewrites the same
-// bytes between the markers, so the pages only change when the data does.
+// index.html and review-schedule.html at the repo root are templates: their marker regions are
+// empty in git and only ever filled in the _site/ copy (since 2026-09-23; see copy-sources.mjs).
 //
 // Usage: node build-progress.mjs        (run after scan-book.mjs)
 // BOOK_ROOT env var overrides the repo root for testing.
@@ -419,16 +420,17 @@ function main() {
     targets.push({ file, name: "page-coverage", body: renderPageCoverage(p, data.today) });
   }
 
+  // index.html and review-schedule.html are templates at the repo root (sources, committed);
+  // topic pages were just written into _site/ by render-pages.mjs. Either way the filled page
+  // goes to _site/ — nothing in the repo root is rewritten.
+  const TEMPLATES = new Set(["index.html", "review-schedule.html"]);
   for (const t of targets) {
-    const path = join(ROOT, t.file);
-    const before = readFileSync(path, "utf8");
+    const outPath = join(ROOT, "_site", t.file);
+    const inPath = TEMPLATES.has(t.file) ? join(ROOT, t.file) : outPath;
+    const before = readFileSync(inPath, "utf8");
     const after = spliceRegion(before, t.name, t.body);
-    if (after === before) {
-      console.log(`  ${t.file} — unchanged`);
-    } else {
-      writeFileSync(path, after);
-      console.log(`  ${t.file} — rewrote "${t.name}" region`);
-    }
+    writeFileSync(outPath, after);
+    console.log(`  _site/${t.file} — filled "${t.name}" region`);
   }
 }
 

@@ -96,7 +96,7 @@
 <main>
   <div class="breadcrumb"><a href="../index.html">Home</a> / Architecture</div>
   <h1>How the Book's Data Fits Together</h1>
-  <p class="subtitle">Every JSON, script, and generated page in this repo, and which one feeds which. Click any box for what the file holds, who writes it, who reads it, and a real excerpt. Snapshot taken 2026-09-21 (events 51–85, 30 nodes); prose pipeline added 2026-09-23.</p>
+  <p class="subtitle">Every JSON, script, and generated page in this repo, and which one feeds which. Click any box for what the file holds, who writes it, who reads it, and a real excerpt. Snapshot taken 2026-09-21 (events 51–85, 30 nodes); prose pipeline and <code>_site/</code> build added 2026-09-23.</p>
 
   <h2>One session, end to end</h2>
   <ol class="arch-steps">
@@ -106,6 +106,7 @@
     <li><code>render-pages.mjs</code> builds each topic page from its prose file (<code>{id}.md</code>) plus <code>nodes.json</code> (title, breadcrumb). Then <code>build-progress.mjs</code> pastes HTML built from <code>progress-data.json</code> between marker comments in <code>index.html</code>, <code>review-schedule.html</code> and each topic page's status line and coverage log. (<code>rebuild.mjs</code> runs all four scripts in order.)</li>
     <li>The new event is now <strong>backlog</strong>: the page's <code>.md</code> says <code>prose_through: 85</code>, so the status line reads "1 event not yet written up (#86)". <code>swe-editor</code> — the only prose writer — runs <code>prose-backlog.mjs</code>, folds the event into the <code>.md</code>, sets <code>prose_through: 86</code> and rebuilds.</li>
     <li><code>activity.html</code> needs no build step: it loads <code>events.json</code> in your browser each time you open it.</li>
+    <li>Everything on the right of the diagram lives in <code>_site/</code>, which git ignores: <code>copy-sources.mjs</code> starts it as a copy of the sources, then the two renderers write into it. On every push (and daily at 06:00 IST) a GitHub Action runs <code>rebuild.mjs</code> and publishes <code>_site/</code>. Git holds only what's on the left.</li>
   </ol>
 
   <h2>The diagram</h2>
@@ -222,7 +223,7 @@
         <g class="node k-page" data-id="topicpages" tabindex="0" role="button" aria-label="Topic pages">
           <rect x="840" y="274" width="150" height="54"/>
           <text class="t" x="850" y="296">topic pages</text>
-          <text class="s" x="850" y="314">{id}.html · all generated</text>
+          <text class="s" x="850" y="314">_site/{id}.html</text>
         </g>
         <g class="node k-page" data-id="activity" tabindex="0" role="button" aria-label="activity.html">
           <rect x="840" y="386" width="150" height="54"/>
@@ -251,6 +252,7 @@
       <tr><td>events 1–50 (<code>concept:</code>)</td><td>Older sessions from before this book, with thin notes.</td><td><strong>Done 2026-09-21:</strong> dropped in the schema-1 migration; kept in the pre-v1 backup file.</td></tr>
       <tr><td>Topic-page status lines + coverage logs</td><td>Typed-in copies of what scan-book computes.</td><td><strong>Done 2026-09-22:</strong> both are generated regions now.</td></tr>
       <tr><td>Hand-written topic-page HTML</td><td>Prose, nav and breadcrumb were typed into each page; only Claude with repo access could edit it, and two agents could overwrite each other.</td><td><strong>Done 2026-09-23:</strong> prose moved to <code>{id}.md</code>, everything else generated; one prose writer (<code>swe-editor</code>), backlog tracked by <code>prose_through</code>.</td></tr>
+      <tr><td>Generated files in git</td><td>Every rebuild rewrote committed files, so local rebuilds and a future server-side rebuild would conflict on them.</td><td><strong>Done 2026-09-23:</strong> build output goes to <code>_site/</code> (ignored); a GitHub Action builds and publishes it.</td></tr>
       <tr><td>review-schedule lower tables</td><td>Duplicated the due strip, and were the only record for backend topics.</td><td><strong>Done 2026-09-20:</strong> 4 backend sidecars added, tables removed.</td></tr>
       <tr><td>activity.html's own counting</td><td>Recounts events per day in the browser; <code>progress-data.json</code> already has a <code>cadence</code> per day.</td><td>Optional: read cadence instead, or leave it (it's harmless and always live).</td></tr>
     </tbody>
@@ -337,7 +339,7 @@ prose_through: 85
     kind: "Script — builds topic pages",
     file: "../scripts/render-pages.mjs",
     role: "For every page node in nodes.json, turns {id}.md into {id}.html: generates the head, nav, breadcrumb and title from nodes.json, renders the prose, and carries the two status regions over for build-progress.mjs to refresh. Fails loudly on raw HTML, a missing front matter, or a section node whose {#anchor} heading is missing.",
-    writes: "every topic page ({id}.html)",
+    writes: "every topic page (_site/{id}.html)",
     reads: "{id}.md, nodes.json",
     when: "Every rebuild, between scan-book.mjs and build-progress.mjs",
     lean: "No dependencies: a ~240-line renderer for exactly the markdown the book uses. --check reports pages out of date with their .md without writing.",
@@ -419,7 +421,7 @@ study path: computer-science → computer-architecture → operating-systems →
     kind: "Script — renderer",
     file: "../scripts/build-progress.mjs",
     role: "Turns progress-data.json into HTML and pastes it between marker comments in two pages. It never reads events and never decides status. Re-running it with the same data changes nothing.",
-    writes: "index.html (home), review-schedule.html (duestrip), every topic page (page-status, page-coverage)",
+    writes: "_site/index.html (home) and _site/review-schedule.html (duestrip), filled from the templates at the repo root; every topic page in _site/ (page-status, page-coverage)",
     reads: "progress-data.json",
     when: "Run by the skill after scan-book.mjs",
     lean: "This marker-region pattern is the tool for removing the typed-in status on topic pages: add a region there too and let this script fill it.",
@@ -437,8 +439,8 @@ study path: computer-science → computer-architecture → operating-systems →
     title: "index.html",
     kind: "Page — part generated",
     file: "../index.html",
-    role: "The home page. The header and nav are hand-written; everything between the \"home\" markers (cadence strip, next up, curriculum spine) is generated.",
-    writes: "build-progress.mjs (inside markers); by hand outside them",
+    role: "The home page. index.html at the repo root is a template: the header and nav are hand-written and the \"home\" region is empty. build-progress.mjs fills that region (cadence strip, next up, curriculum spine) into the published copy, _site/index.html.",
+    writes: "by hand (the template); build-progress.mjs (the region, in _site/ only)",
     reads: "You",
     when: "Updated whenever build-progress runs",
     lean: "Its provenance line says it outright: \"No status on this page is hand-written.\" That is the standard the other pages should meet.",

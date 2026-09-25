@@ -1,12 +1,12 @@
 # Topic prose — format
 
-Every page node in `nodes.json` (a `page` with no `#`) has its prose in `{id}.md`, next to the
-generated `{id}.html`: `computer-science/data-structures/trees.md` → `trees.html`.
-`scripts/render-pages.mjs` builds the page from it; nobody edits a topic `.html` by hand.
+Every page node in `nodes.json` (a `page` with no `#`) has its prose in `{id}.md`; the page is
+generated into the build output: `computer-science/data-structures/trees.md` → `_site/computer-science/data-structures/trees.html`.
+`scripts/render-pages.mjs` builds it; topic `.html` files are never committed.
 
 What the .md does **not** contain (all generated): the `<head>`, site nav, breadcrumb, `<h1>`
 (title comes from `nodes.json`), the status line, the "Coverage log" table, and the footer.
-Links are written relative to the .md's own folder, exactly as they'd be from the .html.
+Links are written relative to the .md's own folder, exactly as they'd be from the .html (same folder in `_site/`).
 
 ## Who writes it
 
@@ -71,7 +71,7 @@ never break the page layout. `<`, `>` and `&` are fine as plain characters.
 ## After editing
 
 `node scripts/rebuild.mjs` (validate → scan → render-pages → build-progress).
-`node scripts/render-pages.mjs --check` exits 1 if any .html is out of date with its .md.
+`node scripts/render-pages.mjs --check` exits 1 if any page in `_site/` is out of date with its .md.
 
 A new page node needs its .md before the rebuild will pass (`render-pages` reports the missing file).
 `render-pages` also fails if a section node that lives on this page (`page: "x.html#anchor"`)

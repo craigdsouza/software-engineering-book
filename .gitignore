@@ -1,0 +1,5 @@
+# Build output: the site is assembled here by scripts/rebuild.mjs and published by
+# .github/workflows/pages.yml. Only sources are committed.
+_site/
+book-graph-data.json
+progress-data.json

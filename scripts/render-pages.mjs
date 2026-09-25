@@ -1,25 +1,27 @@
 #!/usr/bin/env node
-// render-pages.mjs — builds every topic page ({id}.html) from its prose file ({id}.md).
+// render-pages.mjs — builds every topic page (_site/{id}.html) from its prose file ({id}.md).
 //
 // A topic page has three kinds of content:
 //   1. the shell — <head>, site header/nav, breadcrumb, <h1>, footer. Generated here from nodes.json.
 //   2. the prose — everything hand-written about the topic. Lives in {id}.md, next to the .html.
 //   3. the progress regions (page-status, page-coverage) — filled by build-progress.mjs.
-// This script writes 1 + 2 and carries 3 over untouched from the existing .html, so it is safe
-// to run on its own; rebuild.mjs runs build-progress.mjs right after it anyway.
+// This script writes 1 + 2 into _site/ and carries 3 over from the page already there (if any);
+// rebuild.mjs runs build-progress.mjs right after it to fill 3.
 //
-// Nobody edits a topic .html by hand any more. Edit the .md, then `node scripts/rebuild.mjs`.
+// Topic .html files exist only in _site/ (git ignores it). Edit the .md, then run
+// `node scripts/rebuild.mjs`.
 // The markdown subset is documented in docs/prose-format.md. It is deliberately small and strict:
 // no raw HTML, so prose can never break the page layout.
 //
 // Usage: node scripts/render-pages.mjs            (all page nodes)
-//        node scripts/render-pages.mjs --check    (exit 1 if any page would change; writes nothing)
+//        node scripts/render-pages.mjs --check    (exit 1 if any _site page is out of date with its .md; writes nothing)
 
-import { readFileSync, writeFileSync, existsSync } from "fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
 import { join, dirname, relative, posix } from "path";
 import { fileURLToPath } from "url";
 
 const ROOT = process.env.BOOK_ROOT || dirname(dirname(fileURLToPath(import.meta.url)));
+const OUT = join(ROOT, "_site"); // build output; see copy-sources.mjs
 const REGIONS = ["page-status", "page-coverage"];
 
 // ---------- markdown subset → HTML ----------
@@ -228,7 +230,7 @@ function main() {
   let failed = false, stale = 0;
   for (const node of pages) {
     const mdPath = join(ROOT, node.page.replace(/\.html$/, ".md"));
-    const htmlPath = join(ROOT, node.page);
+    const htmlPath = join(OUT, node.page);
     if (!existsSync(mdPath)) { console.error(`  ${node.id} — missing prose file ${relative(ROOT, mdPath)}`); failed = true; continue; }
     const old = existsSync(htmlPath) ? readFileSync(htmlPath, "utf8") : "";
     let html;
@@ -236,7 +238,7 @@ function main() {
     catch (e) { console.error(`  ${relative(ROOT, mdPath)} — ${e.message}`); failed = true; continue; }
     if (html === old) console.log(`  ${node.page} — unchanged`);
     else if (check) { console.log(`  ${node.page} — would change`); stale++; }
-    else { writeFileSync(htmlPath, html); console.log(`  ${node.page} — rendered from .md`); }
+    else { mkdirSync(dirname(htmlPath), { recursive: true }); writeFileSync(htmlPath, html); console.log(`  ${node.page} — rendered from .md`); }
   }
   if (failed || (check && stale)) process.exit(1);
 }
