@@ -61,3 +61,22 @@ miss on 09-22 makes the node due on 09-25. A node that has never been quizzed ha
 - Five old "gap" entries that were really assessment notes (#68 ×3, #69 ×1, #85 ×1) moved into `notes`.
 - Old fields dropped: `source`, `actor`, `vault_note`, `catalog_video`, `mode`, `session_depth`,
   `concepts_written` (folded into `content`), `questions_asked`/`correct`/`wrong` (derived now).
+
+## Drafts (agents that can't write to the repo)
+
+An agent without repo access submits a **draft**: an event minus everything the book assigns. Today
+that's Gemini in Chrome (Skill: `docs/skill-history/gemini-book-tutor.*`), pasted through `log.html`.
+
+- Allowed fields: `verb`, `node_id`, `agent`, `resource`, `payload`, and optional
+  `proposed_node: { id, title }` for a topic the registry doesn't have yet (its parent must exist).
+- Never in a draft: `id`, `schema`, `ts`, `date`, or gap ids. Gaps are `{ node_id, text }`.
+- `log.html` checks the paste with `scripts/lib/event-rules.mjs` (`checkDraft`) and creates
+  `inbox/<submit time>-<random>.json` = `{ submitted_at, via, drafts: [...] }` through GitHub's API.
+- On push, the Action runs `scripts/ingest-inbox.mjs`: same checks; a draft identical to one already
+  logged is skipped; `id` = highest + 1, `ts` = `submitted_at`, `date` = that moment in IST, gap ids
+  `g{id}-{n}`; a proposed node is added to `nodes.json` with `page: null` (swe-editor places it).
+  Any bad draft sends the whole file to `inbox/rejected/` with a `.error.txt` naming each field.
+  The Action commits the result to master, then builds and deploys.
+- The generated `agent-guide.html` lists every valid `node_id` with status, open gaps and recent
+  questions, plus examples that are checked against these rules on every build.
+

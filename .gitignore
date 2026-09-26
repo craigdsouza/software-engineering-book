@@ -3,3 +3,7 @@
 _site/
 book-graph-data.json
 progress-data.json
+
+# Generated for the separate life-os dashboard by scripts/build-dashboard-state.mjs; life-os reads
+# it from disk (bookRepoPath in life-os/config.json), so it stays here but is never committed.
+dashboard-state.js

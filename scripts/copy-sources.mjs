@@ -17,7 +17,7 @@ import { fileURLToPath } from "url";
 const ROOT = process.env.BOOK_ROOT || dirname(dirname(fileURLToPath(import.meta.url)));
 const OUT = join(ROOT, "_site");
 // never published: git internals, the build output itself, CI config, editor clutter
-const SKIP = new Set([".git", "_site", ".github", "node_modules", ".vscode", ".gitignore"]);
+const SKIP = new Set([".git", "_site", ".github", "node_modules", ".vscode", ".gitignore", "inbox"]);
 
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });

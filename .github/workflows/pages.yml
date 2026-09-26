@@ -1,4 +1,4 @@
-# Builds the site from sources and publishes it to GitHub Pages.
+# Ingests event drafts from inbox/, then builds the site from sources and publishes it to Pages.
 # The repo holds only sources; scripts/rebuild.mjs assembles everything the site serves in _site/.
 #
 # One-time setup: repo Settings → Pages → Build and deployment → Source: "GitHub Actions".
@@ -14,22 +14,49 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write   # ingest commits the new events back to master
   pages: write
   id-token: write
 
+# Runs queue instead of cancelling each other: a cancelled run could stop halfway through an
+# ingest. Two pastes a few seconds apart become two runs, one after the other.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Check out the branch as it is *now*, not the commit that triggered this run — an earlier
+      # queued run may already have ingested (and deleted) some inbox files.
       - uses: actions/checkout@v4
+        with:
+          ref: master
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+
+      - name: Ingest inbox drafts into events.json
+        run: |
+          node scripts/ingest-inbox.mjs | tee ingest.log
+          if [ -n "$(git status --porcelain -- events.json nodes.json inbox)" ]; then
+            git config user.name "book-ingest[bot]"
+            git config user.email "book-ingest@users.noreply.github.com"
+            git add -A events.json nodes.json inbox
+            git commit -q -m "$(tail -n 1 ingest.log)"
+            # another push may have landed meanwhile: replay on top of it and retry. If it still
+            # fails, stop — the inbox files stay in the repo and the next run ingests them.
+            pushed=""
+            for i in 1 2 3; do
+              if git pull -q --rebase origin master && git push -q origin HEAD:master; then pushed=1; break; fi
+              git rebase --abort 2>/dev/null || true
+              sleep 5
+            done
+            [ -n "$pushed" ] || { echo "could not push the ingest commit"; exit 1; }
+          fi
+          rm -f ingest.log
+
       - name: Validate events, compute status, render pages
         run: node scripts/rebuild.mjs
       - uses: actions/upload-pages-artifact@v3

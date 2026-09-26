@@ -1,6 +1,6 @@
 # Skill history
 
-Frozen copies of the Claude skills that write to this book, kept so any version can be compared or
+Frozen copies of the skills (Claude's, and Gemini's saved Skill prompts) that write to this book, kept so any version can be compared or
 restored. Files are never edited or deleted; a new version is added alongside the old ones as
 `{skill}.v{N}.{date}.md`. The live skills are installed in Claude, not read from here.
 
@@ -13,6 +13,7 @@ restored. Files are never edited or deleted; a new version is added alongside th
 | swe-quizmaster | v2 | `swe-quizmaster.v2.2026-09-22.md` | Rewritten short: full question text in `quiz_answered`, gap ids, node ids per question. |
 | swe-quizmaster | v3 | `swe-quizmaster.v3.2026-09-23.md` | Never edits .html or .md; puts explanations in `feedback` for the editor; offers swe-editor after a quiz. |
 | swe-editor | v1 | `swe-editor.v1.2026-09-23.md` | New: the single prose writer — folds events past `prose_through` into `{id}.md`. |
+| gemini-book-tutor | v1 | `gemini-book-tutor.v1.2026-09-26.md` | New: Gemini in Chrome Skill — teaches/quizzes on the page being read, reads agent-guide.html, outputs draft JSON for log.html. Lives in Gemini's Skills library; this is the copy. |
 
 v2 of swe-teacher and swe-quizmaster was never saved at the time; it was restored on 2026-09-23 from
 the installed text read just before the v3 update (the v2→v3 diff matches the v3 edits exactly).

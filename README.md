@@ -13,7 +13,7 @@ templates (`index.html`, `review-schedule.html`), the hand-written pages (`activ
 
 ```
 node scripts/rebuild.mjs
-  validate-events → scan-book → copy-sources → render-pages → build-progress
+  validate-events → scan-book → copy-sources → render-pages → build-progress → render-agent-guide
                     (writes book-graph-data.json and progress-data.json at the root, also ignored)
 ```
 
@@ -43,6 +43,18 @@ published straight from the branch, with generated files committed.)
 - `events.json` — event log of teaching, reading and quiz activity (schema 1)
 - `nodes.json` — the topic registry: domains, topics, pages, deps, contrasts, also_in
 
+## Logging from other agents (inbox)
+
+Agents that can't write to the repo (Gemini in Chrome) end a session by printing JSON *drafts*. Paste
+them into **`log.html`** on the site: it checks them in the browser, then creates a file in `inbox/`
+via GitHub's API (one-time: save a fine-grained token with Contents read/write on this repo only).
+The Action's first step, `scripts/ingest-inbox.mjs`, numbers the drafts, appends them to
+`events.json`, commits, then builds and deploys. Rejected drafts go to `inbox/rejected/` with the
+reason. Agents read **`agent-guide.html`** (generated) for valid topic ids and the draft format.
+
+Because the Action now commits to `master`, **pull before working locally** (`git pull`), or a
+local session's `events.json` edit will conflict with an ingested one.
+
 ## events.json and nodes.json
 
 `events.json` is the append-only log of every `taught`, `read` and `quiz_answered` event (schema 1).
@@ -53,7 +65,7 @@ and what changed when the old log was migrated on 2026-09-21, is in [`docs/event
 After appending an event:
 
 ```
-node scripts/rebuild.mjs   # validate-events -> scan-book -> copy-sources -> render-pages -> build-progress, stops at the first failure
+node scripts/rebuild.mjs   # validate-events -> scan-book -> copy-sources -> render-pages -> build-progress -> render-agent-guide, stops at the first failure
 ```
 
 `render-pages.mjs` builds each topic page's shell (head, nav, breadcrumb, title) around the prose in its

@@ -10,7 +10,7 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const here = dirname(fileURLToPath(import.meta.url));
-for (const step of ["validate-events.mjs", "scan-book.mjs", "copy-sources.mjs", "render-pages.mjs", "build-progress.mjs"]) {
+for (const step of ["validate-events.mjs", "scan-book.mjs", "copy-sources.mjs", "render-pages.mjs", "build-progress.mjs", "render-agent-guide.mjs"]) {
   try {
     execFileSync(process.execPath, [join(here, step)], { stdio: "inherit" });
   } catch {

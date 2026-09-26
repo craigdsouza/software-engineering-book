@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log a session — Software Engineering Book</title>
+<link rel="stylesheet" href="style.css">
+<meta name="robots" content="noindex">
+<style>
+  .log-box { width: 100%; min-height: 14em; box-sizing: border-box; font-family: var(--font-mono); font-size: 0.85rem;
+             padding: 0.7em; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-alt); color: var(--text); }
+  .log-row { display: flex; gap: 0.6em; flex-wrap: wrap; align-items: center; margin: 0.8em 0; }
+  .log-btn { font-family: var(--font-ui); font-size: 0.95rem; padding: 0.55em 1.1em; border-radius: 6px; cursor: pointer;
+             border: 1px solid var(--accent); background: var(--accent); color: var(--bg); }
+  .log-btn.secondary { background: transparent; color: var(--accent); }
+  .log-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .log-token { flex: 1 1 16em; font-family: var(--font-mono); padding: 0.5em; border: 1px solid var(--border);
+               border-radius: 6px; background: var(--bg-alt); color: var(--text); }
+  .log-list { margin: 0.4em 0; padding-left: 1.3em; }
+  .log-ok { color: var(--solid); }
+  .log-bad { color: var(--overdue); }
+  .log-msg { margin: 0.8em 0; }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Software Engineering — A Study Book</a>
+    <nav class="tracks">
+      <a href="index.html">Home</a>
+      <a href="review-schedule.html">Review Schedule</a>
+      <a href="activity.html">Activity</a>
+      <a href="about/teaching-style.html">Teaching Style</a>
+      <a href="about/architecture.html">Architecture</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="index.html">Home</a> / Log a session</div>
+  <h1>Log a session</h1>
+  <p class="subtitle">Paste the JSON an agent gave you at the end of a session (Gemini's book-tutor Skill). It's checked here first, then dropped into the book's inbox; the site updates a few minutes later. Format: <a href="agent-guide.html">agent guide</a>.</p>
+
+  <textarea id="paste" class="log-box" spellcheck="false" placeholder="Paste the whole code block here — surrounding text and ``` fences are fine."></textarea>
+  <div id="check" class="log-msg" aria-live="polite"></div>
+  <div class="log-row">
+    <button id="submit" class="log-btn" disabled>Add to the book</button>
+    <button id="fix" class="log-btn secondary" hidden>Copy a fix request for the agent</button>
+  </div>
+  <div id="result" class="log-msg" aria-live="polite"></div>
+
+  <details id="setup">
+    <summary>GitHub token (this device)</summary>
+    <p>Submitting creates one file in the repo's <code>inbox/</code> folder, so this page needs a GitHub token. Create a <strong>fine-grained</strong> token at <a href="https://github.com/settings/personal-access-tokens/new">github.com/settings/personal-access-tokens/new</a> with access to <em>only</em> <code>craigdsouza/software-engineering-book</code> and one permission: <strong>Contents: Read and write</strong>. It is kept in this browser only (localStorage) and sent only to api.github.com.</p>
+    <div class="log-row">
+      <input id="token" class="log-token" type="password" autocomplete="off" placeholder="github_pat_…">
+      <button id="save" class="log-btn secondary">Save</button>
+      <button id="forget" class="log-btn secondary">Forget</button>
+    </div>
+    <p id="token-state" class="log-msg"></p>
+  </details>
+</main>
+<footer class="site-footer">Built topic by topic. Depth over completion.</footer>
+
+<script type="module">
+import { extractDrafts, checkDraft } from "./scripts/lib/event-rules.mjs";
+
+const REPO = "craigdsouza/software-engineering-book";
+const BRANCH = "master";
+const KEY = "swe-book.github-token";
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const store = {
+  get() { try { return localStorage.getItem(KEY) || ""; } catch { return ""; } },
+  set(v) { try { v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY); return true; } catch { return false; } },
+};
+
+let nodes = null, current = null, lastSubmitted = null;
+
+async function loadNodes() {
+  const res = await fetch("nodes.json", { cache: "no-store" });
+  if (!res.ok) throw new Error(`nodes.json: HTTP ${res.status}`);
+  const reg = await res.json();
+  nodes = { ids: new Set(reg.nodes.map((n) => n.id)), title: new Map(reg.nodes.map((n) => [n.id, n.title])) };
+}
+
+function showToken() {
+  const t = store.get();
+  $("token-state").innerHTML = t ? `<span class="log-ok">A token is saved on this device.</span>` : `<span class="log-bad">No token saved on this device yet.</span>`;
+  if (!t) $("setup").open = true;
+}
+
+function summarize(d) {
+  const title = nodes.title.get(d.node_id) || d.proposed_node?.title || d.node_id;
+  const p = d.payload || {};
+  let what = d.verb;
+  if (d.verb === "quiz_answered") {
+    const qs = p.questions || [];
+    what = `quiz · ${qs.filter((q) => q.correct === true).length} / ${qs.length} correct · ${(p.gaps || []).length} gap${(p.gaps || []).length === 1 ? "" : "s"}`;
+  } else if (d.verb === "taught") what = `taught · ${(p.content || "").length} characters of content`;
+  else if (d.verb === "read") what = `read · ${(p.nodes || []).length} topic(s)`;
+  const newNode = d.proposed_node ? ` · <em>new topic</em>` : "";
+  return `${esc(title)} <code>${esc(d.node_id)}</code> — ${esc(what)} · ${esc(d.agent?.name || "?")}${p.depth ? " · " + esc(p.depth) : ""}${newNode}`;
+}
+
+function check() {
+  $("result").innerHTML = "";
+  const text = $("paste").value;
+  current = null; $("fix").hidden = true; $("submit").disabled = true;
+  if (!text.trim()) { $("check").innerHTML = ""; return; }
+  if (!nodes) { $("check").textContent = "Loading the topic list…"; return; }
+  const { drafts, error } = extractDrafts(text);
+  if (error) { $("check").innerHTML = `<span class="log-bad">${esc(error)}</span>`; return; }
+  const problems = [];
+  drafts.forEach((d, i) => checkDraft(d, nodes.ids).forEach((e) => problems.push((drafts.length > 1 ? `draft ${i + 1} ` : "") + e)));
+  const list = `<ol class="log-list">${drafts.map((d) => `<li>${summarize(d)}</li>`).join("")}</ol>`;
+  if (problems.length) {
+    $("check").innerHTML = `${list}<p class="log-bad"><strong>${problems.length} problem${problems.length > 1 ? "s" : ""} — nothing will be sent:</strong></p>` +
+      `<ul class="log-list">${problems.map((p) => `<li><code>${esc(p)}</code></li>`).join("")}</ul>`;
+    $("fix").hidden = false;
+    $("fix").dataset.text = "The book rejected the JSON you gave me. Fix exactly these fields, keep everything else the same, and output the full corrected JSON list again in one code block:\n" +
+      problems.map((p) => "- " + p).join("\n");
+    return;
+  }
+  current = drafts;
+  const dup = lastSubmitted === JSON.stringify(drafts);
+  $("check").innerHTML = `${list}<p class="log-ok">Looks good — ${drafts.length} event${drafts.length > 1 ? "s" : ""} ready.</p>` +
+    (dup ? `<p class="log-bad">You already submitted exactly this from this page. The book would skip it as a duplicate.</p>` : "");
+  $("submit").disabled = !store.get();
+  if (!store.get()) $("check").innerHTML += `<p class="log-bad">Save a GitHub token below to submit.</p>`;
+}
+
+function base64(text) {
+  const bytes = new TextEncoder().encode(text);
+  let bin = "";
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+
+async function submit() {
+  if (!current) return;
+  const token = store.get();
+  const now = new Date();
+  const name = `${now.toISOString().replace(/[:.]/g, "-")}-${Math.random().toString(36).slice(2, 6)}.json`;
+  const body = JSON.stringify({ submitted_at: now.toISOString(), via: "log.html", drafts: current }, null, 2) + "\n";
+  const first = current[0];
+  $("submit").disabled = true;
+  $("result").textContent = "Sending…";
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/inbox/${name}`, {
+      method: "PUT",
+      headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" },
+      body: JSON.stringify({ message: `inbox: ${first.verb} ${first.node_id} via log.html${current.length > 1 ? ` (+${current.length - 1})` : ""}`, content: base64(body), branch: BRANCH }),
+    });
+    if (res.status === 201) {
+      lastSubmitted = JSON.stringify(current);
+      $("paste").value = ""; current = null; $("check").innerHTML = "";
+      $("result").innerHTML = `<p class="log-ok"><strong>Added to the inbox</strong> as <code>inbox/${esc(name)}</code>. The book logs it and rebuilds in a few minutes — ` +
+        `<a href="https://github.com/${REPO}/actions">watch the run</a>. If a draft is rejected, it moves to <code>inbox/rejected/</code> with the reason beside it.</p>`;
+      return;
+    }
+    const detail = await res.json().catch(() => ({}));
+    const hint = res.status === 401 ? "The token is invalid or expired — make a new one below."
+      : res.status === 403 || res.status === 404 ? "The token can't write to this repo — it needs access to software-engineering-book with Contents: Read and write."
+      : "";
+    $("result").innerHTML = `<p class="log-bad">GitHub said ${res.status}: ${esc(detail.message || res.statusText)}. ${esc(hint)} Nothing was added.</p>`;
+    $("submit").disabled = false;
+  } catch (e) {
+    $("result").innerHTML = `<p class="log-bad">Couldn't reach GitHub (${esc(e.message)}). Nothing was added — try again.</p>`;
+    $("submit").disabled = false;
+  }
+}
+
+$("paste").addEventListener("input", check);
+$("submit").addEventListener("click", submit);
+$("fix").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText($("fix").dataset.text); $("fix").textContent = "Copied — paste it to the agent"; }
+  catch { $("result").innerHTML = `<pre>${esc($("fix").dataset.text)}</pre>`; }
+});
+$("save").addEventListener("click", () => {
+  const v = $("token").value.trim();
+  if (!v) return;
+  $("token").value = "";
+  if (!store.set(v)) $("token-state").innerHTML = `<span class="log-bad">This browser won't store it (private window?).</span>`;
+  else { showToken(); check(); }
+});
+$("forget").addEventListener("click", () => { store.set(""); showToken(); check(); });
+
+showToken();
+loadNodes().then(check).catch((e) => { $("check").innerHTML = `<span class="log-bad">Couldn't load the topic list: ${esc(e.message)}</span>`; });
+</script>
+</body>
+</html>
