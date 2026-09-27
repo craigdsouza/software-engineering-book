@@ -1459,5 +1459,83 @@
       ],
       "notes": "Oldest-overdue pick (22 days) via progress-data.json's next-clause-1. Retested g62-1 with a fresh WebView scenario -- resolved, see g86-1 for the light follow-up framing. Second question surfaced a new, more precise gap around SameSite vs. theft-and-replay (g86-2), worked through via Craig's own valid pushback to a fully self-derived correct conclusion. Third question (session vs. JWT revocation tradeoff) was clean with no prompting."
     }
+  },
+  {
+    "id": 87,
+    "schema": 1,
+    "ts": "2026-09-27T12:34:58.918Z",
+    "date": "2026-09-27",
+    "verb": "taught",
+    "node_id": "software-engineering/testing",
+    "agent": {
+      "name": "gemini",
+      "surface": "chrome",
+      "skill": "book-tutor"
+    },
+    "resource": {
+      "url": "https://www.youtube.com/watch?v=jydYq7oAtD8&t=31s",
+      "title": "Software Testing Course \u2013 Playwright, E2E, and AI Agents",
+      "kind": "video"
+    },
+    "payload": {
+      "depth": "intro",
+      "content": "Software testing acts as an insurance policy for code quality, preventing high-stakes production failures like Knight Capital's $460M loss or Therac-25 radiation over-dosages.\n\n1. The Testing Pyramid (Full-Stack Architecture Scope):\nBalances speed, cost, and confidence across three layers:\n- Unit Tests (Base): Highly isolated, fast (~milliseconds), test pure functions/components using mocks/stubs.\n- Integration Tests (Middle): Medium speed/cost, test boundaries and communication between 2+ modules or systems (e.g., backend API to database).\n- End-to-End (E2E) Tests (Peak): Slowest, highest cost and maintenance, test complete real-world user workflows in actual browser environments (e.g., via Playwright).\n\nWorked Example (1,000 total tests for an e-commerce app):\n- 800 Unit Tests (e.g., tax calculation logic): ~2 seconds total runtime.\n- 150 Integration Tests (e.g., checkout service persisting orders to PostgreSQL): ~15 seconds total runtime.\n- 50 E2E Tests (e.g., Playwright driving UI login, cart, and checkout flow): ~5\u201310 minutes total runtime.\n\nASCII Diagrams:\nUnit Test:\n[Input: $10] ---> ( calc_tax() ) ---> [Output: $1.50]\n\nIntegration Test:\n( Checkout Service ) <===> ( PostgreSQL Database )\n\nE2E Test:\n[ Playwright Browser ] ---> ( Frontend UI ) ---> ( Backend API ) ---> ( Database )\n\nThe Testing Ice Cream Cone (Tempting-but-wrong alternative):\nDevelopers rely heavily on slow E2E tests while skipping unit tests because unit tests use dummy data. Counterexample: 500 E2E tests taking 3 hours cause developers to stop running local test suites. When tests fail with generic UI timeout errors, debugging becomes a nightmare because E2E tests report symptoms across the entire system rather than pinpointing root code causes.\n\n2. The UI Testing Ladder (Frontend UI Scope):\nOrganizes client-side quality by visual and interactive granularity:\n- Level 1: UI Element Appearance (visual, styling, layout; tested via visual snapshot tools like Percy/Chromatic).\n- Level 2: UI Element Behavior (component interactivity and state transitions in isolation; tested via React Testing Library/JSDOM).\n- Level 3: User Journey Testing (multi-step workflow simulation; overlaps directly with E2E Testing).\n\nVisual Rendering Blindspot:\nFunctional tests check DOM presence, not pixel reality (e.g., z-index: -1 or off-screen flex-wrap bugs pass DOM assertions). Bridged using Visual Regression Snapshot Testing (e.g., Playwright's toHaveScreenshot()).\n\n3. Functional vs. Non-Functional Testing:\n- Functional (Pyramid & UI Ladder): Verifies WHAT the system does.\n- Non-Functional: Verifies HOW WELL the system performs under constraints (Load/Performance testing, Security/OWASP vulnerability scanning, Accessibility/a11y WCAG compliance, Chaos Engineering like Chaos Monkey).\n\n4. Timeline Perspective (Shift-Left vs. Shift-Right):\n- Shift-Left (Pre-Release): Catching bugs early in design/development (linters, static typing, TDD, automated PR tests).\n- Shift-Right (Post-Release/Production): Testing live production systems (Canary releases, feature flags, synthetic monitoring, A/B testing).\n\n5. Visibility Perspective:\n- White-Box: Full code visibility (unit tests).\n- Black-Box: Zero code visibility, testing purely against inputs/outputs (E2E browser tests).\n- Gray-Box: Partial code visibility (e.g., testing external HTTP APIs while knowing the DB schema).\n\nConnections:\nConnects directly to Backend APIs (backend/apis), where contract testing and unit testing business logic in isolation keep slow E2E suites small and focused strictly on frontend wiring.",
+      "notes": "Pushed back on whether E2E tests give zero location info for bugs, correctly observing that Playwright logs and step traces pinpoint user-journey failure points, though root-cause code debugging still requires full-stack investigation. Explored mental models comparing the Testing Pyramid with the UI Testing Ladder, non-functional quality attributes, timeline shifts (shift-left/right), and code visibility levels."
+    }
+  },
+  {
+    "id": 88,
+    "schema": 1,
+    "ts": "2026-09-27T12:34:58.918Z",
+    "date": "2026-09-27",
+    "verb": "quiz_answered",
+    "node_id": "software-engineering/testing",
+    "agent": {
+      "name": "gemini",
+      "surface": "chrome",
+      "skill": "book-tutor"
+    },
+    "resource": {
+      "url": "https://www.youtube.com/watch?v=jydYq7oAtD8&t=31s",
+      "title": "Software Testing Course \u2013 Playwright, E2E, and AI Agents",
+      "kind": "video"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "Imagine you are adding a new feature to the TechMart app: if a user has 5 or more items in their cart, they automatically get a 10% discount. You want to verify that this exact discount math works correctly. Based on the testing pyramid, which level of test (Unit, Integration, or E2E) should you use to verify this specific calculation, and what happens to your test suite if you decide to write an E2E test for this instead?",
+          "answer": "Use a unit test. Writing an E2E test instead introduces external failure points (network, UI, database), so if the test fails, it's ambiguous whether the discount logic or another system component broke.",
+          "correct": true,
+          "node_id": "software-engineering/testing",
+          "feedback": "Correct! You accurately identified that a unit test is ideal for pure business logic, whereas an E2E test introduces extraneous failure modes that hide whether the discount math itself broke."
+        },
+        {
+          "tag": "explain",
+          "question": "Suppose your backend team renames a field in the JSON response for fetching cart items\u2014changing \"items\" to \"cart_items\". The frontend unit tests pass (because they use dummy mock data with the old field name), and the backend unit tests pass (because the endpoint correctly returns JSON). Yet in production, the shopping cart page renders totally blank. What level of test was missing from your suite, and why did the individual unit tests fail to catch this bug?",
+          "answer": "An integration test was missing. Integration tests verify whether two independent modules work together correctly. Unit tests failed because they relied on outdated mock data that did not reflect the breaking JSON schema change.",
+          "correct": true,
+          "node_id": "software-engineering/testing",
+          "feedback": "Correct! You correctly identified that an integration test checks the boundary where two components meet, which is precisely where mock-based unit tests fail because mocks hide breaking schema changes."
+        },
+        {
+          "tag": "predict",
+          "question": "Imagine your team uses Playwright to run an automated checkout test suite on every pull request. The test involves making a real HTTP call to a third-party payment gateway (like Stripe). In CI/CD, this test randomly fails 15% of the time because Stripe occasionally rate-limits the CI server or takes too long to respond. What strategy should you apply to your test suite to eliminate this flakiness without removing the checkout test entirely, and what potential risk do you take on by doing so?",
+          "answer": "Rely on the test running successfully at least once to prove payload validity, use detailed logging/monitoring to track rate-limiting or network issues, and run E2E tests, acknowledging that lack of unit tests makes pinpointing failures harder and increases execution time.",
+          "correct": false,
+          "node_id": "software-engineering/testing",
+          "feedback": "Incorrect. To eliminate third-party API flakiness and rate limiting in CI/CD, the standard strategy is API Mocking (stubbing network responses, e.g. using Playwright's network interception to return a canned 200 OK response). Relying on real live calls plus logging still leaves CI/CD builds flaky and slow. The trade-off/risk of API mocking is schema drift: if Stripe changes its API contract or error responses in production, your mock won't detect the breakage."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g88-1",
+          "node_id": "software-engineering/testing",
+          "text": "Conflated handling third-party API flakiness in E2E/CI tests with retry/logging rather than using network mocking/stubbing, missing the trade-off of schema drift."
+        }
+      ],
+      "notes": "First two questions answered cleanly with solid understanding of unit and integration test boundaries. Question 3 revealed a misconception regarding handling third-party network dependencies in automated CI/CD pipelines."
+    }
   }
 ]
