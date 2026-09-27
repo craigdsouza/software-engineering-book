@@ -801,7 +801,7 @@ function buildUnplaced(nodes, rawEvents) {
   for (const n of nodes.values()) {
     if (n.page) continue;
     const evs = rawEvents.filter((e) => eventTouches(e, new Set([n.id]))).map((e) => e.id);
-    if (evs.length) out.push({ node_id: n.id, events: evs });
+    if (evs.length) out.push({ node_id: n.id, title: n.title, events: evs });
   }
   return out;
 }

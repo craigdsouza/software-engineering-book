@@ -239,8 +239,34 @@ function renderHome(data) {
     ${renderCadence(data.cadence)}
 
     ${renderNext(data.next)}
-
+${renderEditorQueue(data)}
     ${renderSpine(data)}`;
+}
+
+// ---- prose waiting for swe-editor (added 2026-09-27) ----
+// Events that no page has absorbed yet: new topics with no page at all (a proposed node from an
+// inbox draft), and pages whose .md is behind the log. Renders nothing when the book is caught up.
+function renderEditorQueue(data) {
+  const ids = (list) => list.map((id) => "#" + id).join(", ");
+  const items = [];
+  for (const u of data.prose_unplaced || []) {
+    items.push(`<li>New topic, no page yet: <strong>${esc(u.title || u.node_id)}</strong> <code>${esc(u.node_id)}</code> — ${u.events.length} event${u.events.length > 1 ? "s" : ""} (${esc(ids(u.events))})</li>`);
+  }
+  for (const [file, p] of Object.entries(data.pages || {})) {
+    const b = p.prose?.backlog || [];
+    if (!b.length) continue;
+    const title = p.rows?.[0]?.title || file;
+    items.push(`<li><a href="${esc(file)}">${esc(title)}</a>: ${b.length} event${b.length > 1 ? "s" : ""} not yet written up (${esc(ids(b))})</li>`);
+  }
+  if (!items.length) return "";
+  return `
+    <div class="callout">
+      <strong>Waiting for the editor.</strong> These are logged and scored, but not yet in the prose. Run swe-editor ("update the book") to write them up.
+      <ul>
+        ${items.join("\n        ")}
+      </ul>
+    </div>
+`;
 }
 
 // ---------- review-schedule due strip ----------

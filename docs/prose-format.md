@@ -30,6 +30,8 @@ prose_through: 86
 touches one of the page's nodes (as `node_id`, a question's or gap's `node_id`, or a `read`
 event's `nodes[]`) is **backlog**: `scan-book.mjs` records it in `progress-data.json`
 (`pages[file].prose`), and the page's status line shows it — "1 event not yet written up (#86)".
+The home page also shows a "Waiting for the editor" box listing every page that is behind and every
+new topic that has events but no page yet (so a Gemini-proposed topic is visible before it has a page).
 `node scripts/prose-backlog.mjs [node id]` prints the backlog events in full, plus any node that
 has events but no `page` yet (the editor places it first). The editor folds the events in, then
 sets `prose_through` to the highest id it folded.

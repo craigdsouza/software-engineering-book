@@ -34,10 +34,16 @@ const EXAMPLES = [
         { tag: "explain", question: "…", answer: "…", correct: false, node_id: "backend/auth", feedback: "…" } ],
       gaps: [ { node_id: "backend/auth", text: "A real misconception that surfaced, specific enough to retest next time." } ],
       notes: "How it went; which earlier gaps were retested and whether they are resolved." } },
-  { verb: "taught", node_id: "computer-science/data-structures/heaps",
-    proposed_node: { id: "computer-science/data-structures/heaps", title: "Heaps" }, agent: AGENT,
-    payload: { depth: "intro", content: "…", notes: "" } },
+  newTopicExample(),
 ];
+// The proposed-node example must name a topic the book doesn't have yet, so pick the first
+// candidate that isn't registered (a fixed id would break the build the day it gets added).
+function newTopicExample() {
+  const [slug, title] = [["heaps", "Heaps"], ["graphs", "Graphs"], ["tries", "Tries"], ["skip-lists", "Skip Lists"], ["bloom-filters", "Bloom Filters"]]
+    .find(([slug]) => !nodeIds.has(`computer-science/data-structures/${slug}`));
+  const id = `computer-science/data-structures/${slug}`;
+  return { verb: "taught", node_id: id, proposed_node: { id, title }, agent: AGENT, payload: { depth: "intro", content: "…", notes: "" } };
+}
 for (const ex of EXAMPLES) {
   const errs = checkDraft(ex, nodeIds);
   if (errs.length) throw new Error(`agent-guide example ${ex.verb} ${ex.node_id} fails the draft rules:\n${errs.join("\n")}`);
