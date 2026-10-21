@@ -222,6 +222,36 @@
       "also_in": []
     },
     {
+      "id": "machine-learning/neural-networks",
+      "title": "Neural Networks",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/neural-networks/deep",
+      "title": "Deep Neural Networks",
+      "page": null,
+      "deps": [
+        "machine-learning/neural-networks/shallow"
+      ],
+      "contrasts": [
+        "machine-learning/neural-networks/shallow"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/neural-networks/shallow",
+      "title": "Shallow Neural Networks",
+      "page": null,
+      "deps": [],
+      "contrasts": [
+        "machine-learning/neural-networks/deep"
+      ],
+      "also_in": []
+    },
+    {
       "id": "mathematics",
       "title": "Mathematics",
       "summary": "Discrete maths, linear algebra, probability & statistics, calculus.",

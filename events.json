@@ -1537,5 +1537,252 @@
       ],
       "notes": "First two questions answered cleanly with solid understanding of unit and integration test boundaries. Question 3 revealed a misconception regarding handling third-party network dependencies in automated CI/CD pipelines."
     }
+  },
+  {
+    "id": 89,
+    "schema": 1,
+    "ts": "2026-10-06T08:00:00.000Z",
+    "date": "2026-10-06",
+    "verb": "taught",
+    "node_id": "machine-learning/neural-networks/shallow",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork"
+    },
+    "resource": {
+      "url": "https://udlbook.github.io/udlbook/",
+      "title": "Understanding Deep Learning (Prince), Ch 3: Shallow neural networks",
+      "kind": "book"
+    },
+    "payload": {
+      "depth": "intermediate",
+      "content": "A shallow neural network is linear regression with hinges added. Linear regression y = phi0 + phi1*x has two knobs (height, slope) and can only draw a straight line. Adding lines together never helps: (1 + 2x) + (3 - x) = 4 + x is still a line. Something must bend each line before they are summed.\n\nReLU is the bending tool: negatives become 0, positives pass through unchanged (ReLU(-7) = 0, ReLU(4) = 4). A line passed through ReLU becomes a hockey stick: flat at zero, then rising from the point where the line crossed zero. That point is a hinge (\"joint\"). Everyday example: an auto fare of Rs 30 for the first 2 km then Rs 15/km is 30 + 15*ReLU(km - 2); at 1 km -> Rs 30, at 6 km -> Rs 90. That is a one-hinge network, which linear regression cannot express.\n\nEquation 3.1 decoded with a slab electricity tariff (fixed charge Rs 50; Rs 3/unit to 100 units, Rs 6/unit 100-300, Rs 9/unit above 300 - each slab adds Rs 3/unit):\n  h1 = ReLU(0 + 1x), h2 = ReLU(-100 + 1x), h3 = ReLU(-300 + 1x)\n  bill = 50 + 3*h1 + 3*h2 + 3*h3\nAt 250 units: h1 = 250, h2 = 150, h3 = 0 -> bill = 50 + 750 + 450 = Rs 1,250, matching the slab calculation.\n\nSymbols: theta_d0 = intercept of hidden unit d's line (hinge sits at x = -theta_d0/theta_d1); theta_d1 = its slope; a[.] = activation (ReLU); h1..h3 = hidden units; phi1..phi3 = how much each hinge changes the slope; phi0 = overall height. Subscripts read \"which hidden unit, then 0 for intercept or 1 for slope\". Ten knobs instead of Chapter 2's two; training is unchanged (least-squares loss, search for the knob values that minimise it).\n\nVocabulary: a hidden unit is active past its hinge and inactive when clipped to zero. The slope of any region = sum of the slope contributions of the active units (tariff above 300 units: 3 + 3 + 3 = Rs 9/unit - slope vs slope CHANGE is a common trap). D hidden units -> at most D hinges -> at most D + 1 straight pieces. Negative weights let the curve bend downward, so a network can rise, fall and rise again.\n\n\"Only three of the four slopes are independent\" (3.1.1): give each unit one number c_d, its slope contribution when active. Every region's slope is a sum of the c's of the active units, so four region slopes come from three numbers and the fourth is forced. If all units switch on to the right, the leftmost region has no active units and its slope is 0. If some units face left (negative theta slope), the forced slope is instead a sum of other regions' slopes - e.g. hinges at 1, 2, 3 with c = 2, -1 (left-facing), 3 give slopes -1, 1, 2, 5, and 1 = -1 + 2. Practical meaning: three units can't draw four unrelated slopes; you need a fourth unit.\n\nMultiple inputs: with 2 inputs each hinge becomes a line across the map; the lines cut the map into polygons, and over each polygon the output is a flat tilted plane (a faceted gemstone over terrain). Multiple outputs share the hidden units, so every output can only bend at the same joints (a zero weight can remove a bend from one output).\n\nUniversal approximation (3.2): with enough hidden units a shallow network can approximate any continuous function on a bounded range as closely as wanted - more, shorter straight pieces, like a many-sided polygon approximating a circle. It is an existence result: no bound on units, no promise training finds the settings, no promise of good predictions on new data.",
+      "notes": "Taught from UDL Ch 3 (section 3.1 math made concrete with tariff and fare examples; interactive three-hinge widget). Exact teaching date not recorded - logged on the quiz day."
+    }
+  },
+  {
+    "id": 90,
+    "schema": 1,
+    "ts": "2026-10-06T14:30:00.000Z",
+    "date": "2026-10-06",
+    "verb": "quiz_answered",
+    "node_id": "machine-learning/neural-networks/shallow",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "resource": {
+      "url": "https://udlbook.github.io/udlbook/",
+      "title": "Understanding Deep Learning (Prince), Ch 3: Shallow neural networks",
+      "kind": "book"
+    },
+    "payload": {
+      "depth": "intermediate",
+      "questions": [
+        {
+          "tag": "explain",
+          "question": "Suppose you delete every ReLU from a shallow network, so each hidden unit passes its line straight through. What shapes can the network draw now, and why? What does that tell you about ReLU's job?",
+          "answer": "Declined to guess - not yet clear on the role of ReLU.",
+          "correct": false,
+          "node_id": "machine-learning/neural-networks/shallow",
+          "feedback": "Without ReLU the network can only draw a straight line: a weighted sum of lines is a line. Worked example: units 2x - 4 and -x + 6, output = unit1 + 3*unit2 = -x + 14 (x=1 -> 13, 3 -> 11, 7 -> 7, slope -1 everywhere). With ReLU: x=1 -> 0 + 3*5 = 15, x=3 -> 2 + 3*3 = 11, x=7 -> 10 + 0 = 10; slope -2 then -0.25, so the line bends. ReLU's one job is to put a bend into each hidden unit's line; without it, any number of hidden units collapses back to linear regression."
+        },
+        {
+          "tag": "predict",
+          "question": "A network has 1 input, 1 output and 5 ReLU hidden units, trained on 1,000 points shaped like a smooth hill. What is the most straight pieces its fitted curve can have, what will the fit look like, and what changes with 50 hidden units?",
+          "answer": "Six linear regions; a six-segment piecewise-linear approximation of the hill; with 50 units the pieces get short enough to closely approximate the smooth hill.",
+          "correct": true,
+          "node_id": "machine-learning/neural-networks/shallow",
+          "feedback": "Correct. 'Up to' six: if two hinges coincide or a unit's weight is zero, there are fewer pieces."
+        },
+        {
+          "tag": "explain",
+          "question": "Now the network takes 2 inputs (latitude and longitude) and predicts terrain elevation. In the 1-input case each hinge was a point on the x-axis. What does each hinge become on the 2D map, and what do the flat pieces of the output surface look like?",
+          "answer": "Each hinge becomes a line; the flat pieces are polygons.",
+          "correct": true,
+          "node_id": "machine-learning/neural-networks/shallow",
+          "feedback": "Correct. The hinge lines cut the map into polygon patches; over each patch the elevation surface is a flat tilted plane."
+        },
+        {
+          "tag": "predict",
+          "question": "A network has 1 input, 3 hidden units and 2 outputs (price and demand). The price output bends at x = 2, 5 and 8. Where can the demand output bend, and why?",
+          "answer": "Also at 2, 5 and 8, because the same hidden units feed both outputs and the hidden units determine where the bends are.",
+          "correct": true,
+          "node_id": "machine-learning/neural-networks/shallow",
+          "feedback": "Correct and well reasoned. Demand CAN bend only there, but may not bend at all three: a zero weight on a hidden unit removes that bend from demand's curve."
+        },
+        {
+          "tag": "recall",
+          "question": "The universal approximation theorem says a shallow network can approximate any continuous function. Name what it promises, and at least two things it does not promise that matter in practice.",
+          "answer": "Declined to guess.",
+          "correct": false,
+          "node_id": "machine-learning/neural-networks/shallow",
+          "feedback": "It promises that some shallow network with enough hidden units can match any continuous function on a bounded range as closely as wanted. It does NOT promise: how many units are needed (could be millions); that training will find the right settings (a route exists, no map); that the network will predict well on new data."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g90-1",
+          "node_id": "machine-learning/neural-networks/shallow",
+          "text": "Role of ReLU: without an activation, sums of lines stay a line no matter how many units; ReLU is what adds the bends."
+        },
+        {
+          "id": "g90-2",
+          "node_id": "machine-learning/neural-networks/shallow",
+          "text": "Universal approximation is an existence result: no bound on units, no guarantee training finds the network, no guarantee of generalisation."
+        }
+      ],
+      "notes": "3/5. Craig chose not to guess on Q1 and Q5, which pinpointed the two gaps."
+    }
+  },
+  {
+    "id": 91,
+    "schema": 1,
+    "ts": "2026-10-09T14:44:00.000Z",
+    "date": "2026-10-09",
+    "verb": "taught",
+    "node_id": "machine-learning/neural-networks",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork"
+    },
+    "payload": {
+      "depth": "intermediate",
+      "content": "What a neural network is for: a general-purpose shape-maker that approximates almost any relationship between inputs and outputs. Two refinements to the 'any squiggle, any 3D object' picture:\n1. A network is a function - each input gives exactly one output - so a 1-input/1-output network cannot draw a loop. Workaround via output choice: input = time, outputs = (x position, y position) traces a path that can loop and cross itself.\n2. Terrain fits directly (2 inputs lat/lon -> 1 output elevation), but overhangs, caves or a coffee mug have two heights at one map point. Fix by asking a different question: input a 3D point, output signed distance to the surface (positive outside, negative inside); the object is where the output is zero. Used in neural graphics.\nIn practice the 'shape' is usually invisible: a 224x224 colour image is about 150,000 input numbers, and the network builds a faceted surface in 150,000 dimensions.\n\nWhy it works splits in two: (a) why it CAN represent almost anything - ReLU hinges glue flat pieces together (universal approximation); (b) why it actually works on real problems - how training finds good settings (UDL Ch 6-7) and why fitting training data generalises to new data (Ch 8-9, and partly still open, Ch 20).\n\nChoosing inputs and outputs: for images, audio and video the input is usually the raw numbers the data is made of; the output defines the task.\n- Images: pixels scaled to 0-1, 224*224*3 = 150,528 numbers. Outputs: class scores (1,000 for ImageNet), boxes + labels, or one label per pixel (e.g. satellite land-cover maps).\n- Audio: raw samples (16,000/s -> 160,000 numbers for 10 s) or a spectrogram (80 bands x 100 steps/s -> 80,000 numbers for 10 s). Outputs: transcript, speaker, next chunk of sound.\n- Video: stacks of frames (16 frames of 224x224 colour ~ 2.4 million numbers). Outputs: action label, caption, next frame.\n- Self-supervision: make the output the next piece of the data itself (next frame, next word) so data labels itself - how large language models are trained.\n- Raw pixels into a fully connected shallow network is impractical: 150,528 inputs x 1,000 hidden units = ~150 million first-layer weights; convolutional networks (Ch 10) redesign the wiring.",
+      "notes": "Craig's own framing ('networks model almost any function; I see what they can do but not yet why they work') was refined, not corrected."
+    }
+  },
+  {
+    "id": 92,
+    "schema": 1,
+    "ts": "2026-10-09T15:02:00.000Z",
+    "date": "2026-10-09",
+    "verb": "quiz_answered",
+    "node_id": "machine-learning/neural-networks/shallow",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "resource": {
+      "url": "https://udlbook.github.io/udlbook/",
+      "title": "Understanding Deep Learning (Prince), Ch 3: Shallow neural networks",
+      "kind": "book"
+    },
+    "payload": {
+      "depth": "intermediate",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "A colleague builds a network with 3 hidden layers of 500 units each but forgets any activation function. They train it on the smooth-hill data. What will the fitted curve look like, and why didn't 1,500 hidden units help?",
+          "answer": "Without activations each unit computes a line; summing lines gives a line, so layer 1 passes lines to layer 2, which again only has lines, and so on. The output is a straight line regardless of depth or width; only the activation creates bends.",
+          "correct": true,
+          "node_id": "machine-learning/neural-networks/shallow",
+          "feedback": "Correct - a line fed into a line is a line (layer 1: 3x + 1; layer 2: 2*(that) + 4 = 6x + 6). The result is the best straight line through the data, i.e. Chapter 2's linear regression - for a symmetric hill, a nearly flat line at the hill's average height."
+        },
+        {
+          "tag": "explain",
+          "question": "Someone says: 'The universal approximation theorem proves that a shallow network with 100 hidden units, trained on my 500 house-price records, will accurately predict prices for new houses.' Name at least three problems with this claim.",
+          "answer": "The theorem gives no bound on how many hidden units are needed; it says nothing about whether training will find the network; and it makes no claim the learned model generalises beyond the 500 records - it only says such a network exists.",
+          "correct": true,
+          "node_id": "machine-learning/neural-networks/shallow",
+          "feedback": "Correct on all three. Sharpening: the theorem concerns approximating the true function, while 500 noisy records are only a sample of it - mixing up 'the function' with 'my data' is another face of the generalisation problem (Ch 8). 'Existence result' is the standard name."
+        }
+      ],
+      "gaps": [],
+      "notes": "Gap retest, 2/2. g90-1 resolved. g90-2 resolved."
+    }
+  },
+  {
+    "id": 93,
+    "schema": 1,
+    "ts": "2026-10-09T15:26:00.000Z",
+    "date": "2026-10-09",
+    "verb": "taught",
+    "node_id": "machine-learning/neural-networks/deep",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork"
+    },
+    "resource": {
+      "url": "https://udlbook.github.io/udlbook/",
+      "title": "Understanding Deep Learning (Prince), Ch 4: Deep neural networks",
+      "kind": "book"
+    },
+    "payload": {
+      "depth": "intermediate",
+      "content": "Why stack layers instead of widening one: a wider layer ADDS hinges (D units -> at most D + 1 pieces), a new layer MULTIPLIES them.\n\nFolding (UDL 4.1): compose two 3-unit shallow networks. Set the first to zigzag: as x goes 0->1 y rises 0->1, 1->2 y falls back to 0, 2->3 y rises again. Three stretches of x all land on the same range of y - like folding a paper strip into a Z. The second network draws its own 3-piece pattern over y in [0,1]; because three stretches were folded onto that range, the pattern is drawn three times, once per stretch, and stretches that run backwards give mirrored copies. 3 x 3 = 9 pieces from 6 hidden units, versus at most 7 for one layer of 6. Nine units: one layer gives 10 pieces; three layers of 3 each folding 3 ways give 3 x 3 x 3 = 27.\n\nThe catch: the pieces are copies of one pattern, flipped and stretched, not free choices - the copies cannot be different patterns (one a bump, another a step). Depth wins when the target has repeated or reused structure (edges look alike anywhere in a photo; a syllable sounds similar in any word): early layers build a part once and later layers reuse it everywhere. With ReLU, a deep network still draws straight pieces joined at hinges; depth changes how many pieces you get per knob, not their kind. Real networks fold less neatly - training decides where and how much.",
+      "notes": "Taught with an interactive folding widget (fold 0-4 times; bump/step/tick patterns)."
+    }
+  },
+  {
+    "id": 94,
+    "schema": 1,
+    "ts": "2026-10-11T15:17:00.000Z",
+    "date": "2026-10-11",
+    "verb": "taught",
+    "node_id": "machine-learning/neural-networks/deep",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork"
+    },
+    "resource": {
+      "url": "https://udlbook.github.io/udlbook/",
+      "title": "Understanding Deep Learning (Prince), Ch 4: Deep neural networks",
+      "kind": "book"
+    },
+    "payload": {
+      "depth": "intermediate",
+      "content": "Equations 4.7-4.9 (two hidden layers, three units each). New letter psi ('sigh') names the layer-1 -> layer-2 knobs; theta = input -> layer 1, phi' = layer 2 -> output; a prime means 'second-layer version'. Every layer does the same three steps: multiply each input by a knob, add up plus an offset, clip with ReLU. Layer 1 units read one input (2 knobs each); layer 2 units read ALL layer-1 units (offset + 3 weights = 4 knobs each); the output is a weighted sum plus offset, unclipped. psi_23 = how much h'2 listens to h3 (first digit receiver, second digit source, 0 = offset). Knobs: 6 theta + 12 psi + 4 phi' = 22, versus 19 for a 6-unit shallow network.\nWorked example, x = 2: layer 1 (offset, slope) = (-1,1), (1,-1), (-3,2) -> before ReLU 1, -1, 1 -> h = [1, 0, 1]. Layer 2 rows (offset; weights on h1,h2,h3): (0; 2,1,-1) -> 1; (-1; 1,3,1) -> 1; (2; -1,0,-3) -> -2 -> h' = [1, 1, 0]. Output: 0.5 + 2*1 + 1*1 + 4*0 = 3.5. An inactive unit (h2 = 0) is silent to the whole next layer. Renaming the composed products theta'*phi as free psi values is why a two-layer network is a broader family than two stacked shallow networks.\n\nMatrix notation (4.4) adds no new maths. Vector = column of numbers; matrix = grid; matrix x vector = for each row, multiply item by item and add up - exactly each unit's recipe, one row per unit. 4.14 shorthand: h = a[theta0 + theta x], h' = a[psi0 + Psi h], y' = phi'0 + phi' h'. General form 4.15 uses beta (biases/offsets) and Omega (weight grids), subscript = layer read from: h_{k+1} = a[beta_k + Omega_k h_k]; output has no ReLU. 4.15 is a CHAIN, not a sum over k: each step's output feeds the next and intermediate lists are discarded. The only summation is inside each matrix-vector product, over the previous layer's units. Matrices never multiply each other here - the ReLU between steps prevents merging them (without it Omega2*Omega1*Omega0 would collapse to one linear map). Bold h_k means a whole layer, unlike h_k in Ch 3 / eqs 4.7-4.9, which meant one unit.\nMatrix sizes: rows = units in the layer being fed, columns = units in the layer read from; each bias vector is as long as the layer it feeds. Figure 4.6 (3 inputs, layers 4, 2, 3, 2 outputs): Omega sizes 4x3, 2x4, 3x2, 2x3 = 32 weights + 11 biases = 43 knobs. 4.16 nests every step - read from the innermost bracket out. Why matrices: notation does not grow with width, and GPUs (NVIDIA Tensor Cores) are built for matrix multiplication - most of a network's compute is the Omega x h step.\n\nFigure 4.7: x-axis = number of parameters (cost); y-axis = maximum number of linear regions, log scale (each gridline 100x). Each curve fixes depth K; each dot adds one unit per layer. Shallow: pieces = D + 1; deep: (D + 1)^K. At ~480 knobs: K=1 (159 units) ~160 pieces; K=2 (19 units) 400; K=3 (14) 3,375; K=4 (11) 20,736; K=5 (10 units, 471 knobs = 20 + 4*110 + 11) 161,051. Panel (b), 10 inputs: hinges become flat cuts through 10-D space that intersect in far more ways (3 points cut a line into 4; 3 lines cut a plane into up to 7); K=5, D=50 -> 10,801 knobs, >10^40 regions. Caveats: these are maxima; deep pieces are folded copies, not independent.\n\nImages as input (4.5.4): an image becomes a list of brightness numbers (0-255, scaled to 0-1; 3 per pixel for colour), unrolled row by row. 1,000x1,000 grayscale = 10^6 inputs; with 1,000 first-layer units that is 10^9 weights (~4 GB) - prohibitive. Unrolling also hides neighbours (pixel above/below lands a row-length away), and each position has its own weights, so an object must be relearned at every position (a 10x10 eye has ~982,000 positions in a 10^6-pixel image). Fix: a small 3x3 detector (10 knobs) slid over every position and reused; stacked layers see wider areas - local-to-global (Ch 10).\nReceptive field: windows stay 3x3 at every layer, but layer 2 reads layer-1 answers, so it covers 5x5 original pixels, layer 3 7x7 (+2 per layer; 21x21 at layer 10). Downsampling (e.g. keep the max of each 2x2 block) halves the grid so the same window covers twice the original area - like GIS map pyramids / zoom levels. Typical 224x224 network: grid shrinks 224 -> 112 -> 28 -> 7 while detector types grow 3 -> 64 -> 256 -> 512 (edges -> textures -> parts) - a tidy story, messier in reality.\n\nOver-parameterised models (4.5.5): more knobs than training examples (e.g. ~25 million knobs on ~1.3 million images). Each example is one condition, each knob one freedom: 2 points + 2 knobs = one line; 3 points + 2 knobs = compromise; 3 points + 10 knobs = endless perfect fits - so classical statistics predicts memorising noise (overfitting). Observed: training gets easier (many roughly equivalent good solutions, like parking in an empty lot), and deep over-parameterised networks still generalise surprisingly well - not fully understood (Ch 8, Ch 20). Very deep networks become hard to train again (Ch 11, residual networks).",
+      "notes": "Long session across the day: equations 4.7-4.9, matrix form 4.4/4.15/4.16, figure 4.7 (interactive rebuild), images as inputs (interactive flattening demo), receptive fields, over-parameterisation."
+    }
+  },
+  {
+    "id": 95,
+    "schema": 1,
+    "ts": "2026-10-12T17:01:00.000Z",
+    "date": "2026-10-12",
+    "verb": "quiz_answered",
+    "node_id": "machine-learning/neural-networks/deep",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "resource": {
+      "url": "https://udlbook.github.io/udlbook/",
+      "title": "Understanding Deep Learning (Prince), Ch 4: Deep neural networks",
+      "kind": "book"
+    },
+    "payload": {
+      "depth": "intermediate",
+      "questions": [
+        {
+          "tag": "explain",
+          "question": "In plain words, what does it mean for the first layer to 'fold' the input, and why does stacking a second layer multiply the number of straight pieces rather than adding to it?",
+          "answer": "The input is divided into segments of equal length by the joints; each segment's y value is the second layer's input, so the second layer 'multiplies the learned activation function' to give the output.",
+          "correct": false,
+          "node_id": "machine-learning/neural-networks/deep",
+          "feedback": "Partly right: joints split x into stretches and the first layer's output feeds the second. Missing the key idea: the stretches all map onto the SAME output range, so different inputs land on top of each other - that overlap is the fold. The second layer draws one pattern over that shared range, so the pattern is copied once per stretch (mirrored for backward stretches): 3 stretches x 3-piece pattern = 9 pieces. The piece COUNT multiplies; the second layer does not multiply anything. Stretches need not be equal length - training places the joints."
+        },
+        {
+          "tag": "predict",
+          "question": "With a budget of about 500 knobs, 1 input and 1 output: Option A is one hidden layer of ~160 units; Option B is 5 hidden layers of 10 units. Which can make more straight pieces (roughly how many each), and why might B's extra pieces not help on a particular dataset?",
+          "answer": "B ~161,000 regions vs A ~160; B's regions are not all independent, so not all are useful.",
+          "correct": true,
+          "node_id": "machine-learning/neural-networks/deep",
+          "feedback": "Correct (A has ~160 pieces, not units). B's pieces are folded copies of a few patterns, so they only help if the data has that kind of repeated structure; for 160 unrelated wiggles, A's free pieces may fit better."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g95-1",
+          "node_id": "machine-learning/neural-networks/deep",
+          "text": "Folding means the first layer maps several input stretches onto the same output range (overlap); the second layer's pattern is then copied once per stretch, so piece counts multiply. Craig described segments as equal-length and the second layer as 'multiplying'."
+        }
+      ],
+      "notes": "Stopped partway after Q2 of 5. Not yet answered (resume next session): Q3 predict - 20 inputs, hidden layers 50 then 30, 1 output: size of the weight grid between the hidden layers (30x50) and offsets feeding the second hidden layer (30). Q4 explain - 1,000x1,000 grayscale satellite tiles into a fully connected net with 2,000 first-layer units to detect buildings: two problems with numbers (2x10^9 weights; must relearn buildings at every position). Q5 explain - '5 million knobs, 50,000 images, guaranteed to overfit and useless': what the book says happens and what is still not understood."
+    }
   }
 ]
