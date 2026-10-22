@@ -1953,5 +1953,108 @@
       "gaps": [],
       "notes": "Retest of g98-1 (other cached views affected by a write) and g98-2 (optimistic vs invalidate-on-mutation): both resolved. Craig separated the on-screen view (optimistic) from off-screen views (invalidate) with correct reasoning."
     }
+  },
+  {
+    "id": 100,
+    "schema": 1,
+    "ts": "2026-10-22T17:23:56.000Z",
+    "date": "2026-10-22",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/linked-lists",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "A music app stores a 10,000-song playlist as a singly linked list (each node knows only the next node). The user taps 'Move Kesariya to the top.' (a) The app only has the song's title. What does the move cost, and where does the cost come from? (b) Suppose the app already holds a direct pointer to the Kesariya node. Can it still do the move in O(1)? If not, what is missing and why?",
+          "answer": "(a) Correctly said O(n): must search from the head to find the node before Kesariya, then splice it out and relink it as the new head; noted the index alone does not give a memory address. (b) Correctly said a direct pointer does not help: the predecessor is still unknown, so another O(n) walk is needed; O(1) is not possible.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/linked-lists",
+          "feedback": "Both parts correct. One wording fix: in a singly linked list you cannot 'move back by one'; you walk forward from the head and remember the previous node as you go. Even with an index, a linked list has no direct access by position, so the search is still O(n). The splice itself is O(1) once the predecessor is in hand."
+        }
+      ],
+      "gaps": [],
+      "notes": "Fresh-scenario retest of g82-1 (reorder-by-content still needs an O(n) search; a pointer to a node in a singly linked list does not reach its predecessor). g82-1 resolved: both misconceptions were avoided without prompting."
+    }
+  },
+  {
+    "id": 101,
+    "schema": 1,
+    "ts": "2026-10-22T17:23:56.000Z",
+    "date": "2026-10-22",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/doubly-linked-lists",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "explain",
+          "question": "A text editor stores a 10,000-line document as a doubly linked list; the cursor is on line 5,000 and the editor holds a pointer to that node. (a) Cost of 'delete current line'? (b) Cost of 'find the line containing TODO and delete it'? (c) State a general rule separating (a) from (b), one that works for any linked-list operation.",
+          "answer": "(a) O(1): no search needed since the pointer is held, and the previous node is reachable from the node itself. (b) O(n): the search dominates. (c) If an operation needs a search for the item or its predecessor, it costs O(n); if no search is needed, deletion is O(1) in a doubly linked list because the predecessor is reachable in O(1).",
+          "correct": true,
+          "node_id": "computer-science/data-structures/doubly-linked-lists",
+          "feedback": "All three parts correct, and the rule named the precondition (is a search needed, and can the previous node be reached without one) unprompted. One refinement: 'only if doubly linked' is slightly too strong. A singly linked list can also delete in O(1) if you already hold a pointer to the node before the target. The real condition is reaching the previous node without searching."
+        }
+      ],
+      "gaps": [],
+      "notes": "Direct retest of g84-1 (the 'already holding the pointer vs. need to search for it' precondition was not part of the stated decision rule). g84-1 resolved: Craig stated the precondition explicitly in his rule."
+    }
+  },
+  {
+    "id": 102,
+    "schema": 1,
+    "ts": "2026-10-22T17:23:56.000Z",
+    "date": "2026-10-22",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/hash-tables",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "A hash table has 10 slots, uses open addressing with linear probing, and 9 slots are full (load factor 0.9). (a) You look up a key that is not in the table. Roughly how many slots might you check, and why? (b) A teammate says 'Inserts will get slow at this load, but lookups will stay fast.' Is that right? What do insert and lookup have in common here?",
+          "answer": "(a) Said only one slot, because each slot holds one key and the key can hash to only one slot. (b) Agreed with the teammate: lookups always O(1), inserts tend toward O(n) as the table fills; said insert and lookup share a first step (lookup before insert).",
+          "correct": false,
+          "node_id": "computer-science/data-structures/hash-tables",
+          "feedback": "Not correct, and it is the same gap as g73-1. 'Each slot holds one key' is true, but 'each key sits in its own hashed slot' is false under open addressing. Example: 10 slots, hash = key mod 10. Insert 13 -> slot 3. Insert 23 -> slot 3 taken -> slot 4. Insert 33 -> slots 3 and 4 taken -> slot 5. Looking up 33 starts at slot 3, which holds 13, so you must follow the same probe walk (4, then 5) to find it. For an absent key you keep walking until you reach an empty slot; at load 0.9 only one slot is empty, so up to 10 slots may be checked. Insert and lookup do the same probe walk: insert walks until an empty slot, lookup walks until the key or an empty slot. Both are slow when the table is nearly full. Lookups are O(1) only on average while the load factor stays low."
+        },
+        {
+          "tag": "predict",
+          "question": "Follow-up on the same kind of table (10 slots, hash = key mod 10, linear probing): 13, 23, 33 are in slots 3, 4, 5 and slot 6 is empty. You look up 53, which also hashes to slot 3. Which slots do you check, what do you conclude, and why can you stop where you stop?",
+          "answer": "Checked slots 4, 5, 6, then kept going through the later slots and wrapped to 1 and 2 (called the last slot 10), concluded 53 is absent, and said he stops because he has exhausted every slot in the table.",
+          "correct": false,
+          "node_id": "computer-science/data-structures/hash-tables",
+          "feedback": "The conclusion (53 is absent) is right, but the stopping rule is wrong. The walk stops at the first empty slot, here slot 6. If 53 had ever been inserted, it would have taken the same walk (3, 4, 5, then the first empty slot, 6), so it would sit at slot 6 or earlier. Slot 6 is empty and slots 3 to 5 do not hold 53, so 53 is absent after 4 checks, not 10. Walking the whole table is only the worst case, when no empty slot exists. Small fix: 10 slots are numbered 0 to 9, so there is no slot 10; the walk wraps from slot 9 to slot 0."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g102-1",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "text": "Open addressing: assumed a key always sits in its own hashed slot, so a lookup checks one slot and stays O(1) regardless of load. Corrected with the 13/23/33 example: colliding keys are displaced to later slots, so lookup must follow the same probe walk as insert. This is a retest of g73-1 that is still standing."
+        },
+        {
+          "id": "g102-2",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "text": "Probe-walk stopping rule: when asked, walked past an empty slot and said he stops only after exhausting every slot. The correct rule is to stop at the first empty slot, because an inserted key would have been placed there or earlier. Exhausting the table is only the worst case when no empty slot exists. Also used a nonexistent slot 10 (slots are 0 to 9; the walk wraps from 9 to 0)."
+        }
+      ],
+      "notes": "Retest of g73-1 (insert and lookup share one probe walk): still standing, logged as new gaps. Fresh scenario was answered with the original misconception, then a follow-up on a small worked table showed a related miss on the stopping rule. Craig acknowledged the correction ('that makes sense') but the follow-up answer shows the stopping rule did not yet transfer. Next session: confirm-only recheck with a new table, then lookup of a present key that was displaced.\n\nSession ended by Craig's choice at ~22:50 IST. Not retested today and deferred to tomorrow: BST two-children deletion splice step (g72-1), Big O best/worst vs amortized axes (g79-1), amortized cost and the geometric-series prerequisite (g75-1, g75-2), and a first scored check of Stacks and Queues."
+    }
   }
 ]
