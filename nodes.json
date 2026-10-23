@@ -224,7 +224,7 @@
     {
       "id": "machine-learning/agent-memory",
       "title": "Agent Memory Systems",
-      "page": null,
+      "page": "machine-learning/agent-memory.html",
       "deps": [
         "databases/fundamentals"
       ],
@@ -236,7 +236,7 @@
     {
       "id": "machine-learning/neural-networks",
       "title": "Neural Networks",
-      "page": null,
+      "page": "machine-learning/neural-networks.html",
       "deps": [],
       "contrasts": [],
       "also_in": []
@@ -244,7 +244,7 @@
     {
       "id": "machine-learning/neural-networks/deep",
       "title": "Deep Neural Networks",
-      "page": null,
+      "page": "machine-learning/neural-networks.html#deep",
       "deps": [
         "machine-learning/neural-networks/shallow"
       ],
@@ -256,7 +256,7 @@
     {
       "id": "machine-learning/neural-networks/shallow",
       "title": "Shallow Neural Networks",
-      "page": null,
+      "page": "machine-learning/neural-networks.html#shallow",
       "deps": [],
       "contrasts": [
         "machine-learning/neural-networks/deep"
@@ -363,6 +363,76 @@
       "tier": "advanced",
       "under": "computer-science/data-structures/doubly-linked-lists",
       "note": "The canonical applied pattern combining O(1) hash-map lookup with O(1) doubly-linked-list splice -- composes two already-taught structures into one."
+    },
+    {
+      "id": "embeddings-ann-indexes",
+      "title": "Embeddings and ANN indexes (HNSW)",
+      "tier": "intermediate",
+      "under": "machine-learning/agent-memory",
+      "note": "The vector-search channel in every memory system rests on them."
+    },
+    {
+      "id": "bm25-internals",
+      "title": "BM25 internals",
+      "tier": "intermediate",
+      "under": "machine-learning/agent-memory",
+      "note": "The keyword-search channel in Zep and Hindsight."
+    },
+    {
+      "id": "knowledge-graph-modelling",
+      "title": "Knowledge-graph modelling",
+      "tier": "intermediate",
+      "under": "machine-learning/agent-memory",
+      "note": "How entities and facts become nodes and edges in Zep and Supermemory."
+    },
+    {
+      "id": "cross-encoder-rerankers",
+      "title": "Cross-encoder rerankers",
+      "tier": "advanced",
+      "under": "machine-learning/agent-memory",
+      "note": "The reranking step after fusion in Hindsight."
+    },
+    {
+      "id": "letta-memgpt-self-editing-memory",
+      "title": "Letta / MemGPT self-editing memory, in depth",
+      "tier": "advanced",
+      "under": "machine-learning/agent-memory",
+      "note": "The agent pages its own memory in and out, instead of a background pipeline writing it."
+    },
+    {
+      "id": "procedural-memory",
+      "title": "Procedural memory (learning from experience)",
+      "tier": "advanced",
+      "under": "machine-learning/agent-memory",
+      "note": "LongMemEval and LoCoMo test recall from conversations, not whether an agent improves at its job over time."
+    },
+    {
+      "id": "nn-training-loss",
+      "title": "Training: loss and finding good knob settings (UDL Ch 6-7)",
+      "tier": "intermediate",
+      "under": "machine-learning/neural-networks/shallow",
+      "note": "Universal approximation says a good network exists. Training is how you find one."
+    },
+    {
+      "id": "convolutional-networks",
+      "title": "Convolutional networks (UDL Ch 10)",
+      "tier": "intermediate",
+      "under": "machine-learning/neural-networks/deep",
+      "note": "The redesigned wiring that fixes the weight explosion and the relearn-at-every-position problem for images."
+    },
+    {
+      "id": "residual-networks",
+      "title": "Residual networks (UDL Ch 11)",
+      "tier": "intermediate",
+      "under": "machine-learning/neural-networks/deep",
+      "note": "Very deep networks become hard to train again, and residual connections address it."
+    },
+    {
+      "id": "generalisation-over-parameterised",
+      "title": "Generalisation and why over-parameterised networks work (UDL Ch 8-9, 20)",
+      "tier": "advanced",
+      "under": "machine-learning/neural-networks/deep",
+      "note": "Fitting the training data is not the same as predicting well on new data, and part of why it works is still open."
     }
   ]
 }
