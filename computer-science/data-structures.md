@@ -1,5 +1,5 @@
 ---
-prose_through: 85
+prose_through: 102
 ---
 
 :::callout
@@ -31,6 +31,8 @@ Delete, given target only:   O(n) in a singly-linked list — see below
 ```
 
 **The deletion gotcha:** holding a direct pointer to the node you want to delete does not make deletion O(1) in a singly-linked list. Concretely: node 5999 lives at address 0x1A00 with `.next = 0x3000`; node 6000 lives at 0x3000 with `.next = 0x5000`. A pointer `p = 0x3000` lets you read and even rewrite node 6000's own fields in O(1) — but deleting 6000 means rewriting node *5999's* `.next` field, at address 0x1A00, and `p` says nothing about where that is. There is no backward link. The only way to find 5999 is to start at `head` and walk forward checking each node's `.next` until one equals `0x3000` — an O(n) walk, unavoidable, regardless of already holding a pointer straight at the node being deleted. Tempting but wrong: assuming a pointer to a node also grants access to its predecessor — it doesn't, and holding the target node harder doesn't get you there.
+
+**Reordering by content pays for the search too.** Moving a named song to the top of a 10,000-song playlist stored as a singly-linked list is O(n), not O(1). The splice itself is cheap (`previous.next = target.next`, then `target.next = head`, then `head = target`), but it needs the node *before* the target, and with only a title to go on the only way to find it is to walk forward from the head, remembering the previous node as you go. Knowing the song's index doesn't help: a linked list has no direct access by position, so the walk is still O(n). Holding a direct pointer to the target doesn't help either, for the same reason as the deletion gotcha above. Tempting but wrong: assuming the O(1) splice cost applies to any rearrangement, when the search for the splice point is usually where the cost lives.
 
 **Even where both are O(n)** — searching by position with no pointer already held — arrays tend to win in practice: shifting contiguous memory is cache-friendly, while chasing pointers to scattered nodes tends to miss the CPU cache on every hop (cache locality — see Intermediate & Advanced Topics below).
 
@@ -69,6 +71,8 @@ Single-node list (both neighbors absent simultaneously):
   head = null; tail = null
   — neither the head-case nor the tail-case line applies; needs an explicit guard or it dereferences null.
 ```
+
+**The general rule: does the operation need a search?** In a 10,000-line document stored as a doubly-linked list, with the cursor on line 5,000 and a pointer already held to that node, "delete the current line" is O(1): no search is needed, and both neighbours are reachable from the node itself. "Find the line containing TODO and delete it" is O(n): the search dominates, and the cheap delete that follows doesn't change that. For any linked-list operation, if it needs a search for the item or for its predecessor, it costs O(n); if it doesn't, the cost is just the splice. A doubly-linked list isn't the only way to skip the search: a singly-linked list can also delete in O(1) if you already hold a pointer to the node *before* the target. The real condition is being able to reach the previous node without searching, and a doubly-linked list guarantees that for every node.
 
 **What it doesn't fix:** doubly-linked gives no O(1) random access — "give me the 500th element" is still O(n), just with the option to walk from whichever end is closer. It fixes navigation direction and deletion-by-pointer, not indexed lookup; "it has more pointers now" doesn't mean "it behaves like an array."
 
@@ -131,7 +135,24 @@ The running total (17) tracks the naive n·log₂n estimate (8×3=24) in shape, 
 
 A hash function maps a key to a bucket. Two keys can land in the same bucket — collision — resolved either by chaining (each bucket holds a small list) or open addressing (probe for the next free slot). Load factor tracks how full the table is, and rehashing (growing the table and redistributing everything) keeps performance from degrading as it fills up.
 
-Chaining insertion stays O(1) regardless of load factor — a collision just extends the bucket's list, no searching required to write. Chaining lookup slows in proportion to chain length. Open addressing is different in kind: a lookup retraces the exact same probe sequence used at insertion, so insert and lookup cost aren't separate — they're the same walk, meaning whatever slows one slows the other identically. Occupied slots also tend to bunch into runs (**primary clustering**) — think of cars forced into the next open spot when their assigned one is taken: a cluster of collisions swallows the next arrival too, and grows. This is why open addressing tends to degrade *faster* than chaining as the table fills.
+Chaining insertion stays O(1) regardless of load factor — a collision just extends the bucket's list, no searching required to write. Chaining lookup slows in proportion to chain length. Open addressing is different in kind: a lookup retraces the exact same probe sequence used at insertion, so insert and lookup cost aren't separate — they're the same walk, meaning whatever slows one slows the other identically.
+
+The detail that is easy to get wrong: each slot holds one key, but a key does *not* always sit in its own hashed slot. A colliding key is pushed to a later slot, so a lookup can't stop after checking the slot the key hashes to. Take 10 slots (numbered 0 to 9), the hash "key mod 10" (the last digit), and linear probing (if a slot is taken, try the next one, wrapping from slot 9 back to slot 0):
+
+```
+Insert 13 → hashes to slot 3, free                  → goes in slot 3
+Insert 23 → hashes to slot 3, taken → slot 4        → goes in slot 4
+Insert 33 → hashes to slot 3, taken → 4 taken → 5   → goes in slot 5
+
+slot:   3    4    5    6
+       13   23   33   (empty)
+
+Lookup 33: slot 3 holds 13, not 33 → slot 4 holds 23 → slot 5 holds 33. Found.
+Lookup 53 (not in the table, also hashes to 3): slots 3, 4, 5 don't hold it,
+slot 6 is empty → stop. Absent after 4 checks.
+```
+
+**The stopping rule:** a lookup walks until it finds the key or reaches an **empty slot**. An empty slot proves the key is absent, because if the key had ever been inserted it would have taken this same walk and been placed in that empty slot or earlier. Walking the entire table is only the worst case, when no empty slot exists. At a load factor of 0.9 on 10 slots, only one slot is empty, so looking up a missing key can mean checking up to 10 slots. Tempting but wrong: "lookups stay O(1) while only inserts slow down." Lookups are O(1) on average only while the load factor stays low; near a full table they pay the same long walk as inserts. Occupied slots also tend to bunch into runs (**primary clustering**) — think of cars forced into the next open spot when their assigned one is taken: a cluster of collisions swallows the next arrival too, and grows. This is why open addressing tends to degrade *faster* than chaining as the table fills.
 
 **The precise claim, and its limit:** "open addressing degrades faster than chaining at the same load factor" is an *average-case* statement that assumes a well-distributed (simple uniform) hash function — each key equally likely to land in any bucket. Under that assumption chain lengths cluster tightly around the load factor, so a long chain is rare. But chaining has no structural cap: a bad or adversarial hash function (**hash flooding** — deliberately choosing keys that all collide, a real denial-of-service technique used against web frameworks with predictable hash seeds) can put every key in one bucket, giving O(n) worst-case lookup. Open addressing can't do that — since each slot holds exactly one key, no lookup ever needs more than *m* probes (the table size), regardless of hash quality. So worst-case, the ranking flips: chaining's downside is unbounded, open addressing's isn't. *Uniform hashing* and *hash flooding* haven't been studied in depth yet (see Intermediate & Advanced Topics below).
 
@@ -148,7 +169,7 @@ Concepts mentioned along the way that go beyond this page's current depth — tr
 
 ## Where things stand
 
-Arrays: reviewed again and extended with dynamic-array amortized analysis — the core doubling-vs-fixed-increment mechanics land cleanly, but this is only its first section-level confirmation (needs-review, not yet solid), and general series justification for arbitrary growth factors is a flagged gap, not yet taught (the ×1.5 case was predicted correctly on intuition, 2026-09-06). Linked Lists: substantially deepened 2026-09-11 — node structure, per-case operation costs, and the singly-linked deletion gotcha are understood; two scenario-question misconceptions surfaced that session (both corrected), so status reset to needs-review pending a clean recheck. Rechecked 2026-09-17 with a light confirm-only quiz targeting exactly those two spots (middle-node deletion given a direct pointer; head-node deletion) — both answered correctly with sound reasoning, so status is now solid. Doubly-Linked Lists: new section 2026-09-11, split out of the same session — the prev-pointer fix and its deletion edge cases land, with one gap flagged (the "already holding the pointer" precondition wasn't generalized into a stated rule unprompted). Stacks and Queues have never been scored on their own (page-level review only, 2026-08-30). Big O and Hash Tables carry flagged gaps from their own last reviews — see Coverage log; within Big O, calling quicksort's O(n²) worst case "amortized" was a misconception, corrected (it belongs on the best/worst/average axis). Trees has grown into its own page — see [Trees](data-structures/trees.html) for status.
+Linked Lists and Doubly-Linked Lists are solid. Two earlier misconceptions about linked lists (that reordering by content is O(1), and that a pointer to a node also reaches the node before it) were retested with a fresh playlist scenario and did not come back. For doubly-linked lists, the rule "it depends on whether you already hold the pointer or must search for it" is now stated unprompted. The one refinement is that a singly-linked list can also delete in O(1) when you hold a pointer to the previous node. Hash Tables need review. The open-addressing idea has still not stuck: the assumption that a key always sits in its own hashed slot came back, so did the belief that lookups stay O(1) while only inserts slow down, and a second slip appeared when walking a lookup (not stopping at the first empty slot, and using a slot number past the end of the table). The next step is a fresh worked table to check both. Arrays need review. The doubling-versus-fixed-growth mechanics are understood, but why rare expensive operations average out (a geometric series) has not been taught yet, and the x1.5 case was predicted correctly without a justification. Big O needs review. The best/worst/average axis was once mixed up with the amortized axis, and calling quicksort's O(n²) worst case "amortized" was a misconception, since corrected; a light confirm-only check is due. Stacks and Queues have never been scored on their own. Trees has grown into its own page, see [Trees](data-structures/trees.html) for status.
 
 ## Related pages
 
