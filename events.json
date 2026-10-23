@@ -2056,5 +2056,65 @@
       ],
       "notes": "Retest of g73-1 (insert and lookup share one probe walk): still standing, logged as new gaps. Fresh scenario was answered with the original misconception, then a follow-up on a small worked table showed a related miss on the stopping rule. Craig acknowledged the correction ('that makes sense') but the follow-up answer shows the stopping rule did not yet transfer. Next session: confirm-only recheck with a new table, then lookup of a present key that was displaced.\n\nSession ended by Craig's choice at ~22:50 IST. Not retested today and deferred to tomorrow: BST two-children deletion splice step (g72-1), Big O best/worst vs amortized axes (g79-1), amortized cost and the geometric-series prerequisite (g75-1, g75-2), and a first scored check of Stacks and Queues."
     }
+  },
+  {
+    "id": 103,
+    "schema": 1,
+    "ts": "2026-10-23T17:55:00.000Z",
+    "date": "2026-10-23",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "8-slot table (0-7), hash = key mod 8, linear probing with wraparound. 5, 13, 21 inserted (all hash to 5) into slots 5, 6, 7; slot 0 empty. (a) Which slots do you check to find 21, and why not just slot 5? (b) Look up absent key 29 (hashes to 5): which slots, where do you stop, why is that safe?",
+          "answer": "(a) Start at 5, probe 6 then 7, finds 21 at 7; slot 5 is not the only place a key can live because collisions displace keys to later slots. (b) Checks 5, 6, 7, then 0; stops at empty slot 0 because an inserted 29 would have taken the same walk and landed there or earlier.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/hash-tables",
+          "feedback": "Correct on both parts, including the wraparound from 7 to 0 and the first-empty-slot stopping rule (4 checks, not 8). Retest of g73-1 and g102-1/g102-2."
+        },
+        {
+          "tag": "predict",
+          "question": "Walk through the text '( [ ) ]' character by character for a bracket-balance check: which structure, what happens at each step, where does the check fail?",
+          "answer": "Stack (LIFO): push '(', push '[', then ')' arrives while the top is '[' which is not its match, so the check fails.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/stacks",
+          "feedback": "Correct. Exact failure point is the third character ')', where the top of the stack is '[' rather than '('. First scored check of Stacks on its own."
+        },
+        {
+          "tag": "explain",
+          "question": "A help desk serves tickets first-come first-served; a teammate suggests a stack. Tickets arrive 9:00-9:04 and keep arriving while the agent works. Which ticket waits longest and why is that a problem?",
+          "answer": "The 9:00 ticket, since a stack serves the newest first; unfair waits, and it may never be served if the inbound rate outpaces processing.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/queues",
+          "feedback": "Correct. Refinement: even when the agent is faster than arrivals, the 9:00 ticket sits at the bottom of the stack until a lull with no new tickets arrives. A queue serves strictly in arrival order, so waiting time is bounded by the work ahead of you. First scored check of Queues on its own."
+        },
+        {
+          "tag": "predict",
+          "question": "BST: 50 root; left 30 (children 20, 40); right 70 (left 60, right 80); 60 has no left child but a right child 65. Delete 50. (a) Which node is the successor? (b) What happens to 65? Describe the final tree.",
+          "answer": "(a) 60, the leftmost node of the right subtree, takes the root's place. (b) 65 takes 60's old place; 60 is removed from where it was.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/trees/bst",
+          "feedback": "Correct. Final tree: root 60; left 30 (20, 40); right 70 with left 65 and right 80. Mechanically, copy the successor's value (60) up into the deleted node, then remove the original 60 node via the one-child case: 70's left pointer now points to 65. Resolves g72-1 (splice step)."
+        },
+        {
+          "tag": "explain",
+          "question": "For each case say whether it is best/worst/average case variation or amortized cost, and why: (i) searching an unsorted list of 1,000 names (1 check if first, 1,000 if last); (ii) a dynamic array that doubles when full (first 1,023 appends cost 1 each, the 1,024th costs ~1,024 to copy).",
+          "answer": "(i) best/worst/average case, since cost depends on the search term. (ii) amortized: the expensive copy is spread over the cheap appends around it, and the next copy only comes after the array doubles to 2,048.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct labels with sound reasoning. Missing piece: the resulting average. Each cycle is one ~1,024-step copy plus ~1,023 one-step appends, so about 2 steps per append, and because resizes get rarer as fast as they get bigger the average stays flat. Tell: amortized cost depends on where an operation falls in a sequence; best/worst/average depends on the input. Resolves g79-1."
+        }
+      ],
+      "gaps": [],
+      "notes": "5/5 clean session (2 predict on hash tables and BST, 1 predict on stacks, 2 explain on queues and Big O). Retests: g73-1 resolved, g102-1 resolved, g102-2 resolved (first-empty-slot stopping rule and wraparound both correct on a fresh table), g72-1 resolved (successor splice walked correctly), g79-1 resolved (best/worst/average vs amortized separated correctly). Stacks and Queues each got a first scored check of their own. Still open: g75-1 and g75-2 (why doubling gives constant amortized cost, and the geometric-series prerequisite; the Big O answer showed the cycle intuition but no average was stated). Not yet taught: heaps, graphs, tries. Next: a confirm-only hash table check with a displaced present key, then Arrays amortized cost."
+    }
   }
 ]
