@@ -341,7 +341,7 @@
       "title": "General geometric/arithmetic series summation",
       "tier": "intermediate",
       "under": "computer-science/data-structures/arrays",
-      "note": "Needed to justify amortized O(1) for growth factors other than doubling (e.g. ×1.5). Natural fit once Discrete Math covers series."
+      "note": "The per-cycle argument already shows amortized O(1) for any fixed growth factor (×2, ×1.5, ×1.25). The formal proof across all cycles at once is the sum of a geometric series. Natural fit once Discrete Math covers series."
     },
     {
       "id": "uniform-hashing-hash-flooding",

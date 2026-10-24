@@ -1,5 +1,5 @@
 ---
-prose_through: 102
+prose_through: 104
 ---
 
 :::callout
@@ -8,11 +8,33 @@ prose_through: 102
 
 ## Arrays {#arrays}
 
-Contiguous memory layout — elements sit back-to-back in memory, which is what makes indexed access O(1): the address of element *i* can be computed directly from the base address (base + *i* × element size), no searching required. That same contiguity is the cost: inserting or resizing can require shifting or copying everything, O(n).
+Contiguous memory layout — elements sit back-to-back in memory, which is what makes indexed access O(1): the address of element *i* can be computed directly from the base address (base + *i* × element size), no searching required. In a chat app that holds its last 10,000 messages in an array, showing message 7,342 is one calculation, not a search. That same contiguity is the cost: inserting or resizing can require shifting or copying everything, O(n).
 
-**Dynamic arrays** (the kind behind Python's `list`, Java's `ArrayList`, etc.) hide that resize cost behind an amortized guarantee: append is "amortized O(1)" even though any individual append might trigger a full copy. The reason is specifically the *doubling* growth strategy, not just "resizing infrequently." Growing by a fixed increment each time (say, +4 slots) makes the resize copy-costs an arithmetic sequence — 4, 8, 12, 16, ... — that sums to roughly n²/(2k) over n appends: the average cost per append keeps climbing as n grows, which is O(n), not O(1). Growing by doubling makes the copy-costs a geometric sequence — 1, 2, 4, 8, ... — that sums to roughly 2n: bounded by a constant multiple of n forever, so the average cost per append settles at a constant (around 2 units of work per append) no matter how large the array gets. Worked by hand over 16 appends (step by step: fixed growth totals 40, doubling totals 31) and projected to n=64 to see the trend diverge — fixed growth's average kept climbing (≈8.5) while doubling's stayed flat (≈1.98). The dividing line is arithmetic vs. geometric growth in the resize schedule, not resize frequency alone.
+**Deleting from the front.** Suppose the oldest message (position 0) must go. Overwriting it with a placeholder such as "NA" is O(1), but it is not a real delete. The slot still exists, the oldest real message is now at position 1 (so "position 0 is the oldest" is no longer true), and every further delete leaves another hole at the front. A real delete keeps the array packed with no holes, so all 9,999 remaining messages shift one slot left: O(n), because contiguity forces the whole block to stay packed. Tempting but wrong: treating "overwrite with a placeholder" as the cost of deleting. The way around the shifting is to remember where the data now starts instead of moving it, which is the idea behind a [queue](#queues).
 
-*Open question:* a growth factor of ×1.5 (used by some real implementations, to waste less memory than doubling) should, by the same logic, also give amortized O(1). Justifying it in general requires knowing that a geometric series with *any* ratio > 1 sums to a bounded multiple of its largest term (see Intermediate & Advanced Topics below).
+**Why a resize must copy.** Take an array of 100 numbers in addresses 1000 to 1399, with another program's data starting at 1400.
+
+```
+[ 1000 ......... 1399 ][ 1400 .... other data .... ]
+   your array (full)       someone else's memory
+```
+
+The array cannot claim address 1400, because it is in use, so it must be copied into a new, bigger block. The alternative would be to let an array's items sit anywhere there was room. That would save the copying, but the O(1) index formula only works because every item sits at a fixed spacing in one block. Scatter the items and you lose O(1) lookup and have to traverse.
+
+**Dynamic arrays** (the kind behind Python's `list`, Java's `ArrayList`, etc.) hide that resize cost behind an amortized guarantee. Appending is "amortized O(1)" even though any individual append might trigger a full copy. There are two cases for a single append: if there is spare room it costs 1 step, and if the array is full it costs one copy of every item (about 10,000 steps for the chat app), once.
+
+The reason the average stays small is specifically a *multiplying* growth strategy, not just "resizing infrequently." Growing by a fixed increment each time (say, +4 slots) makes the resize copy-costs an arithmetic sequence — 4, 8, 12, 16, ... — that sums to roughly n²/(2k) over n appends: the average cost per append keeps climbing as n grows, which is O(n), not O(1). Growing by doubling makes the copy-costs a geometric sequence — 1, 2, 4, 8, ... — that sums to roughly 2n: bounded by a constant multiple of n forever, so the average cost per append settles at a constant (around 2 units of work per append) no matter how large the array gets. Worked by hand over 16 appends (step by step: fixed growth totals 40, doubling totals 31) and projected to n=64 to see the trend diverge — fixed growth's average kept climbing (≈8.5) while doubling's stayed flat (≈1.98). The dividing line is arithmetic vs. geometric growth in the resize schedule, not resize frequency alone.
+
+**Any fixed growth factor works, with a different constant.** The cleanest way to see it is one cycle at a time. Copying n items buys some number of free appends, and the average is the cycle's total work divided by the number of appends *in that cycle* (not by the array's size):
+
+```
+growth    full at n = 100, grows to    free appends    work per cycle        average per append
+x2        200                          100  (n)        n + n     = 2n        2
+x1.5      150                           50  (0.5n)     n + 0.5n  = 1.5n      1.5n / 0.5n  = 3
+x1.25     125                           25  (0.25n)    n + 0.25n = 1.25n     1.25n / 0.25n = 5
+```
+
+Every cycle is the same shape scaled up (at 10,000 slots, ×1.5 is 15,000 of work over 5,000 appends, still 3), so the average is constant for any fixed factor above 1. In general a factor of g costs g/(g−1) per append. Tempting but wrong: dividing the cycle's work by the array's size, which gives 1.5 for ×1.5 and would make it look cheaper than doubling. A smaller factor means more frequent resizes, so it must cost *more* per append (3 versus 2), not less. The growth factor changes the size of the constant, not the O(1) label. That is the trade-off real implementations make: ×1.5 wastes less memory than ×2 but costs more per append. The formal proof across all cycles at once uses the sum of a geometric series (see Intermediate & Advanced Topics below).
 
 ## Linked Lists {#linked-lists}
 
@@ -84,9 +106,11 @@ Deps: [Linked Lists](#linked-lists). Contrasts: [Linked Lists](#linked-lists) (s
 
 LIFO — last in, first out. The canonical use case is undo functionality: each action pushes onto the stack, and undo pops the most recent one off.
 
+A second use is checking that brackets are balanced. Read the text left to right, push each opening bracket, and when a closing bracket arrives compare it with the top of the stack: the top must be its matching opener, otherwise the check fails. For `( [ ) ]` the stack takes `(` then `[`, and the third character `)` arrives while the top is `[`, so the check fails right there.
+
 ## Queues {#queues}
 
-FIFO — first in, first out.
+FIFO — first in, first out. A help desk that serves tickets first-come, first-served is the natural case. Suppose a teammate suggests a stack instead, with tickets arriving from 9:00 to 9:04 and more arriving while the agent works. A stack serves the newest ticket first, so the 9:00 ticket waits at the bottom. If tickets arrive faster than the agent clears them it may never be served. Even if the agent is faster than the arrivals, it still sits there until a lull with no new tickets. A queue serves strictly in arrival order, so how long you wait is bounded by the work ahead of you.
 
 ## Big O Notation {#big-o}
 
@@ -125,7 +149,7 @@ insert #    tree size before    cost (~log2 of insert #)    running total
 
 The running total (17) tracks the naive n·log₂n estimate (8×3=24) in shape, not exact value — the gap is a lower-order term (the exact sum is log₂(n!), which works out to n log₂n minus a smaller correction), dropped by Big-O the same way constant factors are. Projected to n=64: naive estimate 384, actual sum ≈292 — same "n log n" shape holds as n grows, gap and all.
 
-**This is not amortized analysis**, despite both being about totals across a sequence of operations. Amortized analysis (see [Arrays](#arrays) above) specifically handles a sequence where individual costs are *skewed* — most operations cheap, a few expensive — and proves the skew averages out to something better than worst-single-op × n. The balanced-tree build has no such skew: every insert genuinely costs O(log n), individually, no exceptions. The tell: are costs uniform across the sequence (→ just multiply), or is there a rare-expensive/frequent-cheap split being smoothed over (→ that's when "amortized" actually applies)?
+**This is not amortized analysis**, despite both being about totals across a sequence of operations. Amortized analysis (see [Arrays](#arrays) above) specifically handles a sequence where individual costs are *skewed* — most operations cheap, a few expensive — and proves the skew averages out to something better than worst-single-op × n. The balanced-tree build has no such skew: every insert genuinely costs O(log n), individually, no exceptions. The tell: are costs uniform across the sequence (→ just multiply), or is there a rare-expensive/frequent-cheap split being smoothed over (→ that's when "amortized" actually applies)? Worked on the doubling array: each cycle is one copy of about 1,024 items plus about 1,023 one-step appends, roughly 2 steps per append, and because resizes get rarer as fast as they get bigger the average stays flat. Amortized cost depends on where an operation falls in a sequence; best/worst/average depends on the input.
 
 **Merge sort** (split the list in half recursively down to singletons, then merge sorted halves back together, walking two pointers and always taking the smaller front element) reaches O(n log n) by a different route than the tree-build case, but stays in the uniform-cost bucket for the same reason: log n levels of splitting, and at *every* level, the total merge work across that level is O(n) — proportional to n regardless of how the split fell, since merging is just a linear walk. log n levels × O(n) per level = O(n log n), identical in the best, worst, *and* average case — nothing about merge sort's cost is input-dependent, so there's no best/worst/average distinction to draw for it at all. Guarantees worst-case O(n log n), which is why it's used where predictable performance matters (real-time systems); its purely sequential access pattern is why it also works well on linked lists and in external sorting (merging sorted chunks too large to fit in memory, e.g. from disk). Costs O(n) extra space for the temporary merge buffers, and is stable (equal elements keep their original relative order).
 
@@ -154,6 +178,8 @@ slot 6 is empty → stop. Absent after 4 checks.
 
 **The stopping rule:** a lookup walks until it finds the key or reaches an **empty slot**. An empty slot proves the key is absent, because if the key had ever been inserted it would have taken this same walk and been placed in that empty slot or earlier. Walking the entire table is only the worst case, when no empty slot exists. At a load factor of 0.9 on 10 slots, only one slot is empty, so looking up a missing key can mean checking up to 10 slots. Tempting but wrong: "lookups stay O(1) while only inserts slow down." Lookups are O(1) on average only while the load factor stays low; near a full table they pay the same long walk as inserts. Occupied slots also tend to bunch into runs (**primary clustering**) — think of cars forced into the next open spot when their assigned one is taken: a cluster of collisions swallows the next arrival too, and grows. This is why open addressing tends to degrade *faster* than chaining as the table fills.
 
+The walk also wraps around the end of the table. Take 8 slots (0 to 7), the hash "key mod 8", and linear probing. Keys 5, 13 and 21 all hash to slot 5 and land in slots 5, 6 and 7, with slot 0 empty. Finding 21 means checking 5, then 6, then 7, because slot 5 is not the only place a key can live. Looking up the absent key 29 (it also hashes to 5) checks 5, 6, 7, then wraps to 0, where the empty slot stops the search: 4 checks, not 8. It is safe to stop because an inserted 29 would have taken the same walk and landed in slot 0 or earlier.
+
 **The precise claim, and its limit:** "open addressing degrades faster than chaining at the same load factor" is an *average-case* statement that assumes a well-distributed (simple uniform) hash function — each key equally likely to land in any bucket. Under that assumption chain lengths cluster tightly around the load factor, so a long chain is rare. But chaining has no structural cap: a bad or adversarial hash function (**hash flooding** — deliberately choosing keys that all collide, a real denial-of-service technique used against web frameworks with predictable hash seeds) can put every key in one bucket, giving O(n) worst-case lookup. Open addressing can't do that — since each slot holds exactly one key, no lookup ever needs more than *m* probes (the table size), regardless of hash quality. So worst-case, the ranking flips: chaining's downside is unbounded, open addressing's isn't. *Uniform hashing* and *hash flooding* haven't been studied in depth yet (see Intermediate & Advanced Topics below).
 
 ## Intermediate & Advanced Topics (forward pointers)
@@ -162,14 +188,14 @@ Concepts mentioned along the way that go beyond this page's current depth — tr
 
 | Concept | Tier | Surfaced under | Why it matters |
 |---|---|---|---|
-| General geometric/arithmetic series summation | Intermediate | [Arrays](#arrays) | Needed to justify amortized O(1) for growth factors other than doubling (e.g. ×1.5). Natural fit once Discrete Math covers series. |
+| General geometric/arithmetic series summation | Intermediate | [Arrays](#arrays) | The per-cycle argument already shows amortized O(1) for any fixed growth factor (×2, ×1.5, ×1.25). The formal proof across all cycles at once is the sum of a geometric series, which fits once Discrete Math covers series. |
 | Cache locality | Intermediate | [Linked Lists](#linked-lists) | Why arrays tend to beat linked lists in wall-clock time even at equal Big-O, once real hardware/cache behavior enters the picture. |
 | Uniform hashing assumption & hash flooding | Advanced | [Hash Tables](#hash-tables) | Why the chaining-vs-open-addressing comparison assumes a well-distributed hash function, and how adversarial input (a real DoS technique) breaks that assumption. |
 | LRU cache (hash map + doubly-linked list) | Advanced | [Doubly-Linked Lists](#doubly-linked-lists) | The canonical applied pattern combining O(1) hash-map lookup with O(1) doubly-linked-list splice — composes two already-taught structures into one. |
 
 ## Where things stand
 
-Linked Lists and Doubly-Linked Lists are solid. Two earlier misconceptions about linked lists (that reordering by content is O(1), and that a pointer to a node also reaches the node before it) were retested with a fresh playlist scenario and did not come back. For doubly-linked lists, the rule "it depends on whether you already hold the pointer or must search for it" is now stated unprompted. The one refinement is that a singly-linked list can also delete in O(1) when you hold a pointer to the previous node. Hash Tables need review. The open-addressing idea has still not stuck: the assumption that a key always sits in its own hashed slot came back, so did the belief that lookups stay O(1) while only inserts slow down, and a second slip appeared when walking a lookup (not stopping at the first empty slot, and using a slot number past the end of the table). The next step is a fresh worked table to check both. Arrays need review. The doubling-versus-fixed-growth mechanics are understood, but why rare expensive operations average out (a geometric series) has not been taught yet, and the x1.5 case was predicted correctly without a justification. Big O needs review. The best/worst/average axis was once mixed up with the amortized axis, and calling quicksort's O(n²) worst case "amortized" was a misconception, since corrected; a light confirm-only check is due. Stacks and Queues have never been scored on their own. Trees has grown into its own page, see [Trees](data-structures/trees.html) for status.
+Linked Lists, Doubly-Linked Lists, Hash Tables, Stacks, Queues and Big O are solid. For linked lists, the two earlier misconceptions (that reordering by content is O(1), and that a pointer to a node also reaches the node before it) did not come back, and the rule "it depends on whether you already hold the pointer or must search for it" is now stated unprompted. One refinement remains: a singly-linked list can also delete in O(1) when you hold a pointer to the previous node. For hash tables, the earlier slips (assuming a key always sits in its own hashed slot, believing lookups stay fast while only inserts slow down, and not stopping at the first empty slot or handling wraparound) were resolved on a fresh worked table. Stacks and Queues each got their first check on their own, and both were clean. Big O now separates best/worst/average case from amortized cost correctly. Arrays still need review. The doubling argument is now explained correctly in Craig's own words, and he worked out ×1.5 and ×1.25 with the per-cycle method, though he first divided the cycle's work by the array's size instead of by the number of appends. He also first treated deleting the oldest item as overwriting it with a placeholder (O(1)) rather than shifting everything left (O(n)), and corrected that straight away. The next step is a fresh check on both slips, then inserting in the middle of an array and cache behaviour. Trees has grown into its own page, see [Trees](data-structures/trees.html) for status.
 
 ## Related pages
 
