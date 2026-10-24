@@ -2116,5 +2116,84 @@
       "gaps": [],
       "notes": "5/5 clean session (2 predict on hash tables and BST, 1 predict on stacks, 2 explain on queues and Big O). Retests: g73-1 resolved, g102-1 resolved, g102-2 resolved (first-empty-slot stopping rule and wraparound both correct on a fresh table), g72-1 resolved (successor splice walked correctly), g79-1 resolved (best/worst/average vs amortized separated correctly). Stacks and Queues each got a first scored check of their own. Still open: g75-1 and g75-2 (why doubling gives constant amortized cost, and the geometric-series prerequisite; the Big O answer showed the cycle intuition but no average was stated). Not yet taught: heaps, graphs, tries. Next: a confirm-only hash table check with a displaced present key, then Arrays amortized cost."
     }
+  },
+  {
+    "id": 104,
+    "schema": 1,
+    "ts": "2026-10-24T17:45:00.000Z",
+    "date": "2026-10-24",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/arrays",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "An array is full at 100 slots and grows by x1.5 to 150 slots. (a) How many appends fit before the next resize and how many items does that resize copy? (b) Using the doubling method, what is the average cost per append across that stretch? (c) As the array grows to 10,000 slots, does the average stay constant or climb, and why?",
+          "answer": "(a) Correct: 50 free appends, next resize copies 150. (b) Said 1.5n/n = 1.5: right total work but divided by array size instead of by the number of appends that actually happened. (c) Right conclusion (constant, every cycle is the same shape scaled up) but computed 15,000/10,000 = 1.5 instead of 15,000/5,000 = 3.",
+          "correct": false,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Per cycle: copy n items, which buys 0.5n free appends. Work = n + 0.5n = 1.5n over 0.5n appends = 3 per append (not 1.5). Divide by the number of appends in the stretch, not by the array size. Sanity check: a smaller growth factor means more frequent resizes, so x1.5 must cost more per append than doubling (3 vs 2), not less. General rule: factor g costs g/(g-1) per append."
+        },
+        {
+          "tag": "predict",
+          "question": "Same method, array full at 100 slots, grows by x1.25 to 125. How many free appends does the resize buy and what is the average cost per append?",
+          "answer": "25 free appends; 1.25n / 0.25n = 5. Correct, divided by the number of appends this time.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Correct: 125 work over 25 appends = 5. Pattern x2 -> 2, x1.5 -> 3, x1.25 -> 5: the average is always a constant for a fixed factor, but the constant grows as the factor shrinks. That is the memory-vs-speed trade-off real implementations make."
+        },
+        {
+          "tag": "predict",
+          "question": "A chat app keeps its last 10,000 messages in a dynamic array, newest added at the end. What does adding a message at the end cost, and why?",
+          "answer": "After clarifying that the cost depends on whether the array is full: 1 step if there is room; about 10,000 copies if full; with a fixed growth multiplier this averages to a constant, so amortized O(1).",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Correct once the two cases were separated. The growth factor changes the size of the constant (2, 3, 5), not the O(1) label, as long as it is a fixed multiplier above 1. A fixed +k increment would break it."
+        },
+        {
+          "tag": "predict",
+          "question": "In the same chat app, what does showing the message at position 7,342 cost, and why?",
+          "answer": "O(1): address = start address + index x item size, no searching.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Correct."
+        },
+        {
+          "tag": "predict",
+          "question": "In the same chat app, what does deleting the oldest message (position 0) cost? Roughly how many messages move, and why?",
+          "answer": "First answer: O(1), overwrite position 0 with NA. After the explanation, retry: a real delete with no holes moves all 9,999 remaining messages one slot left, so O(n).",
+          "correct": false,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Overwriting with a placeholder is O(1) but is not a real delete: the slot still exists, the oldest real message is now at position 1 so 'position 0 is oldest' breaks, and holes pile up with repeated deletes. Keeping the array hole-free means shifting every remaining item left by one: 9,999 moves, O(n), because contiguity forces the whole block to stay packed. Escape hatch: remember a 'start' marker instead of moving anything (the idea behind a queue). Retry answer was correct."
+        },
+        {
+          "tag": "explain",
+          "question": "An array of 100 numbers fills addresses 1000-1399 and another program's data starts at 1400. (a) Why can't the array just take the next free address when it needs one more slot, and why must it copy everything to a new bigger block? (b) If arrays could be scattered, what would that save on appends and what would be lost?",
+          "answer": "(a) Next address is in use by another program, so all 100 numbers must be copied to a new bigger block. (b) Saves the amortized copy cost but loses O(1) lookup, since traversal would be needed.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Correct. Detail: the O(1) index formula (start + index x item size) only works because every item sits at a fixed spacing in one block, so contiguity is what you would be giving up."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g104-1",
+          "node_id": "computer-science/data-structures/arrays",
+          "text": "Amortized average per append: in the x1.5 case he divided the cycle's total work by the array size instead of by the number of appends actually performed (0.5n), giving 1.5 instead of 3. Corrected the same session and the x1.25 follow-up was right (5); retest with a fresh growth factor and no prompting."
+        },
+        {
+          "id": "g104-2",
+          "node_id": "computer-science/data-structures/arrays",
+          "text": "Treated 'delete the oldest element' as overwriting it with a placeholder (O(1)), not seeing that a real delete must keep the array hole-free and with position 0 still the oldest item, which forces shifting all remaining items (O(n)). Corrected the same session; retest with a fresh delete or insert-at-front scenario."
+        }
+      ],
+      "notes": "Retest of g75-1 and g75-2 on Arrays. g75-1 resolved: before the quiz, in his own words, Craig explained why doubling gives constant amortized cost (each copy of n items buys n free appends, 2n work over n appends = 2 per append). g75-2 resolved in practice: he gave a per-cycle justification for why any fixed growth factor stays constant (every cycle is the same shape scaled up) and computed x1.25 correctly; the formal geometric-series sum (total across all cycles) was not covered. New misses: g104-1 (denominator in the per-cycle average) and g104-2 (delete-as-overwrite). He asked clarifying questions first (is the array full? does the growth factor matter?), which led to a clean split into the two cases. Mix: 6 questions, 5 predict and 1 explain, 4 right and 2 wrong first tries. Next: fresh retest of g104-1 and g104-2, then Arrays insert-in-the-middle and cache behaviour."
+    }
   }
 ]
