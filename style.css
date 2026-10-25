@@ -841,17 +841,21 @@ summary.unit-summary:focus-visible { outline: 2px solid var(--accent); outline-o
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 30px 28px 22px;
+  /* On a phone the plot keeps a readable width and scrolls sideways inside the card
+     instead of letting labels spill out of it. */
+  overflow-x: auto;
 }
 .due-plot {
   position: relative;
   height: 210px;
+  min-width: 560px;
   margin-bottom: 6px;
 }
 .due-axis-line {
   position: absolute;
   left: 0;
   right: 0;
-  top: 100px;
+  top: var(--axis, 100px);
   height: 1px;
   background: var(--text);
 }

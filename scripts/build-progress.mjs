@@ -275,15 +275,20 @@ function renderDueStrip(data) {
   const due = data.due;
   const offsets = due.scheduled.map((s) => s.offset_days);
   const back = Math.max(7, offsets.length ? -Math.min(...offsets, 0) : 7);
-  const fwd = Math.max(14, offsets.length ? Math.max(...offsets, 0) : 14);
+  const fwdPins = Math.max(14, offsets.length ? Math.max(...offsets, 0) : 14);
+  // Pad the right end of the axis by almost half so the last pin's label stays inside the card.
+  const fwd = fwdPins + Math.ceil((back + fwdPins) * 0.45);
   const span = back + fwd;
   const pct = (n) => (((n + back) / span) * 100).toFixed(2) + "%";
 
-  // Every pin gets its own 30px lane; its label grows rightward from the dot so
-  // wide labels can't collide. Upcoming pins ride above the axis, overdue below
-  // with the connector running up to it.
-  const AXIS = 100;
-  const LANE = 30;
+  // Every pin gets its own lane; its label grows rightward from the dot.
+  // Lanes are ordered so no stem runs through another pin's label: the pin furthest to the
+  // right sits closest to the axis, and the pin furthest to the left sits on the outermost
+  // lane. A stem only ever passes lanes whose labels start to its right.
+  const LANE = 28;
+  const nUp = due.scheduled.filter((s) => s.offset_days >= 0).length;
+  // The axis sits low enough that every upcoming lane (and the "today" label) fits above it.
+  const AXIS = Math.max(100, 30 + nUp * LANE);
   const lane = (list, dir) =>
     list.map((p, i) => {
       const top = AXIS + dir * (14 + i * LANE);
@@ -293,7 +298,7 @@ function renderDueStrip(data) {
     });
 
   const upcoming = lane(
-    due.scheduled.filter((s) => s.offset_days >= 0).sort((a, b) => a.offset_days - b.offset_days),
+    due.scheduled.filter((s) => s.offset_days >= 0).sort((a, b) => b.offset_days - a.offset_days),
     -1
   );
   const overdue = lane(
@@ -301,10 +306,9 @@ function renderDueStrip(data) {
     1
   );
 
-  // Grow the plot to fit every overdue lane (the CSS default of 210px holds 3);
-  // without this, a 4th+ overdue pin hangs out of the card.
+  // Grow the plot to fit every overdue lane plus the axis-date labels underneath.
   const lastTop = overdue.length ? overdue[overdue.length - 1].top : AXIS;
-  const plotHeight = Math.max(210, lastTop + 56);
+  const plotHeight = Math.max(AXIS + 110, lastTop + 56);
 
   const pinHtml = [...upcoming, ...overdue]
     .map((p) => {
@@ -345,7 +349,7 @@ function renderDueStrip(data) {
       </div>
       <p class="duestrip-lead">Scheduled nodes sit on the axis. Overdue ones hang below the line — the drop is the debt, and it only clears by answering.</p>
       <div class="duestrip-card">
-        <div class="due-plot" style="height:${plotHeight}px;">
+        <div class="due-plot" style="height:${plotHeight}px;--axis:${AXIS}px;">
           <div class="due-axis-line"></div>
           <div class="due-today" style="left:${pct(0)};"></div>
           <span class="due-today-label" style="left:${pct(0)};">today</span>
