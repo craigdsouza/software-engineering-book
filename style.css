@@ -840,103 +840,60 @@ summary.unit-summary:focus-visible { outline: 2px solid var(--accent); outline-o
   background: var(--bg-alt);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 30px 28px 22px;
-  /* On a phone the plot keeps a readable width and scrolls sideways inside the card
-     instead of letting labels spill out of it. */
-  overflow-x: auto;
+  padding: 8px 20px 12px;
 }
-.due-plot {
-  position: relative;
-  height: 210px;
-  min-width: 560px;
-  margin-bottom: 6px;
+.due-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 14px;
 }
-.due-axis-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: var(--axis, 100px);
-  height: 1px;
-  background: var(--text);
+.due-table th {
+  text-align: left;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 12px 8px 10px;
+  border-bottom: 1px solid var(--text);
 }
-.due-today {
-  position: absolute;
-  top: 18px;
-  bottom: 34px;
-  width: 1px;
-  background: var(--overdue);
+.due-table th,
+.due-table td {
+  border-left: none;
+  border-right: none;
+  background: none;
+  text-transform: none;
 }
-.due-today-label {
-  position: absolute;
-  top: 0;
-  transform: translateX(-50%);
+.due-table td {
+  padding: 8px;
+  border-top: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--upcoming);
+}
+.due-topic { font-weight: 600; }
+.due-date, .due-when {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.due-table td.due-date { color: var(--text-dim); text-transform: capitalize; }
+.due-table th { text-transform: uppercase; }
+.due-row[data-status="solid"] td.due-topic,
+.due-row[data-status="solid"] td.due-when { color: var(--solid); }
+.due-row[data-late] td.due-topic,
+.due-row[data-late] td.due-when { color: var(--overdue); }
+.due-today-row td {
+  padding: 5px 8px;
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--overdue);
-}
-.due-pin {
-  position: absolute;
-  width: 0;
-  height: 0;
-}
-.due-stem {
-  position: absolute;
-  left: -1px;
-  width: 1px;
-  background: var(--upcoming);
-}
-.due-dot {
-  position: absolute;
-  left: -5px;
-  top: -5px;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--upcoming);
-}
-.due-label {
-  position: absolute;
-  left: 12px;
-  top: -9px;
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  white-space: nowrap;
-}
-.due-label-title {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--upcoming);
-}
-.due-label-when {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: var(--text-dim);
-}
-.due-pin[data-late] .due-stem,
-.due-pin[data-late] .due-dot,
-.due-pin[data-late] .due-label-title { background: var(--overdue); }
-.due-pin[data-late] .due-label-title { background: none; color: var(--overdue); }
-.due-pin[data-late] .due-label-when { color: var(--overdue); }
-.due-pin[data-status="solid"]:not([data-late]) .due-stem,
-.due-pin[data-status="solid"]:not([data-late]) .due-dot { background: var(--solid); }
-.due-pin[data-status="solid"]:not([data-late]) .due-label-title { color: var(--solid); }
-.due-axis-labels {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-dim);
+  border-top: 1px solid var(--overdue);
+  border-bottom: 1px solid var(--overdue);
 }
 .due-lists {
   display: grid;

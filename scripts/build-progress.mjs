@@ -273,61 +273,29 @@ function renderEditorQueue(data) {
 
 function renderDueStrip(data) {
   const due = data.due;
-  const offsets = due.scheduled.map((s) => s.offset_days);
-  const back = Math.max(7, offsets.length ? -Math.min(...offsets, 0) : 7);
-  const fwdPins = Math.max(14, offsets.length ? Math.max(...offsets, 0) : 14);
-  // Pad the right end of the axis by almost half so the last pin's label stays inside the card.
-  const fwd = fwdPins + Math.ceil((back + fwdPins) * 0.45);
-  const span = back + fwd;
-  const pct = (n) => (((n + back) / span) * 100).toFixed(2) + "%";
 
-  // Every pin gets its own lane; its label grows rightward from the dot.
-  // Lanes are ordered so no stem runs through another pin's label: the pin furthest to the
-  // right sits closest to the axis, and the pin furthest to the left sits on the outermost
-  // lane. A stem only ever passes lanes whose labels start to its right.
-  const LANE = 28;
-  const nUp = due.scheduled.filter((s) => s.offset_days >= 0).length;
-  // The axis sits low enough that every upcoming lane (and the "today" label) fits above it.
-  const AXIS = Math.max(100, 30 + nUp * LANE);
-  const lane = (list, dir) =>
-    list.map((p, i) => {
-      const top = AXIS + dir * (14 + i * LANE);
-      const stem = Math.max(Math.abs(AXIS - top) - 4, 0);
-      const stemTop = dir < 0 ? 4 : -(stem + 4);
-      return { ...p, top, stem, stemTop };
-    });
-
-  const upcoming = lane(
-    due.scheduled.filter((s) => s.offset_days >= 0).sort((a, b) => b.offset_days - a.offset_days),
-    -1
-  );
-  const overdue = lane(
-    due.scheduled.filter((s) => s.offset_days < 0).sort((a, b) => b.offset_days - a.offset_days),
-    1
-  );
-
-  // Grow the plot to fit every overdue lane plus the axis-date labels underneath.
-  const lastTop = overdue.length ? overdue[overdue.length - 1].top : AXIS;
-  const plotHeight = Math.max(AXIS + 110, lastTop + 56);
-
-  const pinHtml = [...upcoming, ...overdue]
-    .map((p) => {
-      const late = p.offset_days < 0;
-      const when = late
-        ? `${Math.abs(p.offset_days)}d overdue`
-        : p.offset_days === 0
-        ? "due today"
-        : `in ${p.offset_days}d`;
-      return `<div class="due-pin" data-status="${p.status}"${late ? " data-late" : ""} style="left:${pct(
-        p.offset_days
-      )};top:${p.top}px;">
-            <span class="due-stem" style="height:${p.stem}px;top:${p.stemTop}px;"></span>
-            <span class="due-dot"></span>
-            <span class="due-label"><span class="due-label-title">${esc(p.title)}</span><span class="due-label-when">${esc(
-        when
-      )}</span></span>
-          </div>`;
-    })
+  // One plain table: every scheduled topic, soonest due date first, so the most overdue
+  // topics lead. A thin "today" row separates late from upcoming. No positioning maths, so
+  // nothing can spill out of its container.
+  const rows = [...due.scheduled].sort((a, b) => a.offset_days - b.offset_days || a.title.localeCompare(b.title));
+  const row = (p) => {
+    const late = p.offset_days < 0;
+    const when = late
+      ? `${Math.abs(p.offset_days)}d overdue`
+      : p.offset_days === 0
+      ? "due today"
+      : `in ${p.offset_days}d`;
+    return `<tr class="due-row" data-status="${p.status}"${late ? " data-late" : ""}>
+            <td class="due-topic">${esc(p.title)}</td>
+            <td class="due-date">${esc(prettyDate(p.due))}</td>
+            <td class="due-when">${esc(when)}</td>
+          </tr>`;
+  };
+  const todayRow = `<tr class="due-today-row"><td colspan="3">Today · ${esc(prettyDate(data.today))}</td></tr>`;
+  const firstUpcoming = rows.findIndex((p) => p.offset_days >= 0);
+  const tableRows = rows
+    .map((p, i) => (i === firstUpcoming ? todayRow + "\n          " : "") + row(p))
+    .concat(firstUpcoming === -1 ? [todayRow] : [])
     .join("\n          ");
 
   const unscheduled = due.unscheduled
@@ -339,23 +307,19 @@ function renderDueStrip(data) {
     )
     .join("\n            ");
 
-  const axisStart = prettyDate(shiftIso(data.today, -back));
-  const axisEnd = prettyDate(shiftIso(data.today, fwd));
-
   return `<section class="duestrip" aria-label="Review debt">
       <div class="duestrip-head">
         <h2>Review debt</h2>
         <span class="pv-section-note">3 / 7 / 14 / 30 / 60 intervals</span>
       </div>
-      <p class="duestrip-lead">Scheduled nodes sit on the axis. Overdue ones hang below the line — the drop is the debt, and it only clears by answering.</p>
+      <p class="duestrip-lead">Every scheduled topic, most overdue first. Red rows are late: the number of days is the debt, and it only clears by answering.</p>
       <div class="duestrip-card">
-        <div class="due-plot" style="height:${plotHeight}px;--axis:${AXIS}px;">
-          <div class="due-axis-line"></div>
-          <div class="due-today" style="left:${pct(0)};"></div>
-          <span class="due-today-label" style="left:${pct(0)};">today</span>
-          ${pinHtml}
-          <div class="due-axis-labels"><span>${esc(axisStart)}</span><span>${esc(axisEnd)}</span></div>
-        </div>
+        <table class="due-table">
+          <thead><tr><th>Topic</th><th>Due</th><th>Status</th></tr></thead>
+          <tbody>
+          ${tableRows}
+          </tbody>
+        </table>
       </div>
       <div class="due-lists">
         <div class="due-unscheduled">
