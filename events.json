@@ -2195,5 +2195,76 @@
       ],
       "notes": "Retest of g75-1 and g75-2 on Arrays. g75-1 resolved: before the quiz, in his own words, Craig explained why doubling gives constant amortized cost (each copy of n items buys n free appends, 2n work over n appends = 2 per append). g75-2 resolved in practice: he gave a per-cycle justification for why any fixed growth factor stays constant (every cycle is the same shape scaled up) and computed x1.25 correctly; the formal geometric-series sum (total across all cycles) was not covered. New misses: g104-1 (denominator in the per-cycle average) and g104-2 (delete-as-overwrite). He asked clarifying questions first (is the array full? does the growth factor matter?), which led to a clean split into the two cases. Mix: 6 questions, 5 predict and 1 explain, 4 right and 2 wrong first tries. Next: fresh retest of g104-1 and g104-2, then Arrays insert-in-the-middle and cache behaviour."
     }
+  },
+  {
+    "id": 105,
+    "schema": 1,
+    "ts": "2026-10-25T19:03:00.000Z",
+    "date": "2026-10-26",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/arrays",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "A dynamic array holds 120 items and is full. Adding one more grows it by x1.2 to 144 slots. (a) How many more appends fit before the next resize? (b) How many items does the resize copy? (c) Across that stretch, what is the average cost per append, counting each copy and each plain append as 1 unit?",
+          "answer": "(a) 24. (b) 120. (c) (n + 0.2n) / 0.2n = 6, dividing total work by the number of appends, not the array size.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Correct: 144 units of work over 24 appends = 6. Retest of g104-1 with a fresh growth factor and no prompting: resolved. Rule: factor g costs g/(g-1) per append (1.2 gives 6)."
+        },
+        {
+          "tag": "predict",
+          "question": "A music app stores a playlist of 8,000 songs in a dynamic array. A listener taps \"play this next\" on a NEW song, which must go at position 0. (a) Roughly how many songs move, and which way? (b) Why can't the app drop the new song into position 0 and leave the rest alone? (c) What is the cost in Big O terms?",
+          "answer": "Read it as moving an existing song, so said the number moved depends on that song's position. (b) Right idea: position 0 is occupied, so old items must shift to keep order. (c) Gave best case O(1), worst O(n) and average O(n/2).",
+          "correct": false,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "A new song at the front always shifts all 8,000 existing songs right by one slot. The count does not depend on any position, so there is no cheap best case and the cost is O(n) every time. O(n/2) is still O(n) because Big O drops constants. The cost of inserting at position k is the number of items after k. Craig's instinct that it depends on position is correct for inserting in the middle, not for a fixed front insert."
+        },
+        {
+          "tag": "predict",
+          "question": "Same 8,000-song playlist. A NEW song is inserted at position 7,990, with 10 songs after it. (a) Roughly how many songs move, and why? (b) Why is inserting at the end the cheap case and inserting at the front the expensive case?",
+          "answer": "(a) Only the songs from 7,990 onward move, those before stay in place; counted 11 instead of 10 (off by one, indexes 7,990 to 7,999). (b) End insert is cheap because nothing else needs to move; said it is always O(1).",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Reasoning correct: only items after the insert position shift. Count is 10, a fence-post slip (positions 0 to 7,999, there is no 8,000). End insert is cheap because zero items come after it. It is amortized O(1), not always O(1): the occasional resize copies everything."
+        },
+        {
+          "tag": "explain",
+          "question": "A forum thread is a tree. View A shows a top-level comment, then all its replies and their replies, before the next top-level comment. View B shows all top-level comments, then all second-level replies, then third-level, and so on. For each view, name the traversal, the data structure holding what to visit next, and why it gives that order.",
+          "answer": "View A is DFS and View B is BFS, named unprompted. Needed a hint on what the to-visit pile means. Then: queue is first in first out, takes the oldest item, so a whole level is processed before the next level; stack is last in first out, takes the newest item, so it goes deep first.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/trees",
+          "feedback": "Correct after the hint. BFS uses a queue (oldest first, level by level). DFS uses a stack (newest first, so it goes deep). With a stack, sibling order depends on push order: push A2 before A1 so A1 comes off first."
+        },
+        {
+          "tag": "predict",
+          "question": "In a BST with root 50, left child 30, right child 80, 80 has left child 60 and right child 90, and 60 has right child 65: delete the root 50. (a) Which value replaces it and why? (b) What happens to the node that held that value and to its child 65? (c) Draw the final tree.",
+          "answer": "(a) Chose 60, the leftmost value in the right subtree (the in-order successor), and noted 30 (the predecessor) would also be valid but leaves a more lopsided tree. (b) 65 takes 60's old place under 80. (c) Root 60, left 30, right 80 with children 65 and 90.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/trees/bst",
+          "feedback": "Correct. Replace with the in-order successor (smallest value in the right subtree), copy it up, then splice its only child 65 into its old slot as 80's left child. Final tree: 60 root, 30 left, 80 right with 65 and 90 as children. This confirms the final splice step noted at the last BST review."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g105-1",
+          "node_id": "computer-science/data-structures/arrays",
+          "text": "Insert cost and Big O precision: read a \"new song at the front\" question as moving an existing song, and gave a best case of O(1) and an average of O(n/2). A front insert always shifts every item (O(n) every time) and constants are dropped. Also said end insert is \"always O(1)\" without the resize: it is amortized O(1). Retest with a fresh insert-at-front or insert-in-the-middle scenario that asks for the exact count moved."
+        },
+        {
+          "id": "g105-2",
+          "node_id": "computer-science/data-structures/trees",
+          "text": "DFS/stack vs BFS/queue link still needed a hint: named DFS and BFS correctly but did not spontaneously say a stack or queue holds the to-visit pile until told what \"what to visit next\" meant. Applied correctly once prompted, as in the first Trees quiz. Retest with a fresh traversal question and no mention of stacks or queues."
+        }
+      ],
+      "notes": "Overdue review of Data Structures (Arrays, Trees, BST). Retested g104-1 (resolved: x1.2 gave 6 with no prompting). g104-2 (delete/insert shifting): resolved in the sense that he now explains why items after the position must shift; but a related insert-at-front misreading and a Big O precision slip are logged as g105-1. g67-1 (DFS/stack vs BFS/queue link): still open, logged again as g105-2. BST successor-splice confirm: clean. Mix: 5 questions, 4 predict and 1 explain, 4 right and 1 wrong. Next: fresh retest of g105-1 and g105-2, then Hash Tables open addressing (due 10-30) and the Trees page review."
+    }
   }
 ]
