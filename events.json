@@ -2200,7 +2200,7 @@
     "id": 105,
     "schema": 1,
     "ts": "2026-10-25T19:03:00.000Z",
-    "date": "2026-10-26",
+    "date": "2026-10-25",
     "verb": "quiz_answered",
     "node_id": "computer-science/data-structures/arrays",
     "agent": {
