@@ -293,8 +293,9 @@ function computeUnlocks(nodes) {
 // The study PATH. The top level of the book is subject domains (nodes.json);
 // order is not part of that hierarchy — it lives here. Domains are walked in
 // this order by the "next up" rule, and within a domain its units (depth-2
-// nodes) follow `units` where given, then any others alphabetically. `planned`
-// units don't exist in nodes.json yet and render as empty placeholders.
+// nodes) follow `units` where given, then nodes.json order (which is teaching
+// order — see its note). `planned` units don't exist in nodes.json yet and
+// render as empty placeholders.
 // Changed 2026-09-21 from the fixed Foundations → Systems → … track order.
 // 2026-10-26: computer-architecture, operating-systems, networking and
 // programming-languages moved from top-level domains into computer-science units;
@@ -303,16 +304,14 @@ function computeUnlocks(nodes) {
 // computability moved to the end of computer-science; machine-learning moved
 // to 2nd, right after computer-science. Rows inside a unit follow nodes.json order.
 const PATH = [
-  { domain: "computer-science", units: ["data-structures", "algorithms", "complexity", "computer-architecture",
-           "operating-systems", "networking", "programming-languages", "computability"],
-    planned: { algorithms: "Algorithms", computability: "Computability & Automata" } },
-  { domain: "machine-learning", units: ["neural-networks", "agent-memory"] },
-  { domain: "mathematics", units: ["discrete-math", "linear-algebra", "probability-statistics", "calculus"] },
-  { domain: "databases", units: ["fundamentals", "distributed-systems"] },
-  { domain: "software-engineering", units: ["testing", "ci-cd"] },
-  { domain: "security", units: ["cryptography", "web-security"] },
+  { domain: "computer-science" },
+  { domain: "machine-learning" },
+  { domain: "mathematics" },
+  { domain: "databases" },
+  { domain: "software-engineering" },
+  { domain: "security" },
   { domain: "backend" },
-  { domain: "frontend", units: ["state-caching", "mobile"] },
+  { domain: "frontend" },
 ];
 
 const NUM_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
@@ -534,7 +533,7 @@ function buildSpine(nodes, eventsByNode, rawEvents, today, H) {
     }
     gi += 1;
     const order = step.units || [];
-    const unitIds = [...new Set([...order.map((u) => `${dom.id}/${u}`), ...[...dom.children].sort()])];
+    const unitIds = [...new Set([...order.map((u) => `${dom.id}/${u}`), ...dom.children])];
     const units = [];
     let ui = 0;
     for (const uid of unitIds) {

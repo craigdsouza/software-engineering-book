@@ -103,6 +103,30 @@
       "also_in": []
     },
     {
+      "id": "computer-science/data-structures/heaps",
+      "title": "Heaps & Priority Queues",
+      "summary": "A tree kept in an array that always hands back the smallest (or largest) item in O(log n) steps.",
+      "page": null,
+      "deps": [
+        "computer-science/data-structures/trees",
+        "computer-science/data-structures/arrays"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/graphs",
+      "title": "Graphs",
+      "summary": "Points joined by lines (people and friendships, cities and roads), and how to store them: adjacency lists vs matrices.",
+      "page": null,
+      "deps": [
+        "computer-science/data-structures/linked-lists",
+        "computer-science/data-structures/arrays"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/algorithms",
       "title": "Algorithms",
       "page": "computer-science/algorithms.html",
@@ -150,7 +174,8 @@
       "page": "computer-science/algorithms.html#divide-and-conquer-sorts",
       "deps": [
         "computer-science/algorithms/recursion",
-        "computer-science/algorithms/simple-sorts"
+        "computer-science/algorithms/simple-sorts",
+        "computer-science/complexity/cases-and-space"
       ],
       "contrasts": [
         "computer-science/algorithms/simple-sorts"
@@ -163,7 +188,8 @@
       "page": "computer-science/algorithms.html#graph-traversal",
       "deps": [
         "computer-science/data-structures/queues",
-        "computer-science/data-structures/stacks"
+        "computer-science/data-structures/stacks",
+        "computer-science/data-structures/graphs"
       ],
       "contrasts": [],
       "also_in": []
@@ -184,7 +210,8 @@
       "page": "computer-science/algorithms.html#shortest-paths",
       "deps": [
         "computer-science/algorithms/graph-traversal",
-        "computer-science/algorithms/greedy"
+        "computer-science/algorithms/greedy",
+        "computer-science/data-structures/heaps"
       ],
       "contrasts": [],
       "also_in": []
@@ -222,11 +249,87 @@
       ]
     },
     {
+      "id": "computer-science/complexity/cases-and-space",
+      "title": "Best, Worst & Average Case; Space Complexity",
+      "summary": "Why one algorithm can have several costs, and counting memory as well as steps.",
+      "page": null,
+      "deps": [
+        "computer-science/complexity/big-o"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/complexity/p-vs-np",
+      "title": "P, NP & NP-Completeness",
+      "summary": "Problems that seem to have no fast solution, and why proving that is an open question.",
+      "page": null,
+      "deps": [
+        "computer-science/complexity/big-o"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/computer-architecture",
       "title": "Computer Architecture",
       "summary": "CPUs, the memory hierarchy, caches, GPUs.",
       "page": null,
       "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/number-representation",
+      "title": "Binary & Number Representation",
+      "summary": "How integers and floating-point numbers are stored in bits, and where rounding error comes from.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/cpu-instructions",
+      "title": "How a CPU Runs Instructions",
+      "summary": "The fetch-decode-execute cycle, registers, and the instruction set.",
+      "page": null,
+      "deps": [
+        "computer-science/computer-architecture/number-representation"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/memory-hierarchy",
+      "title": "Memory Hierarchy & Caches",
+      "summary": "Registers, caches, RAM and disk: why closer memory is faster, and why locality matters.",
+      "page": null,
+      "deps": [
+        "computer-science/computer-architecture/cpu-instructions"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/pipelining-parallelism",
+      "title": "Pipelining & Parallelism",
+      "summary": "Overlapping instructions, multiple cores, and doing the same operation on many values at once.",
+      "page": null,
+      "deps": [
+        "computer-science/computer-architecture/cpu-instructions"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/gpus",
+      "title": "GPUs",
+      "summary": "Thousands of simple cores running the same operation on lots of data — why GPUs suit graphics and neural networks.",
+      "page": null,
+      "deps": [
+        "computer-science/computer-architecture/pipelining-parallelism",
+        "computer-science/computer-architecture/memory-hierarchy"
+      ],
       "contrasts": [],
       "also_in": []
     },
@@ -276,8 +379,17 @@
       "summary": "How each program gets its own private view of memory.",
       "page": null,
       "deps": [
-        "computer-science/computer-architecture"
+        "computer-science/computer-architecture/memory-hierarchy"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/file-systems",
+      "title": "File Systems",
+      "summary": "How files and folders are laid out on disk, and how the OS keeps them consistent after a crash.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -303,11 +415,143 @@
       "also_in": []
     },
     {
+      "id": "computer-science/networking/layered-model",
+      "title": "The Layered Model",
+      "summary": "Why networking is split into layers, each solving one problem for the layer above.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/ip-routing",
+      "title": "IP & Routing",
+      "summary": "Addresses, and how a packet finds its way across many networks.",
+      "page": null,
+      "deps": [
+        "computer-science/networking/layered-model"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/tcp-udp",
+      "title": "TCP vs UDP",
+      "summary": "Reliable, ordered delivery versus fast, fire-and-forget delivery.",
+      "page": null,
+      "deps": [
+        "computer-science/networking/ip-routing"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/dns",
+      "title": "DNS",
+      "summary": "How a name like example.com turns into an IP address.",
+      "page": null,
+      "deps": [
+        "computer-science/networking/ip-routing"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/http",
+      "title": "HTTP",
+      "summary": "The request-response protocol of the web: methods, status codes, headers.",
+      "page": null,
+      "deps": [
+        "computer-science/networking/tcp-udp"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/tls",
+      "title": "TLS",
+      "summary": "How HTTPS encrypts traffic and proves the server is who it claims to be.",
+      "page": null,
+      "deps": [
+        "computer-science/networking/tcp-udp",
+        "security/cryptography"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/programming-languages",
       "title": "Programming Languages",
       "summary": "Type systems, paradigms, compilers, runtimes.",
       "page": null,
       "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/compilers-interpreters",
+      "title": "Compilers vs Interpreters",
+      "summary": "Translating a program ahead of time versus running it line by line.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/type-systems",
+      "title": "Type Systems",
+      "summary": "Static vs dynamic and strong vs weak typing, and what types catch.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/memory-management",
+      "title": "Memory Management",
+      "summary": "Manual freeing, garbage collection, and ownership.",
+      "page": null,
+      "deps": [
+        "computer-science/data-structures/arrays"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/paradigms",
+      "title": "Paradigms",
+      "summary": "Object-oriented versus functional programming.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computability",
+      "title": "Computability & Automata",
+      "summary": "What can be computed at all.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computability/finite-automata",
+      "title": "Finite Automata & Regular Languages",
+      "summary": "Machines with a fixed amount of memory, and the patterns they can recognise (the theory behind regular expressions).",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computability/turing-machines",
+      "title": "Turing Machines & the Halting Problem",
+      "summary": "A model of any computer, and a proof that some questions no program can answer.",
+      "page": null,
+      "deps": [
+        "computer-science/computability/finite-automata"
+      ],
       "contrasts": [],
       "also_in": []
     },
@@ -351,6 +595,62 @@
       "contrasts": [
         "machine-learning/neural-networks/shallow"
       ],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/loss-functions",
+      "title": "Loss Functions",
+      "summary": "Turning \"how wrong is the model\" into a single number to minimise.",
+      "page": null,
+      "deps": [
+        "machine-learning/neural-networks"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/training",
+      "title": "Training: Gradient Descent & Backpropagation",
+      "summary": "How the weights are adjusted step by step, and how the gradient is computed efficiently.",
+      "page": null,
+      "deps": [
+        "machine-learning/loss-functions",
+        "mathematics/calculus"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/generalisation",
+      "title": "Generalisation & Regularisation",
+      "summary": "Why fitting the training data is not enough, and techniques that help a model work on new data.",
+      "page": null,
+      "deps": [
+        "machine-learning/training"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/cnns",
+      "title": "Convolutional Networks (CNNs)",
+      "summary": "Networks that reuse the same small filter across an image.",
+      "page": null,
+      "deps": [
+        "machine-learning/training"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/transformers",
+      "title": "Transformers & Attention",
+      "summary": "The architecture behind large language models.",
+      "page": null,
+      "deps": [
+        "machine-learning/training"
+      ],
+      "contrasts": [],
       "also_in": []
     },
     {
@@ -430,11 +730,75 @@
       ]
     },
     {
+      "id": "databases/sql-relational",
+      "title": "SQL & the Relational Model",
+      "summary": "Tables, keys and joins, and how a declarative query describes what you want, not how to get it.",
+      "page": null,
+      "deps": [
+        "databases/fundamentals"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/indexes",
+      "title": "Indexes",
+      "summary": "Sorted structures (usually B-trees) that find one row among millions without scanning them all.",
+      "page": null,
+      "deps": [
+        "databases/sql-relational",
+        "computer-science/data-structures/trees/bst"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "databases/distributed-systems",
       "title": "Distributed Systems",
-      "summary": "Replication, consensus, CAP, sharding.",
-      "page": null,
+      "summary": "Data spread across many machines: replication, sharding, CAP, consensus.",
+      "page": "databases/distributed-systems.html",
+      "deps": [
+        "databases/fundamentals"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/distributed-systems/replication",
+      "title": "Replication",
+      "summary": "Copies of the same data on several machines; leaders, replicas and lag.",
+      "page": "databases/distributed-systems.html#replication",
       "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/distributed-systems/sharding",
+      "title": "Sharding",
+      "summary": "Splitting different data across machines by a key.",
+      "page": "databases/distributed-systems.html#sharding",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/distributed-systems/cap",
+      "title": "CAP Theorem",
+      "summary": "During a network split, choosing between consistency and availability.",
+      "page": "databases/distributed-systems.html#cap",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/distributed-systems/consensus",
+      "title": "Consensus",
+      "summary": "How several machines agree on one value even when some fail (Raft, Paxos).",
+      "page": "databases/distributed-systems.html#consensus",
+      "deps": [
+        "databases/distributed-systems/replication",
+        "computer-science/networking/tcp-udp"
+      ],
       "contrasts": [],
       "also_in": []
     },
@@ -442,6 +806,15 @@
       "id": "software-engineering",
       "title": "Software Engineering",
       "summary": "Design patterns, testing, architecture, version control, CI/CD.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/version-control",
+      "title": "Version Control",
+      "summary": "How Git stores history underneath: commits, branches and merges.",
       "page": null,
       "deps": [],
       "contrasts": [],
@@ -461,7 +834,28 @@
       "summary": "Running the tests on every change, and shipping builds automatically.",
       "page": null,
       "deps": [
-        "software-engineering/testing"
+        "software-engineering/testing",
+        "software-engineering/version-control"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/design-principles",
+      "title": "Design Principles & Patterns",
+      "summary": "Ideas for organising code so it is easy to change: coupling, cohesion, common patterns.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/architecture",
+      "title": "Software Architecture",
+      "summary": "How a whole system is split up: monolith versus microservices, layers, boundaries.",
+      "page": null,
+      "deps": [
+        "software-engineering/design-principles"
       ],
       "contrasts": [],
       "also_in": []
@@ -521,9 +915,51 @@
       ]
     },
     {
+      "id": "backend/queues-jobs",
+      "title": "Message Queues & Background Jobs",
+      "summary": "Handing slow work to a queue so the user does not wait for it.",
+      "page": null,
+      "deps": [
+        "computer-science/data-structures/queues"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/scaling",
+      "title": "Scaling & Load Balancing",
+      "summary": "Running many copies of a server and spreading requests across them.",
+      "page": null,
+      "deps": [
+        "databases/distributed-systems"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "frontend",
       "title": "Frontend",
       "summary": "The browser, rendering, client state, and mobile apps.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/browser-rendering",
+      "title": "How the Browser Renders a Page",
+      "summary": "From HTML and CSS to the DOM to pixels on screen.",
+      "page": null,
+      "deps": [
+        "computer-science/networking/http"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/event-loop",
+      "title": "The JavaScript Event Loop",
+      "summary": "How a single-threaded language keeps many tasks moving without blocking.",
       "page": null,
       "deps": [],
       "contrasts": [],

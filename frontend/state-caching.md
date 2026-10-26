@@ -32,7 +32,7 @@ Changing a profile photo works the same way. The new photo shows in the top corn
 Polling means resending a full HTTP request (headers, cookies, everything) on a fixed timer, whether or not anything changed — most of those calls are wasted. A **WebSocket** connection is set up once, then stays open as a passive, reserved slot in server memory — no repeated transmission required to "keep it open." When there's actually something to send, the server pushes it down the already-open pipe. The only recurring cost is an occasional small heartbeat frame to detect a silently-dead connection — orders of magnitude cheaper than re-polling every second.
 
 :::callout
-**Same idea, one layer down:** this exact staleness tradeoff reappears in database replication. See [Databases — Replication](../databases/fundamentals.html#replication) — an asynchronous replica lagging behind the primary is the same "known vs. guessed freshness" shape as stale-while-revalidate, just applied to database copies instead of client caches.
+**Same idea, one layer down:** this exact staleness tradeoff reappears in database replication. See [Databases — Replication](../databases/distributed-systems.html#replication) — an asynchronous replica lagging behind the primary is the same "known vs. guessed freshness" shape as stale-while-revalidate, just applied to database copies instead of client caches.
 :::
 
 ## Where things stand
