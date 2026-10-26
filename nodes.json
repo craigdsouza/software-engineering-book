@@ -2388,6 +2388,59 @@
       "also_in": []
     },
     {
+      "id": "software-engineering/version-control/commits-snapshots",
+      "title": "Commits as Snapshots",
+      "summary": "How Git stores each commit as a full snapshot linked to its parent, and what a hash identifies.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/version-control/branches",
+      "title": "Branches & HEAD",
+      "summary": "A branch is just a movable pointer to a commit.",
+      "page": null,
+      "deps": [
+        "software-engineering/version-control/commits-snapshots"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/version-control/merge-vs-rebase",
+      "title": "Merging vs Rebasing",
+      "summary": "Two ways to combine work, and the history each one leaves behind.",
+      "page": null,
+      "deps": [
+        "software-engineering/version-control/branches"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/version-control/conflicts",
+      "title": "Merge Conflicts",
+      "summary": "Why they happen and how to resolve them.",
+      "page": null,
+      "deps": [
+        "software-engineering/version-control/merge-vs-rebase"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/version-control/workflows",
+      "title": "Branching Workflows & Pull Requests",
+      "summary": "Trunk-based development, feature branches, and code review.",
+      "page": null,
+      "deps": [
+        "software-engineering/version-control/branches"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "software-engineering/testing",
       "title": "Software Testing",
       "page": "software-engineering/testing.html",
@@ -2408,11 +2461,164 @@
       "also_in": []
     },
     {
+      "id": "software-engineering/ci-cd/pipelines",
+      "title": "Pipelines",
+      "summary": "Build, test and deploy as automatic stages that run on every change.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/ci-cd/deployment-strategies",
+      "title": "Deployment Strategies",
+      "summary": "Rolling, blue-green and canary releases — shipping without downtime.",
+      "page": null,
+      "deps": [
+        "software-engineering/ci-cd/pipelines"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/ci-cd/feature-flags",
+      "title": "Feature Flags",
+      "summary": "Shipping code switched off, and turning it on separately from deploying it.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/ci-cd/rollback",
+      "title": "Rollback & Recovery",
+      "summary": "Undoing a bad release quickly.",
+      "page": null,
+      "deps": [
+        "software-engineering/ci-cd/deployment-strategies"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/observability",
+      "title": "Observability",
+      "summary": "Knowing what a running system is doing: logs, metrics, traces and alerts.",
+      "page": null,
+      "deps": [
+        "software-engineering/ci-cd"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/observability/logging",
+      "title": "Logging",
+      "summary": "Structured records of events, and what is worth logging.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/observability/metrics",
+      "title": "Metrics",
+      "summary": "Counters and timings over time: request rate, error rate, latency.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/observability/tracing",
+      "title": "Distributed Tracing",
+      "summary": "Following one request across many services.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/observability/slos-alerting",
+      "title": "SLOs & Alerting",
+      "summary": "Agreeing what \"working\" means in numbers, and paging only when it is at risk.",
+      "page": null,
+      "deps": [
+        "software-engineering/observability/metrics"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "software-engineering/design-principles",
       "title": "Design Principles & Patterns",
       "summary": "Ideas for organising code so it is easy to change: coupling, cohesion, common patterns.",
       "page": null,
       "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/design-principles/coupling-cohesion",
+      "title": "Coupling & Cohesion",
+      "summary": "Keep related things together and unrelated things apart.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/design-principles/abstraction-interfaces",
+      "title": "Abstraction & Interfaces",
+      "summary": "Hiding details behind a stable contract.",
+      "page": null,
+      "deps": [
+        "software-engineering/design-principles/coupling-cohesion"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/design-principles/solid",
+      "title": "SOLID Principles",
+      "summary": "Five guidelines for object-oriented code that is easy to change.",
+      "page": null,
+      "deps": [
+        "computer-science/programming-languages/paradigms/oop"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/design-principles/dependency-injection",
+      "title": "Dependency Injection",
+      "summary": "Passing a component what it needs instead of letting it build its own — what makes mocking possible.",
+      "page": null,
+      "deps": [
+        "software-engineering/design-principles/abstraction-interfaces"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/design-principles/design-patterns",
+      "title": "Design Patterns",
+      "summary": "Common reusable shapes: factory, strategy, observer, adapter.",
+      "page": null,
+      "deps": [
+        "software-engineering/design-principles/abstraction-interfaces"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/design-principles/refactoring",
+      "title": "Refactoring & Technical Debt",
+      "summary": "Improving structure without changing behaviour, and the cost of putting it off.",
+      "page": null,
+      "deps": [
+        "software-engineering/testing"
+      ],
       "contrasts": [],
       "also_in": []
     },
@@ -2424,6 +2630,46 @@
       "deps": [
         "software-engineering/design-principles"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/architecture/layered",
+      "title": "Layered Architecture",
+      "summary": "Presentation, business logic and data access kept apart.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/architecture/monolith-vs-microservices",
+      "title": "Monoliths vs Microservices",
+      "summary": "One deployable versus many small services, and what each costs.",
+      "page": null,
+      "deps": [
+        "software-engineering/architecture/layered"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/architecture/event-driven",
+      "title": "Event-Driven Architecture",
+      "summary": "Services reacting to events instead of calling each other directly.",
+      "page": null,
+      "deps": [
+        "backend/queues-jobs"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/architecture/trade-offs",
+      "title": "Architecture Trade-offs & Decision Records",
+      "summary": "Weighing options explicitly and writing down why one was chosen.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
