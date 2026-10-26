@@ -1270,6 +1270,35 @@
       "also_in": []
     },
     {
+      "id": "machine-learning/loss-functions/maximum-likelihood",
+      "title": "Maximum Likelihood",
+      "summary": "Where loss functions come from: pick the weights that make the training data most probable.",
+      "page": null,
+      "deps": [
+        "mathematics/probability-statistics"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/loss-functions/least-squares",
+      "title": "Least Squares for Regression",
+      "summary": "Squared error, and why it is the right loss when noise is bell-shaped.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/loss-functions/cross-entropy",
+      "title": "Cross-Entropy for Classification",
+      "summary": "The loss for predicting categories, paired with softmax.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "machine-learning/training",
       "title": "Training: Gradient Descent & Backpropagation",
       "summary": "How the weights are adjusted step by step, and how the gradient is computed efficiently.",
@@ -1278,6 +1307,53 @@
         "machine-learning/loss-functions",
         "mathematics/calculus"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/training/gradient-descent",
+      "title": "Gradient Descent",
+      "summary": "Repeatedly stepping downhill on the loss; the learning rate sets the step size.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/training/sgd",
+      "title": "Stochastic Gradient Descent & Mini-Batches",
+      "summary": "Estimating the slope from a small random batch instead of all the data.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/training/momentum-adam",
+      "title": "Momentum & Adam",
+      "summary": "Optimisers that smooth and rescale steps so training moves faster.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/training/backpropagation",
+      "title": "Backpropagation",
+      "summary": "Computing every weight's gradient in one backward pass with the chain rule.",
+      "page": null,
+      "deps": [
+        "mathematics/calculus"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/training/initialisation",
+      "title": "Initialisation & Vanishing/Exploding Gradients",
+      "summary": "Why starting weights must be scaled carefully in deep networks.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -1293,6 +1369,60 @@
       "also_in": []
     },
     {
+      "id": "machine-learning/generalisation/train-val-test",
+      "title": "Train, Validation & Test Sets",
+      "summary": "Measuring performance on data the model has not seen, and tuning hyperparameters honestly.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/generalisation/bias-variance",
+      "title": "Overfitting & the Bias-Variance Trade-off",
+      "summary": "Too simple misses the pattern; too flexible memorises the noise.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/generalisation/weight-decay",
+      "title": "Weight Decay (L2)",
+      "summary": "Penalising large weights to favour smoother functions.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/generalisation/dropout",
+      "title": "Dropout",
+      "summary": "Randomly switching off units during training so no single one is relied on.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/generalisation/early-stopping",
+      "title": "Early Stopping",
+      "summary": "Stopping training when validation error starts to rise.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/generalisation/data-augmentation",
+      "title": "Data Augmentation",
+      "summary": "Making more training data by flipping, cropping or perturbing what you have.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "machine-learning/cnns",
       "title": "Convolutional Networks (CNNs)",
       "summary": "Networks that reuse the same small filter across an image.",
@@ -1304,13 +1434,192 @@
       "also_in": []
     },
     {
+      "id": "machine-learning/cnns/convolution",
+      "title": "Convolution & Filters",
+      "summary": "Sliding one small set of weights across an image to detect a pattern anywhere.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/cnns/stride-padding-pooling",
+      "title": "Stride, Padding & Pooling",
+      "summary": "Controlling output size and shrinking feature maps.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/cnns/channels",
+      "title": "Channels & Feature Maps",
+      "summary": "Many filters in parallel, stacked into layers that see larger patterns.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/residual-networks",
+      "title": "Residual Networks",
+      "summary": "Skip connections that make very deep networks trainable again.",
+      "page": null,
+      "deps": [
+        "machine-learning/cnns"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/residual-networks/residual-connections",
+      "title": "Residual Connections",
+      "summary": "Adding a layer's input to its output so gradients have a short path back.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/residual-networks/normalisation",
+      "title": "Batch & Layer Normalisation",
+      "summary": "Rescaling activations inside the network to keep training stable.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "machine-learning/transformers",
       "title": "Transformers & Attention",
       "summary": "The architecture behind large language models.",
       "page": null,
       "deps": [
-        "machine-learning/training"
+        "machine-learning/training",
+        "machine-learning/residual-networks"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/transformers/self-attention",
+      "title": "Self-Attention",
+      "summary": "Each token builds its new value as a weighted mix of every other token.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/transformers/multi-head",
+      "title": "Multi-Head Attention",
+      "summary": "Several attention patterns in parallel, each free to track a different relationship.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/transformers/positional-encoding",
+      "title": "Positional Encoding",
+      "summary": "Telling attention, which ignores order, where each token sits.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/transformers/encoder-decoder",
+      "title": "Encoders, Decoders & Masking",
+      "summary": "Reading the whole input versus generating one token at a time without peeking ahead.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/llms",
+      "title": "Large Language Models",
+      "summary": "Transformers trained on huge amounts of text to predict the next token, then tuned to follow instructions.",
+      "page": null,
+      "deps": [
+        "machine-learning/transformers"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/llms/tokenisation",
+      "title": "Tokenisation & Embeddings",
+      "summary": "Splitting text into tokens and turning each into a vector.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/llms/pretraining",
+      "title": "Pre-Training & Next-Token Prediction",
+      "summary": "Learning language by predicting the next token over trillions of tokens.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/llms/fine-tuning",
+      "title": "Fine-Tuning & RLHF",
+      "summary": "Turning a text predictor into an assistant with examples and human feedback.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/llms/inference",
+      "title": "Inference: Sampling & the KV Cache",
+      "summary": "How text is generated token by token, and the memory trick that makes it fast.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/generative-models",
+      "title": "Generative Models",
+      "summary": "Models that create new data — images, audio — rather than label existing data.",
+      "page": null,
+      "deps": [
+        "machine-learning/training",
+        "mathematics/probability-statistics"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/generative-models/vaes",
+      "title": "Variational Autoencoders (VAEs)",
+      "summary": "Compressing data into a smooth space you can sample new examples from.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/generative-models/gans",
+      "title": "Generative Adversarial Networks (GANs)",
+      "summary": "A generator and a critic trained against each other.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/generative-models/diffusion",
+      "title": "Diffusion Models",
+      "summary": "Learning to remove noise step by step, then generating from pure noise.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -1319,7 +1628,8 @@
       "title": "Agent Memory Systems",
       "page": "machine-learning/agent-memory.html",
       "deps": [
-        "databases/fundamentals"
+        "databases/fundamentals",
+        "machine-learning/llms"
       ],
       "contrasts": [],
       "also_in": [
