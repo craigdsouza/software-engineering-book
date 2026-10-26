@@ -30,18 +30,9 @@
       ]
     },
     {
-      "id": "computer-architecture",
-      "title": "Computer Architecture",
-      "summary": "CPUs, the memory hierarchy, caches, GPUs.",
-      "page": null,
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
       "id": "computer-science",
       "title": "Computer Science",
-      "summary": "Data structures, algorithms, complexity, computability, automata.",
+      "summary": "Data structures, algorithms, complexity, computability, and the systems underneath: architecture, operating systems, networking, programming languages.",
       "page": null,
       "deps": [],
       "contrasts": [],
@@ -165,6 +156,15 @@
       ]
     },
     {
+      "id": "computer-science/computer-architecture",
+      "title": "Computer Architecture",
+      "summary": "CPUs, the memory hierarchy, caches, GPUs.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/data-structures",
       "title": "Data Structures",
       "page": "computer-science/data-structures.html",
@@ -253,6 +253,33 @@
       "contrasts": [
         "computer-science/data-structures/hash-tables"
       ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking",
+      "title": "Networking",
+      "summary": "TCP/IP, DNS, TLS, HTTP.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems",
+      "title": "Operating Systems",
+      "summary": "Processes, scheduling, virtual memory, concurrency.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages",
+      "title": "Programming Languages",
+      "summary": "Type systems, paradigms, compilers, runtimes.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
       "also_in": []
     },
     {
@@ -375,33 +402,6 @@
       "id": "mobile",
       "title": "Mobile",
       "summary": "Native and cross-platform apps.",
-      "page": null,
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "networking",
-      "title": "Networking",
-      "summary": "TCP/IP, DNS, TLS, HTTP.",
-      "page": null,
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "operating-systems",
-      "title": "Operating Systems",
-      "summary": "Processes, scheduling, virtual memory, concurrency.",
-      "page": null,
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "programming-languages",
-      "title": "Programming Languages",
-      "summary": "Type systems, paradigms, compilers, runtimes.",
       "page": null,
       "deps": [],
       "contrasts": [],

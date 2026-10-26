@@ -296,16 +296,15 @@ function computeUnlocks(nodes) {
 // nodes) follow `units` where given, then any others alphabetically. `planned`
 // units don't exist in nodes.json yet and render as empty placeholders.
 // Changed 2026-09-21 from the fixed Foundations → Systems → … track order.
+// 2026-10-26: computer-architecture, operating-systems, networking and
+// programming-languages moved from top-level domains into computer-science units.
 const PATH = [
-  { domain: "computer-science", units: ["data-structures", "algorithms", "complexity", "computability"],
+  { domain: "computer-science", units: ["data-structures", "algorithms", "complexity", "computability",
+           "computer-architecture", "operating-systems", "networking", "programming-languages"],
     planned: { algorithms: "Algorithms", computability: "Computability & Automata" } },
-  { domain: "computer-architecture" },
-  { domain: "operating-systems" },
-  { domain: "networking" },
   { domain: "distributed-systems" },
   { domain: "databases" },
   { domain: "mathematics" },
-  { domain: "programming-languages" },
   { domain: "software-engineering" },
   { domain: "security" },
   { domain: "backend" },
