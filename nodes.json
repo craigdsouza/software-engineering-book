@@ -285,7 +285,16 @@
     {
       "id": "databases",
       "title": "Databases",
-      "summary": "Data models, transactions, indexes, query engines.",
+      "summary": "Data models, transactions, indexes, query engines, and distributed data: replication, consensus, CAP, sharding.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/distributed-systems",
+      "title": "Distributed Systems",
+      "summary": "Replication, consensus, CAP, sharding.",
       "page": null,
       "deps": [],
       "contrasts": [],
@@ -298,22 +307,13 @@
       "deps": [],
       "contrasts": [],
       "also_in": [
-        "distributed-systems"
+        "databases/distributed-systems"
       ]
     },
     {
       "id": "devops-cloud",
       "title": "DevOps & Cloud",
       "summary": "CI/CD, containers, infrastructure as code.",
-      "page": null,
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "distributed-systems",
-      "title": "Distributed Systems",
-      "summary": "Replication, consensus, CAP, sharding.",
       "page": null,
       "deps": [],
       "contrasts": [],
@@ -399,6 +399,42 @@
       "also_in": []
     },
     {
+      "id": "mathematics/calculus",
+      "title": "Calculus",
+      "summary": "Rates of change and gradients — the maths behind training neural networks.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/discrete-math",
+      "title": "Discrete Mathematics",
+      "summary": "Logic, sets, counting, proofs, series — the maths behind algorithm costs.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/linear-algebra",
+      "title": "Linear Algebra",
+      "summary": "Vectors, matrices, transformations — the maths behind graphics and neural networks.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/probability-statistics",
+      "title": "Probability & Statistics",
+      "summary": "Randomness, distributions, estimation — the maths behind hashing analysis and machine learning.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "mobile",
       "title": "Mobile",
       "summary": "Native and cross-platform apps.",
@@ -411,6 +447,24 @@
       "id": "security",
       "title": "Security",
       "summary": "Cryptography, authentication, web security.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/cryptography",
+      "title": "Cryptography",
+      "summary": "Hashing, symmetric and public-key encryption, signatures.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/web-security",
+      "title": "Web Security",
+      "summary": "Common attacks on web apps and their defences: XSS, CSRF, injection.",
       "page": null,
       "deps": [],
       "contrasts": [],
