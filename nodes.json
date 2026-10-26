@@ -1,34 +1,7 @@
 {
   "schema": 1,
-  "note": "Node registry. id = domain/concept/sub-concept (1-4 segments); parent = the id minus its last segment. page = where the prose lives (null for grouping nodes). deps/contrasts/also_in hold node ids. Status is never stored here.",
+  "note": "Node registry. id = domain/concept/sub-concept (1-4 segments); parent = the id minus its last segment. page = where the prose lives (null for grouping nodes). deps/contrasts/also_in hold node ids. Status is never stored here. Order matters: siblings are listed in teaching order, which sets the order of rows on the home page and the order the next-up rule walks them. Insert new nodes in place; never sort this file.",
   "nodes": [
-    {
-      "id": "backend",
-      "title": "Backend",
-      "summary": "APIs, auth flows, server-side caching.",
-      "page": null,
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "backend/apis",
-      "title": "APIs",
-      "page": "backend/apis.html",
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "backend/auth",
-      "title": "Auth",
-      "page": "backend/auth.html",
-      "deps": [],
-      "contrasts": [],
-      "also_in": [
-        "security"
-      ]
-    },
     {
       "id": "computer-science",
       "title": "Computer Science",
@@ -36,6 +9,97 @@
       "page": null,
       "deps": [],
       "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures",
+      "title": "Data Structures",
+      "page": "computer-science/data-structures.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/arrays",
+      "title": "Arrays",
+      "page": "computer-science/data-structures.html#arrays",
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/linked-lists"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/linked-lists",
+      "title": "Linked Lists",
+      "page": "computer-science/data-structures.html#linked-lists",
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/arrays",
+        "computer-science/data-structures/doubly-linked-lists"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/doubly-linked-lists",
+      "title": "Doubly-Linked Lists",
+      "page": "computer-science/data-structures.html#doubly-linked-lists",
+      "deps": [
+        "computer-science/data-structures/linked-lists"
+      ],
+      "contrasts": [
+        "computer-science/data-structures/linked-lists"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/stacks",
+      "title": "Stacks",
+      "page": "computer-science/data-structures.html#stacks",
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/queues"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/queues",
+      "title": "Queues",
+      "page": "computer-science/data-structures.html#queues",
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/stacks"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/hash-tables",
+      "title": "Hash Tables",
+      "page": "computer-science/data-structures.html#hash-tables",
+      "deps": [
+        "computer-science/data-structures/arrays"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/trees",
+      "title": "Trees",
+      "page": "computer-science/data-structures/trees.html",
+      "deps": [
+        "computer-science/data-structures/linked-lists"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/trees/bst",
+      "title": "Binary Search Trees (BST)",
+      "page": "computer-science/data-structures/trees.html#bst",
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/hash-tables"
+      ],
       "also_in": []
     },
     {
@@ -58,6 +122,29 @@
       "also_in": []
     },
     {
+      "id": "computer-science/algorithms/recursion",
+      "title": "Recursion & Recurrences",
+      "page": "computer-science/algorithms.html#recursion",
+      "deps": [
+        "computer-science/data-structures/stacks",
+        "mathematics/discrete-math"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/simple-sorts",
+      "title": "Simple Sorts (Selection & Insertion)",
+      "page": "computer-science/algorithms.html#simple-sorts",
+      "deps": [
+        "computer-science/data-structures/arrays"
+      ],
+      "contrasts": [
+        "computer-science/algorithms/divide-and-conquer-sorts"
+      ],
+      "also_in": []
+    },
+    {
       "id": "computer-science/algorithms/divide-and-conquer-sorts",
       "title": "Merge Sort & Quicksort",
       "page": "computer-science/algorithms.html#divide-and-conquer-sorts",
@@ -67,20 +154,6 @@
       ],
       "contrasts": [
         "computer-science/algorithms/simple-sorts"
-      ],
-      "also_in": []
-    },
-    {
-      "id": "computer-science/algorithms/dynamic-programming",
-      "title": "Dynamic Programming",
-      "page": "computer-science/algorithms.html#dynamic-programming",
-      "deps": [
-        "computer-science/algorithms/recursion",
-        "computer-science/data-structures/hash-tables",
-        "mathematics/discrete-math"
-      ],
-      "contrasts": [
-        "computer-science/algorithms/greedy"
       ],
       "also_in": []
     },
@@ -106,17 +179,6 @@
       "also_in": []
     },
     {
-      "id": "computer-science/algorithms/recursion",
-      "title": "Recursion & Recurrences",
-      "page": "computer-science/algorithms.html#recursion",
-      "deps": [
-        "computer-science/data-structures/stacks",
-        "mathematics/discrete-math"
-      ],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
       "id": "computer-science/algorithms/shortest-paths",
       "title": "Shortest Paths (Dijkstra)",
       "page": "computer-science/algorithms.html#shortest-paths",
@@ -128,14 +190,16 @@
       "also_in": []
     },
     {
-      "id": "computer-science/algorithms/simple-sorts",
-      "title": "Simple Sorts (Selection & Insertion)",
-      "page": "computer-science/algorithms.html#simple-sorts",
+      "id": "computer-science/algorithms/dynamic-programming",
+      "title": "Dynamic Programming",
+      "page": "computer-science/algorithms.html#dynamic-programming",
       "deps": [
-        "computer-science/data-structures/arrays"
+        "computer-science/algorithms/recursion",
+        "computer-science/data-structures/hash-tables",
+        "mathematics/discrete-math"
       ],
       "contrasts": [
-        "computer-science/algorithms/divide-and-conquer-sorts"
+        "computer-science/algorithms/greedy"
       ],
       "also_in": []
     },
@@ -167,134 +231,11 @@
       "also_in": []
     },
     {
-      "id": "computer-science/data-structures",
-      "title": "Data Structures",
-      "page": "computer-science/data-structures.html",
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "computer-science/data-structures/arrays",
-      "title": "Arrays",
-      "page": "computer-science/data-structures.html#arrays",
-      "deps": [],
-      "contrasts": [
-        "computer-science/data-structures/linked-lists"
-      ],
-      "also_in": []
-    },
-    {
-      "id": "computer-science/data-structures/doubly-linked-lists",
-      "title": "Doubly-Linked Lists",
-      "page": "computer-science/data-structures.html#doubly-linked-lists",
-      "deps": [
-        "computer-science/data-structures/linked-lists"
-      ],
-      "contrasts": [
-        "computer-science/data-structures/linked-lists"
-      ],
-      "also_in": []
-    },
-    {
-      "id": "computer-science/data-structures/hash-tables",
-      "title": "Hash Tables",
-      "page": "computer-science/data-structures.html#hash-tables",
-      "deps": [
-        "computer-science/data-structures/arrays"
-      ],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "computer-science/data-structures/linked-lists",
-      "title": "Linked Lists",
-      "page": "computer-science/data-structures.html#linked-lists",
-      "deps": [],
-      "contrasts": [
-        "computer-science/data-structures/arrays",
-        "computer-science/data-structures/doubly-linked-lists"
-      ],
-      "also_in": []
-    },
-    {
-      "id": "computer-science/data-structures/queues",
-      "title": "Queues",
-      "page": "computer-science/data-structures.html#queues",
-      "deps": [],
-      "contrasts": [
-        "computer-science/data-structures/stacks"
-      ],
-      "also_in": []
-    },
-    {
-      "id": "computer-science/data-structures/stacks",
-      "title": "Stacks",
-      "page": "computer-science/data-structures.html#stacks",
-      "deps": [],
-      "contrasts": [
-        "computer-science/data-structures/queues"
-      ],
-      "also_in": []
-    },
-    {
-      "id": "computer-science/data-structures/trees",
-      "title": "Trees",
-      "page": "computer-science/data-structures/trees.html",
-      "deps": [
-        "computer-science/data-structures/linked-lists"
-      ],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "computer-science/data-structures/trees/bst",
-      "title": "Binary Search Trees (BST)",
-      "page": "computer-science/data-structures/trees.html#bst",
-      "deps": [],
-      "contrasts": [
-        "computer-science/data-structures/hash-tables"
-      ],
-      "also_in": []
-    },
-    {
-      "id": "computer-science/networking",
-      "title": "Networking",
-      "summary": "TCP/IP, DNS, TLS, HTTP.",
-      "page": null,
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
       "id": "computer-science/operating-systems",
       "title": "Operating Systems",
       "summary": "Processes, scheduling, virtual memory, concurrency.",
       "page": null,
       "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "computer-science/operating-systems/concurrency",
-      "title": "Concurrency",
-      "summary": "Locks, race conditions and deadlock when threads share data.",
-      "page": null,
-      "deps": [
-        "computer-science/operating-systems/processes-threads"
-      ],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "computer-science/operating-systems/containers",
-      "title": "Containers",
-      "summary": "Isolation built from OS features, so one machine can run many separate apps — the basis of Docker and cloud deployment.",
-      "page": null,
-      "deps": [
-        "computer-science/operating-systems/processes-threads",
-        "computer-science/operating-systems/virtual-memory"
-      ],
       "contrasts": [],
       "also_in": []
     },
@@ -319,6 +260,17 @@
       "also_in": []
     },
     {
+      "id": "computer-science/operating-systems/concurrency",
+      "title": "Concurrency",
+      "summary": "Locks, race conditions and deadlock when threads share data.",
+      "page": null,
+      "deps": [
+        "computer-science/operating-systems/processes-threads"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/operating-systems/virtual-memory",
       "title": "Virtual Memory",
       "summary": "How each program gets its own private view of memory.",
@@ -326,6 +278,27 @@
       "deps": [
         "computer-science/computer-architecture"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/containers",
+      "title": "Containers",
+      "summary": "Isolation built from OS features, so one machine can run many separate apps — the basis of Docker and cloud deployment.",
+      "page": null,
+      "deps": [
+        "computer-science/operating-systems/processes-threads",
+        "computer-science/operating-systems/virtual-memory"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking",
+      "title": "Networking",
+      "summary": "TCP/IP, DNS, TLS, HTTP.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -339,64 +312,6 @@
       "also_in": []
     },
     {
-      "id": "databases",
-      "title": "Databases",
-      "summary": "Data models, transactions, indexes, query engines, and distributed data: replication, consensus, CAP, sharding.",
-      "page": null,
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "databases/distributed-systems",
-      "title": "Distributed Systems",
-      "summary": "Replication, consensus, CAP, sharding.",
-      "page": null,
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "databases/fundamentals",
-      "title": "Database Fundamentals",
-      "page": "databases/fundamentals.html",
-      "deps": [],
-      "contrasts": [],
-      "also_in": [
-        "databases/distributed-systems"
-      ]
-    },
-    {
-      "id": "frontend",
-      "title": "Frontend",
-      "summary": "The browser, rendering, client state, and mobile apps.",
-      "page": null,
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "frontend/mobile",
-      "title": "Mobile",
-      "summary": "Native and cross-platform apps: another kind of client, with the same rendering, state and offline questions as the web.",
-      "page": null,
-      "deps": [
-        "frontend/state-caching"
-      ],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "frontend/state-caching",
-      "title": "State & Caching",
-      "page": "frontend/state-caching.html",
-      "deps": [],
-      "contrasts": [],
-      "also_in": [
-        "backend"
-      ]
-    },
-    {
       "id": "machine-learning",
       "title": "Machine Learning",
       "summary": "Classical ML, deep learning, LLMs.",
@@ -404,18 +319,6 @@
       "deps": [],
       "contrasts": [],
       "also_in": []
-    },
-    {
-      "id": "machine-learning/agent-memory",
-      "title": "Agent Memory Systems",
-      "page": "machine-learning/agent-memory.html",
-      "deps": [
-        "databases/fundamentals"
-      ],
-      "contrasts": [],
-      "also_in": [
-        "frontend/state-caching"
-      ]
     },
     {
       "id": "machine-learning/neural-networks",
@@ -426,6 +329,16 @@
         "mathematics/calculus"
       ],
       "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/neural-networks/shallow",
+      "title": "Shallow Neural Networks",
+      "page": "machine-learning/neural-networks.html#shallow",
+      "deps": [],
+      "contrasts": [
+        "machine-learning/neural-networks/deep"
+      ],
       "also_in": []
     },
     {
@@ -441,28 +354,21 @@
       "also_in": []
     },
     {
-      "id": "machine-learning/neural-networks/shallow",
-      "title": "Shallow Neural Networks",
-      "page": "machine-learning/neural-networks.html#shallow",
-      "deps": [],
-      "contrasts": [
-        "machine-learning/neural-networks/deep"
+      "id": "machine-learning/agent-memory",
+      "title": "Agent Memory Systems",
+      "page": "machine-learning/agent-memory.html",
+      "deps": [
+        "databases/fundamentals"
       ],
-      "also_in": []
+      "contrasts": [],
+      "also_in": [
+        "frontend/state-caching"
+      ]
     },
     {
       "id": "mathematics",
       "title": "Mathematics",
       "summary": "Discrete maths, linear algebra, probability & statistics, calculus.",
-      "page": null,
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "mathematics/calculus",
-      "title": "Calculus",
-      "summary": "Rates of change and gradients — the maths behind training neural networks.",
       "page": null,
       "deps": [],
       "contrasts": [],
@@ -496,6 +402,71 @@
       "also_in": []
     },
     {
+      "id": "mathematics/calculus",
+      "title": "Calculus",
+      "summary": "Rates of change and gradients — the maths behind training neural networks.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases",
+      "title": "Databases",
+      "summary": "Data models, transactions, indexes, query engines, and distributed data: replication, consensus, CAP, sharding.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/fundamentals",
+      "title": "Database Fundamentals",
+      "page": "databases/fundamentals.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": [
+        "databases/distributed-systems"
+      ]
+    },
+    {
+      "id": "databases/distributed-systems",
+      "title": "Distributed Systems",
+      "summary": "Replication, consensus, CAP, sharding.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering",
+      "title": "Software Engineering",
+      "summary": "Design patterns, testing, architecture, version control, CI/CD.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/testing",
+      "title": "Software Testing",
+      "page": "software-engineering/testing.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/ci-cd",
+      "title": "CI/CD & Deployment",
+      "summary": "Running the tests on every change, and shipping builds automatically.",
+      "page": null,
+      "deps": [
+        "software-engineering/testing"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "security",
       "title": "Security",
       "summary": "Cryptography, authentication, web security.",
@@ -523,30 +494,59 @@
       "also_in": []
     },
     {
-      "id": "software-engineering",
-      "title": "Software Engineering",
-      "summary": "Design patterns, testing, architecture, version control, CI/CD.",
+      "id": "backend",
+      "title": "Backend",
+      "summary": "APIs, auth flows, server-side caching.",
       "page": null,
       "deps": [],
       "contrasts": [],
       "also_in": []
     },
     {
-      "id": "software-engineering/ci-cd",
-      "title": "CI/CD & Deployment",
-      "summary": "Running the tests on every change, and shipping builds automatically.",
+      "id": "backend/apis",
+      "title": "APIs",
+      "page": "backend/apis.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/auth",
+      "title": "Auth",
+      "page": "backend/auth.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": [
+        "security"
+      ]
+    },
+    {
+      "id": "frontend",
+      "title": "Frontend",
+      "summary": "The browser, rendering, client state, and mobile apps.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/state-caching",
+      "title": "State & Caching",
+      "page": "frontend/state-caching.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": [
+        "backend"
+      ]
+    },
+    {
+      "id": "frontend/mobile",
+      "title": "Mobile",
+      "summary": "Native and cross-platform apps: another kind of client, with the same rendering, state and offline questions as the web.",
       "page": null,
       "deps": [
-        "software-engineering/testing"
+        "frontend/state-caching"
       ],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
-      "id": "software-engineering/testing",
-      "title": "Software Testing",
-      "page": "software-engineering/testing.html",
-      "deps": [],
       "contrasts": [],
       "also_in": []
     }
