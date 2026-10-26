@@ -2117,6 +2117,44 @@
       "also_in": []
     },
     {
+      "id": "databases/sql-relational/tables-keys",
+      "title": "Tables, Primary Keys & Foreign Keys",
+      "summary": "How rows are identified, and how one table points at another.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/sql-relational/joins",
+      "title": "Joins",
+      "summary": "Reassembling related rows from several tables: inner, left and outer joins.",
+      "page": null,
+      "deps": [
+        "databases/sql-relational/tables-keys"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/sql-relational/aggregation",
+      "title": "Filtering, Grouping & Aggregation",
+      "summary": "WHERE, GROUP BY, COUNT and SUM — answering questions about many rows at once.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/sql-relational/declarative",
+      "title": "Declarative Queries",
+      "summary": "Saying what you want and letting the database decide how to get it.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "databases/indexes",
       "title": "Indexes",
       "summary": "Sorted structures (usually B-trees) that find one row among millions without scanning them all.",
@@ -2124,6 +2162,90 @@
       "deps": [
         "databases/sql-relational",
         "computer-science/data-structures/trees/b-trees"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/indexes/b-tree-indexes",
+      "title": "B-Tree Indexes",
+      "summary": "The default index: sorted, so it answers both exact lookups and ranges.",
+      "page": null,
+      "deps": [
+        "computer-science/data-structures/trees/b-trees"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/indexes/hash-indexes",
+      "title": "Hash Indexes",
+      "summary": "Fast exact lookups, but no ranges.",
+      "page": null,
+      "deps": [
+        "computer-science/data-structures/hash-tables"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/indexes/composite-indexes",
+      "title": "Composite & Covering Indexes",
+      "summary": "Indexes on several columns, why column order matters, and answering a query from the index alone.",
+      "page": null,
+      "deps": [
+        "databases/indexes/b-tree-indexes"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/indexes/index-costs",
+      "title": "What Indexes Cost",
+      "summary": "Every index slows writes and takes space.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/indexes/query-planner",
+      "title": "The Query Planner & EXPLAIN",
+      "summary": "How the database picks an execution plan, and how to read it.",
+      "page": null,
+      "deps": [
+        "databases/indexes/b-tree-indexes"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/storage-engines",
+      "title": "Storage Engines",
+      "summary": "How a database actually lays data out on disk and survives crashes.",
+      "page": null,
+      "deps": [
+        "databases/indexes"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/storage-engines/write-ahead-log",
+      "title": "The Write-Ahead Log",
+      "summary": "Writing a change to a log before applying it, which is how durability survives a crash.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/storage-engines/lsm-trees",
+      "title": "LSM-Trees vs B-Trees",
+      "summary": "Append-and-merge storage built for heavy writes, versus update-in-place.",
+      "page": null,
+      "deps": [
+        "databases/storage-engines/write-ahead-log"
       ],
       "contrasts": [],
       "also_in": []
@@ -2149,10 +2271,46 @@
       "also_in": []
     },
     {
+      "id": "databases/distributed-systems/replication/failover",
+      "title": "Leader Failover",
+      "summary": "What happens when the leader dies, and how a new one takes over without losing writes.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/distributed-systems/replication/multi-leader-leaderless",
+      "title": "Multi-Leader & Leaderless Replication",
+      "summary": "Accepting writes in several places at once, and resolving the conflicts that follow.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "databases/distributed-systems/sharding",
       "title": "Sharding",
       "summary": "Splitting different data across machines by a key.",
       "page": "databases/distributed-systems.html#sharding",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/distributed-systems/sharding/range-vs-hash",
+      "title": "Range vs Hash Partitioning",
+      "summary": "Splitting by key ranges (good for scans) versus by hash (good for spreading load).",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/distributed-systems/sharding/rebalancing",
+      "title": "Rebalancing & Consistent Hashing",
+      "summary": "Moving data when shards are added without reshuffling everything.",
+      "page": null,
       "deps": [],
       "contrasts": [],
       "also_in": []
@@ -2167,13 +2325,46 @@
       "also_in": []
     },
     {
+      "id": "databases/distributed-systems/consistency-models",
+      "title": "Consistency Models",
+      "summary": "Linearisable, causal and eventual consistency: exactly what a reader is promised.",
+      "page": null,
+      "deps": [
+        "databases/distributed-systems/cap"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/distributed-systems/clocks-ordering",
+      "title": "Clocks & Ordering",
+      "summary": "Why machines cannot agree on the time, and logical clocks that order events anyway.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "databases/distributed-systems/consensus",
       "title": "Consensus",
       "summary": "How several machines agree on one value even when some fail (Raft, Paxos).",
       "page": "databases/distributed-systems.html#consensus",
       "deps": [
         "databases/distributed-systems/replication",
-        "computer-science/networking/tcp-udp"
+        "computer-science/networking/tcp-udp",
+        "databases/distributed-systems/clocks-ordering"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "databases/distributed-systems/distributed-transactions",
+      "title": "Distributed Transactions & Two-Phase Commit",
+      "summary": "Making a change on several machines all-or-nothing.",
+      "page": null,
+      "deps": [
+        "databases/distributed-systems/consensus",
+        "databases/fundamentals"
       ],
       "contrasts": [],
       "also_in": []
