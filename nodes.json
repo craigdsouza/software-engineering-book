@@ -433,6 +433,13 @@
       "tier": "advanced",
       "under": "machine-learning/neural-networks/deep",
       "note": "Fitting the training data is not the same as predicting well on new data, and part of why it works is still open."
+    },
+    {
+      "id": "idempotency-keys-safe-retries",
+      "title": "Idempotency keys and safe retries",
+      "tier": "intermediate",
+      "under": "backend/apis",
+      "note": "A like should be idempotent by design (a duplicate request changes nothing). Requests where a repeat does harm, such as a payment retried after a network timeout, need the server to recognise the retry, usually with a unique key sent by the client."
     }
   ]
 }
