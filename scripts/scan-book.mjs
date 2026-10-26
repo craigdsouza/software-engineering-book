@@ -219,10 +219,44 @@ function computeAll(nodes, eventsByNode) {
       rollup = worse(rollup, statusOf(childId));
     }
 
-    const combined = direct && rollup ? worse(direct.status, rollup) : direct ? direct.status : rollup;
+    // Parent pages (not pure groupings) take their due date from their children:
+    // the SOONEST due date among the children counts, so a quiz on any one child
+    // moves the parent's date. The parent's own old quiz events only count if a
+    // whole-page quiz is at least as recent as every child's latest quiz. Without
+    // this, a page quizzed once long ago stayed "overdue" forever while its sections
+    // were being reviewed. (Changed 2026-10-26.)
+    const kids = node.children.map((c) => nodes.get(c)).filter(Boolean);
+    const kidDues = kids.map((k) => k._dueDate).filter(Boolean);
+    const kidLast = kids.map((k) => k._lastScored).filter(Boolean).sort().pop() || null;
+    const isParentPage = node.materialization !== "group" && kids.length > 0;
+    const ownIsCurrent = !!direct && (!kidLast || direct.lastScored >= kidLast);
+
+    let dueDate = direct ? direct.dueDate : null;
+    let dueFrom = direct ? "own" : null;
+    if (isParentPage && kidDues.length) {
+      const soonest = [...kidDues].sort()[0];
+      if (ownIsCurrent && direct.dueDate && direct.dueDate < soonest) {
+        dueDate = direct.dueDate; // a recent whole-page quiz that comes due first
+        dueFrom = "own";
+      } else {
+        dueDate = soonest;
+        dueFrom = "children";
+      }
+    }
+
+    // Status: a parent's stale own result is ignored the same way as its stale due date.
+    let combined;
+    if (isParentPage && kidDues.length && !ownIsCurrent) {
+      combined = rollup;
+    } else {
+      combined = direct && rollup ? worse(direct.status, rollup) : direct ? direct.status : rollup;
+    }
 
     memo.set(id, combined);
     node._direct = direct;
+    node._dueDate = dueDate;
+    node._dueFrom = dueFrom;
+    node._lastScored = [direct && direct.lastScored, kidLast].filter(Boolean).sort().pop() || null;
     node._status = combined || "needs-review"; // no evidence at all anywhere under this node
     return node._status;
   }
@@ -408,9 +442,9 @@ function progressHelpers(nodes, eventsByNode, today) {
     if (n.materialization === "page" && depth === 0) parts.push("page");
     else if (depth === 1 && n.parent && nodes.get(n.parent)) parts.push("under " + stripParen(nodes.get(n.parent).title));
 
-    if (d && d.dueDate) {
-      const off = offsetDays(d.dueDate, today);
-      parts.push(off < 0 ? `${-off}d overdue` : off === 0 ? "due today" : `due ${mmdd(d.dueDate)}`);
+    if (n._dueDate) {
+      const off = offsetDays(n._dueDate, today);
+      parts.push(off < 0 ? `${-off}d overdue` : off === 0 ? "due today" : `due ${mmdd(n._dueDate)}`);
     } else if (d && d.lastScored) {
       parts.push(`scored ${mmdd(d.lastScored)}`);
     } else {
@@ -553,10 +587,10 @@ function buildSpine(nodes, eventsByNode, rawEvents, today, H) {
 function buildFrontier(nodes, flatUnits, today, H) {
   const overdue = [];
   for (const n of nodes.values()) {
-    const d = n._direct;
-    if (d && d.dueDate && d.dueDate < today) overdue.push(n);
+    // A parent whose date is inherited from a child is skipped: the child itself is listed.
+    if (n._dueDate && n._dueFrom === "own" && n._dueDate < today) overdue.push(n);
   }
-  overdue.sort((a, b) => (a._direct.dueDate < b._direct.dueDate ? -1 : a._direct.dueDate > b._direct.dueDate ? 1 : 0));
+  overdue.sort((a, b) => (a._dueDate < b._dueDate ? -1 : a._dueDate > b._dueDate ? 1 : 0));
 
   let pick = null;
   let clause = 0;
@@ -617,7 +651,7 @@ function buildFrontier(nodes, flatUnits, today, H) {
 
   let why;
   if (clause === 1) {
-    const over = -offsetDays(pick._direct.dueDate, today);
+    const over = -offsetDays(pick._dueDate, today);
     why =
       overdue.length === 1
         ? `${cap(word(over))} days overdue, and the only node in the book that is.`
@@ -647,7 +681,7 @@ function buildFrontier(nodes, flatUnits, today, H) {
   const clauses = [
     {
       n: 1,
-      text: `Any node past its due date — oldest first. ${stripParen(pick.title)} has been due since ${pick._direct?.dueDate || "—"}.`,
+      text: `Any node past its due date — oldest first. ${stripParen(pick.title)} has been due since ${pick._dueDate || "—"}.`,
       fired: clause === 1,
     },
     { n: 2, text: `Otherwise walk domains in study-path order, then units, then their nodes, and take the first node that isn't solid.`, fired: clause === 2 },
@@ -674,13 +708,14 @@ function buildDue(nodes, today) {
   for (const n of nodes.values()) {
     const d = n._direct;
     if (n.materialization === "group" && !d) continue; // domains/groupings are roll-ups, not debt
+    if (n._dueFrom === "children") continue; // date inherited from a child: that child is listed
     if (d && d.dueDate) {
       scheduled.push({
         node_id: n.id,
         title: stripParen(n.title),
-        due: d.dueDate,
+        due: n._dueDate,
         status: n._status,
-        offset_days: offsetDays(d.dueDate, today),
+        offset_days: offsetDays(n._dueDate, today),
       });
     } else {
       unscheduled.push({
@@ -738,8 +773,8 @@ function buildPages(nodes, eventsByNode, rawEvents, today) {
         last_result: lq ? `${eventCorrect(lq)} / ${eventAsked(lq)}` : null,
         streak: d ? d.timesReviewed : 0,
         reset: !!(lq && eventWrongCount(lq) > 0), // last review had a miss -> streak was reset to 1
-        due: d ? d.dueDate : null,
-        overdue: !!(d && d.dueDate && d.dueDate < today),
+        due: n._dueDate || null,
+        overdue: !!(n._dueDate && n._dueDate < today),
         status: n._status,
       };
     });
@@ -867,6 +902,8 @@ function main() {
       unlocks: n.unlocks,
       status: n._status,
       direct: n._direct, // null if this node has never been quizzed directly
+      due_date: n._dueDate || null, // effective due date (a parent page takes its soonest child's)
+      due_from: n._dueFrom || null, // "own" | "children"
     })),
     forward_pointers: forwardPointers, // never scored -- authored structure only
   };
