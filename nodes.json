@@ -2873,6 +2873,51 @@
       "also_in": []
     },
     {
+      "id": "backend/apis/api-styles",
+      "title": "REST, GraphQL & gRPC",
+      "summary": "Three ways to shape an API, and when each one fits.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/apis/pagination",
+      "title": "Pagination",
+      "summary": "Returning a long list in pages: offset versus cursor.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/apis/versioning",
+      "title": "API Versioning",
+      "summary": "Changing an API without breaking the apps that already use it.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/apis/idempotency-keys",
+      "title": "Idempotency Keys & Safe Retries",
+      "summary": "Recognising a retried request so a payment is charged only once.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/apis/rate-limiting",
+      "title": "Rate Limiting",
+      "summary": "Capping how often a client can call, and the token-bucket idea behind it.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "backend/auth",
       "title": "Auth",
       "page": "backend/auth.html",
@@ -2881,6 +2926,24 @@
       "also_in": [
         "security"
       ]
+    },
+    {
+      "id": "backend/auth/mfa",
+      "title": "Multi-Factor Authentication",
+      "summary": "Something you know plus something you have, and why SMS codes are the weak kind.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/auth/rbac",
+      "title": "Authorisation Models (RBAC)",
+      "summary": "Roles and permissions: deciding what a signed-in user may do.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
     },
     {
       "id": "backend/queues-jobs",
@@ -2894,12 +2957,85 @@
       "also_in": []
     },
     {
+      "id": "backend/queues-jobs/queues-vs-pubsub",
+      "title": "Queues vs Publish-Subscribe",
+      "summary": "One worker takes each message, versus every subscriber getting a copy.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/queues-jobs/delivery-guarantees",
+      "title": "Delivery Guarantees",
+      "summary": "At-most-once, at-least-once, and why \"exactly once\" really means idempotent handlers.",
+      "page": null,
+      "deps": [
+        "backend/apis/idempotency-keys"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/queues-jobs/retries-dlq",
+      "title": "Retries & Dead-Letter Queues",
+      "summary": "What to do with a job that keeps failing.",
+      "page": null,
+      "deps": [
+        "backend/queues-jobs/delivery-guarantees"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "backend/scaling",
       "title": "Scaling & Load Balancing",
       "summary": "Running many copies of a server and spreading requests across them.",
       "page": null,
       "deps": [
         "databases/distributed-systems"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/scaling/vertical-horizontal",
+      "title": "Vertical vs Horizontal Scaling",
+      "summary": "A bigger machine versus more machines.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/scaling/stateless-servers",
+      "title": "Stateless Servers",
+      "summary": "Keeping no user state on the server, so any copy can answer any request.",
+      "page": null,
+      "deps": [
+        "backend/auth"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/scaling/load-balancers",
+      "title": "Load Balancers",
+      "summary": "Spreading requests across servers, and the difference between layer 4 and layer 7.",
+      "page": null,
+      "deps": [
+        "computer-science/networking/layered-model"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "backend/scaling/caching-cdns",
+      "title": "Server-Side Caching & CDNs",
+      "summary": "Caching layers in front of the database (e.g. Redis) and at the network edge.",
+      "page": null,
+      "deps": [
+        "frontend/state-caching"
       ],
       "contrasts": [],
       "also_in": []
