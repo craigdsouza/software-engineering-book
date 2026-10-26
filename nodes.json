@@ -76,7 +76,8 @@
       "page": "computer-science/algorithms.html#dynamic-programming",
       "deps": [
         "computer-science/algorithms/recursion",
-        "computer-science/data-structures/hash-tables"
+        "computer-science/data-structures/hash-tables",
+        "mathematics/discrete-math"
       ],
       "contrasts": [
         "computer-science/algorithms/greedy"
@@ -109,7 +110,8 @@
       "title": "Recursion & Recurrences",
       "page": "computer-science/algorithms.html#recursion",
       "deps": [
-        "computer-science/data-structures/stacks"
+        "computer-science/data-structures/stacks",
+        "mathematics/discrete-math"
       ],
       "contrasts": [],
       "also_in": []
@@ -274,6 +276,60 @@
       "also_in": []
     },
     {
+      "id": "computer-science/operating-systems/concurrency",
+      "title": "Concurrency",
+      "summary": "Locks, race conditions and deadlock when threads share data.",
+      "page": null,
+      "deps": [
+        "computer-science/operating-systems/processes-threads"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/containers",
+      "title": "Containers",
+      "summary": "Isolation built from OS features, so one machine can run many separate apps — the basis of Docker and cloud deployment.",
+      "page": null,
+      "deps": [
+        "computer-science/operating-systems/processes-threads",
+        "computer-science/operating-systems/virtual-memory"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/processes-threads",
+      "title": "Processes & Threads",
+      "summary": "What a running program is, and how one program runs several things at once.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/scheduling",
+      "title": "Scheduling",
+      "summary": "How the OS decides which program gets the CPU next.",
+      "page": null,
+      "deps": [
+        "computer-science/operating-systems/processes-threads"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/virtual-memory",
+      "title": "Virtual Memory",
+      "summary": "How each program gets its own private view of memory.",
+      "page": null,
+      "deps": [
+        "computer-science/computer-architecture"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/programming-languages",
       "title": "Programming Languages",
       "summary": "Type systems, paradigms, compilers, runtimes.",
@@ -311,20 +367,22 @@
       ]
     },
     {
-      "id": "devops-cloud",
-      "title": "DevOps & Cloud",
-      "summary": "CI/CD, containers, infrastructure as code.",
+      "id": "frontend",
+      "title": "Frontend",
+      "summary": "The browser, rendering, client state, and mobile apps.",
       "page": null,
       "deps": [],
       "contrasts": [],
       "also_in": []
     },
     {
-      "id": "frontend",
-      "title": "Frontend",
-      "summary": "The browser, rendering, client state.",
+      "id": "frontend/mobile",
+      "title": "Mobile",
+      "summary": "Native and cross-platform apps: another kind of client, with the same rendering, state and offline questions as the web.",
       "page": null,
-      "deps": [],
+      "deps": [
+        "frontend/state-caching"
+      ],
       "contrasts": [],
       "also_in": []
     },
@@ -363,7 +421,10 @@
       "id": "machine-learning/neural-networks",
       "title": "Neural Networks",
       "page": "machine-learning/neural-networks.html",
-      "deps": [],
+      "deps": [
+        "mathematics/linear-algebra",
+        "mathematics/calculus"
+      ],
       "contrasts": [],
       "also_in": []
     },
@@ -435,15 +496,6 @@
       "also_in": []
     },
     {
-      "id": "mobile",
-      "title": "Mobile",
-      "summary": "Native and cross-platform apps.",
-      "page": null,
-      "deps": [],
-      "contrasts": [],
-      "also_in": []
-    },
-    {
       "id": "security",
       "title": "Security",
       "summary": "Cryptography, authentication, web security.",
@@ -473,9 +525,20 @@
     {
       "id": "software-engineering",
       "title": "Software Engineering",
-      "summary": "Design patterns, testing, architecture, version control.",
+      "summary": "Design patterns, testing, architecture, version control, CI/CD.",
       "page": null,
       "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "software-engineering/ci-cd",
+      "title": "CI/CD & Deployment",
+      "summary": "Running the tests on every change, and shipping builds automatically.",
+      "page": null,
+      "deps": [
+        "software-engineering/testing"
+      ],
       "contrasts": [],
       "also_in": []
     },

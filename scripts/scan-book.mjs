@@ -298,19 +298,19 @@ function computeUnlocks(nodes) {
 // Changed 2026-09-21 from the fixed Foundations → Systems → … track order.
 // 2026-10-26: computer-architecture, operating-systems, networking and
 // programming-languages moved from top-level domains into computer-science units;
-// distributed-systems moved under databases.
+// distributed-systems moved under databases; mobile folded into frontend;
+// devops-cloud split into software-engineering/ci-cd and operating-systems/containers;
+// computability moved to the end of computer-science.
 const PATH = [
-  { domain: "computer-science", units: ["data-structures", "algorithms", "complexity", "computability",
-           "computer-architecture", "operating-systems", "networking", "programming-languages"],
+  { domain: "computer-science", units: ["data-structures", "algorithms", "complexity", "computer-architecture",
+           "operating-systems", "networking", "programming-languages", "computability"],
     planned: { algorithms: "Algorithms", computability: "Computability & Automata" } },
   { domain: "databases", units: ["fundamentals", "distributed-systems"] },
   { domain: "mathematics", units: ["discrete-math", "linear-algebra", "probability-statistics", "calculus"] },
-  { domain: "software-engineering" },
+  { domain: "software-engineering", units: ["testing", "ci-cd"] },
   { domain: "security", units: ["cryptography", "web-security"] },
   { domain: "backend" },
-  { domain: "frontend" },
-  { domain: "mobile" },
-  { domain: "devops-cloud" },
+  { domain: "frontend", units: ["state-caching", "mobile"] },
   { domain: "machine-learning" },
 ];
 

@@ -59,7 +59,7 @@ local session's `events.json` edit will conflict with an ingested one.
 
 `events.json` is the append-only log of every `taught`, `read` and `quiz_answered` event (schema 1).
 `nodes.json` is the registry of topics every event must point at: ids like
-`computer-science/data-structures/hash-tables`, grouped under 10 subject domains. The full format,
+`computer-science/data-structures/hash-tables`, grouped under 8 subject domains. The full format,
 and what changed when the old log was migrated on 2026-09-21, is in [`docs/events-v1.md`](docs/events-v1.md).
 
 After appending an event:
