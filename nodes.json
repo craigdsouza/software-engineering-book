@@ -1423,6 +1423,94 @@
       "also_in": []
     },
     {
+      "id": "machine-learning/classical-ml",
+      "title": "Classical Machine Learning",
+      "summary": "Models that are not neural networks: regression, trees, ensembles, SVMs, clustering — still the default for tabular data.",
+      "page": null,
+      "deps": [
+        "machine-learning/loss-functions",
+        "machine-learning/generalisation"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/classical-ml/linear-logistic",
+      "title": "Linear & Logistic Regression",
+      "summary": "A straight-line fit for numbers, and its S-curve cousin for yes/no answers.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/classical-ml/classification-metrics",
+      "title": "Classification Metrics",
+      "summary": "Accuracy, precision, recall and ROC curves — and why accuracy misleads on rare classes.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/classical-ml/knn",
+      "title": "k-Nearest Neighbours",
+      "summary": "Predict from the most similar training examples; no training step at all.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/classical-ml/decision-trees",
+      "title": "Decision Trees",
+      "summary": "A flowchart of yes/no questions learned from the data.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/classical-ml/ensembles",
+      "title": "Random Forests & Gradient Boosting",
+      "summary": "Combining many trees, in parallel or one after another, to beat any single tree.",
+      "page": null,
+      "deps": [
+        "machine-learning/classical-ml/decision-trees"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/classical-ml/svms",
+      "title": "Support Vector Machines",
+      "summary": "The widest possible gap between two classes, and kernels for curved boundaries.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/classical-ml/k-means",
+      "title": "k-Means Clustering",
+      "summary": "Grouping unlabelled data around k centres.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "machine-learning/classical-ml/pca",
+      "title": "Principal Component Analysis (PCA)",
+      "summary": "Squashing many features into a few directions that keep most of the variation.",
+      "page": null,
+      "deps": [
+        "mathematics/linear-algebra"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "machine-learning/cnns",
       "title": "Convolutional Networks (CNNs)",
       "summary": "Networks that reuse the same small filter across an image.",
