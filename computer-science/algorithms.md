@@ -3,7 +3,7 @@ prose_through: 106
 ---
 
 :::callout
-**This page is a seeded outline.** Nothing here has been taught yet. Each section says what it will cover and which earlier topics it leans on. The editor replaces each outline with real prose once a session on it is logged.
+**This page is a seeded outline.** Almost nothing here has been taught yet; the exception is noted under Merge Sort & Quicksort. Each section says what it will cover and which earlier topics it leans on. The editor replaces each outline with real prose once a session on it is logged.
 :::
 
 Data structures are about how data sits in memory. Algorithms are about the steps you take over that data. The topics below run roughly in the order they build on each other. Every cost is stated in [Big O](data-structures.html#big-o).
@@ -22,7 +22,7 @@ Data structures are about how data sits in memory. Algorithms are about the step
 
 ## Merge Sort & Quicksort {#divide-and-conquer-sorts}
 
-*Not yet covered.* Two sorts that take O(n log n) steps. For 1,000 items that is about 10,000 comparisons instead of 1,000,000. Both split the problem in half and recurse, building on [recursion](#recursion). Will cover: merge sort's guaranteed cost but extra memory, quicksort's speed in practice but O(n²) worst case, and how the choice of pivot causes or avoids that worst case.
+*Partly covered, on another page.* Both sorts were introduced inside [Big O Notation](data-structures.html#big-o), as the worked examples of best, worst and average case. They take O(n log n) steps. For 1,000 items that is about 10,000 comparisons instead of 1,000,000. Both split the problem in half and recurse, building on [recursion](#recursion). Still to cover here: how each one actually runs step by step, why no comparison sort can beat O(n log n), and the counting and radix sorts that get around that limit by not comparing items.
 
 ## Graph Traversal (BFS & DFS) {#graph-traversal}
 
@@ -42,7 +42,7 @@ Data structures are about how data sits in memory. Algorithms are about the step
 
 ## Where things stand
 
-Not started. The suggested order is the order of the sections above. Binary search comes first because it only needs arrays and Big O, which are already covered.
+Not started, apart from merge sort and quicksort, which came up as Big O examples. The suggested order is the order of the sections above. Binary search comes first because it only needs arrays and Big O, which are already covered.
 
 ## Related pages
 

@@ -258,7 +258,12 @@ function computeAll(nodes, eventsByNode) {
     node._dueFrom = dueFrom;
     node._lastScored = [direct && direct.lastScored, kidLast].filter(Boolean).sort().pop() || null;
     node._status = combined || "needs-review"; // no evidence at all anywhere under this node
-    return node._status;
+    // Return the evidence-based status (null when nothing under this node has been
+    // studied), so a parent's roll-up ignores children that were added to the
+    // outline but never studied. Before 2026-10-26 the first call returned the
+    // "needs-review" fallback while memoized calls returned null, so an unstudied
+    // child could drag a solid parent down depending on visit order.
+    return combined;
   }
 
   for (const id of nodes.keys()) statusOf(id);

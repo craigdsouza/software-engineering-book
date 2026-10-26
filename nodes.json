@@ -103,6 +103,24 @@
       "also_in": []
     },
     {
+      "id": "computer-science/data-structures/trees/balanced-trees",
+      "title": "Self-Balancing Trees (AVL, Red-Black)",
+      "summary": "How rotations keep a tree's height near log n whatever the insertion order.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/trees/b-trees",
+      "title": "B-Trees",
+      "summary": "Wide, shallow trees with many keys per node, built for disks — the structure behind database indexes.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/data-structures/heaps",
       "title": "Heaps & Priority Queues",
       "summary": "A tree kept in an array that always hands back the smallest (or largest) item in O(log n) steps.",
@@ -123,6 +141,24 @@
         "computer-science/data-structures/linked-lists",
         "computer-science/data-structures/arrays"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/graphs/representations",
+      "title": "Adjacency List vs Matrix",
+      "summary": "Two ways to store a graph, and which is cheaper for sparse versus dense graphs.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/graphs/graph-kinds",
+      "title": "Directed, Weighted & Acyclic Graphs",
+      "summary": "One-way edges, edges with costs, and graphs with no cycles (DAGs).",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -175,11 +211,47 @@
       "deps": [
         "computer-science/algorithms/recursion",
         "computer-science/algorithms/simple-sorts",
-        "computer-science/complexity/cases-and-space"
+        "computer-science/complexity/big-o"
       ],
       "contrasts": [
         "computer-science/algorithms/simple-sorts"
       ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/divide-and-conquer-sorts/merge-sort",
+      "title": "Merge Sort",
+      "summary": "Split in half, sort each half, merge: O(n log n) always, with O(n) extra memory.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/divide-and-conquer-sorts/quicksort",
+      "title": "Quicksort",
+      "summary": "Partition around a pivot and recurse: O(n log n) on average, O(n²) with bad pivots.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/divide-and-conquer-sorts/sorting-lower-bound",
+      "title": "The n log n Lower Bound",
+      "summary": "Why no sort that only compares items can beat O(n log n).",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/divide-and-conquer-sorts/linear-time-sorts",
+      "title": "Counting & Radix Sort",
+      "summary": "Sorts that beat n log n by not comparing items, for keys like small integers.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
       "also_in": []
     },
     {
@@ -195,6 +267,33 @@
       "also_in": []
     },
     {
+      "id": "computer-science/algorithms/graph-traversal/bfs",
+      "title": "Breadth-First Search (BFS)",
+      "summary": "Level by level with a queue; finds the fewest-hops route.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/graph-traversal/dfs",
+      "title": "Depth-First Search (DFS)",
+      "summary": "As deep as possible first, with a stack or recursion; finds cycles and components.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/graph-traversal/topological-sort",
+      "title": "Topological Sort",
+      "summary": "Ordering tasks so every task comes after the ones it depends on.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/algorithms/greedy",
       "title": "Greedy Algorithms",
       "page": "computer-science/algorithms.html#greedy",
@@ -205,14 +304,50 @@
       "also_in": []
     },
     {
+      "id": "computer-science/algorithms/greedy/interval-scheduling",
+      "title": "Interval Scheduling",
+      "summary": "Fitting the most meetings into one room — the classic case where greedy is provably right.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/greedy/minimum-spanning-trees",
+      "title": "Minimum Spanning Trees (Prim, Kruskal)",
+      "summary": "Connecting every point with the least total edge cost.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/algorithms/shortest-paths",
-      "title": "Shortest Paths (Dijkstra)",
+      "title": "Shortest Paths",
       "page": "computer-science/algorithms.html#shortest-paths",
       "deps": [
         "computer-science/algorithms/graph-traversal",
         "computer-science/algorithms/greedy",
         "computer-science/data-structures/heaps"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/shortest-paths/dijkstra",
+      "title": "Dijkstra's Algorithm",
+      "summary": "Settle the closest unsettled node next; needs non-negative edge costs.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/shortest-paths/bellman-ford",
+      "title": "Bellman-Ford",
+      "summary": "Slower, but handles negative edge costs and detects negative cycles.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -228,6 +363,33 @@
       "contrasts": [
         "computer-science/algorithms/greedy"
       ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/dynamic-programming/memo-vs-tabulation",
+      "title": "Memoization vs Tabulation",
+      "summary": "Storing answers top-down as recursion finds them, versus filling a table bottom-up.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/dynamic-programming/knapsack",
+      "title": "The Knapsack Problem",
+      "summary": "Choosing items to maximise value under a weight limit.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/dynamic-programming/edit-distance",
+      "title": "Edit Distance & Longest Common Subsequence",
+      "summary": "DP on two strings — the idea behind spell-checkers and diff.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
       "also_in": []
     },
     {
@@ -249,9 +411,9 @@
       ]
     },
     {
-      "id": "computer-science/complexity/cases-and-space",
-      "title": "Best, Worst & Average Case; Space Complexity",
-      "summary": "Why one algorithm can have several costs, and counting memory as well as steps.",
+      "id": "computer-science/complexity/space-complexity",
+      "title": "Space Complexity",
+      "summary": "Counting the extra memory an algorithm needs, not just its steps (e.g. merge sort O(n) vs quicksort O(log n)).",
       "page": null,
       "deps": [
         "computer-science/complexity/big-o"
@@ -267,6 +429,24 @@
       "deps": [
         "computer-science/complexity/big-o"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/complexity/p-vs-np/reductions",
+      "title": "Reductions",
+      "summary": "Proving one problem is at least as hard as another by translating between them.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/complexity/p-vs-np/coping-with-np-hard",
+      "title": "Coping with NP-Hard Problems",
+      "summary": "Approximation, heuristics and exponential algorithms that are fast enough in practice.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -289,6 +469,24 @@
       "also_in": []
     },
     {
+      "id": "computer-science/computer-architecture/number-representation/integers",
+      "title": "Integers & Two's Complement",
+      "summary": "How signed whole numbers are stored, and why they overflow.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/number-representation/floating-point",
+      "title": "Floating-Point Numbers",
+      "summary": "How decimals are stored (FP32, FP16, BF16), and where rounding error comes from.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/computer-architecture/cpu-instructions",
       "title": "How a CPU Runs Instructions",
       "summary": "The fetch-decode-execute cycle, registers, and the instruction set.",
@@ -296,6 +494,24 @@
       "deps": [
         "computer-science/computer-architecture/number-representation"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/cpu-instructions/fetch-decode-execute",
+      "title": "Registers & the Fetch-Decode-Execute Cycle",
+      "summary": "What a CPU does on every clock tick.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/cpu-instructions/instruction-sets",
+      "title": "Instruction Sets (x86, ARM; RISC vs CISC)",
+      "summary": "The vocabulary a CPU understands, and two design philosophies.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -311,6 +527,24 @@
       "also_in": []
     },
     {
+      "id": "computer-science/computer-architecture/memory-hierarchy/locality",
+      "title": "Locality & Cache Lines",
+      "summary": "Why memory is fetched in chunks, and why nearby data is nearly free.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/memory-hierarchy/cache-organisation",
+      "title": "Cache Organisation & Misses",
+      "summary": "How caches decide where data goes and what to throw out.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/computer-architecture/pipelining-parallelism",
       "title": "Pipelining & Parallelism",
       "summary": "Overlapping instructions, multiple cores, and doing the same operation on many values at once.",
@@ -318,6 +552,42 @@
       "deps": [
         "computer-science/computer-architecture/cpu-instructions"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/pipelining-parallelism/pipelining",
+      "title": "Pipelining & Hazards",
+      "summary": "Overlapping instructions like an assembly line, and what stalls it.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/pipelining-parallelism/branch-prediction",
+      "title": "Branch Prediction",
+      "summary": "Guessing which way an if-statement goes so the pipeline keeps moving.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/pipelining-parallelism/simd",
+      "title": "SIMD (Vector Instructions)",
+      "summary": "One instruction applied to many values at once.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/pipelining-parallelism/multicore",
+      "title": "Multicore & Cache Coherence",
+      "summary": "Several cores sharing memory, and keeping their caches in agreement.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -334,6 +604,33 @@
       "also_in": []
     },
     {
+      "id": "computer-science/computer-architecture/gpus/simt-warps",
+      "title": "SIMT, Threads & Warps",
+      "summary": "How a GPU runs thousands of threads in lockstep groups.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/gpus/gpu-memory",
+      "title": "GPU Memory Hierarchy",
+      "summary": "Registers, shared memory and global memory, and why memory bandwidth limits most GPU work.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computer-architecture/gpus/cuda-model",
+      "title": "The CUDA Programming Model",
+      "summary": "Kernels, threads, blocks and grids — how work is described to the GPU.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/operating-systems",
       "title": "Operating Systems",
       "summary": "Processes, scheduling, virtual memory, concurrency.",
@@ -346,6 +643,24 @@
       "id": "computer-science/operating-systems/processes-threads",
       "title": "Processes & Threads",
       "summary": "What a running program is, and how one program runs several things at once.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/processes-threads/system-calls",
+      "title": "System Calls & Kernel Mode",
+      "summary": "How a program asks the OS to do privileged work.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/processes-threads/context-switching",
+      "title": "Context Switching",
+      "summary": "Saving one task's state and loading another's, and what it costs.",
       "page": null,
       "deps": [],
       "contrasts": [],
@@ -374,6 +689,42 @@
       "also_in": []
     },
     {
+      "id": "computer-science/operating-systems/concurrency/race-conditions",
+      "title": "Race Conditions",
+      "summary": "When the result depends on the timing of threads.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/concurrency/locks",
+      "title": "Locks & Mutexes",
+      "summary": "Letting only one thread into a critical section at a time.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/concurrency/deadlock",
+      "title": "Deadlock",
+      "summary": "Threads each waiting on a lock another holds, forever.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/concurrency/semaphores-condvars",
+      "title": "Semaphores & Condition Variables",
+      "summary": "Coordinating threads: waiting until something is true.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/operating-systems/virtual-memory",
       "title": "Virtual Memory",
       "summary": "How each program gets its own private view of memory.",
@@ -385,9 +736,54 @@
       "also_in": []
     },
     {
+      "id": "computer-science/operating-systems/virtual-memory/paging",
+      "title": "Paging & Page Tables",
+      "summary": "Splitting memory into fixed-size pages and mapping virtual to physical.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/virtual-memory/tlb",
+      "title": "The TLB",
+      "summary": "A small cache of recent address translations.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/virtual-memory/page-faults",
+      "title": "Page Faults & Swapping",
+      "summary": "What happens when a page is not in RAM.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/operating-systems/file-systems",
       "title": "File Systems",
       "summary": "How files and folders are laid out on disk, and how the OS keeps them consistent after a crash.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/file-systems/inodes-directories",
+      "title": "Inodes & Directories",
+      "summary": "How a file's data and metadata are found on disk.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/file-systems/journaling",
+      "title": "Journaling & Crash Consistency",
+      "summary": "Keeping the file system intact if power cuts mid-write.",
       "page": null,
       "deps": [],
       "contrasts": [],
@@ -402,6 +798,24 @@
         "computer-science/operating-systems/processes-threads",
         "computer-science/operating-systems/virtual-memory"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/containers/containers-vs-vms",
+      "title": "Containers vs Virtual Machines",
+      "summary": "Sharing one kernel versus running a whole OS per app.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/operating-systems/containers/namespaces-cgroups",
+      "title": "Namespaces & cgroups",
+      "summary": "The two kernel features containers are built from: what a process can see, and what it can use.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -435,6 +849,33 @@
       "also_in": []
     },
     {
+      "id": "computer-science/networking/ip-routing/addressing",
+      "title": "IP Addresses & Subnets",
+      "summary": "IPv4, IPv6, and how addresses are grouped.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/ip-routing/nat",
+      "title": "NAT",
+      "summary": "How many devices share one public address.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/ip-routing/routing",
+      "title": "Routing Tables & BGP",
+      "summary": "How routers pick the next hop, inside a network and between networks.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/networking/tcp-udp",
       "title": "TCP vs UDP",
       "summary": "Reliable, ordered delivery versus fast, fire-and-forget delivery.",
@@ -442,6 +883,33 @@
       "deps": [
         "computer-science/networking/ip-routing"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/tcp-udp/handshake",
+      "title": "The Three-Way Handshake",
+      "summary": "How a TCP connection is opened.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/tcp-udp/reliability",
+      "title": "Acknowledgements & Retransmission",
+      "summary": "How TCP notices and recovers lost packets.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/tcp-udp/congestion-control",
+      "title": "Flow & Congestion Control",
+      "summary": "How TCP avoids overwhelming the receiver and the network.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -468,6 +936,24 @@
       "also_in": []
     },
     {
+      "id": "computer-science/networking/http/versions",
+      "title": "HTTP/1.1, HTTP/2 & HTTP/3",
+      "summary": "What each version fixed, from one request per connection to QUIC.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/http/caching-headers",
+      "title": "Caching Headers",
+      "summary": "Cache-Control, ETags and how browsers and CDNs decide what to reuse.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/networking/tls",
       "title": "TLS",
       "summary": "How HTTPS encrypts traffic and proves the server is who it claims to be.",
@@ -476,6 +962,24 @@
         "computer-science/networking/tcp-udp",
         "security/cryptography"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/tls/tls-handshake",
+      "title": "The TLS Handshake",
+      "summary": "How two strangers agree on a secret key over an open network.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/networking/tls/certificates",
+      "title": "Certificates & Certificate Authorities",
+      "summary": "How a browser checks a server is who it says it is.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -498,9 +1002,63 @@
       "also_in": []
     },
     {
+      "id": "computer-science/programming-languages/compilers-interpreters/compiler-pipeline",
+      "title": "The Compiler Pipeline",
+      "summary": "Lexing, parsing, the syntax tree, optimisation and code generation.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/compilers-interpreters/bytecode-vms",
+      "title": "Bytecode & Virtual Machines",
+      "summary": "Compiling to an intermediate form that a VM runs (Java, Python).",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/compilers-interpreters/jit",
+      "title": "Just-In-Time Compilation",
+      "summary": "Compiling hot code while the program runs.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/programming-languages/type-systems",
       "title": "Type Systems",
       "summary": "Static vs dynamic and strong vs weak typing, and what types catch.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/type-systems/static-vs-dynamic",
+      "title": "Static vs Dynamic Typing",
+      "summary": "Checking types before running versus while running.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/type-systems/type-inference",
+      "title": "Type Inference",
+      "summary": "Working out types the programmer did not write.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/type-systems/generics",
+      "title": "Generics & Polymorphism",
+      "summary": "Writing code once that works on many types.",
       "page": null,
       "deps": [],
       "contrasts": [],
@@ -518,9 +1076,65 @@
       "also_in": []
     },
     {
+      "id": "computer-science/programming-languages/memory-management/stack-vs-heap",
+      "title": "The Stack vs the Heap",
+      "summary": "Where local variables live versus long-lived objects.",
+      "page": null,
+      "deps": [
+        "computer-science/data-structures/stacks"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/memory-management/manual-memory",
+      "title": "Manual Memory & RAII",
+      "summary": "malloc/free, new/delete, and C++'s tie between object lifetime and cleanup.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/memory-management/garbage-collection",
+      "title": "Garbage Collection",
+      "summary": "Reference counting and tracing collectors, and their pauses.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/memory-management/ownership",
+      "title": "Ownership & Borrowing",
+      "summary": "Rust's compile-time rules that free memory without a garbage collector.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/programming-languages/paradigms",
       "title": "Paradigms",
       "summary": "Object-oriented versus functional programming.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/paradigms/oop",
+      "title": "Object-Oriented Programming",
+      "summary": "Encapsulation, inheritance and polymorphism.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/programming-languages/paradigms/functional",
+      "title": "Functional Programming",
+      "summary": "Pure functions, immutability and higher-order functions.",
       "page": null,
       "deps": [],
       "contrasts": [],
@@ -545,13 +1159,60 @@
       "also_in": []
     },
     {
+      "id": "computer-science/computability/finite-automata/dfa-nfa",
+      "title": "DFAs & NFAs",
+      "summary": "Deterministic and non-deterministic machines, and why they recognise the same patterns.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computability/finite-automata/regular-expressions",
+      "title": "Regular Expressions",
+      "summary": "The notation for those patterns, and what regexes cannot match.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computability/context-free",
+      "title": "Context-Free Grammars & Pushdown Automata",
+      "summary": "Grammars for nested structure like brackets and code, and the stack-based machines that parse them.",
+      "page": null,
+      "deps": [
+        "computer-science/computability/finite-automata"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/computability/turing-machines",
       "title": "Turing Machines & the Halting Problem",
       "summary": "A model of any computer, and a proof that some questions no program can answer.",
       "page": null,
       "deps": [
-        "computer-science/computability/finite-automata"
+        "computer-science/computability/context-free"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computability/turing-machines/halting-problem",
+      "title": "The Halting Problem",
+      "summary": "The proof that no program can decide whether every program stops.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/computability/turing-machines/decidability",
+      "title": "Decidability & the Church-Turing Thesis",
+      "summary": "Which problems any computer could solve, given enough time.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     },
@@ -747,7 +1408,7 @@
       "page": null,
       "deps": [
         "databases/sql-relational",
-        "computer-science/data-structures/trees/bst"
+        "computer-science/data-structures/trees/b-trees"
       ],
       "contrasts": [],
       "also_in": []
