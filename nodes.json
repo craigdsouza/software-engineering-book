@@ -3061,6 +3061,37 @@
       "also_in": []
     },
     {
+      "id": "frontend/browser-rendering/dom-cssom",
+      "title": "The DOM & CSSOM",
+      "summary": "The trees the browser builds from HTML and CSS.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/browser-rendering/render-pipeline",
+      "title": "Layout, Paint & Composite",
+      "summary": "How those trees become pixels, and why some changes force the whole page to be laid out again.",
+      "page": null,
+      "deps": [
+        "frontend/browser-rendering/dom-cssom"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/browser-rendering/page-load",
+      "title": "Page Load Performance",
+      "summary": "What blocks the first paint, and the Core Web Vitals that measure it.",
+      "page": null,
+      "deps": [
+        "frontend/browser-rendering/render-pipeline"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "frontend/event-loop",
       "title": "The JavaScript Event Loop",
       "summary": "How a single-threaded language keeps many tasks moving without blocking.",
@@ -3070,10 +3101,97 @@
       "also_in": []
     },
     {
+      "id": "frontend/event-loop/call-stack-queue",
+      "title": "The Call Stack & Task Queue",
+      "summary": "One thread running one thing at a time, with waiting work lined up behind it.",
+      "page": null,
+      "deps": [
+        "computer-science/data-structures/queues"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/event-loop/promises-async",
+      "title": "Promises & async/await",
+      "summary": "Writing code that waits without blocking the thread.",
+      "page": null,
+      "deps": [
+        "frontend/event-loop/call-stack-queue"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/event-loop/microtasks",
+      "title": "Microtasks vs Tasks",
+      "summary": "Why a resolved promise runs before a timer set for 0 ms.",
+      "page": null,
+      "deps": [
+        "frontend/event-loop/promises-async"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/event-loop/web-workers",
+      "title": "Web Workers",
+      "summary": "Real background threads for heavy work, and how they talk to the page.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/ui-frameworks",
+      "title": "Components & UI Frameworks",
+      "summary": "How React-style frameworks build pages from components that re-render when data changes.",
+      "page": null,
+      "deps": [
+        "frontend/browser-rendering",
+        "frontend/event-loop"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/ui-frameworks/components",
+      "title": "Components & Props",
+      "summary": "Small reusable pieces of UI, and data passed down into them.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/ui-frameworks/reactivity",
+      "title": "Reactivity & the Virtual DOM",
+      "summary": "Re-rendering only what changed when state changes.",
+      "page": null,
+      "deps": [
+        "frontend/ui-frameworks/components"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/ui-frameworks/rendering-strategies",
+      "title": "Client, Server & Static Rendering",
+      "summary": "Building the page in the browser, on the server per request, or ahead of time.",
+      "page": null,
+      "deps": [
+        "frontend/ui-frameworks/reactivity"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "frontend/state-caching",
       "title": "State & Caching",
       "page": "frontend/state-caching.html",
-      "deps": [],
+      "deps": [
+        "frontend/ui-frameworks"
+      ],
       "contrasts": [],
       "also_in": [
         "backend"
@@ -3087,6 +3205,73 @@
       "deps": [
         "frontend/state-caching"
       ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/mobile/native-vs-cross",
+      "title": "Native vs Cross-Platform",
+      "summary": "Swift and Kotlin versus React Native and Flutter.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/mobile/app-lifecycle",
+      "title": "The App Lifecycle",
+      "summary": "Foreground, background and being killed by the OS to save memory.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/mobile/offline-sync",
+      "title": "Offline-First & Sync",
+      "summary": "Working without a connection and reconciling changes later.",
+      "page": null,
+      "deps": [
+        "frontend/state-caching"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/mobile/push-notifications",
+      "title": "Push Notifications",
+      "summary": "How a server reaches a phone whose app is not running.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/accessibility",
+      "title": "Accessibility",
+      "summary": "Making interfaces usable with screen readers, keyboards and other assistive tech.",
+      "page": null,
+      "deps": [
+        "frontend/browser-rendering"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/accessibility/semantic-html",
+      "title": "Semantic HTML & ARIA",
+      "summary": "Using the right elements so assistive tech understands the page.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "frontend/accessibility/keyboard-screen-readers",
+      "title": "Keyboard & Screen-Reader Use",
+      "summary": "Focus order, visible focus, and what a screen reader announces.",
+      "page": null,
+      "deps": [],
       "contrasts": [],
       "also_in": []
     }
