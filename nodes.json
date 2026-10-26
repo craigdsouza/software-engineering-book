@@ -1275,7 +1275,7 @@
       "summary": "Where loss functions come from: pick the weights that make the training data most probable.",
       "page": null,
       "deps": [
-        "mathematics/probability-statistics"
+        "mathematics/probability-statistics/estimation"
       ],
       "contrasts": [],
       "also_in": []
@@ -1294,7 +1294,9 @@
       "title": "Cross-Entropy for Classification",
       "summary": "The loss for predicting categories, paired with softmax.",
       "page": null,
-      "deps": [],
+      "deps": [
+        "mathematics/probability-statistics/information-theory"
+      ],
       "contrasts": [],
       "also_in": []
     },
@@ -1343,7 +1345,7 @@
       "summary": "Computing every weight's gradient in one backward pass with the chain rule.",
       "page": null,
       "deps": [
-        "mathematics/calculus"
+        "mathematics/calculus/chain-rule"
       ],
       "contrasts": [],
       "also_in": []
@@ -1505,7 +1507,7 @@
       "summary": "Squashing many features into a few directions that keep most of the variation.",
       "page": null,
       "deps": [
-        "mathematics/linear-algebra"
+        "mathematics/linear-algebra/svd"
       ],
       "contrasts": [],
       "also_in": []
@@ -1743,11 +1745,153 @@
       "also_in": []
     },
     {
+      "id": "mathematics/discrete-math/logic",
+      "title": "Propositional Logic",
+      "summary": "AND, OR, NOT, implication and truth tables — the grammar of precise statements.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/discrete-math/proofs",
+      "title": "Proof Techniques",
+      "summary": "Direct proof, contradiction, and counterexamples.",
+      "page": null,
+      "deps": [
+        "mathematics/discrete-math/logic"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/discrete-math/induction",
+      "title": "Mathematical Induction",
+      "summary": "Proving something for every n by proving the first case and the step from n to n+1.",
+      "page": null,
+      "deps": [
+        "mathematics/discrete-math/proofs"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/discrete-math/sets-functions",
+      "title": "Sets, Functions & Relations",
+      "summary": "Collections, mappings between them, and properties like one-to-one.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/discrete-math/counting",
+      "title": "Counting: Permutations & Combinations",
+      "summary": "How many ways to arrange or choose things, and the pigeonhole principle.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/discrete-math/sums-series",
+      "title": "Sums & Series",
+      "summary": "Arithmetic and geometric series, and their closed forms — the maths behind amortised costs.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/discrete-math/modular-arithmetic",
+      "title": "Modular Arithmetic",
+      "summary": "Clock arithmetic and primes — the maths behind hashing and cryptography.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "mathematics/linear-algebra",
       "title": "Linear Algebra",
       "summary": "Vectors, matrices, transformations — the maths behind graphics and neural networks.",
       "page": null,
       "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/linear-algebra/vectors",
+      "title": "Vectors & the Dot Product",
+      "summary": "Lists of numbers as arrows, and the dot product as a measure of similarity.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/linear-algebra/matrices",
+      "title": "Matrices & Matrix Multiplication",
+      "summary": "Grids of numbers, and why multiplying them is the core operation of neural networks.",
+      "page": null,
+      "deps": [
+        "mathematics/linear-algebra/vectors"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/linear-algebra/linear-transformations",
+      "title": "Linear Transformations",
+      "summary": "A matrix as a function that stretches, rotates and squashes space.",
+      "page": null,
+      "deps": [
+        "mathematics/linear-algebra/matrices"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/linear-algebra/linear-systems",
+      "title": "Linear Systems & Inverses",
+      "summary": "Solving many equations at once, and undoing a transformation.",
+      "page": null,
+      "deps": [
+        "mathematics/linear-algebra/matrices"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/linear-algebra/basis-rank",
+      "title": "Basis, Independence & Rank",
+      "summary": "How many truly different directions a set of vectors spans.",
+      "page": null,
+      "deps": [
+        "mathematics/linear-algebra/linear-transformations"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/linear-algebra/eigen",
+      "title": "Eigenvalues & Eigenvectors",
+      "summary": "Directions a transformation only stretches, never turns.",
+      "page": null,
+      "deps": [
+        "mathematics/linear-algebra/basis-rank"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/linear-algebra/svd",
+      "title": "Singular Value Decomposition (SVD)",
+      "summary": "Breaking any matrix into rotate-stretch-rotate — the basis of PCA and compression.",
+      "page": null,
+      "deps": [
+        "mathematics/linear-algebra/eigen"
+      ],
       "contrasts": [],
       "also_in": []
     },
@@ -1761,11 +1905,184 @@
       "also_in": []
     },
     {
+      "id": "mathematics/probability-statistics/probability-basics",
+      "title": "Probability & Conditional Probability",
+      "summary": "Events, their chances, and how knowing one thing changes the chance of another.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/probability-statistics/bayes",
+      "title": "Bayes' Theorem",
+      "summary": "Updating a belief when new evidence arrives.",
+      "page": null,
+      "deps": [
+        "mathematics/probability-statistics/probability-basics"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/probability-statistics/random-variables",
+      "title": "Random Variables & Distributions",
+      "summary": "Numbers that come out of chance, and the shape of their possible values.",
+      "page": null,
+      "deps": [
+        "mathematics/probability-statistics/probability-basics"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/probability-statistics/expectation-variance",
+      "title": "Expectation & Variance",
+      "summary": "The average outcome and how spread out outcomes are.",
+      "page": null,
+      "deps": [
+        "mathematics/probability-statistics/random-variables"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/probability-statistics/common-distributions",
+      "title": "Common Distributions",
+      "summary": "Bernoulli, binomial, uniform and normal: where each one shows up.",
+      "page": null,
+      "deps": [
+        "mathematics/probability-statistics/random-variables"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/probability-statistics/lln-clt",
+      "title": "Law of Large Numbers & Central Limit Theorem",
+      "summary": "Why averages settle down, and why bell curves appear everywhere.",
+      "page": null,
+      "deps": [
+        "mathematics/probability-statistics/expectation-variance"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/probability-statistics/estimation",
+      "title": "Estimation & Maximum Likelihood",
+      "summary": "Guessing a distribution's parameters from data.",
+      "page": null,
+      "deps": [
+        "mathematics/probability-statistics/common-distributions"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/probability-statistics/hypothesis-testing",
+      "title": "Hypothesis Testing & Confidence Intervals",
+      "summary": "Deciding whether a difference is real or just noise.",
+      "page": null,
+      "deps": [
+        "mathematics/probability-statistics/lln-clt"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/probability-statistics/information-theory",
+      "title": "Entropy & KL Divergence",
+      "summary": "Measuring surprise and the gap between two distributions — the basis of cross-entropy loss.",
+      "page": null,
+      "deps": [
+        "mathematics/probability-statistics/common-distributions"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "mathematics/calculus",
       "title": "Calculus",
       "summary": "Rates of change and gradients — the maths behind training neural networks.",
       "page": null,
       "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/calculus/derivatives",
+      "title": "Limits & Derivatives",
+      "summary": "The slope of a curve at a point, as a rate of change.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/calculus/chain-rule",
+      "title": "The Chain Rule",
+      "summary": "Differentiating a function of a function — the rule backpropagation applies over and over.",
+      "page": null,
+      "deps": [
+        "mathematics/calculus/derivatives"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/calculus/partial-gradients",
+      "title": "Partial Derivatives & Gradients",
+      "summary": "Slopes in many directions at once, and the gradient as the steepest-uphill arrow.",
+      "page": null,
+      "deps": [
+        "mathematics/calculus/chain-rule"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/calculus/jacobians",
+      "title": "Jacobians & Matrix Calculus",
+      "summary": "Derivatives of functions that take and return vectors.",
+      "page": null,
+      "deps": [
+        "mathematics/calculus/partial-gradients",
+        "mathematics/linear-algebra/matrices"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/calculus/optimisation",
+      "title": "Optimisation & Convexity",
+      "summary": "Finding minima, and why bowl-shaped functions are easy and neural-network losses are not.",
+      "page": null,
+      "deps": [
+        "mathematics/calculus/partial-gradients"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/calculus/taylor-series",
+      "title": "Taylor Series",
+      "summary": "Approximating a function near a point with a polynomial.",
+      "page": null,
+      "deps": [
+        "mathematics/calculus/derivatives"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "mathematics/calculus/integrals",
+      "title": "Integrals",
+      "summary": "Areas under curves, and why probability densities need them.",
+      "page": null,
+      "deps": [
+        "mathematics/calculus/derivatives"
+      ],
       "contrasts": [],
       "also_in": []
     },
