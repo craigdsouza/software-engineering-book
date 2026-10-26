@@ -2266,5 +2266,63 @@
       ],
       "notes": "Overdue review of Data Structures (Arrays, Trees, BST). Retested g104-1 (resolved: x1.2 gave 6 with no prompting). g104-2 (delete/insert shifting): resolved in the sense that he now explains why items after the position must shift; but a related insert-at-front misreading and a Big O precision slip are logged as g105-1. g67-1 (DFS/stack vs BFS/queue link): still open, logged again as g105-2. BST successor-splice confirm: clean. Mix: 5 questions, 4 predict and 1 explain, 4 right and 1 wrong. Next: fresh retest of g105-1 and g105-2, then Hash Tables open addressing (due 10-30) and the Trees page review."
     }
+  },
+  {
+    "id": 106,
+    "schema": 1,
+    "ts": "2026-10-26T16:03:00.000Z",
+    "date": "2026-10-26",
+    "verb": "quiz_answered",
+    "node_id": "backend/apis",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "recall",
+          "question": "Give the difference between a 401 and a 403 response, with one real example of each.",
+          "answer": "403: the client is identified but lacks access to the resource. 401: the client has not been authenticated, so the server cannot tell who it is. No concrete example given.",
+          "correct": true,
+          "node_id": "backend/apis",
+          "feedback": "Correct. 401 means the server does not know who you are; 403 means it knows and still refuses. Examples: a logged-out visitor opening order history gets 401; a logged-in regular user opening the admin page gets 403."
+        },
+        {
+          "tag": "predict",
+          "question": "A post has 5 likes and two users like it at the same moment. Design A: each client PATCHes the full likedBy list. Design B: each client POSTs to /posts/42/likes. What happens in each and how many likes does the post end with?",
+          "answer": "A: clients hold stale copies of likedBy, the second write overwrites the first, post ends with 6. B: each POST adds its own like on the server, post ends with 7.",
+          "correct": true,
+          "node_id": "backend/apis",
+          "feedback": "Correct: A ends at 6, B at 7. In A both requests return success and one like silently vanishes (a lost update). In B no client reads the list first, so there is nothing to go stale."
+        },
+        {
+          "tag": "predict",
+          "question": "Two new features: following another user, and marking a notification as read. For each, decide: its own resource, or a PATCH on its parent? Use the rule of thumb and give the reason.",
+          "answer": "Forgot the rule but reasoned to it: followers is its own resource (/users/42/followers), updated by POST, because many different users add to it at once. Notification read is a PATCH on /notifications/42, because only the receiving user changes it.",
+          "correct": true,
+          "node_id": "backend/apis",
+          "feedback": "Correct. This is the book's rule of thumb rebuilt from first principles: make it a resource when it has its own identity, can be listed, or is created or removed by someone other than the parent's owner. Follows meet all three; the read flag on a notification is changed only by its owner."
+        },
+        {
+          "tag": "predict",
+          "question": "One user double-taps like, so the server receives POST /posts/42/likes twice from the same user. What should the server do, and what should the second request get back?",
+          "answer": "Proposed that the second POST should toggle: like, then unlike, since there is no separate unlike button. The second request returns a confirmation that the liked status is null.",
+          "correct": false,
+          "node_id": "backend/apis",
+          "feedback": "Not quite. A POST that toggles is the tempting design, but a repeated request then flips the state. A single tap on a flaky network can be sent twice by the app's automatic retry, and the user ends with no like at all even though they tapped once. Fix: a request should say the state it wants, not flip it. 'Like' means 'make sure this user's like exists'. Unlike is its own action, DELETE /posts/42/likes. The server allows one like per user per post, so the second POST changes nothing and returns the existing like (200), or 409 Conflict. The count stays at one more like, not two. Doing the same request twice and getting the same final state is called idempotent."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g106-1",
+          "node_id": "backend/apis",
+          "text": "Idempotency: proposed that a repeated POST to /likes should toggle (like, then unlike). A toggle makes the outcome depend on how many times the request arrives, so a retry or double-tap silently undoes the like. A like request should mean 'make sure my like exists' and a duplicate should change nothing (return the existing like or 409); unlike is a separate DELETE. Retest with a fresh scenario, e.g. a payment request that is retried after a network timeout."
+        }
+      ],
+      "notes": "Overdue review of APIs (due 2026-09-05, 51 days late). No prior gaps to retest. Mix: 1 recall, 3 predict, 3 right and 1 wrong. Strong on the event-vs-state like case study (lost update, 6 vs 7) and on rebuilding the resource-vs-PATCH rule of thumb from reasoning after forgetting it. Open gap: idempotency (toggle-on-POST). Next: retest g106-1 with a retry scenario; forward pointer candidate: idempotency keys and safe retries."
+    }
   }
 ]
