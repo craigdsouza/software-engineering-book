@@ -48,6 +48,105 @@
       "also_in": []
     },
     {
+      "id": "computer-science/algorithms",
+      "title": "Algorithms",
+      "page": "computer-science/algorithms.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/binary-search",
+      "title": "Binary Search",
+      "page": "computer-science/algorithms.html#binary-search",
+      "deps": [
+        "computer-science/data-structures/arrays",
+        "computer-science/complexity/big-o"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/divide-and-conquer-sorts",
+      "title": "Merge Sort & Quicksort",
+      "page": "computer-science/algorithms.html#divide-and-conquer-sorts",
+      "deps": [
+        "computer-science/algorithms/recursion",
+        "computer-science/algorithms/simple-sorts"
+      ],
+      "contrasts": [
+        "computer-science/algorithms/simple-sorts"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/dynamic-programming",
+      "title": "Dynamic Programming",
+      "page": "computer-science/algorithms.html#dynamic-programming",
+      "deps": [
+        "computer-science/algorithms/recursion",
+        "computer-science/data-structures/hash-tables"
+      ],
+      "contrasts": [
+        "computer-science/algorithms/greedy"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/graph-traversal",
+      "title": "Graph Traversal (BFS & DFS)",
+      "page": "computer-science/algorithms.html#graph-traversal",
+      "deps": [
+        "computer-science/data-structures/queues",
+        "computer-science/data-structures/stacks"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/greedy",
+      "title": "Greedy Algorithms",
+      "page": "computer-science/algorithms.html#greedy",
+      "deps": [],
+      "contrasts": [
+        "computer-science/algorithms/dynamic-programming"
+      ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/recursion",
+      "title": "Recursion & Recurrences",
+      "page": "computer-science/algorithms.html#recursion",
+      "deps": [
+        "computer-science/data-structures/stacks"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/shortest-paths",
+      "title": "Shortest Paths (Dijkstra)",
+      "page": "computer-science/algorithms.html#shortest-paths",
+      "deps": [
+        "computer-science/algorithms/graph-traversal",
+        "computer-science/algorithms/greedy"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/algorithms/simple-sorts",
+      "title": "Simple Sorts (Selection & Insertion)",
+      "page": "computer-science/algorithms.html#simple-sorts",
+      "deps": [
+        "computer-science/data-structures/arrays"
+      ],
+      "contrasts": [
+        "computer-science/algorithms/divide-and-conquer-sorts"
+      ],
+      "also_in": []
+    },
+    {
       "id": "computer-science/complexity",
       "title": "Complexity",
       "page": null,
