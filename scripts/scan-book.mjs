@@ -552,7 +552,14 @@ function buildSpine(nodes, eventsByNode, rawEvents, today, H) {
         flatUnits.push({ ord, title: step.planned[slug], groupName: dom.title, unitPageId: null, rows: [] });
         continue;
       }
-      const rows = u.children.length ? descendants(u, 0, []) : [graphRow(u, 0)];
+      // A unit with children lists its descendants; if the unit itself also has
+      // its own events (it was studied as a whole before sub-topics were added,
+      // e.g. APIs, Auth), it stays as the first row so that history stays visible.
+      const rows = !u.children.length
+        ? [graphRow(u, 0)]
+        : (eventsByNode.get(u.id) || []).length
+        ? [graphRow(u, 0), ...descendants(u, 1, [])]
+        : descendants(u, 0, []);
       const solid = rows.filter((r) => r.status === "solid").length;
       const noTags = rows.filter(
         (r) => !(eventsByNode.get(r.node_id) || []).some((e) => (e.payload?.questions || []).some((q) => q.tag))
