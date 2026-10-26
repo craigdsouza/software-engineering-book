@@ -2683,20 +2683,175 @@
       "also_in": []
     },
     {
-      "id": "security/cryptography",
-      "title": "Cryptography",
-      "summary": "Hashing, symmetric and public-key encryption, signatures.",
+      "id": "security/principles",
+      "title": "Security Principles",
+      "summary": "The CIA triad, least privilege, defence in depth, and threat modelling — the questions every other security topic answers.",
       "page": null,
       "deps": [],
       "contrasts": [],
       "also_in": []
     },
     {
-      "id": "security/web-security",
-      "title": "Web Security",
-      "summary": "Common attacks on web apps and their defences: XSS, CSRF, injection.",
+      "id": "security/principles/cia-triad",
+      "title": "Confidentiality, Integrity & Availability",
+      "summary": "The three things an attacker can take from you.",
       "page": null,
       "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/principles/least-privilege",
+      "title": "Least Privilege & Defence in Depth",
+      "summary": "Give each part only the access it needs, and never rely on a single wall.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/principles/threat-modelling",
+      "title": "Threat Modelling",
+      "summary": "Asking who would attack this, how, and what it would cost them.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/cryptography",
+      "title": "Cryptography",
+      "summary": "Hashing, symmetric and public-key encryption, signatures.",
+      "page": null,
+      "deps": [
+        "security/principles"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/cryptography/hash-functions",
+      "title": "Cryptographic Hash Functions",
+      "summary": "Fingerprints of data that cannot be reversed or forged (SHA-256).",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/cryptography/symmetric",
+      "title": "Symmetric Encryption",
+      "summary": "One shared key locks and unlocks (AES).",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/cryptography/public-key",
+      "title": "Public-Key Encryption",
+      "summary": "A public key anyone can lock with, and a private key only you can unlock with (RSA, elliptic curves).",
+      "page": null,
+      "deps": [
+        "security/cryptography/symmetric",
+        "mathematics/discrete-math/modular-arithmetic"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/cryptography/key-exchange",
+      "title": "Key Exchange",
+      "summary": "How two strangers agree on a shared secret over an open channel (Diffie-Hellman).",
+      "page": null,
+      "deps": [
+        "security/cryptography/public-key"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/cryptography/signatures",
+      "title": "Digital Signatures",
+      "summary": "Proving a message came from you and was not changed.",
+      "page": null,
+      "deps": [
+        "security/cryptography/public-key",
+        "security/cryptography/hash-functions"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/cryptography/password-storage",
+      "title": "Password Storage",
+      "summary": "Salting and slow hashing (bcrypt, Argon2), so a stolen database does not reveal passwords.",
+      "page": null,
+      "deps": [
+        "security/cryptography/hash-functions"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/web-security",
+      "title": "Web Security",
+      "summary": "Common attacks on web apps and their defences. XSS and CSRF are covered on the Auth page.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": [
+        "backend/auth"
+      ]
+    },
+    {
+      "id": "security/web-security/same-origin-cors",
+      "title": "Same-Origin Policy & CORS",
+      "summary": "The browser rule that stops one site reading another, and how servers opt out of it safely.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/web-security/injection",
+      "title": "Injection Attacks",
+      "summary": "SQL and command injection, and why parameterised queries stop them.",
+      "page": null,
+      "deps": [
+        "databases/sql-relational"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/web-security/access-control",
+      "title": "Broken Access Control",
+      "summary": "Users reaching data that is not theirs, e.g. by changing an id in the URL.",
+      "page": null,
+      "deps": [
+        "backend/auth"
+      ],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/web-security/secrets",
+      "title": "Secrets Management",
+      "summary": "Keeping API keys and passwords out of code and logs.",
+      "page": null,
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
+      "id": "security/memory-safety",
+      "title": "Memory Safety Vulnerabilities",
+      "summary": "Bugs like buffer overflows and use-after-free that let attackers run their own code — and why memory-safe languages prevent them.",
+      "page": null,
+      "deps": [
+        "computer-science/programming-languages/memory-management"
+      ],
       "contrasts": [],
       "also_in": []
     },
