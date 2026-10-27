@@ -2324,5 +2324,73 @@
       ],
       "notes": "Overdue review of APIs (due 2026-09-05, 51 days late). No prior gaps to retest. Mix: 1 recall, 3 predict, 3 right and 1 wrong. Strong on the event-vs-state like case study (lost update, 6 vs 7) and on rebuilding the resource-vs-PATCH rule of thumb from reasoning after forgetting it. Open gap: idempotency (toggle-on-POST). Next: retest g106-1 with a retry scenario; forward pointer candidate: idempotency keys and safe retries."
     }
+  },
+  {
+    "id": 107,
+    "schema": 1,
+    "ts": "2026-10-27T17:41:00.000Z",
+    "date": "2026-10-27",
+    "verb": "quiz_answered",
+    "node_id": "backend/auth",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "explain",
+          "question": "A company's website logs users in with cookie sessions. Two teams build apps on the same backend: App A is a fully native iPhone app that makes its own network calls to the API. App B is an Electron desktop app, a thin shell that loads the website inside an embedded Chromium window. Does each app get cookie-based login 'for free' like a browser tab? Why or why not? What single thing decides it?",
+          "answer": "Right verdict (only App B gets cookies free), wrong reason: said App A doesn't because it is a mobile app and is 'closer to the metal'. Did say it 'isn't wrapped in' a browser.",
+          "correct": false,
+          "node_id": "backend/auth",
+          "feedback": "Verdict right, reasoning is the old 'closer to the hardware' framing (g62-1 / g86-1) and it adds a new wrong rule, 'mobile vs not mobile'. App B is a desktop app and still gets cookies; a native Windows desktop program would not; a mobile app with a WebView would. The real dividing line is whether a browser engine (with its cookie jar) is inside the app. Electron carries Chromium, so cookie login works. A native iPhone app has no browser engine, makes raw network calls, and nothing stores or attaches cookies unless the developer writes that code. After the explanation Craig restated it correctly: it is about whether a browser engine is embedded in the app, or the app lives inside a browser; if an engine is present it has a cookie jar, so cookies come for free."
+        },
+        {
+          "tag": "predict",
+          "question": "A site has a stored-XSS hole, so an attacker's script runs inside a logged-in user's page. The session cookie has Secure on, SameSite=Strict on, and HttpOnly OFF. (1) Can the script copy the cookie's value and reuse it later from the attacker's own machine? (2) Does SameSite=Strict stop the script from sending requests that act as the victim while it runs?",
+          "answer": "(1) Said the script can read the value (HttpOnly off) but cannot reuse it from the attacker's machine because SameSite=Strict is on. (2) Said SameSite=Strict does not stop it, because the requests look like they come from the logged-in same-domain page.",
+          "correct": false,
+          "node_id": "backend/auth",
+          "feedback": "Part 2 correct. Part 1 wrong, and it is the same mix-up as g86-2 in mirrored form. SameSite is a rule the browser follows when deciding whether to attach a cookie to a request it sends; it does nothing once the attacker holds the value. Example: the script reads sess=abc123 (HttpOnly is off) and sends it to the attacker's server. On their own laptop the attacker sends a request with the header 'Cookie: sess=abc123' using curl. No browser is involved, so no SameSite rule applies, and the server never sees the SameSite flag. The server sees a valid session ID and treats the attacker as the victim. Theft-and-replay works here. What Craig described (script can only act while it runs on the victim's page) is what happens when HttpOnly is ON. Rule: HttpOnly decides whether the cookie can be stolen; SameSite decides whether a forged cross-site request carries it."
+        },
+        {
+          "tag": "predict",
+          "question": "A bank's session cookie has HttpOnly on, Secure on, SameSite off. A logged-in victim opens a page on evil.com that quietly submits a form to bank.com/transfer, moving 5,000 rupees to the attacker. (1) Does the transfer go through? (2) Can the attacker learn the cookie's value? (3) Can the attacker's page read the bank's response?",
+          "answer": "(1) Yes, SameSite off so the browser attaches the cookie to the cross-site request. (2) No, HttpOnly blocks scripts from reading it. (3) 'I'm not sure.'",
+          "correct": false,
+          "node_id": "backend/auth",
+          "feedback": "Parts 1 and 2 correct, and Craig kept theft (HttpOnly) and forged requests (SameSite) separate this time. Part 3 not answered. Answer: No. The browser's same-origin policy lets a page on evil.com send a request to bank.com but does not let evil.com's JavaScript read the response from bank.com. The 5,000 rupees move, the bank replies 'Transfer done. Balance: 42,000', and the attacker never sees it. This is why CSRF is blind and write-only. The rule exists because otherwise any site you visited could load your bank pages with your cookie and read them. An XSS script is different: it runs on bank.com's own origin, so the same-origin policy lets it read responses."
+        },
+        {
+          "tag": "predict",
+          "question": "Same bank (HttpOnly on, SameSite off). The attacker wants the victim's account balance. Scenario A: the attacker only has a CSRF page on evil.com that sends a request to bank.com/balance. Can they read the balance? Scenario B: the attacker has a stored-XSS hole on bank.com and their script requests /balance. Can they read it?",
+          "answer": "A: No, the browser's same-origin policy blocks reading it. B: Yes, the script runs on bank.com so the request originates from bank.com and the response comes back to the script.",
+          "correct": true,
+          "node_id": "backend/auth",
+          "feedback": "Both parts correct. Confirms the same-origin policy gap from the previous question is closed: cross-site pages can send requests but cannot read responses; an injected script on the site's own origin can read them."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g107-1",
+          "node_id": "backend/auth",
+          "text": "Retest of g86-1 ('why mobile favors tokens'), via a native iPhone app vs Electron app scenario: verdict right but the reason was the old 'mobile app, closer to the metal' framing, plus a new wrong rule that mobile vs not-mobile decides it (the Electron app is desktop and still gets cookies). Corrected: the single deciding factor is whether a browser engine, and so a cookie jar, is inside the app. Craig restated it correctly afterwards. Third review in a row where this surfaced; worth one more confirm-only check, ideally with a native desktop or WebView-on-mobile case so 'mobile' can't be the shortcut."
+        },
+        {
+          "id": "g107-2",
+          "node_id": "backend/auth",
+          "text": "Retest of g86-2 (SameSite vs theft-and-replay), via a stored-XSS case with HttpOnly OFF and SameSite=Strict: said SameSite=Strict stops the attacker reusing a copied cookie from their own machine. Wrong: SameSite only governs when a browser attaches a cookie to a request it sends; an attacker who holds the value sends it by hand (e.g. curl with 'Cookie: sess=abc123') and the server never sees the flag. Theft-and-replay is governed by HttpOnly alone. Still standing after a second review; the same mix-up appears in mirrored form. Retest with a fresh case again. Part 2 of the same question (script can still act as the victim, SameSite doesn't stop it) was right."
+        },
+        {
+          "id": "g107-3",
+          "node_id": "backend/auth",
+          "text": "Same-origin policy: unsure whether a CSRF page on evil.com can read the response from bank.com. Taught: cross-site pages can send requests but the browser blocks them from reading the response, which is why CSRF is blind and write-only; an XSS script on the site's own origin can read responses. Confirmed on a follow-up question (scenario A vs B, answered correctly), so resolved in-session. Light confirm-only check next review."
+        }
+      ],
+      "notes": "Overdue review of Auth (due 2026-09-25, 32 days late). Retested g86-1 (still standing, see g107-1) and g86-2 (still standing, see g107-2). Mix: 0 recall, 1 explain, 3 predict; 1 right and 3 wrong. Question 3 was marked wrong because part 3 was unanswered, not because of a misconception; Question 4 confirmed it. Strong on: browser auto-attaches an HttpOnly cookie to script-fired requests, and on separating HttpOnly (theft) from SameSite (forged cross-site request) in the CSRF case. Open: the SameSite vs theft-and-replay mix-up recurs when HttpOnly is OFF and SameSite is ON; and the 'closer to the metal' framing recurs. Next: retest g107-1 with a native-desktop or mobile-WebView case, and g107-2 with a fresh HttpOnly-off scenario. Forward pointer candidates: CORS (how a site opts in to cross-origin reads), CSP, synchronizer-token CSRF defenses, refresh-token rotation."
+    }
   }
 ]
