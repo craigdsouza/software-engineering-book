@@ -1,12 +1,63 @@
 ---
-prose_through: 106
+prose_through: 108
 ---
 
-:::callout
-**This page is a seeded outline.** Almost nothing here has been taught yet; the exception is noted under Merge Sort & Quicksort. Each section says what it will cover and which earlier topics it leans on. The editor replaces each outline with real prose once a session on it is logged.
-:::
+Data structures are about how data sits in memory. Algorithms are about the steps you take over that data. The two are one skill: binary search works only because the list is sorted *and* an [array](data-structures.html#arrays) lets you jump to the middle in one step. On a [linked list](data-structures.html#linked-lists), reaching the middle takes n/2 steps, so binary search loses its advantage. Data structures are the containers. Algorithms are what you do with them.
 
-Data structures are about how data sits in memory. Algorithms are about the steps you take over that data. The topics below run roughly in the order they build on each other. Every cost is stated in [Big O](data-structures.html#big-o).
+## What the domain is about {#overview}
+
+An algorithm is a step-by-step method that turns an input into an output. The steps must be precise enough for a machine to follow. The domain asks two questions about every method. First: is it correct, meaning does it always give the right answer? Second: is it efficient, meaning how much time and memory does it need as the input grows?
+
+The second question is what makes the domain interesting. Take 1 billion sorted names, and say you want to know if one name is in the list.
+
+- **Method A:** check every name, one by one. The worst case is 1,000,000,000 steps.
+- **Method B:** binary search. Open the list at the middle. If the middle name comes after the target alphabetically, throw away the second half. Otherwise throw away the first half. Repeat on what is left.
+
+Each step halves the list: 1 billion, then 500 million, then 250 million, and so on. After about 30 halvings one name is left. So Method B needs about 30 steps against 1,000,000,000. Doubling the list to 2 billion costs only one more step (31), because the work grows with log n.
+
+### Comparing methods by growth rate
+
+Seconds depend on the machine, so we ask a different question. If the input gets 10 times bigger, how much more work happens? Call the input size *n*. For n = 1,000,000:
+
+```
+Name          Written   Steps for n = 1,000,000
+------------  --------  -----------------------
+Logarithmic   log n     about 20
+Linear        n         1,000,000
+Linearithmic  n log n   about 20,000,000
+Quadratic     n²        1,000,000,000,000
+```
+
+The notation is [Big O](data-structures.html#big-o). "Binary search is O(log n)" means its work grows like log n as n grows. Quadratic work grows 100 times when the input grows 10 times.
+
+### A better algorithm beats a faster computer
+
+Sort 1 million items. Method X takes about n² steps, which is 10¹². Method Y takes about n log n steps, which is 2 × 10⁷. Run X on a computer 1,000 times faster, and its effective cost is 10⁹ steps. Run Y on the slow computer, and its cost is 2 × 10⁷. The slow computer with the better method wins by about 50 times. Hardware cannot fix a bad growth rate.
+
+**Tempting but wrong:** "just time both programs and pick the faster one." Small tests lie. At n = 100, a quadratic method (10,000 steps) can beat a clever method with heavy setup work. At n = 1 million the order flips completely. Growth rate tells you what happens at sizes you have not tested.
+
+### The map of the domain
+
+```
+Searching   -> find one item          (binary search)
+Sorting     -> put items in order     (merge sort, quicksort)
+Graphs      -> things and connections (shortest route, who knows whom)
+Design      -> reusable strategies    (divide-and-conquer, greedy, dynamic programming)
+Limits      -> what cannot be solved fast (hard problems)
+```
+
+Search and sort are the classic foundational examples, but they are not the whole domain. Shortest path, minimum spanning trees, scheduling and knapsack are neither search nor sort. Sorting also exists largely to make searching cheap: sort once, then binary search many times. A fairer one-line statement is this. Algorithms are about computing a correct answer efficiently. The design strategies (divide-and-conquer, greedy, dynamic programming) are what let one idea solve thousands of different problems.
+
+### Where it wins in practice
+
+- **Geospatial work:** the nearest hospital and the shortest road route are graph and search problems. A naive nearest-neighbour check over 10 million map points is slow. A spatial index makes it fast.
+- **Data science:** training a model repeats the same calculation millions of times, so a method that is 2 times better saves days.
+- **GPUs:** a GPU runs thousands of small tasks at once. Which algorithms split cleanly into independent pieces decides what a GPU can speed up.
+- **Engineering and interviews:** you often have to judge whether something still works at 100 times the data.
+
+Three ideas here go beyond the current depth: what cannot be solved fast, parallel algorithms on GPUs, and spatial indexes. They are in the table at the bottom of this page.
+
+The sections below cover each topic in turn. Most of them are still outlines: each says what it will cover and which earlier topics it leans on.
 
 ## Binary Search {#binary-search}
 
@@ -42,7 +93,17 @@ Data structures are about how data sits in memory. Algorithms are about the step
 
 ## Where things stand
 
-Not started, apart from merge sort and quicksort, which came up as Big O examples. The suggested order is the order of the sections above. Binary search comes first because it only needs arrays and Big O, which are already covered.
+The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and the map of the domain. Two check-in questions were answered correctly. Binary search on 2 billion items takes 31 steps, because the steps grow with log n. Quadratic work grows 100 times when the input grows 10 times. One framing was corrected: search and sort are the classic examples but not the whole domain. Next up are the design strategies (divide-and-conquer, greedy, dynamic programming). Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
+
+## Intermediate & Advanced Topics (forward pointers)
+
+Concepts mentioned along the way that go beyond this page's current depth, tracked here to return to on purpose later.
+
+| Concept | Tier | Surfaced under | Why it matters |
+|---|---|---|---|
+| What cannot be solved fast (NP-hardness) | Intermediate | [What the domain is about](#overview) | The "Limits" part of the map: some problems have no known fast method, and knowing which ones saves you from searching for one. |
+| Parallel algorithms on GPUs | Intermediate | [What the domain is about](#overview) | A GPU runs thousands of small tasks at once, so which algorithms split into independent pieces decides what it can speed up. |
+| Spatial indexes (k-d trees, R-trees) | Intermediate | [What the domain is about](#overview) | They make nearest-neighbour search over millions of map points fast, where a naive check over 10 million points is slow. |
 
 ## Related pages
 

@@ -3381,6 +3381,27 @@
       "tier": "intermediate",
       "under": "backend/apis",
       "note": "A like should be idempotent by design (a duplicate request changes nothing). Requests where a repeat does harm, such as a payment retried after a network timeout, need the server to recognise the retry, usually with a unique key sent by the client."
+    },
+    {
+      "id": "np-hardness-limits-of-fast-algorithms",
+      "title": "What cannot be solved fast (NP-hardness)",
+      "tier": "intermediate",
+      "under": "computer-science/algorithms",
+      "note": "The 'Limits' part of the domain map: some problems have no known fast method, and knowing which ones saves you from searching for one."
+    },
+    {
+      "id": "parallel-algorithms-gpus",
+      "title": "Parallel algorithms on GPUs",
+      "tier": "intermediate",
+      "under": "computer-science/algorithms",
+      "note": "A GPU runs thousands of small tasks at once, so which algorithms split into independent pieces decides what it can speed up."
+    },
+    {
+      "id": "spatial-indexes-nearest-neighbour",
+      "title": "Spatial indexes (k-d trees, R-trees)",
+      "tier": "intermediate",
+      "under": "computer-science/algorithms",
+      "note": "They make nearest-neighbour search over millions of map points fast, where a naive check over 10 million points is slow."
     }
   ]
 }
