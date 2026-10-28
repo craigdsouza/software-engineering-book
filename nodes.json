@@ -171,6 +171,15 @@
       "also_in": []
     },
     {
+      "id": "computer-science/algorithms/problem-types",
+      "title": "Types of Problems",
+      "summary": "The few families that almost every problem falls into, and how problem type differs from design strategy.",
+      "page": "computer-science/algorithms.html#problem-types",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/algorithms/binary-search",
       "title": "Binary Search",
       "page": "computer-science/algorithms.html#binary-search",
@@ -3386,8 +3395,8 @@
       "id": "np-hardness-limits-of-fast-algorithms",
       "title": "What cannot be solved fast (NP-hardness)",
       "tier": "intermediate",
-      "under": "computer-science/algorithms",
-      "note": "The 'Limits' part of the domain map: some problems have no known fast method, and knowing which ones saves you from searching for one."
+      "under": "computer-science/algorithms/problem-types",
+      "note": "The hard-problems label in Types of Problems: some problems have no known fast method, and knowing which ones saves you from searching for one."
     },
     {
       "id": "parallel-algorithms-gpus",

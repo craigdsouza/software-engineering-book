@@ -1,5 +1,5 @@
 ---
-prose_through: 108
+prose_through: 109
 ---
 
 Data structures are about how data sits in memory. Algorithms are about the steps you take over that data. The two are one skill: binary search works only because the list is sorted *and* an [array](data-structures.html#arrays) lets you jump to the middle in one step. On a [linked list](data-structures.html#linked-lists), reaching the middle takes n/2 steps, so binary search loses its advantage. Data structures are the containers. Algorithms are what you do with them.
@@ -38,15 +38,7 @@ Sort 1 million items. Method X takes about n² steps, which is 10¹². Method Y 
 
 ### The map of the domain
 
-```
-Searching   -> find one item          (binary search)
-Sorting     -> put items in order     (merge sort, quicksort)
-Graphs      -> things and connections (shortest route, who knows whom)
-Design      -> reusable strategies    (divide-and-conquer, greedy, dynamic programming)
-Limits      -> what cannot be solved fast (hard problems)
-```
-
-Search and sort are the classic foundational examples, but they are not the whole domain. Shortest path, minimum spanning trees, scheduling and knapsack are neither search nor sort. Sorting also exists largely to make searching cheap: sort once, then binary search many times. A fairer one-line statement is this. Algorithms are about computing a correct answer efficiently. The design strategies (divide-and-conquer, greedy, dynamic programming) are what let one idea solve thousands of different problems.
+Search and sort are the classic foundational examples, but they are not the whole domain. Sorting also exists largely to make searching cheap: sort once, then binary search many times. Shortest path, minimum spanning trees, scheduling and knapsack are neither search nor sort. The next section maps the whole problem space. Algorithms are about computing a correct answer efficiently. The design strategies (divide-and-conquer, greedy, dynamic programming) are the tools that let one idea solve many problems.
 
 ### Where it wins in practice
 
@@ -58,6 +50,57 @@ Search and sort are the classic foundational examples, but they are not the whol
 Three ideas here go beyond the current depth: what cannot be solved fast, parallel algorithms on GPUs, and spatial indexes. They are in the table at the bottom of this page.
 
 The sections below cover each topic in turn. Most of them are still outlines: each says what it will cover and which earlier topics it leans on.
+
+## Types of Problems {#problem-types}
+
+It is fair to ask how many kinds of problem there are. The answer is: few. Thousands of real-world tasks exist, but each one is a classic problem in disguise. The main skill is recognising which family a new problem belongs to. There is no official count. Textbooks group the families differently, usually into somewhere around 7 to 10. The grouping below is a teaching grouping.
+
+### Problem type versus design strategy
+
+Two different things get mixed up here, so keep them apart.
+
+- A **problem type** is the question you are asked: "find this item", "put these in order", "what is the cheapest route".
+- A **design strategy** is the tool you use to build the method: divide-and-conquer, greedy, dynamic programming.
+
+Problem types are few. Strategies are few. The same strategy crosses many problem types, and one problem type can be attacked with several strategies.
+
+**Tempting but wrong:** "Algorithms is a list of thousands of separate problems, each needing its own trick." In practice a new problem is usually a known one wearing different clothes. Choosing which courses to take, in what order, is a topological sort. A spell-checker is edit distance. The cheapest wiring for a village is a spanning tree. A route app finding the nearest hospital is a shortest-path problem. Friend suggestions are graph traversal. Packing a van with the most valuable deliveries under a weight limit is knapsack.
+
+### The families
+
+- **Searching.** Is this item here, and where? One name among 1 billion sorted names takes about 30 steps with [binary search](#binary-search), against up to 1,000,000,000 by scanning. It shows up in dictionary lookups, finding a record, and checking whether a username is taken.
+- **Sorting and ordering.** Arrange items by a key. For 1 million items, an n log n method takes about 2 × 10⁷ steps, against 10¹² for an n² method. Sorting also helps other problems. Sort once and you can binary search many times. Duplicates end up next to each other. You can rank by score.
+
+**Graph problems** are about things and the connections between them: people and friendships, cities and roads, tasks and prerequisites. Four questions come up again and again.
+
+- **Reachability:** can I get from A to B at all? This is [traversal](#graph-traversal), done with BFS or DFS.
+- **Shortest path:** what is the cheapest route? This is [Dijkstra](#shortest-paths).
+- **Spanning tree:** what is the cheapest way to connect every point? Prim and Kruskal solve it.
+- **Ordering with dependencies:** which task goes first when some tasks need others done first? This is topological sort.
+
+The remaining families:
+
+- **Optimization under a limit.** Pick the best choice out of a huge number of possible choices, subject to a limit. Knapsack has items with weights and values, and a bag with a weight limit. You want the most value in the bag. Interval scheduling fits the most meetings into one room. Making change is another. For 30 with coins of 1, 15 and 25, the best answer is 15 + 15, which is 2 coins. Always grabbing the biggest coin first gives 25 + 1 + 1 + 1 + 1 + 1, which is 6 coins.
+- **String and sequence problems.** Compare, match or compress text and other sequences. Edit distance is the fewest single-character changes that turn one word into another, and it sits behind spell-checkers. Longest common subsequence sits behind diff tools, which show what changed between two files.
+- **Geometric and spatial problems.** Questions about points and shapes in space. For example, find the nearest neighbour of a point among 10 million map points. A naive check compares against all 10 million. A spatial index avoids that.
+- **Numeric problems.** Arithmetic and linear algebra at scale: multiplying very large numbers, solving systems of equations, multiplying matrices. Matrix multiplication is the core calculation repeated in neural-network training, which is why its speed matters so much.
+
+**Hard problems** are a label, not a separate family. A problem in any family is "hard" when no fast method is known. The travelling salesperson problem asks for the shortest trip that visits every city once and returns. 20 cities can be visited in 20! orders, which is about 2.4 × 10¹⁸. At 1 billion orders checked per second, that is about 77 years. Checking every possibility is hopeless, so these problems need different thinking. The formal name is NP-hardness, listed under Intermediate & Advanced Topics below.
+
+### How strategies cross the families
+
+```
+Problem type (the question)         Typical strategy (the tool)
+----------------------------------  ----------------------------------------
+Sorting                             divide-and-conquer (merge sort, quicksort)
+Shortest path, costs not negative   greedy (Dijkstra)
+Minimum spanning tree               greedy (Prim, Kruskal)
+Interval scheduling                 greedy
+Knapsack                            dynamic programming
+Edit distance                       dynamic programming
+```
+
+Making change for 30 with coins of 1, 15 and 25 shows why the two skills are separate. [Greedy](#greedy) solves it wrongly (6 coins). [Dynamic programming](#dynamic-programming) solves it correctly (2 coins). Recognising the problem is one skill. Picking the strategy is another.
 
 ## Binary Search {#binary-search}
 
@@ -93,7 +136,7 @@ The sections below cover each topic in turn. Most of them are still outlines: ea
 
 ## Where things stand
 
-The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and the map of the domain. Two check-in questions were answered correctly. Binary search on 2 billion items takes 31 steps, because the steps grow with log n. Quadratic work grows 100 times when the input grows 10 times. One framing was corrected: search and sort are the classic examples but not the whole domain. Next up are the design strategies (divide-and-conquer, greedy, dynamic programming). Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
+The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and how the field divides into problem types. Two check-in questions were answered correctly. Binary search on 2 billion items takes 31 steps, because the steps grow with log n. Quadratic work grows 100 times when the input grows 10 times. Two framings were corrected along the way. Search and sort are the classic examples but not the whole domain. And problem types (the question) are a different thing from design strategies (the tool), so they belong on separate lists. The problem-types section is new and has not been quizzed yet. Next up are the design strategies (divide-and-conquer, greedy, dynamic programming), starting with recursion. Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
 
 ## Intermediate & Advanced Topics (forward pointers)
 
@@ -101,7 +144,7 @@ Concepts mentioned along the way that go beyond this page's current depth, track
 
 | Concept | Tier | Surfaced under | Why it matters |
 |---|---|---|---|
-| What cannot be solved fast (NP-hardness) | Intermediate | [What the domain is about](#overview) | The "Limits" part of the map: some problems have no known fast method, and knowing which ones saves you from searching for one. |
+| What cannot be solved fast (NP-hardness) | Intermediate | [Types of Problems](#problem-types) | The hard-problems label in [Types of Problems](#problem-types): some problems have no known fast method, and knowing which ones saves you from searching for one. |
 | Parallel algorithms on GPUs | Intermediate | [What the domain is about](#overview) | A GPU runs thousands of small tasks at once, so which algorithms split into independent pieces decides what it can speed up. |
 | Spatial indexes (k-d trees, R-trees) | Intermediate | [What the domain is about](#overview) | They make nearest-neighbour search over millions of map points fast, where a naive check over 10 million points is slow. |
 
