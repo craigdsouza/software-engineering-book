@@ -9,6 +9,7 @@ restored. Files are never edited or deleted; a new version is added alongside th
 | swe-teacher | v1 | `swe-teacher.2026-09-22.long.md` | The original long version (before the rewrite). Filename predates version numbers. |
 | swe-teacher | v2 | `swe-teacher.v2.2026-09-22.md` | Rewritten short: schema-1 events, nodes.json ids, the teacher writes page HTML and logs `taught` events. |
 | swe-teacher | v3 | `swe-teacher.v3.2026-09-23.md` | Stops writing prose: `content` must be complete enough to write the page from, new nodes get `page: null`, then hands off to swe-editor. |
+| swe-teacher | v4 | `swe-teacher.v4.2026-10-28.md` | Works from a clone of the GitHub repo instead of a Windows folder, and commits and pushes the event and the editor's page changes to master itself. |
 | swe-quizmaster | v1 | `swe-quizmaster.2026-09-22.long.md` | The original long version. Filename predates version numbers. |
 | swe-quizmaster | v2 | `swe-quizmaster.v2.2026-09-22.md` | Rewritten short: full question text in `quiz_answered`, gap ids, node ids per question. |
 | swe-quizmaster | v3 | `swe-quizmaster.v3.2026-09-23.md` | Never edits .html or .md; puts explanations in `feedback` for the editor; offers swe-editor after a quiz. |
