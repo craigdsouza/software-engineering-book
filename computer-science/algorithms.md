@@ -1,5 +1,5 @@
 ---
-prose_through: 109
+prose_through: 111
 ---
 
 Data structures are about how data sits in memory. Algorithms are about the steps you take over that data. The two are one skill: binary search works only because the list is sorted *and* an [array](data-structures.html#arrays) lets you jump to the middle in one step. On a [linked list](data-structures.html#linked-lists), reaching the middle takes n/2 steps, so binary search loses its advantage. Data structures are the containers. Algorithms are what you do with them.
@@ -68,24 +68,83 @@ Problem types are few. Strategies are few. The same strategy crosses many proble
 
 ### The families
 
-- **Searching.** Is this item here, and where? One name among 1 billion sorted names takes about 30 steps with [binary search](#binary-search), against up to 1,000,000,000 by scanning. It shows up in dictionary lookups, finding a record, and checking whether a username is taken.
+- **Searching.** Is this item here, and where? One name among 1 billion sorted names takes about 30 steps with [binary search](#binary-search), against up to 1,000,000,000 by scanning. It shows up in dictionary lookups, finding a record, and checking whether a username is taken. For 500,000 company names sorted by name, binary search needs at most 19 steps, because 2¹⁹ = 524,288 is at least 500,000. A [binary search tree](data-structures/trees.html) gives about 19 steps only if it is balanced. A tree built by inserting names that are already in sorted order becomes a single chain, and one lookup can take up to 500,000 steps.
 - **Sorting and ordering.** Arrange items by a key. For 1 million items, an n log n method takes about 2 × 10⁷ steps, against 10¹² for an n² method. Sorting also helps other problems. Sort once and you can binary search many times. Duplicates end up next to each other. You can rank by score.
 
-**Graph problems** are about things and the connections between them: people and friendships, cities and roads, tasks and prerequisites. Four questions come up again and again.
+**Graph problems** are about things and the connections between them: people and friendships, cities and roads, tasks and prerequisites. Five questions come up again and again.
 
 - **Reachability:** can I get from A to B at all? This is [traversal](#graph-traversal), done with BFS or DFS.
 - **Shortest path:** what is the cheapest route? This is [Dijkstra](#shortest-paths).
 - **Spanning tree:** what is the cheapest way to connect every point? Prim and Kruskal solve it.
-- **Ordering with dependencies:** which task goes first when some tasks need others done first? This is topological sort.
+- **Ordering with dependencies:** which task goes first when some tasks need others done first? This is topological sort. The tasks form a web of arrows, not a tree: a file can need two other files, so it can have two parents. If A needs B and B needs A, no valid order exists.
+- **Matching:** pair up the members of two groups at the least total cost. 50 drivers and 50 riders have 50! (about 3 × 10⁶⁴) possible pairings, so checking them all is hopeless. A fast method needs roughly 50³ = 125,000 steps. With 8 vans and 8 delivery zones there are only 8! = 40,320 assignments, which a computer checks instantly.
 
 The remaining families:
 
-- **Optimization under a limit.** Pick the best choice out of a huge number of possible choices, subject to a limit. Knapsack has items with weights and values, and a bag with a weight limit. You want the most value in the bag. Interval scheduling fits the most meetings into one room. Making change is another. For 30 with coins of 1, 15 and 25, the best answer is 15 + 15, which is 2 coins. Always grabbing the biggest coin first gives 25 + 1 + 1 + 1 + 1 + 1, which is 6 coins.
-- **String and sequence problems.** Compare, match or compress text and other sequences. Edit distance is the fewest single-character changes that turn one word into another, and it sits behind spell-checkers. Longest common subsequence sits behind diff tools, which show what changed between two files.
+- **Optimization under a limit.** Pick the best choice out of a huge number of possible choices, subject to a limit. You pick items from a list, like ordering from a menu. Knapsack has items with weights and values, and a bag with a weight limit. You want the most value in the bag. Interval scheduling fits the most meetings into one room. Making change is another. For 30 with coins of 1, 15 and 25, the best answer is 15 + 15, which is 2 coins. Always grabbing the biggest coin first gives 25 + 1 + 1 + 1 + 1 + 1, which is 6 coins.
+- **Continuous optimization.** Find the best settings for knobs that can slide to any value, like a volume dial. This differs from knapsack, where you pick items from a list. Training a neural network adjusts millions of knobs this way, for example 5 million, by following the slope of the error downhill.
+- **Clustering.** Split items into groups of similar ones when nobody tells you the groups in advance. For example, put 1 million bank customers into segments by spending. Good-enough methods are the usual tool.
+- **String and sequence problems.** Compare, match or compress text and other sequences. Edit distance is the fewest single-character changes that turn one word into another, and it sits behind spell-checkers. Longest common subsequence sits behind diff tools, which show what changed between two files. Showing which lines changed between two versions of a 2,000-line config file is this problem.
 - **Geometric and spatial problems.** Questions about points and shapes in space. For example, find the nearest neighbour of a point among 10 million map points. A naive check compares against all 10 million. A spatial index avoids that.
-- **Numeric problems.** Arithmetic and linear algebra at scale: multiplying very large numbers, solving systems of equations, multiplying matrices. Matrix multiplication is the core calculation repeated in neural-network training, which is why its speed matters so much.
+- **Numeric problems.** Arithmetic and linear algebra at scale: multiplying very large numbers, solving systems of equations, multiplying matrices. Matrix multiplication is the core calculation repeated in neural-network training, which is why its speed matters so much. Multiplying two 4,096 × 4,096 tables of numbers takes 4,096³, about 69 billion, multiplications by the plain method.
 
-**Hard problems** are a label, not a separate family. A problem in any family is "hard" when no fast method is known. The travelling salesperson problem asks for the shortest trip that visits every city once and returns. 20 cities can be visited in 20! orders, which is about 2.4 × 10¹⁸. At 1 billion orders checked per second, that is about 77 years. Checking every possibility is hopeless, so these problems need different thinking. The formal name is NP-hardness, listed under Intermediate & Advanced Topics below.
+**Hard problems** are a label, not a separate family. A problem in any family is "hard" when no fast method is known. The travelling salesperson problem asks for the shortest trip that visits every city once and returns. 20 cities can be visited in 20! orders, which is about 2.4 × 10¹⁸. At 1 billion orders checked per second, that is about 77 years. Checking every possibility is hopeless, so these problems need different thinking. The formal name is NP-hardness, listed under Intermediate & Advanced Topics below. Choosing the fewest cell towers so that all 200 villages are in range of one is also hard. With 1,000 candidate sites there are 2¹⁰⁰⁰ (about 1.07 × 10³⁰¹) possible sets of towers. In practice you settle for a good-enough answer, for example by repeatedly adding the tower that covers the most uncovered villages.
+
+### Recognising a problem: read the shape of the answer
+
+A map app, a bank and a game all contain the same few problems. Only the story changes. So ask one question: what does the finished answer look like?
+
+| The answer looks like | Family | Example |
+|---|---|---|
+| Yes/no, or a position in a list | Searching | Is this username taken? |
+| The same items in a new order | Sorting | Rank 1 million products by rating |
+| A route from A to B | Graph: shortest path | Fastest drive to a hospital |
+| A set of links that joins everything | Graph: spanning tree | Least cable to join 12 villages |
+| A to-do order where "X comes before Y" | Graph: dependency ordering | Compile 200 files, some needing others first |
+| Pairs, one from each of two groups | Graph: matching | 50 drivers paired with 50 riders |
+| A chosen subset that fits a limit | Optimization under a limit | Which orders fit a 100 kg van |
+| Groups of similar things, with no groups given | Clustering | Split 1 million customers into segments |
+| A number for how different two texts are | String and sequence | Spell-checker, diff |
+| Closest, inside or overlapping, in space | Geometry | Nearest of 10 million map points |
+| Numbers that solve equations or fit a curve | Numeric | Multiply two matrices |
+| Best settings for knobs that slide smoothly | Continuous optimization | Train a neural network |
+
+### The weight on a link does not decide the family
+
+Cost, distance and time are just numbers on the links. The same flight network can be asked three different questions, and the shape of the answer separates them.
+
+- **A path** is one route from A to B. The cheapest way to fly from Pune to Berlin, with stopovers allowed, is a shortest-path problem.
+- **A network** is a web of links that joins everything, and it may branch. Connecting 12 cities with the least total flight distance, so that any city can reach any other, is a spanning tree.
+- **A tour** is one closed loop through every stop that returns to the start. A courier leaves the depot (the home base, such as a warehouse), visits 25 stops once each and returns. That is the travelling salesperson problem, and it carries the hard label.
+
+Cost or distance can be the weight in any of the three. When the weights are travel times, time = length ÷ average speed, never length × speed. A 10 km road at 50 km/h takes 10 ÷ 50 = 0.2 hours, which is 12 minutes. Multiplying gives 500, which means nothing.
+
+**A tour is not a spanning tree**, even though both reach every point. Put the depot in the centre with four stops 10 km away to the north, east, south and west.
+
+```
+            N
+            |
+      W --- D --- E        spokes: 4 x 10 = 40 km (a tree can branch)
+            |
+            S              tour: D-N-E-S-W-D = 10 + 14.14 x 3 + 10 = 62.4 km
+```
+
+A tree can branch, so four spokes cost 4 × 10 = 40 km. A courier cannot branch, because one person is in one place. The tour goes depot, north, east, south, west, depot. That is 10 + 14.14 + 14.14 + 14.14 + 10, about 62.4 km. Each corner-to-corner hop is 10 × √2 = 14.14 km. Another order, north, south, east, west, is worse at about 74.1 km. The tree is always a floor under the tour, because dropping one hop from a tour leaves a spanning tree. Shortest path names two end points. A tour must visit every stop.
+
+### Three traps
+
+**1. Real tasks chain several problems.** Take "show the 3 nearest open pharmacies by drive time." The steps are:
+
+- Filter for pharmacies that are open, which is a simple search on an attribute.
+- Find nearby candidates among 10 million points, which is geometry.
+- Work out the drive time to each candidate, which is shortest path.
+- Sort by drive time.
+
+Close in a straight line is not close by road. A pharmacy 1 km away across a river may be 25 minutes by road. So take about 10 nearby candidates, compute drive times for all of them, and keep the best 3. Choosing the fewest cell towers is a chain too. A geometry step works out which villages each candidate site covers. Then comes the subset choice, which carries the hard label. Name each step before choosing any method.
+
+**2. Looks hard, isn't.** Pairing 50 drivers with 50 riders has about 3 × 10⁶⁴ possibilities, yet matching has a fast method. The number of possibilities does not tell you the problem is hard.
+
+**3. Looks easy, isn't.** Visiting 25 stops and returning with the least distance feels like shortest path. Check whether the question names a start and an end (a path) or says to visit everything and return (a tour).
 
 ### How strategies cross the families
 
@@ -101,6 +160,8 @@ Edit distance                       dynamic programming
 ```
 
 Making change for 30 with coins of 1, 15 and 25 shows why the two skills are separate. [Greedy](#greedy) solves it wrongly (6 coins). [Dynamic programming](#dynamic-programming) solves it correctly (2 coins). Recognising the problem is one skill. Picking the strategy is another.
+
+**Tempting but wrong for knapsack: pick by value per kg.** A rider can carry 10 kg. Order A weighs 2 kg and tips 12, which is 6 per kg. Order B weighs 4 kg and tips 20, which is 5 per kg. Order C weighs 6 kg and tips 24, which is 4 per kg. Taking the best tip per kg first, with no going back, picks A and then B. That is 6 kg and 32 in tips, and C no longer fits because 6 + 6 = 12 kg. The best choice is B + C, which is 10 kg and 44 in tips. So the per-kg rule gets 32 against the best 44. The same numbers scaled up work for a 50 kg van: A is 10 kg for 60, B is 20 kg for 100, C is 30 kg for 120. The ratio rule gets 160 and the best is 220. The family is optimization under a limit. Greedy by ratio is the strategy not to trust, and dynamic programming is the one to use.
 
 ## Binary Search {#binary-search}
 
@@ -136,7 +197,7 @@ Making change for 30 with coins of 1, 15 and 25 shows why the two skills are sep
 
 ## Where things stand
 
-The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and how the field divides into problem types. Two check-in questions were answered correctly. Binary search on 2 billion items takes 31 steps, because the steps grow with log n. Quadratic work grows 100 times when the input grows 10 times. Two framings were corrected along the way. Search and sort are the classic examples but not the whole domain. And problem types (the question) are a different thing from design strategies (the tool), so they belong on separate lists. The problem-types section is new and has not been quizzed yet. Next up are the design strategies (divide-and-conquer, greedy, dynamic programming), starting with recursion. Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
+The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and how the field divides into problem types. Two check-in questions were answered correctly: binary search on 2 billion items takes 31 steps, and quadratic work grows 100 times when the input grows 10 times. Problem recognition has had two rounds of practice scenarios. Most families were named correctly: shortest path, clustering, spanning tree, dependency ordering, matching, search, string, numeric and continuous optimization. Three things are shakier. First, a tour through every stop (the courier) was mistaken for a spanning tree, and the reason given was the setting rather than the shape of the answer. Second, cost versus distance was offered as the difference between a path and a network, but the weight can be either in both, and the answer shape is what differs. Third, for knapsack the per-kg rule was proposed, and it fails. The cell-tower question was half right: the geometry step was named, but not the subset choice that carries the hard label. Sorting has not yet been practised as its own scenario. Next up are the design strategies (divide-and-conquer, greedy, dynamic programming), starting with recursion. Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
 
 ## Intermediate & Advanced Topics (forward pointers)
 
