@@ -3411,6 +3411,13 @@
       "tier": "intermediate",
       "under": "computer-science/algorithms",
       "note": "They make nearest-neighbour search over millions of map points fast, where a naive check over 10 million points is slow."
+    },
+    {
+      "id": "approximation-exact-solvers-hard-problems",
+      "title": "Approximation algorithms and exact solvers for hard problems",
+      "tier": "intermediate",
+      "under": "computer-science/algorithms/problem-types",
+      "note": "How to get a good-enough answer with a known worst case, or an exact answer for realistic sizes, on problems like cell-tower coverage (set cover). Greedy is within about ln(n) + 1 times the best."
     }
   ]
 }

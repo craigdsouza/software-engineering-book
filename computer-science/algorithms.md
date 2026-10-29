@@ -1,5 +1,5 @@
 ---
-prose_through: 111
+prose_through: 112
 ---
 
 Data structures are about how data sits in memory. Algorithms are about the steps you take over that data. The two are one skill: binary search works only because the list is sorted *and* an [array](data-structures.html#arrays) lets you jump to the middle in one step. On a [linked list](data-structures.html#linked-lists), reaching the middle takes n/2 steps, so binary search loses its advantage. Data structures are the containers. Algorithms are what you do with them.
@@ -119,6 +119,28 @@ Cost, distance and time are just numbers on the links. The same flight network c
 
 Cost or distance can be the weight in any of the three. When the weights are travel times, time = length ÷ average speed, never length × speed. A 10 km road at 50 km/h takes 10 ÷ 50 = 0.2 hours, which is 12 minutes. Multiplying gives 500, which means nothing.
 
+**What a spanning tree looks like.** It is a set of links that connects every point, with no loops. Take five villages and five possible roads, with lengths in km: A-B 4, A-C 3, B-C 2, B-D 5, D-E 4. Building every road costs 4 + 3 + 2 + 5 + 4 = 18 km.
+
+```
+ A ---4--- B
+  \       / \
+   3     2   5
+    \   /     \
+      C        D ---4--- E
+```
+
+The roads A-B, B-C and A-C form a loop. A tree has no loops, so one road of the loop must go. Dropping A-B (4 km) leaves 3 + 2 + 5 + 4 = 14 km. Dropping A-C leaves 15 km. Dropping B-C leaves 16 km. This map has exactly three spanning trees, and the cheapest one is the minimum spanning tree.
+
+```
+ A         B
+  \       / \
+   3     2   5
+    \   /     \
+      C        D ---4--- E          total: 14 km
+```
+
+Five villages always need exactly 4 links, because n villages need n − 1 links. Every village can reach every other along the links. The links may branch: C and B each have two.
+
 **A tour is not a spanning tree**, even though both reach every point. Put the depot in the centre with four stops 10 km away to the north, east, south and west.
 
 ```
@@ -146,6 +168,17 @@ Close in a straight line is not close by road. A pharmacy 1 km away across a riv
 
 **3. Looks easy, isn't.** Visiting 25 stops and returning with the least distance feels like shortest path. Check whether the question names a start and an end (a path) or says to visit everything and return (a tour).
 
+### Hard problems: is there a right answer, and a method?
+
+Take the cell-tower problem: choose the fewest towers so that each of 200 villages is within range of at least one. Its formal name is set cover. Yes, there is a right answer. Some smallest number of towers exists, and a best set achieves it. "Hard" does not mean there is no answer. It means no method is known that is both always right and fast on every input. There are four options.
+
+- **Try every set of towers.** This is always right and hopeless in time. 1,000 candidate sites give 2¹⁰⁰⁰ (about 1.07 × 10³⁰¹) sets.
+- **Greedy.** Repeatedly add the tower that covers the most still-uncovered villages. It is fast but not always best. Take 6 villages. Tower T1 covers villages 1, 2, 3 and 4. T2 covers 1, 3 and 5. T3 covers 2, 4 and 6. Greedy takes T1 first, because it covers 4. Then it needs T2 for village 5 and T3 for village 6, so 3 towers. The best is T2 + T3, which covers all six with 2 towers. A known result says greedy is never worse than about ln(n) + 1 times the best. For 200 villages that is ln(200) + 1, about 6.3 times. In practice it is usually much closer.
+- **Exact solvers for real instances.** "Hard" describes the worst case. Many real instances of a few hundred villages can be solved exactly, with a proof that the answer is best, by integer-programming or branch-and-bound solvers.
+- **Use the problem's structure.** Tower range is a circle on a map, and that geometry can allow better methods than the general case.
+
+This is the same pattern as making change for 30 with coins of 1, 15 and 25, where [greedy](#greedy) gives 6 coins and the best is 2. For a hard problem you accept one of two things: "good enough, with a known worst case", or "exact, but only for the sizes a solver can handle".
+
 ### How strategies cross the families
 
 ```
@@ -161,7 +194,7 @@ Edit distance                       dynamic programming
 
 Making change for 30 with coins of 1, 15 and 25 shows why the two skills are separate. [Greedy](#greedy) solves it wrongly (6 coins). [Dynamic programming](#dynamic-programming) solves it correctly (2 coins). Recognising the problem is one skill. Picking the strategy is another.
 
-**Tempting but wrong for knapsack: pick by value per kg.** A rider can carry 10 kg. Order A weighs 2 kg and tips 12, which is 6 per kg. Order B weighs 4 kg and tips 20, which is 5 per kg. Order C weighs 6 kg and tips 24, which is 4 per kg. Taking the best tip per kg first, with no going back, picks A and then B. That is 6 kg and 32 in tips, and C no longer fits because 6 + 6 = 12 kg. The best choice is B + C, which is 10 kg and 44 in tips. So the per-kg rule gets 32 against the best 44. The same numbers scaled up work for a 50 kg van: A is 10 kg for 60, B is 20 kg for 100, C is 30 kg for 120. The ratio rule gets 160 and the best is 220. The family is optimization under a limit. Greedy by ratio is the strategy not to trust, and dynamic programming is the one to use.
+**Tempting but wrong for knapsack: pick by value per kg.** The goal is the most tips earned while staying within the limit. Taking the best tip per kg first is one method for reaching it, and it can miss. A rider can carry 10 kg. Order A weighs 2 kg and tips 12, which is 6 per kg. Order B weighs 4 kg and tips 20, which is 5 per kg. Order C weighs 6 kg and tips 24, which is 4 per kg. Taking the best tip per kg first, with no going back, picks A and then B. That is 6 kg and 32 in tips, and C no longer fits because 6 + 6 = 12 kg. The best choice is B + C, which is 10 kg and 44 in tips. So the per-kg rule gets 32 against the best 44. The same numbers scaled up work for a 50 kg van: A is 10 kg for 60, B is 20 kg for 100, C is 30 kg for 120. The ratio rule gets 160 and the best is 220. The family is optimization under a limit. Trying every set always works, but 30 orders give 2³⁰ = 1,073,741,824 sets. Greedy by ratio is the strategy not to trust, and dynamic programming is the one to use.
 
 ## Binary Search {#binary-search}
 
@@ -197,7 +230,7 @@ Making change for 30 with coins of 1, 15 and 25 shows why the two skills are sep
 
 ## Where things stand
 
-The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and how the field divides into problem types. Two check-in questions were answered correctly: binary search on 2 billion items takes 31 steps, and quadratic work grows 100 times when the input grows 10 times. Problem recognition has had two rounds of practice scenarios. Most families were named correctly: shortest path, clustering, spanning tree, dependency ordering, matching, search, string, numeric and continuous optimization. Three things are shakier. First, a tour through every stop (the courier) was mistaken for a spanning tree, and the reason given was the setting rather than the shape of the answer. Second, cost versus distance was offered as the difference between a path and a network, but the weight can be either in both, and the answer shape is what differs. Third, for knapsack the per-kg rule was proposed, and it fails. The cell-tower question was half right: the geometry step was named, but not the subset choice that carries the hard label. Sorting has not yet been practised as its own scenario. Next up are the design strategies (divide-and-conquer, greedy, dynamic programming), starting with recursion. Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
+The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and how the field divides into problem types. Two check-in questions were answered correctly: binary search on 2 billion items takes 31 steps, and quadratic work grows 100 times when the input grows 10 times. Problem recognition has had two rounds of practice scenarios. Most families were named correctly: shortest path, clustering, spanning tree, dependency ordering, matching, search, string, numeric and continuous optimization. Two things are shakier. First, a tour through every stop (the courier) was mistaken for a spanning tree, and the reason given was the setting rather than the shape of the answer. Second, cost versus distance was offered as the difference between a path and a network, but the weight can be either in both, and the answer shape is what differs. The knapsack goal was understood correctly: the most tips under the limit gives 44. The value-per-kg shortcut is a tempting method that fails, and it is shown above. The cell-tower question was half right: the geometry step was named, but not the subset choice that carries the hard label. How hard problems are handled has since been covered, and a spanning tree has been drawn. Sorting has not yet been practised as its own scenario. Next up are the design strategies (divide-and-conquer, greedy, dynamic programming), starting with recursion. Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
 
 ## Intermediate & Advanced Topics (forward pointers)
 
@@ -206,6 +239,7 @@ Concepts mentioned along the way that go beyond this page's current depth, track
 | Concept | Tier | Surfaced under | Why it matters |
 |---|---|---|---|
 | What cannot be solved fast (NP-hardness) | Intermediate | [Types of Problems](#problem-types) | The hard-problems label in [Types of Problems](#problem-types): some problems have no known fast method, and knowing which ones saves you from searching for one. |
+| Approximation algorithms and exact solvers for hard problems | Intermediate | [Types of Problems](#problem-types) | How to get a good-enough answer with a known worst case, or an exact answer for realistic sizes, on problems like cell-tower coverage (set cover). Greedy is within about ln(n) + 1 times the best. |
 | Parallel algorithms on GPUs | Intermediate | [What the domain is about](#overview) | A GPU runs thousands of small tasks at once, so which algorithms split into independent pieces decides what it can speed up. |
 | Spatial indexes (k-d trees, R-trees) | Intermediate | [What the domain is about](#overview) | They make nearest-neighbour search over millions of map points fast, where a naive check over 10 million points is slow. |
 
