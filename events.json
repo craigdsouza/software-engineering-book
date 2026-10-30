@@ -2534,5 +2534,49 @@
       "gaps": [],
       "notes": "One question only, at Craig's request. First scored review of problem-types; before this the node had only taught events and unscored practice. Retested the slip from the earlier practice (event 111): a courier tour read as a spanning tree. This time the tour was correctly named as the hard family and the spanning tree as the network, so that slip looks resolved. Craig answered parts 1 and 2 fully and left part 3 (the wording clue) blank; graded correct because the classification, the actual skill being tested, was right, and the clue was supplied in the feedback. Worth a quick check next review that he can state the clue himself: two end points means path, 'everything connected' means network, 'visit all and return' means tour. No new gaps."
     }
+  },
+  {
+    "id": 114,
+    "schema": 1,
+    "ts": "2026-10-30T15:50:00.000Z",
+    "date": "2026-10-30",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/algorithms/binary-search",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "recall",
+          "question": "In your own words, what does binary search do, and what must be true about the data before you can use it?",
+          "answer": "Halves the search range at every step. The data must be sorted (ascending or descending). Compare the target with the midpoint, throw away the half that cannot contain it, and repeat until the value is found.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/binary-search",
+          "feedback": "Right: sorted data is what lets one comparison with the middle rule out half the range. It can be written as a loop or as recursion. The answer left out the stopping rule: stop when the value is found or when the remaining range is empty."
+        },
+        {
+          "tag": "predict",
+          "question": "You have 1,000,000 sorted numbers stored as a linked list instead of an array. Would binary search still take about 20 steps? Why or why not?",
+          "answer": "No. Reaching the middle of a linked list takes n/2 = 500,000 steps, then about 250,000 for the next middle, and so on, so the total is up to about 1,000,000 steps in the worst case.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/binary-search",
+          "feedback": "Right. The walking costs 500,000 + 250,000 + 125,000 + ... which adds up to about 1,000,000, the same as scanning from the start. Binary search still makes only about 20 comparisons, but the walking between them costs almost everything. That is why it needs an array, where jumping to the middle takes one step."
+        },
+        {
+          "tag": "predict",
+          "question": "On a sorted array of 1,000,000 numbers, you search for a value that is not in it. About how many steps before binary search can say it is not there, and how does it know to stop?",
+          "answer": "About 20 steps. 1,000,000 to about 1,000 is roughly 10 halvings and 1,000 to 1 is roughly 10 more. When the last remaining number is not equal to the target, it stops.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/binary-search",
+          "feedback": "Right: 2^20 is about 1,048,576, so a million items need at most about 20 halvings, and a miss costs the same as the worst case for a hit. Precisely, the search stops when the remaining range becomes empty, after the last single item is checked and does not match."
+        }
+      ],
+      "gaps": [],
+      "notes": "Pre-teach diagnostic: binary search had no taught or quizzed events before this, so this is its first scored review. Asked one question at a time. Craig answered all three correctly. Q1 gave the core idea well but did not mention a stopping rule; he supplied it unprompted in Q3 (stop when the last item does not match), so no gap logged. He worked the linked-list cost sum (500,000 + 250,000 + ...) correctly himself. Not yet covered by him in this quiz: the off-by-one and midpoint details, duplicates, a non-sorted input, and why 2^20 is about 1,000,000 as a rule. Teach session should go deeper on those rather than re-explain the basics."
+    }
   }
 ]
