@@ -1,5 +1,5 @@
 ---
-prose_through: 113
+prose_through: 115
 ---
 
 Data structures are about how data sits in memory. Algorithms are about the steps you take over that data. The two are one skill: binary search works only because the list is sorted *and* an [array](data-structures.html#arrays) lets you jump to the middle in one step. On a [linked list](data-structures.html#linked-lists), reaching the middle takes n/2 steps, so binary search loses its advantage. Data structures are the containers. Algorithms are what you do with them.
@@ -200,11 +200,136 @@ Making change for 30 with coins of 1, 15 and 25 shows why the two skills are sep
 
 ## Binary Search {#binary-search}
 
-*Not yet covered.* Finding one item in a sorted list of 1,000,000 by halving the search range each step. That takes about 20 steps, because 2 to the power 20 is about 1,000,000. Plain scanning takes up to 1,000,000 steps. Will cover: why the list must be sorted, why it needs an [array](data-structures.html#arrays) (jumping to the middle must be O(1)), and why it does not work on a [linked list](data-structures.html#linked-lists).
+Binary search finds one item in a sorted list by halving the search range at every step. Compare the target with the middle item. Throw away the half that cannot contain it. Repeat on the half that is left. It can be written as a loop or as [recursion](#recursion).
+
+The search stops in one of two ways. Either the middle item is the target, or the remaining range is empty. The second case is the stopping rule that is easy to forget.
+
+**Why it takes about 20 steps.** Searching 1,000,000 items by plain scanning takes up to 1,000,000 steps. Binary search halves the range each time. Since 2 to the power 20 is about 1,048,576, a million items need at most about 20 halvings. A search for a value that is not in the list costs the same as the worst case for a value that is. It still needs about 20 steps, because it only stops once the range is empty, after the last single item has been checked and does not match.
+
+**Why the list must be sorted.** One comparison with the middle item can rule out half the range only because the items are in order.
+
+**Tempting but wrong: "a sorted linked list works too."** It does not. Binary search would still make only about 20 comparisons. But on a [linked list](data-structures.html#linked-lists), reaching the middle takes n/2 steps. For 1,000,000 items that is 500,000 steps. Reaching the next middle takes about 250,000 more, then 125,000, and so on. The walking adds up to about 1,000,000 steps, the same as scanning from the start. On an [array](data-structures.html#arrays), jumping to the middle takes one step. That is why binary search needs an array.
+
+Still to cover: the midpoint and off-by-one details, duplicate values, and what happens on unsorted input.
 
 ## Recursion & Recurrences {#recursion}
 
-*Not yet covered.* A function that solves a problem by calling itself on a smaller piece of it. Will cover: the base case (where it stops), how each pending call waits on the call [stack](data-structures.html#stacks), what happens when that stack runs out, and how to write a cost as a recurrence. Example of a recurrence: "the cost for n items is twice the cost for n/2 items, plus n".
+Recursion means solving a problem by asking the same question about a smaller piece of it.
+
+### A line of people
+
+Four people stand in a line. You are at the back and cannot see the front. You ask the person ahead: "How many people are from you to the front?" They ask the person ahead of them. This repeats until the person at the front, who has nobody ahead, answers "1". Each person then adds 1 and passes the answer back.
+
+```
+You ask  ->  P3 asks  ->  P2 asks  ->  P1 (front) says "1"
+You say 4 <- P3 says 3 <- P2 says 2 <-
+```
+
+Every recursion has three parts.
+
+- **The base case.** The question so small it is answered directly. Here it is "nobody ahead of me, so 1".
+- **The smaller version.** Each call asks about a problem exactly one step smaller.
+- **The combine step.** Take the smaller answer and add your own bit. Here, add 1.
+
+The same shape works for numbers. Factorial means multiplying a number by every whole number below it, so 4! = 4 × 3 × 2 × 1 = 24. Since 4! = 4 × 3!, and 3! = 3 × 2!, and 2! = 2 × 1!, and 1! = 1, the calls reach the base case and the answers travel back up: 1, then 2 × 1 = 2, then 3 × 2 = 6, then 4 × 6 = 24.
+
+```
+4! = 4 x 3!
+          3! = 3 x 2!
+                    2! = 2 x 1!
+                              1! = 1   <- base case
+```
+
+### The call stack
+
+Nothing is multiplied on the way down. Every call just waits. The waiting calls are kept on the call [stack](data-structures.html#stacks), one entry per pending call. The real arithmetic happens on the way back up, after the base case answers. If there is no base case, the calls never stop. The stack runs out of room and the program crashes. That crash is called a stack overflow.
+
+### Choosing the base case
+
+Take the sum of the list [3, 5, 2]. The smaller version is the sum of the rest of the list. The combine step is to add the first number to that sum.
+
+A base case of "one element left, so return it" works for any list of 1 or more. But an empty list never reaches it, so the calls would recurse on nothing until the stack overflows. The safer base case is "empty list, so the sum is 0". It covers every input, including the empty one.
+
+```
+sum([3,5,2]) = 3 + sum([5,2])                      <- waiting
+                    sum([5,2]) = 5 + sum([2])      <- waiting
+                                      sum([2]) = 2 + sum([])   <- waiting
+                                                     sum([]) = 0   <- base case
+```
+
+Going back up: sum([]) = 0, then sum([2]) = 2 + 0 = 2, then sum([5,2]) = 5 + 2 = 7, then sum([3,5,2]) = 3 + 7 = 10. At the deepest point 4 calls are waiting at once.
+
+[Binary search](#binary-search) is recursion too. The smaller version is "search the half that could hold the target", so 1,000,000 items become 500,000, then 250,000, and so on. The base cases are "the range is empty" (not found) and "the middle item is the target" (found).
+
+### Depth is a cost
+
+Summing 1,000,000 numbers recursively leaves 1,000,000 calls waiting, which can overflow the stack. Binary search on 1,000,000 items goes only about 20 calls deep. A method that halves 1,000 items goes 1,000, 500, 250, 125, 62, 31, 15, 7, 3, 1, which is about 10 calls deep, so the stack is no worry.
+
+**In practice a sum is done with a loop.** Keep one number, a running total, starting at 0. Walk the list once and add each item to it. This uses one memory slot whatever the size of the list. No calls wait on each other, so nothing can overflow. A million numbers still take a million additions, the same work as the recursive version, without the million waiting calls. A problem that shrinks by 1 each time is better as a loop. Recursion earns its place when the problem splits into pieces, as in merge sort, or when the data is shaped like a tree. Then it goes only about 10 to 20 calls deep. Some languages turn a call that is the very last thing a function does into a loop automatically. That is tail-call optimization, listed in the forward pointers below.
+
+### Recurrences: a cost in terms of a smaller version of itself
+
+Let T(n) mean the number of steps needed for n items. A recurrence reads like a sentence: the cost of n equals the cost of the smaller piece, plus the extra work done at this level.
+
+| Algorithm | Recurrence | Reading it | Result |
+|---|---|---|---|
+| Sum of a list | T(n) = T(n − 1) + 1 | One step, then the same job on a list 1 item shorter | 1,000 items take 1,000 steps, O(n) |
+| Binary search | T(n) = T(n / 2) + 1 | One comparison, then the same job on half the items | 1,000,000 items take about 20 steps, O(log n) |
+| Merge sort | T(n) = 2 × T(n / 2) + n | Sort two halves, then spend n steps merging them | 1,000 items take about 10,000 steps, O(n log n) |
+
+Recursion itself does not make an algorithm fast or slow. The rate at which the problem shrinks decides it. Shrinking by 1 each time takes n levels, which is slow. Shrinking by half takes only log n levels, which is fast.
+
+### The recursion tree: rows × cost per row
+
+A recursion tree shows where the cost comes from. Draw one box per call, write the work that call does inside it, and add up each row. The total is the number of rows times the cost of a row. The shrink rate sets the number of rows. The extra work sets the cost of a row.
+
+Merge sort is a way to put a list in order. Take 8 jumbled numbers. Split them into two piles of 4, then split each pile again, down to piles of 1. A pile of one is already sorted, which is the base case. Then comes the merge. Take two sorted piles, say 2, 5, 9 and 1, 6, 8. Look at the top card of each pile, take the smaller, and repeat. That builds one sorted pile, 1, 2, 5, 6, 8, 9, in a single pass with no backtracking. So merge sort is: split in half, sort each half, then merge them.
+
+For 8 items, T(n) = 2T(n/2) + n gives this tree.
+
+```
+Level 0:            [8]                    work 8
+Level 1:        [4]     [4]                work 4+4 = 8
+Level 2:      [2] [2] [2] [2]              work 2x4 = 8
+Level 3:     [1][1][1][1][1][1][1][1]      work 1x8 = 8
+```
+
+Every row costs 8, which is n. Halving 8 down to 1 takes 3 rows, which is log₂ 8. The total is about 8 × 3 = 24 steps. For 1,000 items it is about 10 rows of about 1,000, so about 10,000 steps. Here "the work" means the number of basic steps. In merge sort a step is moving one card into the merged pile.
+
+The sum has a much simpler tree: one box per row, 1 step each, and n rows, so the total is n.
+
+### Tempting but wrong: "two calls are always fine"
+
+Merge sort makes two calls and is fast. So you might think any two-call recursion is fine. Fibonacci disproves it. The Fibonacci sequence is 1, 1, 2, 3, 5, 8, 13, where each number is the sum of the two before it. Written recursively, fib(n) = fib(n − 1) + fib(n − 2), with fib(0) = 0 and fib(1) = 1 as the base cases. So fib(5) = 5, because fib(4) + fib(3) = 3 + 2.
+
+```
+                    fib(5)
+                  /        \
+             fib(4)         fib(3)
+            /      \        /     \
+        fib(3)   fib(2)  fib(2)  fib(1)
+        /    \
+    fib(2) fib(1)       (each fib(2) splits again into fib(1) and fib(0))
+```
+
+fib(5) takes 15 calls, and the question fib(2) alone is asked 3 separate times, each worked out from scratch. The number of calls grows fast.
+
+| n | Calls |
+|---|---|
+| 5 | 15 |
+| 10 | 177 |
+| 45 | about 3.7 billion |
+
+For fib(5) the number of calls in each row is 1, 2, 4, 6, 2, and each call does about 1 step, one addition.
+
+**Why merge sort stays fast and Fibonacci explodes.** In merge sort the number of calls doubles every row (1, 2, 4, 8). But the size of each call halves (8, 4, 2, 1). The two changes cancel, so every row costs the same, and there are only log n rows. In Fibonacci the number of calls also grows from row to row. But each call does the same 1 step, so nothing shrinks to cancel the growth. The problem only drops from n to n − 1 and n − 2, so there are about n rows instead of log n, and the calls multiply by roughly 1.6 at each step.
+
+There are two separate causes.
+
+- **The pieces barely shrink.** They go from n to n − 1 and n − 2, not to n / 2.
+- **The same questions are asked again and again.** These are overlapping sub-problems.
+
+Merge sort has neither problem. Each card sits in exactly one pile per row, so no work is repeated. Storing each answer the first time it is computed fixes the repetition. That idea is [dynamic programming](#dynamic-programming).
 
 ## Simple Sorts (Selection & Insertion) {#simple-sorts}
 
@@ -212,7 +337,7 @@ Making change for 30 with coins of 1, 15 and 25 shows why the two skills are sep
 
 ## Merge Sort & Quicksort {#divide-and-conquer-sorts}
 
-*Partly covered, on another page.* Both sorts were introduced inside [Big O Notation](data-structures.html#big-o), as the worked examples of best, worst and average case. They take O(n log n) steps. For 1,000 items that is about 10,000 comparisons instead of 1,000,000. Both split the problem in half and recurse, building on [recursion](#recursion). Still to cover here: how each one actually runs step by step, why no comparison sort can beat O(n log n), and the counting and radix sorts that get around that limit by not comparing items.
+*Partly covered, on another page.* Both sorts were introduced inside [Big O Notation](data-structures.html#big-o), as the worked examples of best, worst and average case. They take O(n log n) steps. For 1,000 items that is about 10,000 comparisons instead of 1,000,000. Both split the problem in half and recurse, building on [recursion](#recursion). The merge step, and why merge sort costs O(n log n), are worked through under [recursion](#recursion). Still to cover here: how quicksort actually runs step by step, why no comparison sort can beat O(n log n), and the counting and radix sorts that get around that limit by not comparing items.
 
 ## Graph Traversal (BFS & DFS) {#graph-traversal}
 
@@ -228,11 +353,11 @@ Making change for 30 with coins of 1, 15 and 25 shows why the two skills are sep
 
 ## Dynamic Programming {#dynamic-programming}
 
-*Not yet covered.* Solving a problem by solving its smaller sub-problems once each, and storing the answers so they are never recomputed. Will cover: the Fibonacci example, where plain recursion makes about 3.7 billion calls to compute the 45th number but storing answers needs only 45 steps. Also: storing answers top-down (memoization, often in a [hash table](data-structures.html#hash-tables)) versus filling a table bottom-up, and how dynamic programming fixes the coin problem that [greedy](#greedy) gets wrong.
+*Not yet covered.* Solving a problem by solving its smaller sub-problems once each, and storing the answers so they are never recomputed. The repeated work in recursive Fibonacci is shown under [recursion](#recursion): fib(5) asks for fib(2) three times. Will cover: the Fibonacci example, where plain recursion makes about 3.7 billion calls to compute the 45th number but storing answers needs only 45 steps. Also: storing answers top-down (memoization, often in a [hash table](data-structures.html#hash-tables)) versus filling a table bottom-up, and how dynamic programming fixes the coin problem that [greedy](#greedy) gets wrong.
 
 ## Where things stand
 
-The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and how the field divides into problem types. Two check-in questions were answered correctly: binary search on 2 billion items takes 31 steps, and quadratic work grows 100 times when the input grows 10 times. Problem recognition has had two rounds of practice scenarios. Most families were named correctly: shortest path, clustering, spanning tree, dependency ordering, matching, search, string, numeric and continuous optimization. A scored question on three requests over one road map (path, network, tour) was answered correctly, so the tour-versus-tree slip looks resolved. The wording clue that separates them was supplied rather than stated, and is worth checking again at the next review. One thing is still shaky: cost versus distance was offered as the difference between a path and a network, but the weight can be either in both, and the answer shape is what differs. The knapsack goal was understood correctly: the most tips under the limit gives 44. The value-per-kg shortcut is a tempting method that fails, and it is shown above. The cell-tower question was half right: the geometry step was named, but not the subset choice that carries the hard label. How hard problems are handled has since been covered, and a spanning tree has been drawn. Sorting has not yet been practised as its own scenario. Next up are the design strategies (divide-and-conquer, greedy, dynamic programming), starting with recursion. Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
+The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and how the field divides into problem types. Two check-in questions were answered correctly: binary search on 2 billion items takes 31 steps, and quadratic work grows 100 times when the input grows 10 times. Problem recognition has had two rounds of practice scenarios. Most families were named correctly: shortest path, clustering, spanning tree, dependency ordering, matching, search, string, numeric and continuous optimization. A scored question on three requests over one road map (path, network, tour) was answered correctly, so the tour-versus-tree slip looks resolved. The wording clue that separates them was supplied rather than stated, and is worth checking again at the next review. One thing is still shaky: cost versus distance was offered as the difference between a path and a network, but the weight can be either in both, and the answer shape is what differs. The knapsack goal was understood correctly: the most tips under the limit gives 44. The value-per-kg shortcut is a tempting method that fails, and it is shown above. The cell-tower question was half right: the geometry step was named, but not the subset choice that carries the hard label. How hard problems are handled has since been covered, and a spanning tree has been drawn. Sorting has not yet been practised as its own scenario. Binary search has had its first scored check, with all three questions answered correctly: the idea of halving a sorted range, why a linked list ruins it (the walking costs about 1,000,000 steps), and why a miss takes about 20 steps. The stopping rule was left out of the first answer and supplied unprompted in the third. Recursion has been taught but not yet quizzed. The halving cost was understood: about 10 calls deep for 1,000 items. The conclusion that a recursive sum risks overflowing the stack was drawn without help, and the final check was answered correctly: doubling the calls does not grow the cost of a row, because the size of each call halves. Two things are shaky and worth checking again. The base case for summing a list was given as one element left, which misses the empty list, and the combine step was not stated. Merge sort and Fibonacci were both new, so each was explained from scratch, and the first comparison of them named the constant row cost but not the repeated work. Next up is a quiz on recursion, then the simple sorts. Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
 
 ## Intermediate & Advanced Topics (forward pointers)
 
@@ -244,6 +369,8 @@ Concepts mentioned along the way that go beyond this page's current depth, track
 | Approximation algorithms and exact solvers for hard problems | Intermediate | [Types of Problems](#problem-types) | How to get a good-enough answer with a known worst case, or an exact answer for realistic sizes, on problems like cell-tower coverage (set cover). Greedy is within about ln(n) + 1 times the best. |
 | Parallel algorithms on GPUs | Intermediate | [What the domain is about](#overview) | A GPU runs thousands of small tasks at once, so which algorithms split into independent pieces decides what it can speed up. |
 | Spatial indexes (k-d trees, R-trees) | Intermediate | [What the domain is about](#overview) | They make nearest-neighbour search over millions of map points fast, where a naive check over 10 million points is slow. |
+| Tail-call optimization | Intermediate | [Recursion & Recurrences](#recursion) | A language can turn a call that is the very last thing a function does into a loop. That removes the stack cost, so a recursive sum over 1,000,000 numbers need not overflow. |
+| Solving recurrences formally (Master Theorem) | Intermediate | [Recursion & Recurrences](#recursion) | A rule for turning T(n) = a × T(n / b) + f(n) into a growth rate without drawing the tree. It builds on discrete mathematics. |
 
 ## Related pages
 

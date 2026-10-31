@@ -3418,6 +3418,20 @@
       "tier": "intermediate",
       "under": "computer-science/algorithms/problem-types",
       "note": "How to get a good-enough answer with a known worst case, or an exact answer for realistic sizes, on problems like cell-tower coverage (set cover). Greedy is within about ln(n) + 1 times the best."
+    },
+    {
+      "id": "tail-call-optimization",
+      "title": "Tail-call optimization",
+      "tier": "intermediate",
+      "under": "computer-science/algorithms/recursion",
+      "note": "A language can turn a call that is the very last thing a function does into a loop. That removes the stack cost, so a recursive sum over 1,000,000 numbers need not overflow."
+    },
+    {
+      "id": "solving-recurrences-master-theorem",
+      "title": "Solving recurrences formally (Master Theorem)",
+      "tier": "intermediate",
+      "under": "computer-science/algorithms/recursion",
+      "note": "A rule for turning T(n) = a × T(n / b) + f(n) into a growth rate without drawing the tree. It builds on discrete mathematics."
     }
   ]
 }
