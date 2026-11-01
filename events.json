@@ -2651,5 +2651,55 @@
       ],
       "notes": "First scored review of Recursion & Recurrences after the teaching session earlier the same day (event 115). Questions were asked one at a time. Q1 was a fresh scenario retesting the base-case choice that was shaky in the lesson; Q2 retested it after the explanation; Q3 tested depth and stack overflow with the sum-versus-halving contrast.\n\nQ1 missed: the 1-item and 0-item failures were spotted, but the 5-item list was wrongly judged to fail (g116-1). Q2 gave the right base case (empty list, answer 0) but not the reason it is safe for every size (g116-2). Q3 was clean: about 1,000,000 calls deep for removing one item and about 20 for halving, with the overflow risk on the first.\n\nA fourth question was posed but not answered, and the session was paused by Craig: the recurrence T(n) = 3 x T(n/3) + n with n = 27 (how many times 27 splits down to 1, the cost of one row, the total steps; expected: 3 splits, 27 per row, about 81 steps). Not logged as a question. Ask it, or a fresh variant, at the next review, along with a retest of why Fibonacci's two calls explode and merge sort's do not, and a retest of the combine step.\n\nNo earlier open gaps on this node, so none were retested. The earlier shaky points from the lesson (empty-list base case, the combine step) were retested through Q1 and Q2: the empty-list base case is now stated correctly; the reason it is reachable from every input is still open."
     }
+  },
+  {
+    "id": 117,
+    "schema": 1,
+    "ts": "2026-11-01T09:34:26.000Z",
+    "date": "2026-11-01",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/algorithms/recursion",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "A friend writes a countdown function. It prints the number n, then calls itself with n - 1. Its base case is: \"if n is exactly 10, stop.\" Walk through what happens when you start it with n = 15, with n = 10, and with n = 4. Which of the three work, and which go wrong? What does \"go wrong\" look like? In one sentence, what rule should a base case follow so that every starting number works?",
+          "answer": "n = 15 works because the count goes down until it reaches 10. n = 10 works and stops at once because the start equals the base case. n = 4 goes wrong: it keeps counting into negative numbers, never ends, and the stack could overflow. Proposed the base case \"if n is exactly 0, stop\", which works for every positive number and for 0.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/recursion",
+          "feedback": "All three cases were right, and the failure was named correctly. One addition: \"exactly 0\" fails for negative starts such as n = -3, which count down forever just like n = 4. A safer base case is \"n is 0 or less\". The general rule: every call must move closer to the base case, and every allowed input must be able to reach it."
+        },
+        {
+          "tag": "explain",
+          "question": "A recursive function adds up a list of numbers. The sum of an empty list is 0 (the base case). Otherwise the sum is the first number plus the sum of the rest of the list. (1) Walk through [4, 7, 2], writing out each call and what it returns, down to the base case and back up. (2) In one or two sentences, explain why this base case is safe for a list of any size, such as 3, 500 or 1,000,000 items.",
+          "answer": "Walked down: 4 + sum([7, 2]), then 7 + sum([2]), then 2 + the base case; back up: 2 + 0, then 7 + 2 + 0, then 4 + 7 + 2 + 0 = 13. Said the base case is safe because every list eventually runs out of items, so the empty list is the stopping point in all cases. Added that for very large lists a loop is better, because the stack can overflow before the base case is reached.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/recursion",
+          "feedback": "Correct, including the stack-overflow caveat. Two small precision notes: the last call is made on the empty list (not on the number 0), and it returns 0. The sharpest reason the base case is safe is that each call removes exactly one item, so a list of n items reaches empty after exactly n calls, whatever n is."
+        },
+        {
+          "tag": "predict",
+          "question": "Read the recurrence T(n) = 3 x T(n/3) + n as a sentence: T(n) is the number of basic steps for an input of size n; the problem is split into 3 smaller problems, each one third the size, and splitting and combining costs n extra steps. Take n = 27 and use the recursion-tree view (the tree of calls, drawn row by row). (1) How many times can 27 be split by 3 until the pieces have size 1? (2) About how many steps does one row of the tree cost in total? (3) Roughly how many steps does the whole thing cost?",
+          "answer": "(1) Said 3 splits: 27 > 9 > 3 > 1. (2) Said one row costs 3 steps. (3) Said the whole thing costs 3 x 3 = 9, plus 1, so 10 steps.",
+          "correct": false,
+          "node_id": "computer-science/algorithms/recursion",
+          "feedback": "Part 1 is right: 3 splits. Part 2 is wrong: one row costs 27 steps, not 3. The \"+ n\" in the recurrence is the cost of splitting and combining a piece of size n, and the pieces in each row always add up to the full size 27. Row 1 has one piece of size 27, costing 27. Row 2 has 3 pieces of size 9, costing 3 x 9 = 27. Row 3 has 9 pieces of size 3, costing 9 x 3 = 27. Each row has more pieces, but each piece is smaller by the same factor, so the row cost stays 27. Part 3 follows: rows x cost per row = 3 x 27 = 81 steps (the size-1 pieces at the bottom add a little more, but 81 is the right ballpark). The slip was using the number of splits (3) as the cost of a row, and the number of splits as a per-piece cost, instead of multiplying the number of rows by the row cost."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g117-1",
+          "node_id": "computer-science/algorithms/recursion",
+          "text": "Read the recurrence T(n) = 3 x T(n/3) + n as costing 3 steps per row and about 10 steps in total. The \"+ n\" is the cost of one piece of size n, and the pieces in a row always add up to n, so each row costs n (27 for n = 27). The total is rows x row cost: 3 x 27 = 81, not 10."
+        }
+      ],
+      "notes": "Second scored review of Recursion & Recurrences, after the teaching session (event 115) and the first quiz (event 116) on 2026-10-31. Questions were asked one at a time.\n\nRetested gaps: g116-1 resolved (Q1: the countdown with base case \"exactly 10\" was judged correctly for all three starts, including seeing that n = 4 never reaches 10). g116-2 resolved (Q2: gave the reason the empty-list base case is safe, that every list runs out of items; could still state more sharply that each call removes exactly one item, but the reasoning was right).\n\nQ3 was the unanswered question carried over from event 116 (a 3-way split with n = 27). Got the number of splits right (3) but treated the row cost as 3 and the total as 10 instead of 27 per row and about 81 in total (g117-1). Craig asked for the session to be logged and then for a worked example with this recurrence. The Fibonacci versus merge sort retest (repeated work versus shrink rate) was not asked in this session and is still worth a retest at the next review."
+    }
   }
 ]
