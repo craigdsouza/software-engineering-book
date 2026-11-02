@@ -124,7 +124,7 @@
       "id": "computer-science/data-structures/heaps",
       "title": "Heaps & Priority Queues",
       "summary": "A tree kept in an array that always hands back the smallest (or largest) item in O(log n) steps.",
-      "page": null,
+      "page": "computer-science/data-structures.html#heaps",
       "deps": [
         "computer-science/data-structures/trees",
         "computer-science/data-structures/arrays"
@@ -3432,6 +3432,20 @@
       "tier": "intermediate",
       "under": "computer-science/algorithms/recursion",
       "note": "A rule for turning T(n) = a × T(n / b) + f(n) into a growth rate without drawing the tree. It builds on discrete mathematics."
+    },
+    {
+      "id": "heapify-heapsort",
+      "title": "Building a heap from n items in O(n), and heapsort",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/heaps",
+      "note": "Adding n items one at a time costs O(n log n). There is a way to build a heap in O(n), and a sorting method (heapsort) built on repeated removal of the smallest."
+    },
+    {
+      "id": "heap-decrease-key",
+      "title": "Decrease-key",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/heaps",
+      "note": "Shortest-path algorithms need to lower the priority of an item already inside the heap, which the add and remove-smallest operations do not cover."
     }
   ]
 }

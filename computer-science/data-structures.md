@@ -1,5 +1,5 @@
 ---
-prose_through: 104
+prose_through: 119
 ---
 
 :::callout
@@ -182,6 +182,75 @@ The walk also wraps around the end of the table. Take 8 slots (0 to 7), the hash
 
 **The precise claim, and its limit:** "open addressing degrades faster than chaining at the same load factor" is an *average-case* statement that assumes a well-distributed (simple uniform) hash function — each key equally likely to land in any bucket. Under that assumption chain lengths cluster tightly around the load factor, so a long chain is rare. But chaining has no structural cap: a bad or adversarial hash function (**hash flooding** — deliberately choosing keys that all collide, a real denial-of-service technique used against web frameworks with predictable hash seeds) can put every key in one bucket, giving O(n) worst-case lookup. Open addressing can't do that — since each slot holds exactly one key, no lookup ever needs more than *m* probes (the table size), regardless of hash quality. So worst-case, the ranking flips: chaining's downside is unbounded, open addressing's isn't. *Uniform hashing* and *hash flooding* haven't been studied in depth yet (see Intermediate & Advanced Topics below).
 
+## Heaps & Priority Queues {#heaps}
+
+A **priority queue** is a queue that hands back the most urgent item, not the oldest. Think of a hospital emergency room, or an operating system choosing which task to run next. A **heap** is the structure that makes this fast. The priority queue is the idea; the heap is how you build it.
+
+With 1,000,000 waiting items, the two obvious structures each make one operation painful:
+
+| Structure | Add an item | Find the smallest |
+|---|---|---|
+| Unsorted array | 1 step | Scan all 1,000,000 |
+| Sorted array | Shift up to 1,000,000 items | 1 step |
+| Heap | About 20 steps | 1 step |
+
+**What a heap is.** A heap is a binary tree with two rules. This page uses the min-heap version, where the smallest item is the most urgent.
+
+- **Shape rule:** fill the tree one level at a time, left to right, with no gaps.
+- **Order rule:** every parent is smaller than or equal to its children.
+
+```
+          3
+        /   \
+       8     5
+      / \   / \
+    12   9 7   6
+```
+
+**A heap is not a binary search tree.** A BST puts everything smaller on the left and everything larger on the right. A heap promises nothing between siblings. In the tree above, 8 is on the left and 5, the smaller one, is on the right. Only the root is guaranteed to be the smallest. The second-smallest is one of the root's two children (here 5), but you have to compare both to know which. For the same reason there is no way to steer a search. A value like 7 could sit in either subtree, so finding an arbitrary value can mean checking every item: O(n), against O(log n) in a balanced [BST](data-structures/trees.html#bst). What a heap is good at is adding items and removing the smallest, quickly. That pair of operations is what makes it a priority queue.
+
+**Stored in an array.** The shape rule leaves no gaps, so the tree flattens into an [array](#arrays) level by level, with no pointers:
+
+```
+index:   0   1   2   3    4   5   6
+value:  [3,  8,  5,  12,  9,  7,  6]
+```
+
+The children of index *i* are at 2*i* + 1 and 2*i* + 2. The parent of index *i* is at (*i* − 1) divided by 2, rounded down. Check with real numbers: the children of index 1 (the value 8) are indexes 3 and 4, which hold 12 and 9. The parent of index 5 (the value 7) is index 2, which holds 5.
+
+**Adding an item (sift up).** Put the new item at the end of the array. That is the next open slot, so the shape rule stays true. Then swap it up while it is smaller than its parent. Add 4 to the heap above:
+
+```
+[3, 8, 5, 12, 9, 7, 6, 4]    4 lands at index 7, under 12
+4 < 12  → swap               4 is now under 8
+4 < 8   → swap               4 is now under 3
+4 > 3   → stop
+[3, 4, 5, 8, 9, 7, 6, 12]
+```
+
+An item can climb at most the height of the tree. A heap of 1,000,000 items has about 20 levels, because each level doubles the number of slots and 20 levels hold about a million. So an add costs at most about 20 swaps: O(log n). It is the halving idea of binary search, run in reverse. The worst case is a new item smaller than everything else, which climbs every level.
+
+**Removing the smallest (sift down).** The smallest item is at index 0, so looking at it is 1 step. Removing it leaves a hole at the top. The method is to move the **last** item of the array to the root, then swap it down with its **smaller** child until it fits. Remove the 3 from the original heap:
+
+```
+[3, 8, 5, 12, 9, 7, 6]
+move the last item (6) to the root:  [6, 8, 5, 12, 9, 7]
+children of 6 are 8 and 5; smaller is 5; 6 > 5 → swap:  [5, 8, 6, 12, 9, 7]
+6 now has one child, 7; 6 < 7 → stop
+```
+
+It also costs at most one swap per level, so O(log n). Take the smaller child because the new parent must be less than or equal to *both* children. Swapping with the larger child (8) would put 8 above 5 and break the order rule. A second example: removing the 2 from `[2, 5, 4, 9, 6, 7]` moves 7 to the root, giving `[7, 5, 4, 9, 6]`. Then 7 swaps with the smaller child 4 and sits at index 2. Its would-be child slot, index 5, no longer exists, so it stops at `[4, 5, 7, 9, 6]`.
+
+**Tempting but wrong: slide a child up into the empty hole.** This looks natural. Promote a child into the root, then a grandchild into that hole, and so on. It is not as expensive as it looks, because the hole travels down one path, about log n slides and not n. The real problem is the shape rule. The hole ends up somewhere in the middle of the bottom level instead of at the end of the array. The array then has a gap, and the arithmetic for finding parents and children stops working. Moving the last item keeps the array gap-free, so only the order rule needs repairing afterward.
+
+**Where this wins.**
+
+- A hospital triage queue or an operating system scheduler always needs the most urgent item next.
+- To keep the 10 largest values from a stream of billions, hold a min-heap of size 10. Each new value only has to be compared with the smallest of your current 10.
+- Shortest-path algorithms, such as route-finding, repeatedly need the closest unexplored place.
+
+Compared with a [queue](#queues), which serves the oldest item first, a priority queue serves the most urgent. The heap lives in an array, and its height comes from the same level-by-level shape that gives a balanced tree its log n bound.
+
 ## Intermediate & Advanced Topics (forward pointers)
 
 Concepts mentioned along the way that go beyond this page's current depth — tracked here deliberately rather than left as scattered asides, to return to on purpose later.
@@ -191,14 +260,16 @@ Concepts mentioned along the way that go beyond this page's current depth — tr
 | General geometric/arithmetic series summation | Intermediate | [Arrays](#arrays) | The per-cycle argument already shows amortized O(1) for any fixed growth factor (×2, ×1.5, ×1.25). The formal proof across all cycles at once is the sum of a geometric series, which fits once Discrete Math covers series. |
 | Cache locality | Intermediate | [Linked Lists](#linked-lists) | Why arrays tend to beat linked lists in wall-clock time even at equal Big-O, once real hardware/cache behavior enters the picture. |
 | Uniform hashing assumption & hash flooding | Advanced | [Hash Tables](#hash-tables) | Why the chaining-vs-open-addressing comparison assumes a well-distributed hash function, and how adversarial input (a real DoS technique) breaks that assumption. |
+| Building a heap from n items in O(n), and heapsort | Intermediate | [Heaps & Priority Queues](#heaps) | Adding n items one at a time costs O(n log n). There is a way to build a heap in O(n), and a sorting method (heapsort) built on repeated removal of the smallest. |
+| Decrease-key | Intermediate | [Heaps & Priority Queues](#heaps) | Shortest-path algorithms need to lower the priority of an item already inside the heap, which the add and remove-smallest operations here do not cover. |
 | LRU cache (hash map + doubly-linked list) | Advanced | [Doubly-Linked Lists](#doubly-linked-lists) | The canonical applied pattern combining O(1) hash-map lookup with O(1) doubly-linked-list splice — composes two already-taught structures into one. |
 
 ## Where things stand
 
-Linked Lists, Doubly-Linked Lists, Hash Tables, Stacks, Queues and Big O are solid. For linked lists, the two earlier misconceptions (that reordering by content is O(1), and that a pointer to a node also reaches the node before it) did not come back, and the rule "it depends on whether you already hold the pointer or must search for it" is now stated unprompted. One refinement remains: a singly-linked list can also delete in O(1) when you hold a pointer to the previous node. For hash tables, the earlier slips (assuming a key always sits in its own hashed slot, believing lookups stay fast while only inserts slow down, and not stopping at the first empty slot or handling wraparound) were resolved on a fresh worked table. Stacks and Queues each got their first check on their own, and both were clean. Big O now separates best/worst/average case from amortized cost correctly. Arrays still need review. The doubling argument is now explained correctly in Craig's own words, and he worked out ×1.5 and ×1.25 with the per-cycle method, though he first divided the cycle's work by the array's size instead of by the number of appends. He also first treated deleting the oldest item as overwriting it with a placeholder (O(1)) rather than shifting everything left (O(n)), and corrected that straight away. The next step is a fresh check on both slips, then inserting in the middle of an array and cache behaviour. Trees has grown into its own page, see [Trees](data-structures/trees.html) for status.
+Linked Lists, Doubly-Linked Lists, Hash Tables, Stacks, Queues and Big O are solid. For linked lists, the two earlier misconceptions (that reordering by content is O(1), and that a pointer to a node also reaches the node before it) did not come back, and the rule "it depends on whether you already hold the pointer or must search for it" is now stated unprompted. One refinement remains: a singly-linked list can also delete in O(1) when you hold a pointer to the previous node. For hash tables, the earlier slips (assuming a key always sits in its own hashed slot, believing lookups stay fast while only inserts slow down, and not stopping at the first empty slot or handling wraparound) were resolved on a fresh worked table. Stacks and Queues each got their first check on their own, and both were clean. Big O now separates best/worst/average case from amortized cost correctly. Arrays still need review. The doubling argument is now explained correctly in Craig's own words, and he worked out ×1.5 and ×1.25 with the per-cycle method, though he first divided the cycle's work by the array's size instead of by the number of appends. He also first treated deleting the oldest item as overwriting it with a placeholder (O(1)) rather than shifting everything left (O(n)), and corrected that straight away. The next step is a fresh check on both slips, then inserting in the middle of an array and cache behaviour. Heaps & Priority Queues is new and needs review. Adding an item, removing the smallest, and why an add costs about log n (20 levels for a million items) were all answered correctly. One misconception is open: asked why removal moves the last item to the root instead of promoting a child, the answer was that promoting children would move nearly every item up a level. In fact the hole travels one path, about log n slides. The real reason is the shape rule: promoting children leaves a gap in the middle of the array and breaks the index arithmetic. The next step is a fresh check on that reason. Trees has grown into its own page, see [Trees](data-structures/trees.html) for status.
 
 ## Related pages
 
-- [Trees](data-structures/trees.html) — grew out of this page; reuses Stacks and Queues covered here for traversal.
+- [Trees](data-structures/trees.html) — grew out of this page; reuses Stacks and Queues covered here for traversal, and a heap is a tree stored in an array.
 - [APIs](../backend/apis.html) — the "likes" race condition and hash-table collision resolution are both instances of "two things want the same slot, now what?"
 - [Review Schedule](../review-schedule.html) — spaced-repetition status.

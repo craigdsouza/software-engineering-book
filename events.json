@@ -2701,5 +2701,81 @@
       ],
       "notes": "Second scored review of Recursion & Recurrences, after the teaching session (event 115) and the first quiz (event 116) on 2026-10-31. Questions were asked one at a time.\n\nRetested gaps: g116-1 resolved (Q1: the countdown with base case \"exactly 10\" was judged correctly for all three starts, including seeing that n = 4 never reaches 10). g116-2 resolved (Q2: gave the reason the empty-list base case is safe, that every list runs out of items; could still state more sharply that each call removes exactly one item, but the reasoning was right).\n\nQ3 was the unanswered question carried over from event 116 (a 3-way split with n = 27). Got the number of splits right (3) but treated the row cost as 3 and the total as 10 instead of 27 per row and about 81 in total (g117-1). Craig asked for the session to be logged and then for a worked example with this recurrence. The Fibonacci versus merge sort retest (repeated work versus shrink rate) was not asked in this session and is still worth a retest at the next review."
     }
+  },
+  {
+    "id": 118,
+    "schema": 1,
+    "ts": "2026-11-02T17:23:35.583Z",
+    "date": "2026-11-02",
+    "verb": "taught",
+    "node_id": "computer-science/data-structures/heaps",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-teacher"
+    },
+    "payload": {
+      "depth": "intro",
+      "content": "WHY: a priority queue is a queue that hands back the most urgent item, not the oldest (hospital triage, an OS picking the next task). With 1,000,000 waiting items: an unsorted array adds in 1 step but needs a scan of all 1,000,000 to find the smallest; a sorted array finds the smallest in 1 step but must shift up to 1,000,000 items to add; a heap adds in about 20 steps and finds the smallest in 1 step. Both operations are cheap, which is the whole point. The heap is the structure; the priority queue is the idea it implements.\n\nWHAT: a heap is a binary tree with two rules (min-heap version). Shape rule: fill the tree one level at a time, left to right, with no gaps. Order rule: every parent is smaller than or equal to its children. Example heap [3, 8, 5, 12, 9, 7, 6]:\n          3\n        /   \\\n       8     5\n      / \\   / \\\n    12   9 7   6\nA heap is NOT a binary search tree. A BST puts everything smaller on the left and everything larger on the right. A heap promises nothing between siblings (here 8 is on the left and 5, the smaller, on the right). Only the root is guaranteed to be the smallest. The second-smallest is one of the root's two children (here 5), but you must compare both to know which. Because there is no left/right rule, searching for an arbitrary value such as 7 can mean checking every item: O(n), versus O(log n) in a balanced BST.\n\nSTORED IN AN ARRAY: because the shape rule leaves no gaps, the tree flattens level by level into an array with no pointers: index 0..6 holds 3, 8, 5, 12, 9, 7, 6. Children of index i are at 2i+1 and 2i+2. The parent of index i is at (i-1) divided by 2, rounded down. Checks: children of index 1 (value 8) are indexes 3 and 4 (12 and 9); the parent of index 5 (value 7) is index 2 (value 5).\n\nADD (sift up): put the new item at the end of the array (the next open slot, so the shape rule stays true), then swap it up while it is smaller than its parent. Example, add 4 to [3, 8, 5, 12, 9, 7, 6]: 4 lands at index 7 under 12; 4 < 12 swap; 4 < 8 swap; 4 > 3 stop. Result [3, 4, 5, 8, 9, 7, 6, 12]. An item can climb at most the height of the tree. 1,000,000 items give about 20 levels, so at most about 20 swaps: O(log n).\n\nREMOVE THE SMALLEST (sift down): the smallest is at index 0, so looking is 1 step. Removing leaves a hole at the top. Correct method: move the LAST item of the array to the root, then swap it down with its SMALLER child until it fits. Example, remove 3 from [3, 8, 5, 12, 9, 7, 6]: move 6 to the root giving [6, 8, 5, 12, 9, 7]; the children of 6 are 8 and 5, the smaller is 5, 6 > 5 so swap giving [5, 8, 6, 12, 9, 7]; 6 now has only the child 7, and 6 < 7 so stop. O(log n).\nWhy the smaller child: the new parent must be <= BOTH children. Swapping with the larger child (8) would put 8 above 5 and break the order rule.\nTempting wrong alternative: slide a child up into the empty root, then a grandchild into that hole, and so on. This breaks the shape rule. The hole travels down one path (about log n slides, not n) and ends in the middle of the tree instead of at the end of the array, so the array has a gap and the index arithmetic for parents and children stops working. Moving the last item keeps the array gap-free and you only repair the order rule afterward.\n\nREAL WORLD: hospital triage and OS task schedulers (always run the highest-priority task); keeping the top 10 values from a stream of billions (hold a min-heap of size 10 and compare each new value only with its smallest); shortest-path algorithms (repeatedly need the closest unexplored place).\n\nCONNECTIONS: arrays (the heap lives in one, and the parent/child arithmetic is array index arithmetic), trees (shape and height give the log n bound; contrast with BST ordering), queues (FIFO takes the oldest, a priority queue takes the most urgent).",
+      "notes": "Taught 2026-11-02 evening in one sitting, no earlier coverage. Prerequisites Arrays and Trees were both needs-review at the time. Check-in questions at the end of the lesson were both answered correctly by voice: the second-smallest is one of the root's two children, found by comparing both (here 5); a value like 7 can hide in either subtree because a heap has no left/right ordering, so search is O(n). Craig added that a heap is only useful for the minimum; tightened afterward: the useful pair is adding and removing the minimum quickly, which is what makes it a priority queue. Not taught (beyond intro depth, candidates for forward pointers): building a heap from n items in O(n) (heapify), heapsort, max-heaps and the min-heap/max-heap choice, d-ary heaps, decrease-key (used by shortest-path algorithms)."
+    }
+  },
+  {
+    "id": 119,
+    "schema": 1,
+    "ts": "2026-11-02T17:23:35.588Z",
+    "date": "2026-11-02",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/heaps",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "You have the min-heap 2, 5, 4, 9, 6, 7 and you add the value 3. Walk through where 3 first lands, what swaps happen, and what the final array looks like.",
+          "answer": "3 goes at the end of the array (index 6, under 4). Swapped with its parent 4 because 3 < 4. Then compared with 2 at the root; 3 > 2 so it stays. Final array 2, 5, 3, 9, 6, 7, 4.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/heaps",
+          "feedback": "Correct. The new item lands at index 6, its parent is index 2 (value 4), one swap, then it stops under the 2. Craig gave the reason for stopping (3 is larger than its parent 2), which is the heart of sift up."
+        },
+        {
+          "tag": "explain",
+          "question": "A heap holds one million items. Roughly how many swaps could adding a new item cost at most, and why is that so much smaller than a million?",
+          "answer": "About 20, because a new item goes to the bottom level and in the worst case (smaller than everything) climbs every level. A heap of 1,000,000 items has roughly 20 levels, which is log n.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/heaps",
+          "feedback": "Correct. Worst case is a new item smaller than everything, which climbs the full height. Small sharpening: it starts on the bottom level, so it makes about one swap fewer than the number of levels (around 19), but \"about 20, on the order of log n\" is the right idea. Each level doubles the number of slots, so 20 levels hold about a million items; it is the halving idea of binary search run in reverse."
+        },
+        {
+          "tag": "predict",
+          "question": "You have the min-heap 2, 5, 4, 9, 6, 7 and you remove the smallest. What moves where, and what is the final array?",
+          "answer": "Remove 2. Move the last item (7) to the root: 7, 5, 4, 9, 6. Swap 7 with its smaller child 4. 7 then sits at index 2 with no children left. Final array 4, 5, 7, 9, 6.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/heaps",
+          "feedback": "Correct. After 7 swaps with 4 it sits at index 2; the only slot that could hold its child is index 5, and the array now has just five items, so it stops. Every parent is smaller than its children: 4 < 5 and 7, 5 < 9 and 6."
+        },
+        {
+          "tag": "explain",
+          "question": "Why do we move the last item to the top on removal, rather than just promoting a child into the empty root?",
+          "answer": "Sliding the second-smallest up would mean moving nearly every item up a level, which costs far more steps than moving the last value to the root and swapping it down.",
+          "correct": false,
+          "node_id": "computer-science/data-structures/heaps",
+          "feedback": "Half right. The cost argument is not accurate: sliding children up creates a new hole each time, but the hole only travels down one path, so it is at most about log n slides, not nearly n. The real reason is the shape rule. The hole ends up in the middle of the bottom level instead of at the end of the array, so the array has a gap and the index arithmetic (children at 2i+1 and 2i+2, parent at (i-1)/2) breaks. Taking the last item keeps the array gap-free, and then only the order rule needs repairing by swapping down with the smaller child."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g119-1",
+          "node_id": "computer-science/data-structures/heaps",
+          "text": "Gave a cost argument (nearly every item would have to move up) for why removal moves the last item to the root. The real reason is the shape rule: promoting children leaves a hole in the middle of the tree and a gap in the array, which breaks the index arithmetic. The hole travels one path, so it costs about log n slides, not n."
+        }
+      ],
+      "notes": "First scored review of Heaps & Priority Queues, same evening as the teaching event (118). Questions were asked one at a time by voice. Q1, Q2 and the mechanics of Q3 were correct. Q3 part two (why move the last item) was graded wrong because the reasoning named the wrong problem (cost instead of shape), although it correctly sensed that promoting children is the worse approach. Craig also asked for time to think aloud without being cut off. An extra question on where a heap beats a sorted array was offered and declined; Craig chose to wrap up. Worth retesting g119-1 with a fresh scenario at the next review."
+    }
   }
 ]
