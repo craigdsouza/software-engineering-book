@@ -589,6 +589,7 @@ footer.site-footer {
 }
 .swatch[data-status="solid"] { background: var(--status-solid); border-color: var(--status-solid); }
 .swatch[data-status="needs-review"] { background: var(--accent-bg); border-color: var(--accent); }
+.swatch[data-status="needs-review"][data-miss] { background: var(--status-fresh); border-color: var(--status-faint); }
 .swatch[data-status="ungraded"] { background: var(--border); border-color: var(--text-dim); }
 .swatch[data-status="unwritten"] { background: transparent; border-color: var(--border); }
 
@@ -693,6 +694,8 @@ summary.unit-summary:focus-visible { outline: 2px solid var(--accent); outline-o
 }
 .tick[data-status="solid"] { background: var(--status-solid); border-color: var(--status-solid); }
 .tick[data-status="needs-review"] { background: var(--accent-bg); border-color: var(--accent); }
+/* light green: quizzed, and the most recent quiz was not a perfect score (solid stays dark green) */
+.tick[data-status="needs-review"][data-miss] { background: var(--status-fresh); border-color: var(--status-faint); }
 .tick[data-status="ungraded"] { background: var(--border); border-color: var(--text-dim); }
 .tick[data-status="unwritten"] { background: transparent; border-color: var(--border); }
 .unit-count {

@@ -192,7 +192,9 @@ function directStatus(events, today = new Date()) {
     status = "solid";
   }
 
-  return { status, timesReviewed: streak, lastScored, lastSuccess: lastSuccessDate, dueDate };
+  // lastMissed: the most recent quiz had at least one wrong answer (not a perfect score).
+  // The home page uses it to tint a needs-review tick light green (see computeAll).
+  return { status, timesReviewed: streak, lastScored, lastSuccess: lastSuccessDate, dueDate, lastMissed: lastWasWrong };
 }
 
 // ---------- 5. Recursive combine: status(node) = weakest_link(direct, rollup(children)) ----------
@@ -251,6 +253,14 @@ function computeAll(nodes, eventsByNode) {
     } else {
       combined = direct && rollup ? worse(direct.status, rollup) : direct ? direct.status : rollup;
     }
+
+    // "Quizzed, last score not perfect": the node is needs-review AND the quiz behind that
+    // came back with a miss -- its own latest quiz (when that result still counts, as above),
+    // or a child's. A node that is needs-review only because it is overdue after a perfect
+    // quiz, or because it was never quizzed, is NOT flagged. Added 2026-11-03.
+    const ownCounts = !!direct && !(isParentPage && kidDues.length && !ownIsCurrent);
+    const kidsMissed = node.children.some((c) => nodes.get(c) && nodes.get(c)._missed);
+    node._missed = combined === "needs-review" && ((ownCounts && direct.lastMissed) || kidsMissed);
 
     memo.set(id, combined);
     node._direct = direct;
@@ -513,6 +523,7 @@ function buildSpine(nodes, eventsByNode, rawEvents, today, H) {
     kind: n.materialization,
     depth,
     status: n._status,
+    quizzed_miss: !!n._missed,
     meta: H.rowMeta(n, depth),
     tags: aggregateTags(eventsByNode.get(n.id)),
     stands: H.composeStands(n),

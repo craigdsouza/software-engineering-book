@@ -47,6 +47,8 @@ const STATUS_LABEL = {
   ungraded: "written · ungraded",
   unwritten: "not written",
 };
+// Shown on a needs-review tick whose most recent quiz was not a perfect score (light green).
+const MISS_LABEL = "quizzed · last score not perfect";
 
 // Replace the content between <!-- BUILD-PROGRESS:START name --> and
 // <!-- BUILD-PROGRESS:END name -->. Errors loudly if the markers are missing.
@@ -122,10 +124,17 @@ function renderNext(next) {
 // ---------- spine ----------
 
 function renderLegend() {
-  return ["solid", "needs-review", "ungraded", "unwritten"]
+  const items = [
+    { status: "solid", label: STATUS_LABEL.solid },
+    { status: "needs-review", miss: true, label: MISS_LABEL },
+    { status: "needs-review", label: STATUS_LABEL["needs-review"] },
+    { status: "ungraded", label: STATUS_LABEL.ungraded },
+    { status: "unwritten", label: STATUS_LABEL.unwritten },
+  ];
+  return items
     .map(
-      (k) =>
-        `<span class="legend-item"><span class="swatch" data-status="${k}"></span>${esc(STATUS_LABEL[k])}</span>`
+      (it) =>
+        `<span class="legend-item"><span class="swatch" data-status="${it.status}"${it.miss ? " data-miss" : ""}></span>${esc(it.label)}</span>`
     )
     .join("\n        ");
 }
@@ -172,7 +181,12 @@ function renderPanel(unit) {
 function renderUnitSummaryInner(unit, interactive) {
   const caret = interactive ? "▸" : "·";
   const ticks = (unit.nodes
-    ? unit.nodes.map((n) => `<span class="tick" data-status="${n.status}" title="${esc(n.title + " · " + STATUS_LABEL[n.status])}"></span>`)
+    ? unit.nodes.map((n) => {
+        // light green: needs-review, and the most recent quiz was not a perfect score
+        const miss = n.status === "needs-review" && n.quizzed_miss;
+        const label = miss ? MISS_LABEL : STATUS_LABEL[n.status];
+        return `<span class="tick" data-status="${n.status}"${miss ? " data-miss" : ""} title="${esc(n.title + " · " + label)}"></span>`;
+      })
     : Array.from({ length: unit.blank || 0 }, () => `<span class="tick" data-status="unwritten" title="not written yet"></span>`)
   ).join("");
   const openLink = unit.href ? `\n            <a class="unit-open" href="${esc(unit.href)}">Open page →</a>` : "";
