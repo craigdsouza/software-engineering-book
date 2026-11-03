@@ -2897,5 +2897,49 @@
       ],
       "notes": "First quiz on the graphs nodes, taught earlier the same day; no earlier gaps to retest. Question 1 was asked during a voice session and answered in text chat.\nFour of five clean. The one miss was an off-by-the-diagonal count in the dense-graph question (2,500 instead of 2,450 list entries); the reasoning (dense graph, so lists lose their memory advantage and the matrix is the pick) was right.\nA follow-up probe, \"does a vertex appear in its own list of neighbors?\", was not answered, so g123-1 stays open until retested.\nDirected edges stored once, weighted list entries as pairs, matrix rows as outgoing edges, and the cycle-versus-DAG ordering argument were all handled cleanly."
     }
+  },
+  {
+    "id": 124,
+    "schema": 1,
+    "ts": "2026-11-03T17:55:00.000Z",
+    "date": "2026-11-03",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/arrays",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "A leaderboard keeps 2,000 scores in an array, best score first, and the array has a free slot at the end. A new player beats everyone, so their score must go at position 0. (a) Exactly how many existing scores move, and in which direction? (b) What if the new score had to land at position 1,000 instead? How many move then? (c) Write the cost of a front insert in Big O. Is it the same every time, or only in the worst case?",
+          "answer": "(a) Assumed 1,999 scores plus one free slot, so all 1,999 scores move right to make room; direction was implied but not stated. (b) The first 1,000 stay and the next 1,000 move. (c) O(n), always.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Correct on the idea. Every existing score shifts one place toward the end, because the array must stay packed with the best score at position 0. As written, the array held 2,000 scores plus a free slot, so 2,000 move. At position 1,000, the 1,000 scores before it stay and the 1,000 from position 1,000 onward each shift one place right. A front insert is O(n) every time, not only in a worst case: there is no best case or average case that moves fewer items, and Big O drops constants, so O(n/2) is written O(n)."
+        },
+        {
+          "tag": "predict",
+          "question": "A dynamic array is full at 60 slots and grows x3 to 180 slots. (a) How many free appends does the resize buy? (b) How many items does the resize copy? (c) Counting each copy and each plain append as 1 unit, what is the average cost per append across that stretch? (d) So is a single append at the end \"always O(1)\"? Answer in one sentence.",
+          "answer": "(a) 120 (180 - 60). (b) 60. (c) 60 copies plus 120 appends is 180 units over 120 appends, so 1.5. (d) Amortized O(1), not exactly O(1), because every so often a resize happens and costs more.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Correct on all four. The general shortcut behind (c): growing by a factor g, copying n items buys (g - 1) x n free appends, so one cycle costs n + (g - 1) x n = g x n of work over (g - 1) x n appends, which averages g / (g - 1) per append. For x3 that is 3 / 2 = 1.5, matching the hand count (60 copies + 120 appends = 180 over 120 appends). One resize costs about n, but each resize buys many free appends, so the average stays constant. That is why an append at the end is amortized O(1), not always O(1)."
+        },
+        {
+          "tag": "explain",
+          "question": "Inserting at the front of a linked list takes 1 step, but in an array it takes n steps. (a) Why does the array have to move everything? (b) What does the array give you in return for that cost?",
+          "answer": "(a) An array is one contiguous block, and there is no guarantee that the address just left of the first slot is free, so it cannot grow to the left; the items have to shift right to make room. (b) O(1) lookup by position.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Correct. The array is one contiguous block with fixed spacing, so it cannot grow leftward, and the items shift right. One precision point: when there is a free slot at the end, the items shift one place right inside the same block and nothing is copied to a new block. A new block is needed only when the array is full (the resize case). The return is O(1) lookup by position, because the address of item i is the base address plus i times the element size. The trade runs the other way for a linked list: front insert is 1 step, but reaching position k means walking k steps."
+        }
+      ],
+      "gaps": [],
+      "notes": "Overdue review of Arrays (due Oct 28), retesting the open gap from the last Arrays quiz (g105-1: front insert misread as moving an existing song, best case O(1) and average O(n/2) given for a front insert, and an end insert called \"always O(1)\").\ng105-1 resolved: Craig said a front insert is O(n) always, and that an append at the end is amortized O(1), not always O(1), because of the occasional resize. He also computed a fresh growth factor (x3) correctly by dividing the cycle's work by the number of appends, which closes the earlier dividing-by-array-size slip (g104-1) for good, and explained the contiguity reason for shifting without prompting.\nSmall precision points, not scored as gaps: in Q1 he changed the setup to 1,999 scores plus a free slot (the question said 2,000 scores), and did not say which way the items move (right, toward the end). In Q3 he said \"the entire array must move\"; with a free slot at the end only the items shift one place inside the same block.\nCraig asked whether the g / (g - 1) shortcut was in the book. It was already one sentence on the page without a derivation; the derivation is now in the Q2 feedback so the editor can write it in."
+    }
   }
 ]
