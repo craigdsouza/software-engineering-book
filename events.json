@@ -2777,5 +2777,59 @@
       ],
       "notes": "First scored review of Heaps & Priority Queues, same evening as the teaching event (118). Questions were asked one at a time by voice. Q1, Q2 and the mechanics of Q3 were correct. Q3 part two (why move the last item) was graded wrong because the reasoning named the wrong problem (cost instead of shape), although it correctly sensed that promoting children is the worse approach. Craig also asked for time to think aloud without being cut off. An extra question on where a heap beats a sorted array was offered and declined; Craig chose to wrap up. Worth retesting g119-1 with a fresh scenario at the next review."
     }
+  },
+  {
+    "id": 120,
+    "schema": 1,
+    "ts": "2026-11-03T17:10:00.000Z",
+    "date": "2026-11-03",
+    "verb": "taught",
+    "node_id": "computer-science/data-structures/graphs",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-teacher"
+    },
+    "payload": {
+      "depth": "intro",
+      "content": "WHY: many real things are dots joined by lines, not lists or trees: people and friendships, cities and roads, web pages and links. A graph is the structure for that.\n\nWHAT: a graph is two things. A set of vertices (the dots) and a set of edges (the lines between them). Example: five people, Asha, Ben, Chen, Dev and Esha. Four friendships: Asha-Ben, Asha-Chen, Ben-Chen, Chen-Dev. Esha has none. That is 5 vertices and 4 edges.\n\n   Asha ---- Ben\n     \\       /\n      \\     /\n       Chen ---- Dev\n\n   Esha\n\nVOCABULARY: neighbors = two vertices joined by an edge (Chen's neighbors are Asha, Ben and Dev). Degree = how many edges touch a vertex (Chen 3, Dev 1, Esha 0). Path = a walk along edges (Dev, Chen, Asha is a path of 2 edges). Cycle = a path that returns to where it started (Asha, Ben, Chen, Asha is a cycle of 3 edges). Connected = every vertex can reach every other. This graph is not connected: Esha is cut off, so it has 2 separate pieces (components).\n\nWHY NOT A LIST OR A TREE: a linked list gives each item at most one next, but Chen has three friends. A tree has exactly one path between any two nodes, so it can never contain a cycle (a cycle would give two different paths between the same pair). The Asha-Ben-Chen triangle is a cycle, so this is not a tree. A tree is a graph that is connected and has no cycles. A linked list is a graph where each vertex has at most one outgoing edge. A graph is what you get when you drop those rules: it may be disconnected and it may contain cycles.\n\nSTORING IT: a graph is only an idea (dots and lines), and memory holds numbers, not drawings. Before any question can be asked of a graph (\"are these two friends?\", \"what is a route between two cities?\") it has to be written into memory in some layout. The two standard layouts are the adjacency list and the adjacency matrix (see graphs/representations). Both are built from structures already known: a list layout is an array whose slots each hold a list of neighbors, and a matrix layout is not a new structure but an array of arrays, with the meaning attached that each cell says whether two vertices are joined. Every later graph algorithm (shortest route, are two things connected) asks \"who are this vertex's neighbors?\" or \"are these two linked?\", and how fast it can ask depends on the layout chosen. The graph is the what; the layout is the how.",
+      "notes": "Diagnostic: Craig said a tree is connected (a path between every pair of nodes) and has no cycles, while a graph may be disconnected and may have cycles. Correct on both. Sharpened with: in a tree there is exactly one path between any two nodes, which is precisely why a cycle cannot exist.\nClarifying questions, both resolved: (1) how list vs matrix connect back to graphs (answer: graph is the idea, the layout is how it sits in memory); (2) is a matrix a separate data structure (answer: no, an array of arrays with meaning attached).\nParts of this session were taught by voice.\nForward pointers: BFS, DFS and topological sort build directly on this (nodes already exist under computer-science/algorithms/graph-traversal)."
+    }
+  },
+  {
+    "id": 121,
+    "schema": 1,
+    "ts": "2026-11-03T17:10:01.000Z",
+    "date": "2026-11-03",
+    "verb": "taught",
+    "node_id": "computer-science/data-structures/graphs/representations",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-teacher"
+    },
+    "payload": {
+      "depth": "intro",
+      "content": "Two ways to write a graph into memory. Same graph as before: Asha, Ben, Chen, Dev, Esha with 4 friendships (Asha-Ben, Asha-Chen, Ben-Chen, Chen-Dev).\n\nADJACENCY LIST: each vertex gets its own array of neighbors.\n  Asha: Ben, Chen\n  Ben:  Asha, Chen\n  Chen: Asha, Ben, Dev\n  Dev:  Chen\n  Esha: (empty)\nEach friendship appears twice, once in each person's array, because the line goes both ways. 4 friendships make 8 entries. Memory is about the number of vertices plus twice the number of edges.\n\nADJACENCY MATRIX: a grid with the vertices down the side and across the top. A 1 where two are joined, 0 otherwise.\n\n          Asha Ben Chen Dev Esha\n   Asha     0    1   1    0   0\n   Ben      1    0   1    0   0\n   Chen     1    1   0    1   0\n   Dev      0    0   1    0   0\n   Esha     0    0   0    0   0\n\nIt always has V x V cells (5 x 5 = 25) however few friendships exist. Here only 8 cells are 1 (4 friendships written twice) and the other 17 are 0s that store nothing useful. A matrix is not a new structure: it is an array of arrays, and a row number plus a column number reaches a cell.\n\nEDGE LOOKUP, \"are Asha and Dev friends?\": Matrix: Asha is row 1 and Dev is column 4, so you jump straight to that cell and read it. 1 step, no matter how big the graph is (the positions are known, like indexing into an array). List: scan Asha's array (2 names), or Dev's (1 name, so you would pick the shorter). The cost grows with how many friends a person has: if Asha had 1,000 friends, up to about 1,000 steps. So the matrix wins this question.\n\nTEMPTING BUT WRONG: \"the matrix answers faster, so it is the better design.\" Counterexample: a social network of 1,000,000 people with about 200 friends each. Matrix: 1,000,000 x 1,000,000 = 1,000,000,000,000 cells (1 trillion); even at 1 bit per cell that is about 125 GB. Lists: 1,000,000 x 200 = 200,000,000 entries (200 million), which is 5,000 times fewer. Each person knows only 200 of the 1,000,000 possible people, so nearly every matrix cell is 0. A graph with few edges compared with the possible maximum is called sparse.\n\nCHOOSING: a sparse graph favors the list. It is compact, and the edge check costs at most about 200 steps, which is tiny next to 1,000,000. A dense graph (nearly every pair connected) favors the matrix, which then wastes almost nothing and gives the 1-step check. The trade-off in one line: the list saves memory and pays with slower \"are these two linked?\" checks; the matrix gives the 1-step check and pays with memory.\n\nSOFTENING TRICK: keep each person's friends in a hash table instead of a plain array, and the \"are these two friends?\" check drops back to about 1 step (see hash-tables).",
+      "notes": "Craig's first instinct was one list of friends per person, which is the adjacency list. Correct.\nOn the Asha-Dev lookup he said he was unsure and needed a hint (think of how an array jumps straight to a known position). After the hint he got it: the matrix is faster because both indices are known, while the list must scan because you do not know where in the array Dev would be.\nFor the 1,000,000-person network he chose the adjacency list on storage grounds and named the cost himself: slower lookup of a given friendship.\nNot covered yet: the cost of listing all of one vertex's neighbors (list: read its array; matrix: scan a whole row of V cells), and edge counts for dense graphs."
+    }
+  },
+  {
+    "id": 122,
+    "schema": 1,
+    "ts": "2026-11-03T17:10:02.000Z",
+    "date": "2026-11-03",
+    "verb": "taught",
+    "node_id": "computer-science/data-structures/graphs/graph-kinds",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-teacher"
+    },
+    "payload": {
+      "depth": "intro",
+      "content": "So far every edge worked both ways. Real graphs break that in two ways, and add a third idea.\n\nDIRECTED EDGES: an edge with a direction, drawn as an arrow. Following someone on Instagram: if Asha follows a celebrity, the celebrity does not automatically follow Asha back. Other cases: one-way streets, and links between web pages (page A can link to B without B linking back). Storage changes neatly. In an undirected graph each friendship was stored twice. A directed arrow from Asha to Ben is stored once, in Asha's list only. In the matrix you put a 1 in the Asha row and Ben column, and the Ben row and Asha column stays 0. So a directed matrix is no longer a mirror image of itself.\n\nExample, three web pages where A links to B, B links to C and C links to A:\n        A  B  C\n   A    0  1  0\n   B    0  0  1\n   C    1  0  0\nRow B has a 0 under A, a 1 under C and a 0 under B itself (B does not link to itself). Following the arrows A, B, C, A returns to the start, so this directed graph contains a cycle.\n\nTWO-WAY CONNECTIONS: a graph can mix one-way and two-way connections and is still a directed graph. A two-way connection is simply two arrows, one each way (Asha follows Ben and Ben follows Asha). No special edge type is needed. An undirected graph is the special case where every arrow comes paired with its twin, which is why an undirected friendship is stored twice.\n\nWEIGHTED EDGES: a number on the edge, called its weight. On a road map, two roads can both touch Mumbai, one 150 kilometers and one 900. The weight can be distance, travel time or cost. Adjacency list: store pairs instead of plain names, so Asha's entry might read Pune, 150. Adjacency matrix: the cell holds the weight itself instead of a 1, and you need a marker for \"no road\", such as 0 or infinity.\n\nACYCLIC GRAPHS AND DAGs: acyclic means no cycles. A directed graph with no cycles is a DAG (directed acyclic graph). Classic example: getting dressed. Socks come before shoes, shirt before jacket; each arrow means \"this must happen before that\".\n\nWHY A CYCLE BREAKS A PLAN: a build system where task A needs B, B needs C and C needs A. No task can go first, because each is waiting on another in the loop. That deadlock is why any \"do this before that\" ordering must be a DAG.",
+      "notes": "Check question answered correctly: row B has a 1 under C and a 0 under A, the web-page graph has a cycle, and in the build-task cycle no task can start first because each waits on the next, which breaks sequential planning.\nCraig asked whether a directed graph can have both one-way and two-way edges. Resolved: yes, two arrows.\nForward pointers: topological sort (ordering a DAG so every task comes after its dependencies; node exists under computer-science/algorithms/graph-traversal) and shortest-path search on weighted graphs.\nA voice-session quiz began (question 1, recall: what is a graph made of, vertex vs edge) but it was never answered, so no quiz event exists yet."
+    }
   }
 ]

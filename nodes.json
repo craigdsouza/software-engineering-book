@@ -136,7 +136,7 @@
       "id": "computer-science/data-structures/graphs",
       "title": "Graphs",
       "summary": "Points joined by lines (people and friendships, cities and roads), and how to store them: adjacency lists vs matrices.",
-      "page": null,
+      "page": "computer-science/data-structures.html#graphs",
       "deps": [
         "computer-science/data-structures/linked-lists",
         "computer-science/data-structures/arrays"
@@ -148,7 +148,7 @@
       "id": "computer-science/data-structures/graphs/representations",
       "title": "Adjacency List vs Matrix",
       "summary": "Two ways to store a graph, and which is cheaper for sparse versus dense graphs.",
-      "page": null,
+      "page": "computer-science/data-structures.html#representations",
       "deps": [],
       "contrasts": [],
       "also_in": []
@@ -157,7 +157,7 @@
       "id": "computer-science/data-structures/graphs/graph-kinds",
       "title": "Directed, Weighted & Acyclic Graphs",
       "summary": "One-way edges, edges with costs, and graphs with no cycles (DAGs).",
-      "page": null,
+      "page": "computer-science/data-structures.html#graph-kinds",
       "deps": [],
       "contrasts": [],
       "also_in": []

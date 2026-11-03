@@ -1,5 +1,5 @@
 ---
-prose_through: 119
+prose_through: 122
 ---
 
 :::callout
@@ -251,6 +251,106 @@ It also costs at most one swap per level, so O(log n). Take the smaller child be
 
 Compared with a [queue](#queues), which serves the oldest item first, a priority queue serves the most urgent. The heap lives in an array, and its height comes from the same level-by-level shape that gives a balanced tree its log n bound.
 
+## Graphs {#graphs}
+
+Many real things are dots joined by lines, not lists or trees. People and friendships. Cities and roads. Web pages and links. A **graph** is the structure for that.
+
+**What a graph is.** A graph is two things: a set of **vertices** (the dots) and a set of **edges** (the lines between them). Take five people, Asha, Ben, Chen, Dev and Esha. There are four friendships: Asha-Ben, Asha-Chen, Ben-Chen and Chen-Dev. Esha has no friends yet. That makes 5 vertices and 4 edges.
+
+```
+   Asha ---- Ben
+     \       /
+      \     /
+       Chen ---- Dev
+
+   Esha
+```
+
+A few words come up again and again:
+
+- **Neighbors:** two vertices joined by an edge. Chen's neighbors are Asha, Ben and Dev.
+- **Degree:** how many edges touch a vertex. Chen has degree 3, Dev has 1, Esha has 0.
+- **Path:** a walk along edges. Dev, Chen, Asha is a path of 2 edges.
+- **Cycle:** a path that ends where it started. Asha, Ben, Chen, Asha is a cycle of 3 edges.
+- **Connected:** every vertex can reach every other. This graph is not connected. Esha is cut off, so the graph has 2 separate pieces, called components.
+
+**Not a list, not a tree.** A [linked list](#linked-lists) gives each item at most one next item, but Chen has three friends. A [tree](data-structures/trees.html) has exactly one path between any two nodes, so it can never contain a cycle. A cycle would give two different paths between the same pair. The Asha-Ben-Chen triangle is a cycle, so this graph is not a tree. Put another way, a tree is a graph that is connected and has no cycles. A linked list is a graph where each vertex has at most one outgoing edge. A graph is what you get when you drop those rules. It may be disconnected, and it may contain cycles.
+
+**Storing a graph.** A graph is only an idea, dots and lines. Memory holds numbers, not drawings. So before you can ask a graph anything ("are these two friends?", "what is a route between two cities?"), you have to write it into memory in some layout. The two standard layouts are the adjacency list and the adjacency matrix, described next. The graph is the *what*. The layout is the *how*. Every graph algorithm asks questions like "who are this vertex's neighbors?" or "are these two linked?", and how fast it can ask depends on the layout you chose.
+
+### Adjacency List vs Matrix {#representations}
+
+Both layouts store the same graph, the five people and four friendships above.
+
+**Adjacency list.** Each vertex gets its own array of neighbors.
+
+```
+Asha: Ben, Chen
+Ben:  Asha, Chen
+Chen: Asha, Ben, Dev
+Dev:  Chen
+Esha: (empty)
+```
+
+Every friendship appears twice, once in each person's array, because the line goes both ways. Four friendships make 8 entries. Memory is about the number of vertices plus twice the number of edges.
+
+**Adjacency matrix.** A grid with the vertices down the side and across the top. A 1 means the two are joined. A 0 means they are not.
+
+```
+          Asha Ben Chen Dev Esha
+   Asha     0    1   1    0   0
+   Ben      1    0   1    0   0
+   Chen     1    1   0    1   0
+   Dev      0    0   1    0   0
+   Esha     0    0   0    0   0
+```
+
+The matrix always has V × V cells, however few friendships exist. Here that is 5 × 5 = 25 cells. Only 8 of them are 1s (4 friendships, each written twice). The other 17 are 0s that store nothing useful.
+
+Neither layout is a new structure. A matrix is an [array](#arrays) of arrays, and a row number plus a column number reaches a cell. A list layout is an array whose slots each hold a list of neighbors.
+
+**Are Asha and Dev friends?** In the matrix, Asha is row 1 and Dev is column 4. You jump straight to that cell and read it. That is 1 step, however big the graph is, because both positions are known, just like indexing into an array. In the list, you scan Asha's array (2 names) or Dev's (1 name, so you would pick the shorter). The cost grows with how many friends a person has. If Asha had 1,000 friends, it could take up to about 1,000 steps. On this question, the matrix wins.
+
+**Tempting but wrong: "the matrix answers faster, so it is the better design."** Take a social network of 1,000,000 people with about 200 friends each.
+
+| Layout | Memory |
+|---|---|
+| Matrix | 1,000,000 × 1,000,000 = 1,000,000,000,000 cells (1 trillion). About 125 GB even at 1 bit per cell. |
+| Lists | 1,000,000 × 200 = 200,000,000 entries (200 million). That is 5,000 times fewer. |
+
+Each person knows only 200 of the 1,000,000 possible people, so nearly every matrix cell is 0. A graph with few edges compared with the most it could have is called **sparse**.
+
+**Choosing.** A sparse graph favors the list. It is compact, and an edge check costs at most about 200 steps, which is tiny next to 1,000,000. A **dense** graph, where nearly every pair is connected, favors the matrix. Then the matrix wastes almost nothing and gives the 1-step check. In one line: the list saves memory and pays with slower "are these two linked?" checks. The matrix gives the 1-step check and pays with memory.
+
+One trick softens the list's cost. Keep each person's friends in a [hash table](#hash-tables) instead of a plain array, and the "are these two friends?" check drops back to about 1 step.
+
+### Directed, Weighted & Acyclic Graphs {#graph-kinds}
+
+So far every edge worked both ways. Real graphs bend that rule in two ways, and add a third idea.
+
+**Directed edges.** A directed edge has a direction and is drawn as an arrow. If Asha follows a celebrity on Instagram, the celebrity does not automatically follow Asha back. One-way streets work the same way. So do links between web pages: page A can link to B without B linking back.
+
+Storage changes in a neat way. An undirected friendship was stored twice. A directed arrow from Asha to Ben is stored once, in Asha's list only. In the matrix, the Asha row and Ben column holds a 1, and the Ben row and Asha column stays 0. So a directed matrix is no longer a mirror image of itself.
+
+Here is an example with three web pages. A links to B, B links to C, and C links to A.
+
+```
+        A  B  C
+   A    0  1  0
+   B    0  0  1
+   C    1  0  0
+```
+
+Row B has a 0 under A, a 1 under C, and a 0 under B itself, because B does not link to itself. Follow the arrows A, B, C, A and you are back at the start. So this graph contains a cycle.
+
+**Two-way connections.** A graph can mix one-way and two-way connections and is still a directed graph. A two-way connection is just two arrows, one each way, such as Asha following Ben and Ben following Asha. No special edge type is needed. An undirected graph is the special case where every arrow comes paired with its twin. That is why an undirected friendship is stored twice.
+
+**Weighted edges.** A weight is a number on an edge. On a road map, two roads can both touch Mumbai, one 150 kilometers long and the other 900. A weight can be distance, travel time or cost. In an adjacency list, store pairs instead of plain names, so Asha's entry might read "Pune, 150". In a matrix, the cell holds the weight instead of a 1, and you need a marker for "no road", such as 0 or infinity. Finding the cheapest route on a weighted graph is the job of [Shortest Paths](algorithms.html#shortest-paths).
+
+**Acyclic graphs and DAGs.** Acyclic means no cycles. A directed graph with no cycles is a **DAG**, short for directed acyclic graph. Getting dressed is the classic example. Socks come before shoes, and shirt before jacket. Each arrow means "this must happen before that".
+
+**Why a cycle breaks a plan.** Say a build system has task A needing B, B needing C, and C needing A. No task can go first, because every task is waiting on another task in the loop. That is a deadlock. So any "do this before that" ordering has to be a DAG. Putting tasks into a valid order is called topological sort, covered under [Types of Problems](algorithms.html#problem-types).
+
 ## Intermediate & Advanced Topics (forward pointers)
 
 Concepts mentioned along the way that go beyond this page's current depth — tracked here deliberately rather than left as scattered asides, to return to on purpose later.
@@ -266,10 +366,11 @@ Concepts mentioned along the way that go beyond this page's current depth — tr
 
 ## Where things stand
 
-Linked Lists, Doubly-Linked Lists, Hash Tables, Stacks, Queues and Big O are solid. For linked lists, the two earlier misconceptions (that reordering by content is O(1), and that a pointer to a node also reaches the node before it) did not come back, and the rule "it depends on whether you already hold the pointer or must search for it" is now stated unprompted. One refinement remains: a singly-linked list can also delete in O(1) when you hold a pointer to the previous node. For hash tables, the earlier slips (assuming a key always sits in its own hashed slot, believing lookups stay fast while only inserts slow down, and not stopping at the first empty slot or handling wraparound) were resolved on a fresh worked table. Stacks and Queues each got their first check on their own, and both were clean. Big O now separates best/worst/average case from amortized cost correctly. Arrays still need review. The doubling argument is now explained correctly in Craig's own words, and he worked out ×1.5 and ×1.25 with the per-cycle method, though he first divided the cycle's work by the array's size instead of by the number of appends. He also first treated deleting the oldest item as overwriting it with a placeholder (O(1)) rather than shifting everything left (O(n)), and corrected that straight away. The next step is a fresh check on both slips, then inserting in the middle of an array and cache behaviour. Heaps & Priority Queues is new and needs review. Adding an item, removing the smallest, and why an add costs about log n (20 levels for a million items) were all answered correctly. One misconception is open: asked why removal moves the last item to the root instead of promoting a child, the answer was that promoting children would move nearly every item up a level. In fact the hole travels one path, about log n slides. The real reason is the shape rule: promoting children leaves a gap in the middle of the array and breaks the index arithmetic. The next step is a fresh check on that reason. Trees has grown into its own page, see [Trees](data-structures/trees.html) for status.
+Linked Lists, Doubly-Linked Lists, Hash Tables, Stacks, Queues and Big O are solid. For linked lists, the two earlier misconceptions (that reordering by content is O(1), and that a pointer to a node also reaches the node before it) did not come back, and the rule "it depends on whether you already hold the pointer or must search for it" is now stated unprompted. One refinement remains: a singly-linked list can also delete in O(1) when you hold a pointer to the previous node. For hash tables, the earlier slips (assuming a key always sits in its own hashed slot, believing lookups stay fast while only inserts slow down, and not stopping at the first empty slot or handling wraparound) were resolved on a fresh worked table. Stacks and Queues each got their first check on their own, and both were clean. Big O now separates best/worst/average case from amortized cost correctly. Arrays still need review. The doubling argument is now explained correctly in Craig's own words, and he worked out ×1.5 and ×1.25 with the per-cycle method, though he first divided the cycle's work by the array's size instead of by the number of appends. He also first treated deleting the oldest item as overwriting it with a placeholder (O(1)) rather than shifting everything left (O(n)), and corrected that straight away. The next step is a fresh check on both slips, then inserting in the middle of an array and cache behaviour. Heaps & Priority Queues is new and needs review. Adding an item, removing the smallest, and why an add costs about log n (20 levels for a million items) were all answered correctly. One misconception is open: asked why removal moves the last item to the root instead of promoting a child, the answer was that promoting children would move nearly every item up a level. In fact the hole travels one path, about log n slides. The real reason is the shape rule: promoting children leaves a gap in the middle of the array and breaks the index arithmetic. The next step is a fresh check on that reason. Graphs, Adjacency List vs Matrix, and Directed, Weighted & Acyclic Graphs are new and have not been quizzed yet. While they were being taught, the checks went well. Craig described the difference between a tree and a graph correctly (a tree is connected with no cycles, and a graph may be disconnected or have cycles). He chose one list of neighbors per person as his first way to store friendships. He needed a hint on the "are Asha and Dev friends?" lookup, then explained it correctly: the matrix jumps straight to a known cell, while the list has to scan because the position is not known. He picked the list for a 1,000,000-person network and named the cost himself, slower relationship lookups. He also read a row of a directed matrix correctly, spotted the cycle in the three-page example, and explained why a cycle makes ordering tasks impossible. Not covered yet: the cost of listing all of one vertex's neighbors, which is cheap in a list and a full row scan in a matrix. The next step is a first quiz on all three. Trees has grown into its own page, see [Trees](data-structures/trees.html) for status.
 
 ## Related pages
 
 - [Trees](data-structures/trees.html) — grew out of this page; reuses Stacks and Queues covered here for traversal, and a heap is a tree stored in an array.
+- [Algorithms](algorithms.html) — graph traversal, topological sort and shortest paths all run on graphs stored in the layouts above.
 - [APIs](../backend/apis.html) — the "likes" race condition and hash-table collision resolution are both instances of "two things want the same slot, now what?"
 - [Review Schedule](../review-schedule.html) — spaced-repetition status.
