@@ -2941,5 +2941,73 @@
       "gaps": [],
       "notes": "Overdue review of Arrays (due Oct 28), retesting the open gap from the last Arrays quiz (g105-1: front insert misread as moving an existing song, best case O(1) and average O(n/2) given for a front insert, and an end insert called \"always O(1)\").\ng105-1 resolved: Craig said a front insert is O(n) always, and that an append at the end is amortized O(1), not always O(1), because of the occasional resize. He also computed a fresh growth factor (x3) correctly by dividing the cycle's work by the number of appends, which closes the earlier dividing-by-array-size slip (g104-1) for good, and explained the contiguity reason for shifting without prompting.\nSmall precision points, not scored as gaps: in Q1 he changed the setup to 1,999 scores plus a free slot (the question said 2,000 scores), and did not say which way the items move (right, toward the end). In Q3 he said \"the entire array must move\"; with a free slot at the end only the items shift one place inside the same block.\nCraig asked whether the g / (g - 1) shortcut was in the book. It was already one sentence on the page without a derivation; the derivation is now in the Q2 feedback so the editor can write it in."
     }
+  },
+  {
+    "id": 125,
+    "schema": 1,
+    "ts": "2026-11-04T17:40:00.000Z",
+    "date": "2026-11-04",
+    "verb": "taught",
+    "node_id": "computer-science/data-structures/trees/balanced-trees",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-teacher"
+    },
+    "payload": {
+      "depth": "intro",
+      "content": "WHY: a binary search tree (BST) is only fast while it stays short and bushy. With 1,000 numbers, a bushy BST finds any one of them in about 10 steps. If the numbers arrive already sorted (1, 2, 3 ... 1,000), each new number goes to the right of the last one, the tree becomes a single chain, and finding the last number takes 1,000 steps. A self-balancing tree repairs itself during insertion so this cannot happen. The idea to hold: balance has to be actively maintained, not assumed.\n\nWORKED SHAPE: insert 10, 20, 30 into an empty BST. 20 goes right of 10 and 30 goes right of 20. Searching for 30 takes 3 steps. That is a chain, the worst case.\n\nTHE TEMPTING BUT WRONG FIX: keep the same number of elements on each side of the root. Counterexample: 51 numbers, root 50, numbers 1 to 25 inserted in order on the left (a chain of 25) and 51 to 75 on the right (also a chain). Both sides of the root hold 25 numbers, so the rule is satisfied, but finding 25 takes 26 steps, where a well-shaped tree of 51 numbers needs about 6. Two flaws: it only checks the root (the mess can hide lower down), and it compares counts, not heights. Counts fail both ways: a node whose left side is a chain of 7 and whose right side is a bushy tree of 7 has equal counts but heights 7 and 3, which is badly broken; a node with 1 node on the left (height 1) and 3 bushy nodes on the right (height 2) has counts that differ by 2 but is perfectly fine.\n\nTHE AVL RULE (named after its inventors, Adelson-Velsky and Landis): at EVERY node, the height of the left subtree and the height of the right subtree may differ by at most 1. Height means how many levels deep a subtree goes, counting an empty side as 0. A difference of 1 is the deliberate slack; demanding 0 would be impossible for most sizes (any 2-node tree would fail). Applied to the chain 10, 20, 30: at node 10 the left height is 0 and the right height is 2, a difference of 2, so node 10 breaks the rule.\n\nTHE REPAIR IS A ROTATION: a small local rearrangement that only moves a few pointers, so it costs O(1) and never touches the rest of the tree. For the straight chain 10, 20, 30, lift 20 up and let 10 drop down to its left:\n Before            After\n 10                   20\n   \\                 /  \\\n    20     -->      10   30\n      \\\n       30\nIt is still a valid BST: 10 < 20 < 30, the order is preserved. Searching for 30 now takes 2 steps instead of 3.\n\nWHICH NODE TO FIX: after inserting 40 into the tree 20 (left 10, right 30), the root has left height 1 and right height 2, a difference of 1, which is allowed. After inserting 50 as well, two nodes break the rule: node 30 (left height 0, right height 2) and the root 20 (left height 1, right height 3, difference 2). Always fix the LOWEST broken node first. The root only looks broken because 30's lump is too tall. Rotate at 30: lift 40, drop 30 to its left, 50 stays on 40's right. The tree becomes 20 with left 10 and right 40 (children 30 and 50). The root now has heights 1 and 2, so one rotation healed both broken nodes.\n   20                20\n  /  \\              /  \\\n 10   30     -->   10   40\n        \\              /  \\\n         40           30   50\n           \\\n            50\n\nTHE COUNTERINTUITIVE CASE, THE BENT CHAIN: insert 10, then 30, then 20. The tree is 10 with right child 30, and 30 has left child 20. Node 10 is broken (left height 0, right height 2). The tempting fix is the same single rotation: lift 30 and drop 10 to its left. But 20 sits between 10 and 30, so it must go to the right of 10. The result is 30 on top, 10 as its left child, and 20 as 10's right child. That is still broken: at 30 the left height is 2 and the right height is 0. The single rotation only mirrored the problem. The right repair takes two rotations: first straighten the bend by lifting the middle value above its parent, so the shape becomes a plain chain, then do the single rotation you already know. For the 10, 30, 20 case (right then left bend): lift 20 above 30 to get the chain 10, 20, 30, then lift 20 above 10. For the mirror case 30, 10, 20 (left then right bend): lift 20 above 10 to get the chain 30, 20, 10, then lift 20 above 30. Final tree: 20 on top, 10 on its left, 30 on its right.\n\nFOUR CASES IN TOTAL: two straight lumps (right-right and left-left) need ONE rotation. Two bent lumps (right-left and left-right) need TWO rotations. The signal is the direction of the two steps from the broken node toward the tall lump: same direction means a straight chain and one rotation; the second step turning the other way means a bend and two rotations.\n\nCONNECTIONS: builds on Binary Search Trees (the ordering invariant left < node < right is what every rotation must preserve; the sorted-insert chain is the BST worst case). Contrasts with a plain unbalanced BST (fast only if lucky with insertion order) and with a heap (a heap is kept short by always filling level by level, so it needs no rotations). AVL and red-black trees are the two common self-balancing designs; red-black keeps balance with a looser colour-based rule and is not covered yet.",
+      "notes": "Diagnostic: Craig drew the 10, 20, 30 chain correctly in words and said searching for 30 takes 3 steps. His own fix instinct was to keep the same number of elements on each side of the root, so depth stays constrained. Sensible, but it only checks the root and counts nodes. Sharpened with the 51-number two-chains counterexample.\nCraig correctly said that after inserting 20, 10, 30 then 40 then 50, both the root and node 30 break the rule and that the root's difference is 3 versus 1. He first said the tree was already out of balance after inserting 40, which was wrong (heights 1 and 2, difference 1 is allowed). He also called 20 the first broken node; the lowest broken node, 30, is the one to fix first.\nCraig correctly said a straight chain needs one rotation and a bent chain needs two.\nSession stopped here by Craig's choice (end of the day). NOT yet covered: red-black trees (only named), the exact four rotation names (left, right, left-right, right-left), the height guarantee (an AVL tree of n nodes has height at most about 1.44 log2 n), and rotation cost during deletion. Red-black and the height guarantee should become forward pointers.\nCraig prefers describing trees in words over drawing them in a text box on his phone; ASCII diagrams from the teacher were fine."
+    }
+  },
+  {
+    "id": 126,
+    "schema": 1,
+    "ts": "2026-11-04T17:58:00.000Z",
+    "date": "2026-11-04",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/trees/balanced-trees",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "explain",
+          "question": "Earlier you suggested keeping the same number of elements on each side of the root, and I showed that can still leave a very deep tree. In your own words, what two things does the AVL rule check that your first idea missed, and why do those two changes fix the problem?",
+          "answer": "Said the AVL rule checks every node at every depth, not just the root, and that it checks whether the number of children on each side differs by at most 1; this stops chains forming anywhere, and chains cause the imbalance.",
+          "correct": false,
+          "node_id": "computer-science/data-structures/trees/balanced-trees",
+          "feedback": "Right that the rule checks every node. Wrong that it compares the number of nodes on each side: it compares the HEIGHT (how many levels deep) of each side, and the difference may be at most 1. Counts fail in both directions. A node with a 7-node chain on the left (height 7) and a 7-node bushy tree on the right (height 3) has equal counts but is badly broken. A node with 1 node on the left (height 1) and 3 bushy nodes on the right (height 2) has counts differing by 2 but is allowed. Height is the right measure."
+        },
+        {
+          "tag": "predict",
+          "question": "Insert 30, then 10, then 20 into an empty BST. What shape results, which node breaks the AVL rule and by how much, does it need one rotation or two and why, and what does the tree look like after the repair?",
+          "answer": "A bent chain three levels deep: 30 root, 10 left of it, 20 right of 10. Node 30 breaks the rule with 2 levels on one side and none on the other, a difference of 2 against an allowed 1. Needs two rotations because it is a bent chain: first 20 takes 10's place with 10 to its left, then 20 moves to the root with 30 on its right and 10 on its left.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/trees/balanced-trees",
+          "feedback": "Correct on every part, including the order of the two rotations: straighten the bend first, then lift 20 above 30. Final tree is 20 on top with 10 left and 30 right."
+        },
+        {
+          "tag": "predict",
+          "question": "Retest of Question 1: decide for each node whether the AVL rule holds and say what you compared. Node X: left side 6 bushy nodes with height 3, right side 2 nodes in a short chain with height 2. Node Y: left side 6 nodes in one chain with height 6, right side 6 bushy nodes with height 3.",
+          "answer": "X does not break the rule: heights 3 and 2, difference 1, allowed. Y breaks the rule: heights 6 and 3, difference 3.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/trees/balanced-trees",
+          "feedback": "Correct. Compared heights, not counts: X's counts differ by 4 but that does not matter, and Y's counts are equal but its heights are 3 apart."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g126-1",
+          "node_id": "computer-science/data-structures/trees/balanced-trees",
+          "text": "Described the AVL balance check as comparing the number of children (nodes) on each side of every node. The rule compares subtree heights (levels deep), not node counts. Counts miss a 7-node chain against a 7-node bushy side and wrongly flag 1 node against 3 bushy nodes."
+        }
+      ],
+      "notes": "First quiz on balanced trees, taught earlier the same evening (event 125). Three questions at Craig's request because he was ending the day. No earlier gaps to retest.\nQ1 missed on counts versus heights; Q3 was a fresh-numbers retest of exactly that and was answered correctly in the same session, so the idea landed, but g126-1 is logged because the first answer was wrong. It should be rechecked at the next review without a hint.\nQ2 (a bent chain needing two rotations) was fully correct, including the order of the two rotations.\nCraig answers by describing trees in words on his phone; no drawing requested."
+    }
   }
 ]

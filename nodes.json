@@ -106,7 +106,7 @@
       "id": "computer-science/data-structures/trees/balanced-trees",
       "title": "Self-Balancing Trees (AVL, Red-Black)",
       "summary": "How rotations keep a tree's height near log n whatever the insertion order.",
-      "page": null,
+      "page": "computer-science/data-structures/trees.html#balanced-trees",
       "deps": [],
       "contrasts": [],
       "also_in": []
@@ -3446,6 +3446,27 @@
       "tier": "intermediate",
       "under": "computer-science/data-structures/heaps",
       "note": "Shortest-path algorithms need to lower the priority of an item already inside the heap, which the add and remove-smallest operations do not cover."
+    },
+    {
+      "id": "red-black-trees",
+      "title": "Red-black trees",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/trees/balanced-trees",
+      "note": "The second common self-balancing design. It uses a looser rule than AVL's height difference of 1 to decide when to restructure."
+    },
+    {
+      "id": "avl-height-guarantee",
+      "title": "The AVL height guarantee",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/trees/balanced-trees",
+      "note": "A proof of how tall an AVL tree of n nodes can get at worst, which is about 1.44 times log2 of n. That is what turns 'kept roughly balanced' into a hard promise for search."
+    },
+    {
+      "id": "avl-deletion-rebalancing",
+      "title": "Rebalancing after deletion",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/trees/balanced-trees",
+      "note": "The page only covers rebalancing after an insert. Removing a node can also break the rule, and the repair has its own cost to work out."
     }
   ]
 }
