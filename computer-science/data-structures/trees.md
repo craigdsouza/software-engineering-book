@@ -1,5 +1,5 @@
 ---
-prose_through: 126
+prose_through: 128
 ---
 
 :::callout
@@ -130,6 +130,82 @@ The mirror image works the same way. Insert 30, then 10, then 20. First lift 20 
 
 **How it fits with other structures.** Rotations preserve the BST ordering, left smaller than node smaller than right, and that is why they are safe. A plain BST is fast only if the insertion order is lucky. A [heap](../data-structures.html#heaps) stays short a different way, by always filling level by level, so it never needs rotations. AVL is one of the two common self-balancing designs. The other is red-black, which is not covered yet. Further details beyond this page's depth are tracked in the table below.
 
+## B-Trees {#b-trees}
+
+A balanced BST with 1,000,000 keys is about 20 levels tall, so a search takes about 20 steps. In memory, that is nothing. But a large database lives on disk, where one read costs roughly 10 milliseconds. That is a round number. If every step lands on a different part of the disk, 20 steps cost about 200 ms.
+
+Moving everything into memory is no answer. A real database can hold billions of keys that do not fit, and memory forgets everything when the power goes off. You also cannot make one disk read faster. So the goal is fewer reads. A search needs one read per level, so the tree has to be shorter.
+
+**Disks read in blocks.** A disk cannot hand over just 8 bytes. A hard disk reads in sectors of 512 or 4,096 bytes. An SSD reads in pages, usually 4 to 16 thousand bytes. The exact size varies, but neither can give less than a whole unit. A BST node holds one key of a few bytes. Out of a 4,096-byte read, that uses 8 bytes, about 0.2%, and the whole read is still paid for. So if the disk hands you 4,096 bytes anyway, fill all of them with useful keys. A **B-tree** node is one disk block packed with hundreds of sorted keys.
+
+**What a node holds.** A BST node holds 1 key and 2 child addresses. A B-tree node holds n keys and n+1 child addresses. A BST is the case n = 1. An address says where a child's block lives on disk, so following it costs one read.
+
+The keys are real stored values, exactly like the value in a BST node. They are not just signposts. If the key you want is in the node, the search ends there with no further read. The children hold only the values strictly between the keys. Here is a node with 3 keys and 4 children:
+
+```
+            [ 20 | 40 | 60 ]
+           /    |     |    \
+          A     B     C     D
+        <20   21-39  41-59  >60
+```
+
+To search for 10, go to A, because it is below 20. For 45, it is above 20, above 40 and below 60, so go to C. For 75, it is above every key, so go to D. For 60, the search stops right in the node.
+
+**The numbers.** Take 8-byte keys and 8-byte addresses. A 4,096-byte block holds 255 keys and 256 addresses. That is 255 × 8 + 256 × 8 = 4,088 bytes, which leaves a few bytes for bookkeeping. The number of children, about 256, is called the **fan-out**. A BST has a fan-out of 2.
+
+Now count the levels. Level 1 is the root, 1 node. Level 2 has 256 nodes. Level 3 has 65,536 nodes, and 256³ = 16,777,216 child slots. So three levels hold over 16 million keys, and 1,000,000 keys fit in about 3 levels. A search is 3 disk reads, which is 30 ms, against 200 ms for the balanced BST. That is almost 7 times faster, only because each node is wide.
+
+At 1,000,000,000 keys the gap is bigger. 256³ is 16.7 million and 256⁴ is about 4.3 billion, so the B-tree needs 4 levels, about 40 ms. A balanced BST needs about 30 levels, because 2³⁰ is about 1 billion. That is about 300 ms. Real nodes are only guaranteed to be about half full, so the B-tree's worst case could be 5 levels, about 50 ms. That is still far below the BST.
+
+**The extra work inside a node is cheap.** Finding the right spot among up to 255 keys sounds like more work than a BST's one comparison per step. But the block is read from disk once. After that, every comparison happens in memory. A memory comparison takes about a nanosecond, so even all 255 comparisons take about a microsecond. One disk read is 10 ms, which is 10,000 microseconds, about 10,000 times more. The keys are sorted, so binary search inside the node takes only about 8 comparisons. The lesson is that doing more work in memory to save disk reads is a good trade.
+
+**How a B-tree stays balanced.** A BST grows downward. A new value becomes a new leaf at the bottom, and that is how chains form. A B-tree grows **upward**. Use a tiny node that holds at most 3 keys. Insert 10, 20 and 30, and they fit in one node, `[10 | 20 | 30]`. Insert 40, and there is no room. The node **splits**. A split has two steps.
+
+- The middle key moves up into the parent. For 4 keys, take the lower of the two middle keys.
+- The remaining keys divide into two nodes, one on each side of it.
+
+Here, 10, 20, 30 and 40 give 20 moving up into a new root, with children `[10]` and `[30 | 40]`:
+
+```
+      [ 20 ]
+      /    \
+  [10]    [30 | 40]
+```
+
+Insert 50. It goes right of 20, and that child becomes `[30 | 40 | 50]`. That is exactly full, but legal. Insert 60, and that node overfills with 30, 40, 50 and 60. So 40 moves up into the existing root, and the rest divide into `[30]` and `[50 | 60]`:
+
+```
+        [ 20 | 40 ]
+        /    |    \
+     [10]  [30]  [50 | 60]
+```
+
+A split only touches the full node and its parent. Nothing elsewhere moves. Both halves start about half full, and that guarantee keeps the tree short.
+
+**Tempting but wrong: move the middle key up and leave the other keys together in one node.** For the 60 insertion, this gives a root `[20 | 40]` with only 2 children, where the right one is `[30 | 50 | 60]`. It breaks two rules. A root with 2 keys needs 3 children, because a node with n keys has n+1 children. And the child between 20 and 40 may only hold values strictly between 20 and 40. But `[30 | 50 | 60]` mixes 30 with 50 and 60 across the key 40, so a search for 50 would be sent to the wrong place.
+
+**Splits can cascade, and the tree grows only at the root.** Start from the tree above and insert 31, 32, 33, 34 and 35.
+
+- 31 and 32 join the node holding 30, which becomes `[30 | 31 | 32]`.
+- 33 overfills it, with 30, 31, 32 and 33. So 31 moves up into the existing root, which becomes `[20 | 31 | 40]`. Its children are `[10]`, `[30]`, `[32 | 33]` and `[50 | 60]`. The tree is still 2 levels tall.
+- 34 joins `[32 | 33]`, which becomes `[32 | 33 | 34]`.
+- 35 overfills it. So 33 moves up, leaving `[32]` and `[34 | 35]`.
+- The parent `[20 | 31 | 40]` now has 4 keys, 20, 31, 33 and 40, so it splits too. 31 moves up, leaving `[20]` and `[33 | 40]`. The parent was the root, so a new root `[31]` appears.
+
+```
+              [ 31 ]
+             /      \
+        [ 20 ]      [ 33 | 40 ]
+        /    \      /    |     \
+     [10]   [30]  [32] [34|35] [50|60]
+```
+
+All leaves are at depth 3. The old parent's 5 children divided 2 and 3, so the rule of n+1 children holds on both sides. The rule is the same at every level, and a cascade touches at most one node per level.
+
+The height grows only when the **root** splits. Then a new root appears on top and every leaf moves down one level together. A split below the root stays on its own level and pushes its middle key into a parent that already exists, so the height does not change. That is why all leaves always stay at the same depth, and why a B-tree cannot end up lopsided like a BST chain. Splits are also rare. Most inserts land in a leaf that has room and change only that leaf.
+
+**How it fits with other structures.** A BST node is the n = 1 case of a B-tree node. Both keep the sorted left-to-right order. An AVL tree keeps a fan-out of 2 and stays short by rotating after the fact. A B-tree keeps every leaf at the same depth by splitting and growing upward, and its very wide fan-out makes it far shorter. It is the structure behind database indexes.
+
 ## Intermediate & Advanced Topics (forward pointers)
 
 Concepts mentioned along the way that go beyond this page's current depth. They are tracked here on purpose, to return to later.
@@ -139,10 +215,14 @@ Concepts mentioned along the way that go beyond this page's current depth. They 
 | Red-black trees | Intermediate | [Self-Balancing Trees](#balanced-trees) | The second common self-balancing design. It uses a looser rule than AVL's height difference of 1 to decide when to restructure. |
 | The AVL height guarantee | Intermediate | [Self-Balancing Trees](#balanced-trees) | A proof of how tall an AVL tree of n nodes can get at worst, which is about 1.44 times log2 of n. That is what turns "kept roughly balanced" into a hard promise for search. |
 | Rebalancing after deletion | Intermediate | [Self-Balancing Trees](#balanced-trees) | This page only covers rebalancing after an insert. Removing a node can also break the rule, and the repair has its own cost to work out. |
+| B+ trees | Intermediate | [B-Trees](#b-trees) | A variant where the records live only in the leaves, and the keys in the inner nodes are copies. The leaves are linked to each other, which makes scanning a range of keys easy. It is the variant most databases use. |
+| B-tree deletion and minimum fill | Intermediate | [B-Trees](#b-trees) | This page only covers inserting, where a full node splits. Removing a key can leave a node too empty, and the repair is to borrow from a neighbour or merge with it. The rule for how empty a node may get is what gives the half-full guarantee. |
+| The B-tree height bound | Intermediate | [B-Trees](#b-trees) | A proof of how tall a B-tree can get when nodes are only guaranteed to be about half full. For 1,000,000,000 keys at a fan-out of 256, the worst case is about 5 levels. |
+| Caching the top levels in memory | Intermediate | [B-Trees](#b-trees) | The root and the levels just below it are read by every search, so they can stay in memory. That would cut the number of disk reads per search even further. |
 
 ## Where things stand
 
-Terminology, traversal, and balance: taught and holding up on fresh probes. BST: search direction and minimum-finding solid after a corrected misconception (local vs. global minimum); insertion solid after a corrected misconception (insertion doesn't displace existing nodes); deletion now taught end to end (leaf, one child, two-children via successor), including the two-constraint reasoning for why the successor is the safe pick and why direct child-promotion generally isn't — verified against a fresh two-children scenario, answered correctly. The final micro-step, splicing the removed successor's own child up (65 in the worked example above), has now been walked through correctly on a fresh tree: with 30 (children 20 and 40), 70 (children 60 and 80) and 65 under 60, deleting the root 50 gives root 60, with 65 as 70's left child. Self-Balancing Trees: taught and quizzed once. Three questions were asked. The rotation question (insert 30, 10, 20, which needs two rotations because the chain bends) was answered fully correctly, including the order of the two rotations. One misconception came up. When asked what the AVL rule checks, the answer was that it compares the number of nodes on each side. It compares heights, not counts. A fresh retest with different numbers (a node with 6 bushy nodes against 2 in a short chain, and a node with a 6-node chain against 6 bushy nodes) was then answered correctly by comparing heights. It is still worth rechecking later without a hint, because the first answer was wrong. Not covered yet: red-black trees, the worst-case height of an AVL tree, and rebalancing after a deletion. Next in this area: B-Trees.
+Terminology, traversal, and balance: taught and holding up on fresh probes. BST: search direction and minimum-finding solid after a corrected misconception (local vs. global minimum); insertion solid after a corrected misconception (insertion doesn't displace existing nodes); deletion now taught end to end (leaf, one child, two-children via successor), including the two-constraint reasoning for why the successor is the safe pick and why direct child-promotion generally isn't — verified against a fresh two-children scenario, answered correctly. The final micro-step, splicing the removed successor's own child up (65 in the worked example above), has now been walked through correctly on a fresh tree: with 30 (children 20 and 40), 70 (children 60 and 80) and 65 under 60, deleting the root 50 gives root 60, with 65 as 70's left child. Self-Balancing Trees: taught and quizzed once. Three questions were asked. The rotation question (insert 30, 10, 20, which needs two rotations because the chain bends) was answered fully correctly, including the order of the two rotations. One misconception came up. When asked what the AVL rule checks, the answer was that it compares the number of nodes on each side. It compares heights, not counts. A fresh retest with different numbers (a node with 6 bushy nodes against 2 in a short chain, and a node with a 6-node chain against 6 bushy nodes) was then answered correctly by comparing heights. It is still worth rechecking later without a hint, because the first answer was wrong. B-Trees: taught and quizzed once, in the same sitting. Three questions were asked. What a node holds (n keys and n+1 children) and why its size matches a disk block was answered correctly. So was the prediction for 1,000,000,000 keys, about 30 levels and 300 ms for a balanced BST against 4 levels and 40 ms for a B-tree. One misconception came up. When asked why a B-tree cannot end up with leaves at different depths, the answer said that every overflow creates a new parent and adds a level. Only an overflow of the root does that. Any other split pushes the middle key into the parent that already exists, and the height stays the same. The same person had traced inserting 31 to 35 correctly earlier, so this looks like loose wording rather than a gap in understanding. It is still worth rechecking later with a fresh case, because the answer as written was wrong. Along the way, a first attempt at a split moved the middle key up but left the remaining keys together in one node. That was fixed with the rule of n+1 children and the rule that a child holds only values between its two keys. Not covered yet: red-black trees, the worst-case height of an AVL tree, rebalancing after a deletion, B+ trees, deleting from a B-tree, and the B-tree height bound. Next in this area: recheck when a split makes a B-tree taller.
 
 ## Related pages
 

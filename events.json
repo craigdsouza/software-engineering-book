@@ -3009,5 +3009,73 @@
       ],
       "notes": "First quiz on balanced trees, taught earlier the same evening (event 125). Three questions at Craig's request because he was ending the day. No earlier gaps to retest.\nQ1 missed on counts versus heights; Q3 was a fresh-numbers retest of exactly that and was answered correctly in the same session, so the idea landed, but g126-1 is logged because the first answer was wrong. It should be rechecked at the next review without a hint.\nQ2 (a bent chain needing two rotations) was fully correct, including the order of the two rotations.\nCraig answers by describing trees in words on his phone; no drawing requested."
     }
+  },
+  {
+    "id": 127,
+    "schema": 1,
+    "ts": "2026-11-05T17:30:00.000Z",
+    "date": "2026-11-05",
+    "verb": "taught",
+    "node_id": "computer-science/data-structures/trees/b-trees",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-teacher"
+    },
+    "payload": {
+      "depth": "intro",
+      "content": "WHY: a balanced binary search tree (BST) with 1,000,000 keys is about 20 levels tall, so a search takes about 20 steps. In memory that is nothing. But a large database lives on disk, and a disk read costs roughly 10 milliseconds as a round number. If each step lands on a different part of the disk, 20 reads is about 200 ms. Memory is not the answer: real databases hold billions of keys that do not fit in memory, and memory forgets everything when the power goes off. You cannot make one disk read faster, so make fewer reads. One read is needed per level of the tree, so the goal is a shorter tree.\n\nDISKS READ IN BLOCKS: a disk cannot hand over just 8 bytes. A hard disk reads in sectors (512 or 4,096 bytes). An SSD reads in pages (usually 4 to 16 thousand bytes). The exact size varies, but neither can give less than a whole unit. A BST node holds one key of a few bytes, so out of a 4,096-byte read only about 0.2% is useful (8 of 4,096 bytes), yet the whole read is paid for. The fix: if the disk hands you 4,096 bytes anyway, fill all 4,096 with useful keys. A B-tree node is one disk block packed with hundreds of sorted keys.\n\nWHAT A NODE HOLDS: a BST node holds 1 key and 2 child addresses. A B-tree node holds n keys and n+1 child addresses (the n+1 rule; a BST is the case n = 1). An address says where a child's block lives on disk, so following it costs one read. The keys are REAL stored values, exactly like the value in a BST node, not just signposts. Search for a key that sits in the node and the search ends right there, with no further read. The children hold only values strictly between the keys. Small example, a node with 3 keys and 4 children:\n\n            [ 20 | 40 | 60 ]\n           /    |     |    \\\n          A     B     C     D\n        <20   21-39  41-59  >60\n\nSearch for 10: below 20, follow A. Search for 45: above 20, above 40, below 60, follow C. Search for 75: above all, follow D. Search for 60: found in the node itself.\n\nTHE NUMBERS: with 8-byte keys and 8-byte addresses, a 4,096-byte block holds 255 keys and 256 addresses (255 x 8 + 256 x 8 = 4,088 bytes, a few bytes left for bookkeeping). The number of children, about 256, is called the fan-out (a BST has fan-out 2). Levels: level 1 has 1 node (the root); level 2 has 256 nodes; level 3 has 256 x 256 = 65,536 nodes, and 256^3 = 16,777,216 child slots. Three levels hold over 16 million keys, so 1,000,000 keys fit in about 3 levels. A search is 3 disk reads = 30 ms, against 200 ms for the balanced BST, almost 7 times faster, just by making each node wide. For 1,000,000,000 keys: a B-tree with fan-out 256 needs 4 levels (256^3 is 16.7 million, 256^4 is about 4.3 billion), about 40 ms; a balanced BST needs about 30 levels (2^30 is about 1 billion), about 300 ms.\n\nWHY THE EXTRA WORK INSIDE A NODE IS FINE: finding the right spot among up to 255 keys sounds like more work than a BST's one comparison per step. But the block is read from disk once and then all comparisons happen in memory. A memory comparison takes about a nanosecond, so even all 255 comparisons take about a microsecond, while one disk read is 10 ms = 10,000 microseconds, about 10,000 times more. The keys are sorted, so binary search inside the node takes only about 8 comparisons. The lesson: doing more work in memory to save disk reads is a good trade.\n\nHOW A B-TREE STAYS BALANCED: a BST grows downward (a new value becomes a new leaf at the bottom, which is how chains form). A B-tree grows UPWARD. Use a tiny node that holds at most 3 keys. Insert 10, 20, 30: they fit in one node [10|20|30]. Insert 40: no room, so the node SPLITS. A split has two steps: (1) the middle key moves up into the parent (for 4 keys take the lower of the two middle keys), and (2) the remaining keys divide into two nodes, one on each side of it. Here 10, 20, 30, 40 gives 20 moving up into a new root, with children [10] and [30|40]:\n\n      [ 20 ]\n      /    \\\n  [10]    [30 | 40]\n\nInsert 50: goes right of 20, the right child becomes [30|40|50], exactly full but legal. Insert 60: that node overfills (30, 40, 50, 60), so 40 moves up into the existing root and the rest divide into [30] and [50|60]:\n\n        [ 20 | 40 ]\n        /    |    \\\n     [10]  [30]  [50 | 60]\n\nA split only touches the full node and its parent; nothing elsewhere moves. Both halves start about half full, which is the guarantee that keeps the tree short.\n\nTHE TEMPTING BUT WRONG SPLIT: move the middle key up but leave all the other keys together in one node. For the 60 insertion this gives a root [20|40] with only 2 children, where the right one is [30|50|60]. It fails two rules. The n+1 rule: a root with 2 keys needs 3 children. The range rule: the child between 20 and 40 may only hold values strictly between 20 and 40, but [30|50|60] mixes 30 with 50 and 60 across the key 40, so a search for 50 would be sent to the wrong place.\n\nCASCADING SPLITS AND GROWING TALLER: start from the tree above and insert 31, 32, 33, 34, 35. 31 and 32 join the node holding 30, making [30|31|32]. 33 overfills it (30, 31, 32, 33): 31 moves up into the existing root, making [20|31|40] with children [10], [30], [32|33], [50|60]. 34 joins [32|33], making [32|33|34]. 35 overfills it (32, 33, 34, 35): 33 moves up, leaving [32] and [34|35]. The parent [20|31|40] now has 4 keys (20, 31, 33, 40), so it splits too: 31 moves up, leaving [20] and [33|40]. The parent was the root, so a new root [31] appears:\n\n              [ 31 ]\n             /      \\\n        [ 20 ]      [ 33 | 40 ]\n        /    \\      /    |     \\\n     [10]   [30]  [32] [34|35] [50|60]\n\nAll leaves are at depth 3. The old parent's 5 children divided 2 and 3, so the n+1 rule holds on both sides. The rule is the same at every level: a split can cascade upward, one split per level at most. Height only grows when the ROOT splits, and then a new root appears on top and every leaf moves down one level together. Splits below the root happen on their own level, so all leaves always stay at the same depth. That is why a B-tree cannot end up lopsided like a BST chain. Splits are cheap (at most one node per level is touched) and rare (most inserts land in a leaf with room).\n\nCONNECTIONS: contrast with balanced BSTs (AVL): AVL keeps the tree short by rotating after the fact, with fan-out 2; a B-tree keeps all leaves at equal depth by splitting and growing upward, with a very wide fan-out, so it is far shorter. Both preserve the sorted left-to-right ordering. A B-tree is a generalisation of a BST (a BST node is the n = 1 case). It builds on trees and on the block-read cost model from storage. It is the structure behind database indexes (see databases/indexes).",
+      "notes": "Craig computed the BST case correctly (20 reads x 10 ms = 200 ms) and suggested moving the tree into memory or L1 cache; added that memory is limited and volatile. He asked whether disks only read in blocks for both HDD and SSD (yes, both). He correctly said the waste is bandwidth spent moving bytes that are not needed. Needed the implementation re-explained: confirmed his model of a BST node (1 value + 2 child addresses) and mapped the B-tree node onto it. My signpost diagram was ambiguous (labels like \"<20, 20-40, 40-60, >60\"); Craig read the signposts as inclusive range ends. Clarified that node keys are real stored values and children hold values strictly between them. His first attempt at the 50/60 split moved the middle key up but left the rest in one node [30|50|60] under a 2-child root: fixed with the n+1 rule and the range rule. He then worked out the 31-35 cascade himself up to the parent overflowing and asked what happens then; the answer was the cascade and a new root. Session ended on a 3-question quiz at his request (logged separately). Forward pointers beyond this depth: B+ trees (records only in leaves, keys in inner nodes are copies, leaves linked for range scans, which is what most databases actually use); deletion with borrow/merge and the minimum-fill rule; the formal height bound when nodes are only guaranteed half full (worst case 5 levels for 1,000,000,000 keys at fan-out 256); caching the top levels in memory; HDD sectors vs SSD pages."
+    }
+  },
+  {
+    "id": 128,
+    "schema": 1,
+    "ts": "2026-11-05T17:42:51.000Z",
+    "date": "2026-11-05",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/trees/b-trees",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "recall",
+          "question": "What does one B-tree node hold? Say how many children it has when it holds a given number of keys. Then say why the node size is chosen to match one disk block.",
+          "answer": "n keys and n+1 child addresses; the keys are data values and the addresses point to child nodes; node size matches a disk block to cut the number of disk reads, because disk reads cost far more than memory reads.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/trees/b-trees",
+          "feedback": "Correct. One wording point: the addresses say where a child block lives on disk, not in memory."
+        },
+        {
+          "tag": "explain",
+          "question": "A BST can form a long chain when values arrive in sorted order. A B-tree cannot end up with some leaves much deeper than others. In your own words, why not? Say what makes the leaves stay at the same depth, and what happens to the height when the root splits.",
+          "answer": "Said B-trees grow upward; when values overflow a node, parent nodes are created, which increases the height, and the overflowed children split on either side of the new parent; the leaves move down a level together so the tree cannot become imbalanced.",
+          "correct": false,
+          "node_id": "computer-science/data-structures/trees/b-trees",
+          "feedback": "The main idea is right: the tree grows upward and the leaves move down together, so it cannot become lopsided. The slip: a new parent is only created when the ROOT overflows. For any other overflow, the middle key moves up into the parent that already exists and the height does not change. Fresh counterexample from the 31 to 35 trace: adding 33 overflowed the leaf [30|31|32|33]; 31 moved into the existing root [20|40], making [20|31|40], and the tree stayed 2 levels tall. Only adding 35 overflowed the root, which created the new root [31] and made the tree 3 levels tall. Splits below the root stay on their own level, so all leaves remain at the same depth."
+        },
+        {
+          "tag": "predict",
+          "question": "A table has 1,000,000,000 keys. A B-tree with a fan-out of 256 holds it, and so does a balanced BST. Roughly how many levels does each need, and about how long does one search take in each at 10 ms per disk read?",
+          "answer": "BST about 30 levels, about 300 ms at most; B-tree 4 levels, about 40 ms at most.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/trees/b-trees",
+          "feedback": "Correct: 2^30 is about 1 billion, so the BST needs about 30 levels (300 ms); 256^3 is 16.7 million and 256^4 is about 4.3 billion, so the B-tree needs 4 levels (40 ms). Refinement: real nodes are only guaranteed about half full, so the worst case could be 5 levels (about 50 ms), still far below the BST."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g128-1",
+          "node_id": "computer-science/data-structures/trees/b-trees",
+          "text": "Believed every node overflow creates a new parent and increases the tree height. In fact a new parent (new root) is created only when the root itself overflows; any other split pushes the middle key into the existing parent and leaves the height unchanged."
+        }
+      ],
+      "notes": "First quiz on this node, right after it was taught in the same session. Q1 recall and Q3 predict clean; Q2 explain had one real misconception (every overflow creates a parent and adds height). Craig had traced the 31 to 35 cascade correctly earlier in the session, so this looks like over-compressed wording rather than not understanding, but it is the exact wording that was asked about, so it is graded as a miss. Retest g128-1 with a fresh scenario next review. Not scored (unlogged mid-session checks): the signpost question about the key 60, the 70/80 insert check, and the warm-up diagnostics."
+    }
   }
 ]

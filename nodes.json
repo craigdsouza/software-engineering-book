@@ -115,7 +115,7 @@
       "id": "computer-science/data-structures/trees/b-trees",
       "title": "B-Trees",
       "summary": "Wide, shallow trees with many keys per node, built for disks — the structure behind database indexes.",
-      "page": null,
+      "page": "computer-science/data-structures/trees.html#b-trees",
       "deps": [],
       "contrasts": [],
       "also_in": []
@@ -3467,6 +3467,34 @@
       "tier": "intermediate",
       "under": "computer-science/data-structures/trees/balanced-trees",
       "note": "The page only covers rebalancing after an insert. Removing a node can also break the rule, and the repair has its own cost to work out."
+    },
+    {
+      "id": "b-plus-trees",
+      "title": "B+ trees",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/trees/b-trees",
+      "note": "A variant where the records live only in the leaves, and the keys in the inner nodes are copies. The leaves are linked to each other, which makes scanning a range of keys easy. It is the variant most databases use."
+    },
+    {
+      "id": "b-tree-deletion-min-fill",
+      "title": "B-tree deletion and minimum fill",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/trees/b-trees",
+      "note": "This page only covers inserting, where a full node splits. Removing a key can leave a node too empty, and the repair is to borrow from a neighbour or merge with it. The rule for how empty a node may get is what gives the half-full guarantee."
+    },
+    {
+      "id": "b-tree-height-bound",
+      "title": "The B-tree height bound",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/trees/b-trees",
+      "note": "A proof of how tall a B-tree can get when nodes are only guaranteed to be about half full. For 1,000,000,000 keys at a fan-out of 256, the worst case is about 5 levels."
+    },
+    {
+      "id": "b-tree-top-level-caching",
+      "title": "Caching the top levels in memory",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/trees/b-trees",
+      "note": "The root and the levels just below it are read by every search, so they can stay in memory. That would cut the number of disk reads per search even further."
     }
   ]
 }
