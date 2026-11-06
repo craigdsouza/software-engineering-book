@@ -242,7 +242,7 @@ The same shape works for numbers. Factorial means multiplying a number by every 
 
 ### The call stack
 
-Nothing is multiplied on the way down. Every call just waits. The waiting calls are kept on the call [stack](data-structures.html#stacks), one entry per pending call. The real arithmetic happens on the way back up, after the base case answers. If there is no base case, the calls never stop. The stack runs out of room and the program crashes. That crash is called a stack overflow.
+Nothing is multiplied on the way down. Every call just waits. The waiting calls are kept on the call [stack](data-structures/stacks-and-queues.html#stacks), one entry per pending call. The real arithmetic happens on the way back up, after the base case answers. If there is no base case, the calls never stop. The stack runs out of room and the program crashes. That crash is called a stack overflow.
 
 ### Choosing the base case
 
@@ -341,7 +341,7 @@ Merge sort has neither problem. Each card sits in exactly one pile per row, so n
 
 ## Graph Traversal (BFS & DFS) {#graph-traversal}
 
-*Not yet covered.* Visiting every node of a graph. A graph is a set of points joined by lines, such as people and friendships, or cities and roads. Breadth-first search (BFS) explores level by level using a [queue](data-structures.html#queues). Depth-first search (DFS) goes as deep as it can first, using a [stack](data-structures.html#stacks). Will cover: why swapping one structure for the other changes the visiting order, and why BFS finds the fewest-hops route.
+*Not yet covered.* Visiting every node of a graph. A graph is a set of points joined by lines, such as people and friendships, or cities and roads. Breadth-first search (BFS) explores level by level using a [queue](data-structures/stacks-and-queues.html#queues). Depth-first search (DFS) goes as deep as it can first, using a [stack](data-structures/stacks-and-queues.html#stacks). Will cover: why swapping one structure for the other changes the visiting order, and why BFS finds the fewest-hops route.
 
 ## Greedy Algorithms {#greedy}
 

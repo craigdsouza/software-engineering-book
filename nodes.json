@@ -53,9 +53,17 @@
       "also_in": []
     },
     {
+      "id": "computer-science/data-structures/stacks-and-queues",
+      "title": "Stacks & Queues",
+      "page": "computer-science/data-structures/stacks-and-queues.html",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/data-structures/stacks",
       "title": "Stacks",
-      "page": "computer-science/data-structures.html#stacks",
+      "page": "computer-science/data-structures/stacks-and-queues.html#stacks",
       "deps": [],
       "contrasts": [
         "computer-science/data-structures/queues"
@@ -65,11 +73,21 @@
     {
       "id": "computer-science/data-structures/queues",
       "title": "Queues",
-      "page": "computer-science/data-structures.html#queues",
+      "page": "computer-science/data-structures/stacks-and-queues.html#queues",
       "deps": [],
       "contrasts": [
         "computer-science/data-structures/stacks"
       ],
+      "also_in": []
+    },
+    {
+      "id": "computer-science/data-structures/queues/circular-buffer",
+      "title": "Circular buffer",
+      "page": "computer-science/data-structures/stacks-and-queues.html#circular-buffer",
+      "deps": [
+        "computer-science/data-structures/arrays"
+      ],
+      "contrasts": [],
       "also_in": []
     },
     {
@@ -3495,6 +3513,13 @@
       "tier": "intermediate",
       "under": "computer-science/data-structures/trees/b-trees",
       "note": "The root and the levels just below it are read by every search, so they can stay in memory. That would cut the number of disk reads per search even further."
+    },
+    {
+      "id": "deque",
+      "title": "Deque",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/queues",
+      "note": "A line where items can be added or removed at either end, not only the back and the front. Not covered yet."
     }
   ]
 }
