@@ -12,7 +12,7 @@ A tree is a linked structure where each node can have more than one child, with 
 
 ## Traversal
 
-Two ways to walk a tree, and both reuse structures already covered under [Data Structures](../data-structures.html): **depth-first (DFS)** commits to one branch all the way down before backtracking to a sibling — powered by a stack, either explicit or the call stack recursion provides for free. **Breadth-first (BFS)** checks all of a node's children before moving to the next level — powered by a queue, since children are enqueued as discovered and processed in that order.
+Two ways to walk a tree, and both reuse structures already covered under [Stacks & Queues](stacks-and-queues.html): **depth-first (DFS)** commits to one branch all the way down before backtracking to a sibling — powered by a stack, either explicit or the call stack recursion provides for free. **Breadth-first (BFS)** checks all of a node's children before moving to the next level — powered by a queue, since children are enqueued as discovered and processed in that order.
 
 ## Balance
 
@@ -226,5 +226,6 @@ Terminology, traversal, and balance: taught and holding up on fresh probes. BST:
 
 ## Related pages
 
-- [Data Structures](../data-structures.html) — parent page; traversal reuses Stacks and Queues covered there.
+- [Data Structures](../data-structures.html) — parent page.
+- [Stacks & Queues](stacks-and-queues.html) — traversal reuses both: a stack for depth-first, a queue for breadth-first.
 - [Review Schedule](../../review-schedule.html) — spaced-repetition status.
