@@ -3190,5 +3190,47 @@
       ],
       "notes": "Retested g129-1 (array queue shifting cost grows with the square of length): resolved, clean answer with correct 2,000 and 4,000 numbers. g129-2 (moving the last item to the front breaks FIFO): partly resolved, saw the line-cutting problem, but the circular buffer description was muddled, so still open via g130-1. Question 3 on circular buffer mechanics was fully correct after the explanation. Craig asked what a full circular buffer does with a new arrival; answered in chat (reject/block, grow, or overwrite oldest)."
     }
+  },
+  {
+    "id": 131,
+    "schema": 1,
+    "ts": "2026-11-07T18:18:23.610Z",
+    "date": "2026-11-07",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/heaps",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "explain",
+          "node_id": "computer-science/data-structures/heaps",
+          "question": "This min-heap is stored as the array [1, 2, 5, 4, 3, 9, 8]. A teammate removes the smallest (the 1) by sliding the smaller child up into the empty top slot, then the smaller child of that child into the new hole, and so on down to the bottom. (1) Carry out that method and write the resulting array. (2) Say exactly what is wrong with the result, pointing to a specific problem in the array rather than just saying it is slower.",
+          "answer": "Wrote [2, 3, 5, 4, gap, 9, 8]. Said the gap is not allowed, heaps live in arrays so the 2i+1 / 2i+2 child lookup breaks when there is a gap, gaps waste memory, and a gap could skew the tree and break the O(log n) guarantee.",
+          "correct": true,
+          "feedback": "Correct. The array is right and the core reason is right: a gap breaks the array index arithmetic (shape rule). Concrete break: after the removal there are 6 items, so the next open slot by count is slot 6, but slot 6 already holds the 8, so adding a new item would overwrite it. Sharpenings: memory waste is real but minor; the shape rule is what keeps the tree as short as possible (about 20 levels for 1,000,000 items), so the O(log n) bound depends on it, but the first thing a gap breaks is the array arithmetic. Correct method on the same array: move the last item (8) to the top giving [8, 2, 5, 4, 3, 9], swap with smaller child 2 giving [2, 8, 5, 4, 3, 9], swap with smaller child 3 giving [2, 3, 5, 4, 8, 9]. No gaps, every parent smaller than its children."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/heaps",
+          "question": "A min-heap holds 1,000,000 numbers and someone asks whether 500 is in it. (1) At worst, how many items might you have to check? (2) A balanced search tree (BST) with 1,000,000 numbers answers the same question in about 20 steps. Why can the heap not skip around like that? (3) Which spots could the second-smallest number in the heap be in?",
+          "answer": "Did not answer. Craig said he is struggling to remember how search works for both min-heaps and balanced search trees and asked to count the question as a miss and have it explained.",
+          "correct": false,
+          "feedback": "Explained in chat. (1) Worst case is all 1,000,000 items (O(n)): a heap only promises each parent is smaller than or equal to its children, so 500 can sit anywhere. The only skipping available is that if a node is already larger than 500, everything below it is larger too and that subtree can be skipped, but if every number is smaller than 500 nothing can be skipped. (2) A BST puts smaller values left and larger right, so each comparison throws away about half of what is left: 1,000,000, 500,000, 250,000 ... about 20 steps. A heap promises nothing between siblings, so one comparison cannot tell which child to go to. Example heap [2, 9, 3, 10, 11, 4, 5] searching for 5: root 2 is smaller so look further, 9 is bigger than 5 so skip its whole subtree, 3 is smaller so look at its children 4 and 5, found. (3) The second-smallest is slot 1 or slot 2 (the root's two children); every other item sits below one of them, so it is at least as large, and you must compare both children to know which."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g131-1",
+          "node_id": "computer-science/data-structures/heaps",
+          "text": "Could not recall how search works in a heap versus a balanced search tree. Key points: a BST halves the remaining items at each step because smaller goes left and larger goes right (about 20 steps for 1,000,000), while a heap promises nothing between siblings, so worst-case search checks every item (O(n)); the only skipping is that a node larger than the target lets you skip its whole subtree. Craig also said BST search is hazy, so retest BST search too."
+        }
+      ],
+      "notes": "Two questions this session instead of the usual three, because Craig asked to log after question 2. Retested g119-1 (why move the last item instead of promoting a child): resolved, Craig named the array gap and index arithmetic as the problem and carried out the method correctly on fresh numbers. Question 2 counted as a miss at Craig's request (no answer attempted, memory of search in heaps and BSTs is hazy). Craig also asked whether a gap affects operations beyond insertion; answered in chat (scanning by item count misses the last item, remove-smallest picks the wrong last item, only looking at the smallest at slot 0 still works)."
+    }
   }
 ]
