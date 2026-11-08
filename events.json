@@ -3232,5 +3232,63 @@
       ],
       "notes": "Two questions this session instead of the usual three, because Craig asked to log after question 2. Retested g119-1 (why move the last item instead of promoting a child): resolved, Craig named the array gap and index arithmetic as the problem and carried out the method correctly on fresh numbers. Question 2 counted as a miss at Craig's request (no answer attempted, memory of search in heaps and BSTs is hazy). Craig also asked whether a gap affects operations beyond insertion; answered in chat (scanning by item count misses the last item, remove-smallest picks the wrong last item, only looking at the smallest at slot 0 still works)."
     }
+  },
+  {
+    "id": 132,
+    "schema": 1,
+    "ts": "2026-11-08T17:45:47.501Z",
+    "date": "2026-11-08",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/heaps",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "explain",
+          "node_id": "computer-science/data-structures/heaps",
+          "question": "A min-heap holds 1,000,000 numbers. Someone asks, \"Is the number 500 in here?\" (1) In the worst case, how many items might you have to look at? (2) A BST with 1,000,000 numbers answers the same question in about 20 steps. Why can't a heap skip around the same way?",
+          "answer": "Worst case is O(n), about 1,000,000 checks. A heap is only ordered top to bottom (parent smaller than children), with no guarantee between left and right branches, so walking down the levels cannot halve the search space the way a BST does.",
+          "correct": true,
+          "feedback": "Correct on both parts. Small addition: a heap can still skip a whole subtree when its top node is already larger than the target (everything below is larger too). That is the only skipping it allows, so the worst case stays O(n)."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/trees/bst",
+          "question": "BST: 50 has children 30 (left) and 70 (right); 30 has children 20 and 40; 40 has one child, 35, on its left; 35 has one child, 37, on its right; 70 has children 60 and 80. You search for 37. (1) List the nodes you visit, in order, and say left or right at each and why. (2) Which nodes do you never look at? (3) Now search for 65. Where does the search end, and what does that tell you?",
+          "answer": "Visited 50 (left, 37<50), 30 (right), 40 (left), 35 (right), then found 37. Never looks at 70, 60, 80, 20. Search for 65 ends at 60 because it has no further children, so 65 is not in the tree.",
+          "correct": true,
+          "feedback": "Correct on all three parts. Full path for 65: 65>50 go right, 65<70 go left, 65>60 go right; the right slot under 60 is empty, so the search stops and 65 is absent. That empty slot is exactly where 65 would be inserted, so search and insert follow the same walk. Four of nine nodes were never touched, which is the halving a heap cannot do."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/heaps",
+          "question": "A min-heap holds 1,000,000 numbers, stored in an array. The smallest is at the top. (1) Where in the tree can the second-smallest number sit? (2) Could the third-smallest number sit at the very bottom level, about 20 levels down? Why or why not?",
+          "answer": "Second-smallest is the left or right child of the root, because the heap makes no left-right guarantee so both must be checked. Third-smallest cannot be at level 20 because all items above it must be smaller. But claimed the third-smallest must be one level below the second smallest, and counted 17 items above a level-20 item instead of 19.",
+          "correct": false,
+          "feedback": "Part 1 correct. Part 2 has the right conclusion (no) but one wrong claim: the third-smallest is not always one level below the second-smallest. In [1, 2, 3, 9, 5, 8, 7] the 2 and the 3 are both root children on the same level; it can also be a child of the second-smallest. Rule: every item is larger than all its ancestors, so an item on level k has k-1 ancestors and is at least the k-th smallest. A level-20 item has 19 ancestors (count was 17). The third-smallest has at most 2 smaller numbers, so at most 2 ancestors, so it sits on level 2 or 3."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/heaps",
+          "question": "Same million-item min-heap. The fifth-smallest number can sit as deep as which level, counting the root as level 1? Can it sit on level 2? Explain both answers.",
+          "answer": "Deepest is level 5; can also be on level 2, 3 or 4. It can lie in either branch of the root so need not descend from the second-smallest; it can be a descendant of the third-smallest (at level 2). So levels 2 to 5.",
+          "correct": true,
+          "feedback": "Correct. A fifth-smallest item has at most 4 smaller numbers so at most 4 ancestors, so level 5 at most. It can be on level 2 as the root's other child if the second to fourth smallest all sit under the first child. This also resolved the level-claim slip from the previous question."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g132-1",
+          "node_id": "computer-science/data-structures/heaps",
+          "text": "Said the third-smallest item in a min-heap must sit one level below the second-smallest, and counted 17 ancestors for a level-20 item instead of 19. In fact the third-smallest can be the root's other child (same level as the second-smallest) or a child of the second-smallest. Rule: an item on level k has k-1 ancestors, all smaller, so it is at least the k-th smallest; the k-th smallest sits on level k or higher up. Retested the same session with the fifth-smallest and answered correctly."
+        }
+      ],
+      "notes": "Four questions, no open-gap carryover beyond g131-1. Retested g131-1 (heap search versus BST search): resolved, clean answer on worst case O(n) and why a heap cannot halve. BST search, flagged as hazy last time, was clean on a fresh tree (search for 37 and for 65). One new gap (g132-1, level of the k-th smallest in a heap) came up in Q3 and was answered correctly in Q4 within the same session, so likely resolved but worth one more retest later."
+    }
   }
 ]
