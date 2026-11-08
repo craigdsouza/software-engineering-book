@@ -3290,5 +3290,49 @@
       ],
       "notes": "Four questions, no open-gap carryover beyond g131-1. Retested g131-1 (heap search versus BST search): resolved, clean answer on worst case O(n) and why a heap cannot halve. BST search, flagged as hazy last time, was clean on a fresh tree (search for 37 and for 65). One new gap (g132-1, level of the k-th smallest in a heap) came up in Q3 and was answered correctly in Q4 within the same session, so likely resolved but worth one more retest later."
     }
+  },
+  {
+    "id": 133,
+    "schema": 1,
+    "ts": "2026-11-08T18:22:08.273Z",
+    "date": "2026-11-08",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/queues",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/queues/circular-buffer",
+          "question": "A circular buffer has 4 slots, numbered 0 to 3, and works like a ring (after slot 3 comes slot 0). The head marker points at slot 2. It holds two jobs: A in slot 2 and B in slot 3. (1) Job C arrives, then job D arrives. Which slot does each go into? (2) One job is served. Which job, and where does the head marker point now? (3) Job E arrives. Which slot does it go into? Did any job get copied or moved to a different slot at any point?",
+          "answer": "C goes into slot 0 and D into slot 1. A is served and the head marker moves to slot 3. E goes into slot 2. No job is copied or moved to a different slot at any point.",
+          "correct": true,
+          "feedback": "Correct on all three parts. After E the buffer is full: E, B, C, D in slots 2, 3, 0, 1. The serving order starts where the head points, so it is B, C, D, E. The front of the line is wherever the head marker points, not slot 0. Only the head marker moves; the write position for new arrivals wraps around to reuse freed slots."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/queues",
+          "question": "A bakery keeps six waiting customers (T1 in slot 0 up to T6 in slot 5) in an array, slot 0 is the front. To avoid shifting, when the front customer is served the baker copies the last customer (T6) into slot 0. (1) T1 is served and the shortcut runs. Who is served next, and who should have been? (2) Say who is hurt and why the queue is unfair, using T2's wait as the example. (3) Name a fix that keeps the right order and avoids shifting, and say what it tracks instead of moving people.",
+          "answer": "T6 is served next, T2 should have been. T2 to T5 are hurt because T6 cut ahead; repeating the shortcut copies T5, T4, T3 to slot 0 one at a time and T2 is served last, though it arrived first. The fix is a circular buffer with a moving head pointer that tracks the next item instead of moving people; it wraps around to slot 0 and avoids shifting.",
+          "correct": true,
+          "feedback": "Correct on all three parts. Repeating the shortcut serves T1, T6, T5, T4, T3, T2, which is newest first: the line behaves like a stack, the opposite of a queue. One precision point: the head marker wraps to slot 0 when it passes the last slot, not the last item; the write position for new arrivals wraps the same way."
+        },
+        {
+          "tag": "explain",
+          "node_id": "computer-science/data-structures/queues/circular-buffer",
+          "question": "A ticket counter serves 1,000 customers in one day; at most 8 people are ever waiting at once. The line is stored in an array. (1) With a head marker only (new arrivals go into the next free slot at the back, serving moves the head forward by one, slots behind the head are never reused), about how many array slots are needed by the end of the day, and why? (2) With a circular buffer, about how many slots are needed, and what happens to a slot once its customer is served? (3) In either method, how many customers get copied or moved to a different slot during the day?",
+          "answer": "Circular buffer needs 8 slots; a served customer's slot is given to the next person entering and the head marker moves to the next person. Head marker only needs 1,000 slots by the end of the day. In either method no customers are copied or moved.",
+          "correct": true,
+          "feedback": "Correct on all parts. The question first left out where new arrivals go in the head-marker-only case, and Craig asked for clarification before answering; it was restated and then answered correctly. Head marker only: arrivals always go to the next free slot at the back, so the array grows to 1,000 slots and the emptied front slots are never reused. Circular buffer: the write position wraps and reuses freed slots, so about 8 slots handle 1,000 customers. In both methods the cost saved is the shifting: nobody moves."
+        }
+      ],
+      "gaps": [],
+      "notes": "Three questions. Retested g130-1 (circular buffer rotates items from back to front): resolved, clean answer on a fresh 4-slot ring; E went into the freed slot 2 and Craig said no job moves. Retested g129-2 (moving the last item to the front breaks FIFO): resolved, Craig named the right next customer, traced the full wrong order T1, T6, T5, T4, T3, T2, and named the circular buffer with a moving head pointer as the fix. Q3 first left out where new arrivals go in the head-marker-only case; Craig asked for clarification, it was given, then both remaining parts were answered correctly. No new gaps. g129-1 (array queue shifting cost) was already resolved in the previous session."
+    }
   }
 ]
