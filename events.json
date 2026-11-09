@@ -3334,5 +3334,55 @@
       "gaps": [],
       "notes": "Three questions. Retested g130-1 (circular buffer rotates items from back to front): resolved, clean answer on a fresh 4-slot ring; E went into the freed slot 2 and Craig said no job moves. Retested g129-2 (moving the last item to the front breaks FIFO): resolved, Craig named the right next customer, traced the full wrong order T1, T6, T5, T4, T3, T2, and named the circular buffer with a moving head pointer as the fix. Q3 first left out where new arrivals go in the head-marker-only case; Craig asked for clarification, it was given, then both remaining parts were answered correctly. No new gaps. g129-1 (array queue shifting cost) was already resolved in the previous session."
     }
+  },
+  {
+    "id": 134,
+    "schema": 1,
+    "ts": "2026-11-09T12:46:16.000Z",
+    "date": "2026-11-09",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/doubly-linked-lists",
+    "agent": {
+      "name": "claude",
+      "surface": "cowork",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/linked-lists",
+          "question": "A singly linked list holds 20,000 customer orders. Each node knows only the next node. The program keeps just one pointer, to the first node (the head). (a) A new order must go at the end of the list. What does this cost in steps, and why? (b) Now suppose the program also keeps a pointer to the last node (the tail). What does adding at the end cost now? (c) With that tail pointer in place, what does removing the last order cost? Is it as cheap as adding at the end? Explain why or why not.",
+          "answer": "(a) O(n): the last node's address is unknown, so you walk the whole list. (b) O(1): write the new node's address into the current last node. (c) Not as cheap, O(n): the last node must be removed from the pointer held by the second-to-last node, and the last node cannot reach it, so you walk from the start to find it.",
+          "correct": true,
+          "feedback": "Correct on all three parts: about 20,000 steps in (a), one step in (b), and in (c) the real reason removal is harder is that a singly linked node cannot reach its predecessor. Small detail missed in (b): after linking the new order to the old last node, the tail pointer must also move to the new node, or the next append attaches in the wrong place."
+        },
+        {
+          "tag": "explain",
+          "node_id": "computer-science/data-structures/doubly-linked-lists",
+          "question": "Take the same 20,000 orders, but make the list doubly linked (each node knows its next and previous node), still with a head pointer and a tail pointer. (a) What does removing the last order cost now, and what makes it possible? (b) Each pointer takes 8 bytes. How much extra memory do the previous-node pointers add across all 20,000 nodes? Give the number. (c) Describe one situation where this extra memory is not worth paying, and why the benefit does not apply there.",
+          "answer": "(a) O(1): the last node points back to its predecessor, so no walk is needed. (b) 19,999 x 8 = 159,992 bytes, counting only the previous-pointers in use. (c) Not worth it when you need lookup anyway, since doubly linked lists do not give fast lookup; the benefits are walking from the back and O(1) deletion when you already hold the node's pointer.",
+          "correct": true,
+          "feedback": "(a) and (c) are correct. (b) is off by one node: every node reserves a previous-slot, including the first, where it holds 'nothing'. So the cost is 20,000 x 8 = 160,000 bytes. Counting slots in use instead of slots reserved is the slip. For (c), another case where the extra pointers buy nothing: if you walk to the node anyway you can carry a trailing pointer to its predecessor, so a singly linked list deletes just as cheaply; a stack that only adds and removes at the front also never needs a back pointer. In (a), the tail pointer must also move to the predecessor, which becomes the new end."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/doubly-linked-lists",
+          "question": "A phone app keeps its 1,000 most recently used contacts in a list. A lookup table, which also holds only those 1,000 contacts, finds any contact by name in about 1 step and hands back a pointer to its node. You open a contact that is already in the list, at position 700. It must move to the front. (a) The list is doubly linked. How many steps does the move take, and why? (b) The list is singly linked, with the same lookup table. What does the move cost, and why? (c) The list is a plain array. What does the move cost, and what happens to the other contacts?",
+          "answer": "(a) O(1) after the 1-step lookup: set prev.next to next and next.prev to prev to unlink it, then point the moved node's next at the old first node. (b) O(n): the lookup table gives the node but not the 699th node whose pointer must change, so you walk from the start; inserting at the front is then O(1). (c) O(n): the 700 contacts before it can each shift one slot toward the back and the moved contact goes into slot 0, so the 300 after it never move.",
+          "correct": true,
+          "feedback": "Correct on cost in all three parts: 1 step plus a constant number of pointer changes for the doubly linked list, about 699 steps to reach the predecessor for the singly linked list, and about 700 shifts for the array. Strong insight in (c) that you shift the front block right instead of the back block left. Gap in (a): the front insertion is incomplete. The old first node's previous-pointer must be set to the moved node, the moved node's own previous-pointer must be set to nothing, and the head pointer must be updated. Without these the list is broken: walking backward from the old first node would skip the moved contact. Same bookkeeping pattern as the tail pointer left out of Q1 and Q2."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g134-1",
+          "node_id": "computer-science/data-structures/doubly-linked-lists",
+          "text": "Describes pointer rewiring without the bookkeeping pointers. Left out moving the tail pointer when adding or removing at the end (Q1b, Q2a) and, when moving a node to the front of a doubly linked list, left out setting the old first node's previous-pointer to the moved node, clearing the moved node's own previous-pointer, and updating the head pointer (Q3a). Without them the list is broken: a backward walk from the old first node skips the moved node. Retest with a fresh insert or delete at the front or end of a doubly linked list and ask for every pointer that changes."
+        }
+      ],
+      "notes": "Three questions across both nodes. No open gaps were carried in: g82-1 and g84-1 were both resolved on 2026-10-22. All three answers were right on cost and reasoning, including the new idea that a lookup table hands you a node but not its predecessor in a singly linked list, and shifting only the front block in the array case. One new gap (g134-1): consistently skips the head/tail and back-link updates when describing pointer changes. Small slip in Q2b: 19,999 instead of 20,000 previous-slots (counted slots in use, not slots reserved)."
+    }
   }
 ]
