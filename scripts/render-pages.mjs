@@ -182,7 +182,7 @@ export function renderPage(node, rawMd, byId, oldHtml = "") {
   const [body, related] = md.split(/^## Related pages\s*$/m);
   const region = (n) => `<!-- BUILD-PROGRESS:START ${n} -->${existingRegion(oldHtml, n)}<!-- BUILD-PROGRESS:END ${n} -->`;
   const nav = [["index.html", "Home"], ["review-schedule.html", "Review Schedule"], ["activity.html", "Activity"],
-    ["about/teaching-style.html", "Teaching Style"], ["about/architecture.html", "Architecture"]]
+    ["about/teaching-style.html", "Teaching Style"], ["about/architecture.html", "Architecture"], ["about/readme.html", "README"]]
     .map(([h, t]) => `      <a href="${rel(h)}">${t}</a>`).join("\n");
   return `<!doctype html>
 <html lang="en">

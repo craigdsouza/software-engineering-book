@@ -42,7 +42,7 @@ function findBookRoot() {
 }
 
 // ---------- 2. Node table from nodes.json (authored structure only) ----------
-// id = domain/concept/sub-concept (1-4 segments). parent = the id minus its
+// id = domain/concept/sub-concept (1-5 segments). parent = the id minus its
 // last segment, when that exists in the registry. materialization:
 //   "group"   — no page of its own (a domain, or a grouping like complexity)
 //   "page"    — owns an HTML page
@@ -246,6 +246,14 @@ function computeAll(nodes, eventsByNode) {
         dueDate = soonest;
         dueFrom = "children";
       }
+    }
+
+    // Domains and groupings (no page, never quizzed themselves) take the soonest date among
+    // their children too, so every parent at every level carries one. They are never listed on
+    // the review schedule; the child that sets the date is.
+    if (node.materialization === "group" && !dueDate && kidDues.length) {
+      dueDate = [...kidDues].sort()[0];
+      dueFrom = "children";
     }
 
     // Status: a parent's superseded own result is ignored the same way as its superseded due date.

@@ -97,6 +97,7 @@ const html = `<!doctype html>
       <a href="activity.html">Activity</a>
       <a href="about/teaching-style.html">Teaching Style</a>
       <a href="about/architecture.html">Architecture</a>
+      <a href="about/readme.html">README</a>
     </nav>
   </div>
 </header>

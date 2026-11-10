@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>README — Software Engineering Book</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="../index.html">Software Engineering — A Study Book</a>
+    <nav class="tracks">
+      <a href="../index.html">Home</a>
+      <a href="../review-schedule.html">Review Schedule</a>
+      <a href="../activity.html">Activity</a>
+      <a href="teaching-style.html">Teaching Style</a>
+      <a href="architecture.html">Architecture</a>
+      <a class="active" href="readme.html">README</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="../index.html">Home</a> / README</div>
+  <h1>README: the rules of this site</h1>
+  <p class="subtitle">Every rule for how the book is organised, scored and displayed, in one place. If a page on this site seems to disagree with a rule here, the page has a bug or this page is out of date. Fix whichever is wrong.</p>
+
+  <h2>1. The three levels</h2>
+  <p>Everything in the book is a <strong>domain</strong>, a <strong>topic</strong> or a <strong>sub-topic</strong>. No other word is used for these on the site.</p>
+  <div class="table-scroll">
+  <table>
+    <tr><th>Level</th><th>What it is</th><th>Example</th></tr>
+    <tr><td>Domain</td><td>A field of study. It is never quizzed and has no due date of its own.</td><td>Computer Science</td></tr>
+    <tr><td>Topic</td><td>Sits directly under a domain.</td><td>Data Structures</td></tr>
+    <tr><td>Sub-topic</td><td>Sits under a topic, or under another sub-topic, at any depth.</td><td>Stacks &amp; Queues, then Queues under it, then Circular buffer under that</td></tr>
+  </table>
+  </div>
+
+  <h2>2. Ids and where things sit</h2>
+  <ul>
+    <li><strong>An id is a path.</strong> It is lowercase words joined by hyphens, with parts separated by <code>/</code>. Example: <code>computer-science/data-structures/stacks-and-queues/queues</code>. A domain has 1 part. A topic or sub-topic has 2 to 5 parts.</li>
+    <li><strong>The id decides the parent.</strong> A parent is the id with its last part removed. So <code>.../stacks-and-queues/queues</code> is a child of <code>.../stacks-and-queues</code>. If an id does not start with its parent's id, the topic shows up in the wrong place.</li>
+    <li><strong>Each topic or sub-topic is one of three kinds.</strong> It can own a whole page, it can be a section with a <code>#anchor</code> on its parent's page, or it can be a grouping with no page at all (every domain is a grouping).</li>
+    <li><strong>A sub-topic's page is its parent's page by default.</strong> It gets its own page only when it needs sub-topics of its own. The one exception on record is Big O: its id is under Complexity, but it is taught on the Data Structures page.</li>
+    <li><strong>Renaming an id</strong> means rewriting that id in every past event, in the registry and in every link. Statuses and due dates must come out identical afterwards.</li>
+    <li><strong>Dependencies and contrasts.</strong> A topic can list other topics it depends on, and topics it should be contrasted with. Both are ids that already exist.</li>
+  </ul>
+
+  <h2>3. Who writes what</h2>
+  <div class="table-scroll">
+  <table>
+    <tr><th>File</th><th>What it holds</th><th>Who may write it</th></tr>
+    <tr><td><code>events.json</code></td><td>The log of every teaching, reading and quiz session</td><td>The teacher, the quizmaster and other agents, by adding events only</td></tr>
+    <tr><td><code>nodes.json</code></td><td>The list of every domain, topic and sub-topic: id, title, page, dependencies, contrasts</td><td>The teacher adds a new entry with no page. The editor sets pages and forward pointers.</td></tr>
+    <tr><td><code>{id}.md</code></td><td>The written explanation for one topic page</td><td>Only the editor</td></tr>
+    <tr><td>Everything else the site shows</td><td>Status, due dates, charts, status lines, coverage logs</td><td>Nobody. It is computed on every build.</td></tr>
+  </table>
+  </div>
+  <p>Prose has exactly one writer so two writers can never overwrite each other. Events can come from many writers because they are only ever added to the end.</p>
+
+  <h2>4. Events</h2>
+  <ul>
+    <li>There are three kinds: <strong>taught</strong>, <strong>read</strong> and <strong>quiz_answered</strong>. Only quiz questions change a status. Teaching and reading never do.</li>
+    <li>The log is <strong>append-only</strong>. An event is never edited or removed. The single exception is an id rename (section 2), which rewrites the id inside old events and nothing else.</li>
+    <li>Every event has an increasing number, a time in UTC, a date in the learner's local day, an agent and a topic or sub-topic id.</li>
+    <li>A <strong>taught</strong> event must hold everything taught, in full. The editor writes the page from it and from nothing else.</li>
+    <li>A <strong>quiz_answered</strong> event holds each question's full text, a summary of the answer, whether it was correct, the id it tests and the feedback. Each question names its own topic or sub-topic, so one quiz can score several. A question that really tests a prerequisite counts as a review of that prerequisite.</li>
+    <li>A quiz also records <strong>gaps</strong>: real misunderstandings, each with an id like <code>g86-1</code>. A gap that is retested and still wrong gets a new entry. A resolved gap does not.</li>
+    <li>Every question is tagged <strong>recall</strong> (define, name properties), <strong>explain</strong> (how it works, why one thing over another) or <strong>predict</strong> (what happens if, edge cases, judgment calls).</li>
+  </ul>
+
+  <h2>5. Status and review dates</h2>
+  <p>A topic or sub-topic is either <strong>solid</strong> or <strong>needs review</strong>. Nothing is ever marked finished, because almost everything has more depth to return to.</p>
+  <ul>
+    <li><strong>Streak.</strong> Each quiz that names a topic counts as one review. A review with no wrong answer adds 1 to its streak. A review with any wrong answer resets the streak to 1. A review that is mostly right with one real misconception counts as wrong.</li>
+    <li><strong>Due date.</strong> The date of the latest review, clean or missed, plus the gap for the current streak. A miss on 22 September makes the topic due again on 25 September.</li>
+    <li><strong>Solid</strong> means the latest review was clean and the due date has not passed. <strong>Needs review</strong> means the latest review had a miss, or the due date has passed.</li>
+    <li>A topic or sub-topic that has never been quizzed has no due date. It reads "never scored on its own".</li>
+  </ul>
+  <div class="table-scroll">
+  <table>
+    <tr><th>Streak</th><th>Next review after</th></tr>
+    <tr><td>1</td><td>3 days</td></tr>
+    <tr><td>2</td><td>7 days</td></tr>
+    <tr><td>3</td><td>14 days</td></tr>
+    <tr><td>4</td><td>30 days</td></tr>
+    <tr><td>5 or more</td><td>60 days</td></tr>
+  </table>
+  </div>
+
+  <h2>6. Parents</h2>
+  <p>A topic or sub-topic that has sub-topics under it is a parent. Parents combine their own result with their sub-topics' results.</p>
+  <ul>
+    <li><strong>Status.</strong> A parent is only as strong as its weakest part. It is solid only if its own result and all its sub-topics are solid.</li>
+    <li><strong>Due date.</strong> A parent is due on the <em>soonest</em> of two things: its own latest quiz, and its sub-topics' due dates. Its own quiz always competes. Example: a quiz on Trees with a miss comes due in 3 days. Trees is then due in 3 days and appears on the review schedule in its own right, even when its sub-topics are due later. When the parent and a sub-topic are due on the same day, the parent's own quiz counts.</li>
+    <li><strong>One exception.</strong> A parent's own quiz that is older than a sub-topic's latest quiz counts as superseded. Without this, a topic quizzed once long ago would stay overdue forever while its sub-topics were reviewed. In that case the parent takes the soonest date from its sub-topics, and the sub-topic is the one listed.</li>
+    <li><strong>Domains</strong> (and groupings with no page, such as Complexity) take their date from the earliest of their topics, and have none until something under them has been quizzed. They are never listed on their own.</li>
+  </ul>
+
+  <h2>7. The skill grid</h2>
+  <p>Beside each row on the home page are three small boxes: recall, explain and predict. Each box shows the right answers out of the last 10 questions asked with that tag, such as <code>2/4</code>. A box is green only when at least 5 questions have been asked and at least 80% of them (8 out of 10) were right. Until then it stays in the needs-review colour. A box with no questions shows a dash.</p>
+
+  <h2>8. The home page</h2>
+  <h3>The activity strip</h3>
+  <p>One square per day for the last 28 days. A day is shaded by the number of quiz questions answered: 0, 1 to 2, 3 to 5, 6 to 9, or 10 and above. <strong>Active days</strong> counts days with at least one question. <strong>Longest run</strong> is the most days in a row with at least one question. <strong>Since last</strong> is the days since the latest question.</p>
+  <h3>Next up</h3>
+  <p>One card names what to study next. It follows these rules in order and stops at the first that applies:</p>
+  <ol>
+    <li>Any topic or sub-topic past its own due date. The oldest comes first.</li>
+    <li>Otherwise walk the domains in study-path order, then their topics, then their sub-topics, and take the first one that is not solid.</li>
+    <li>If that one depends on something that is not solid, take the dependency instead.</li>
+    <li>If it is a parent, take its first sub-topic that is not solid. A parent's status is a roll-up, so it can only be cleared by clearing its sub-topics.</li>
+  </ol>
+  <p>The study-path order of domains is: Computer Science, Machine Learning, Mathematics, Databases, Software Engineering, Security, Backend, Frontend.</p>
+  <h3>Waiting for the editor</h3>
+  <p>A box lists every page that has events its prose has not absorbed yet, and every topic or sub-topic that has events but no page. It disappears when the editor has caught up.</p>
+  <h3>The spine</h3>
+  <ul>
+    <li>Each domain is a heading. Each topic under it is a collapsible row with its sub-topics inside. The topic that "Next up" points to opens by itself.</li>
+    <li><strong>Indentation shows the level.</strong> A topic's own row is at the left edge and bold. Its sub-topics are indented one step. Their sub-topics are indented one step further, and so on. No level is flat.</li>
+    <li>A topic's own row appears inside its list only when it has quiz history of its own.</li>
+    <li>Counts such as "7 / 16 solid" cover sub-topics only. A topic with no sub-topics counts as itself.</li>
+    <li>Each row shows its status, its due date or "never scored on its own", how many times it has been reviewed, any unmet dependency, and a plain sentence on where it stands. That sentence is the latest unresolved gap, or the last clean check, or what was taught.</li>
+    <li>Topics that are planned but not yet in the registry show as empty placeholders.</li>
+  </ul>
+
+  <h2>9. The review schedule</h2>
+  <ul>
+    <li>It lists every topic and sub-topic that has a due date that counts (section 6), soonest first. The most overdue are at the top. A divider marks today.</li>
+    <li>A parent is listed when its own quiz sets its date. If its date comes from a sub-topic, that sub-topic is listed instead, so the same debt is never shown twice.</li>
+    <li>Below the table, "Unscheduled" lists every topic and sub-topic that has never been quizzed on its own, most recently scored first. A quiz on a whole topic scores the topic, not the sub-topics under it.</li>
+    <li>The count of overdue items on this page and on the home page's "Next up" card are the same number.</li>
+  </ul>
+
+  <h2>10. Topic pages</h2>
+  <ul>
+    <li>Each page has a generated header (title, status line, coverage log) and a body that the editor writes.</li>
+    <li>The body explains the topic <strong>timelessly</strong>. It has no dates, no session history and no event numbers. Anything the learner got wrong goes in a single "Where things stand" paragraph at the end.</li>
+    <li>A common mistake worth warning every reader about is written as a "tempting but wrong" sentence together with the example that shows why it is wrong.</li>
+    <li>The editor never goes beyond what the events contain. If an event looks factually wrong, the editor leaves it out and flags it.</li>
+    <li>Material beyond the current depth becomes one sentence plus a row in the page's "Intermediate &amp; Advanced Topics" table.</li>
+    <li>Each page records the highest event number already written into it. Any later event that touches the page is its <strong>backlog</strong>, and the status line says "not yet written up".</li>
+    <li>Prose uses a small fixed set of markdown: headings, paragraphs, bold, italic, code, links, lists, fenced diagrams, callouts and tables. Raw HTML is rejected, so prose can never break the layout. The full list is in <code>docs/prose-format.md</code> in the repo.</li>
+  </ul>
+
+  <h2>11. How sessions are run</h2>
+  <ul>
+    <li>Theory, analogies and judgment scenarios only. Never programming exercises.</li>
+    <li>A new topic starts with one or two diagnostic questions. They are not scored.</li>
+    <li>Quizzes have at least 3 questions. Each open gap is retested first, with a new scenario. No question is repeated word for word.</li>
+    <li>After each answer, the reply says why it is right or wrong, not only whether.</li>
+    <li>Moving on is earned by solid answers, not by the calendar. Anything overdue gets a recall check before new material.</li>
+  </ul>
+  <p>The reasons behind these rules are on the <a href="teaching-style.html">Teaching Style</a> page.</p>
+
+  <h2>12. Building and publishing</h2>
+  <ul>
+    <li>Git holds <strong>sources only</strong>: events, the registry, the prose files, the page templates, the hand-written pages, the stylesheet, the scripts and the docs. Everything generated goes into a build folder that git ignores.</li>
+    <li>One command rebuilds everything: check the events, compute every status, copy the sources, render each topic page from its prose, fill in the generated parts of the home page, the review schedule and each topic page, and write the agent guide. It stops at the first error.</li>
+    <li>Every push to the main branch rebuilds and publishes the site. A daily rebuild at 06:00 India time keeps "overdue" counts and "Next up" current without a push.</li>
+    <li>Agents that cannot write to the repo paste their events into the Log page. They are checked, stored in an inbox folder, and added to the log by the next build. Bad drafts are rejected with a reason.</li>
+    <li>The Action also commits to the main branch, so always pull before working locally.</li>
+    <li>No status on any page is typed by hand. A wrong number means a wrong event or a wrong rule, never a wrong page.</li>
+  </ul>
+
+  <h2>Related pages</h2>
+  <ul>
+    <li><a href="architecture.html">Architecture</a>: how the files and scripts feed each page.</li>
+    <li><a href="teaching-style.html">Teaching Style</a>: why sessions are run this way.</li>
+    <li><a href="../review-schedule.html">Review Schedule</a>: these rules at work.</li>
+  </ul>
+</main>
+<footer class="site-footer">Built topic by topic. Depth over completion.</footer>
+</body>
+</html>

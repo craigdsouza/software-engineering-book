@@ -69,7 +69,7 @@ export function checkEvent(ev, nodeIds, state = { lastId: 0, gapIds: new Set() }
 const DRAFT = ["verb", "node_id", "agent", "resource", "payload", "proposed_node"];
 const SERVER_SET = ["id", "schema", "ts", "date"];
 const DRAFT_QUESTION = ["tag", "question", "answer", "correct", "node_id", "feedback"];
-export const NODE_ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*){0,3}$/;
+export const NODE_ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*){0,4}$/;
 
 // Returns error strings, each naming the exact field, e.g. `questions[1].correct: must be true or false (got "partly")`.
 export function checkDraft(d, nodeIds) {
@@ -86,7 +86,7 @@ export function checkDraft(d, nodeIds) {
     const pn = d.proposed_node;
     if (!isObj(pn) || typeof pn.id !== "string" || !pn.title) err("proposed_node", 'must be { "id": "...", "title": "..." }');
     else if (nodeIds.has(pn.id)) err("proposed_node.id", `"${pn.id}" already exists — use it as node_id and drop proposed_node`);
-    else if (!NODE_ID_RE.test(pn.id) || pn.id.split("/").length < 2) err("proposed_node.id", "must be lowercase words-with-hyphens, 2–4 parts separated by /, e.g. computer-science/algorithms/binary-search");
+    else if (!NODE_ID_RE.test(pn.id) || pn.id.split("/").length < 2) err("proposed_node.id", "must be lowercase words-with-hyphens, 2–5 parts separated by /, e.g. computer-science/algorithms/binary-search");
     else if (!nodeIds.has(pn.id.split("/").slice(0, -1).join("/"))) err("proposed_node.id", `parent "${pn.id.split("/").slice(0, -1).join("/")}" doesn't exist — pick a parent from the agent guide`);
     else valid.add(pn.id);
   }
