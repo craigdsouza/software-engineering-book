@@ -4,8 +4,8 @@ The event log is the only record of what was taught, read and quizzed. Every sta
 is computed from it; nothing else is hand-written. `scripts/validate-events.mjs` enforces
 everything below, and the REST API will run the same checks on every write.
 
-Files: `events.json` (the log), `nodes.json` (the node registry every `node_id` must come from).
-A page node's prose lives at `{id}.html` (e.g. `computer-science/data-structures.html`); a section node is an
+Files: `events.json` (the log), `nodes.json` (the registry of topics and sub-topics every `node_id` must come from).
+A topic page's prose lives at `{id}.html` (e.g. `computer-science/data-structures.html`); a sub-topic is an
 `#anchor` on its parent's page. One deliberate exception: `computer-science/complexity/big-o` still lives at
 `computer-science/data-structures.html#big-o`, where it was taught.
 
@@ -27,7 +27,7 @@ A page node's prose lives at `{id}.html` (e.g. `computer-science/data-structures
 
 **taught** — `{ depth, content, notes }`
 - `depth`: `intro` (undergrad) \| `intermediate` (grad) \| `advanced` (beyond grad), the agent's judgement
-- `content`: everything taught for this node, complete enough to write the page from — `swe-editor` builds
+- `content`: everything taught for this topic or sub-topic, complete enough to write the page from — `swe-editor` builds
   the page's prose from it (see `docs/prose-format.md`). Several paragraphs and text diagrams are fine.
 - `notes`: anything else worth keeping
 
@@ -35,17 +35,17 @@ A page node's prose lives at `{id}.html` (e.g. `computer-science/data-structures
 - `questions[]`: `{ tag: recall|explain|predict, question, answer, correct: true|false, node_id, feedback }`
   - `question` is the full text asked; `answer` summarises Craig's reply; `feedback` is the agent's response,
     including any explanation given after a miss (the editor writes that into the page)
-  - each question names its own `node_id`, so one quiz (e.g. on a paper) can score several nodes
+  - each question names its own `node_id`, so one quiz (e.g. on a paper) can score several topics and sub-topics
 - `gaps[]`: `{ id, node_id, text }`, with `id` like `g86-1` (event id + position)
 
 **read** — `{ nodes[] }`, each `{ node_id, content, notes }`
 
 ## Scoring
 
-Per node: a quiz event counts as a review of every node its questions name. A review with any
-wrong answer for that node resets its streak to 1; a clean one adds 1. Streak → next review gap:
-1→3d, 2→7d, 3→14d, 4→30d, 5+→60d. The gap is counted from the node's latest review, clean or missed, so a
-miss on 09-22 makes the node due on 09-25. A node that has never been quizzed has no due date. `taught` and `read` never change status.
+Per topic or sub-topic: a quiz event counts as a review of every one its questions name. A review with any
+wrong answer for that topic or sub-topic resets its streak to 1; a clean one adds 1. Streak → next review gap:
+1→3d, 2→7d, 3→14d, 4→30d, 5+→60d. The gap is counted from its latest review, clean or missed, so a
+miss on 09-22 makes it due on 09-25. A topic or sub-topic that has never been quizzed has no due date. `taught` and `read` never change status.
 
 ## Migration notes (2026-09-21, `scripts/migrate-to-v1.mjs`)
 
@@ -53,7 +53,7 @@ miss on 09-22 makes the node due on 09-25. A node that has never been quizzed ha
   which life-os now reads (`learningEventsPath` in life-os/config.json).
 - 12 old quiz events stored only totals. Their questions are rebuilt as stubs
   (`synthesized: true`, `tag`/`question`/`answer`/`feedback` null) so scoring is unchanged —
-  verified identical for all 14 scored nodes.
+  verified identical for all 14 scored topics and sub-topics.
 - The 8 quiz events that had per-question detail keep `tag` and `correct`; the old one-line note
   becomes `feedback`, and `question`/`answer` are null (the text was never recorded).
 - All 15 taught events and 19 of 20 quiz events are `intro`; #59 (isolation levels, replication,
@@ -74,7 +74,7 @@ that's Gemini in Chrome (Skill: `docs/skill-history/gemini-book-tutor.*`), paste
   `inbox/<submit time>-<random>.json` = `{ submitted_at, via, drafts: [...] }` through GitHub's API.
 - On push, the Action runs `scripts/ingest-inbox.mjs`: same checks; a draft identical to one already
   logged is skipped; `id` = highest + 1, `ts` = `submitted_at`, `date` = that moment in IST, gap ids
-  `g{id}-{n}`; a proposed node is added to `nodes.json` with `page: null` (swe-editor places it).
+  `g{id}-{n}`; a proposed topic or sub-topic is added to `nodes.json` with `page: null` (swe-editor places it).
   Any bad draft sends the whole file to `inbox/rejected/` with a `.error.txt` naming each field.
   The Action commits the result to master, then builds and deploys.
 - The generated `agent-guide.html` lists every valid `node_id` with status, open gaps and recent

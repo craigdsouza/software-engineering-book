@@ -38,7 +38,7 @@ published straight from the branch, with generated files committed.)
 - `about/architecture.html` — clickable diagram of how `events.json`, `nodes.json`, the scripts and the generated JSON feed each page
 - `review-schedule.html` — spaced-repetition tracker template (the review-debt chart is generated into `_site/`)
 - `activity.html` — GitHub-style daily activity grid, built from `events.json`
-- Topic prose lives at `{node id}.md`; the page is generated at `_site/{node id}.html` (format: [`docs/prose-format.md`](docs/prose-format.md)), so the path mirrors `nodes.json`: `computer-science/data-structures.html`, `computer-science/data-structures/trees.html`, `databases/fundamentals.html`, `backend/apis.html`, `backend/auth.html`, `frontend/state-caching.html`. Smaller topics are `#anchors` on their parent's page.
+- Topic prose lives at `{id}.md`; the page is generated at `_site/{id}.html` (format: [`docs/prose-format.md`](docs/prose-format.md)), so the path mirrors `nodes.json`: `computer-science/data-structures.html`, `computer-science/data-structures/trees.html`, `databases/fundamentals.html`, `backend/apis.html`, `backend/auth.html`, `frontend/state-caching.html`. Smaller topics are `#anchors` on their parent's page.
 - `style.css` — shared styling, light/dark aware
 - `events.json` — event log of teaching, reading and quiz activity (schema 1)
 - `nodes.json` — the topic registry: domains, topics, pages, deps, contrasts, also_in
@@ -54,6 +54,19 @@ reason. Agents read **`agent-guide.html`** (generated) for valid topic ids and t
 
 Because the Action now commits to `master`, **pull before working locally** (`git pull`), or a
 local session's `events.json` edit will conflict with an ingested one.
+
+## Naming: domains, topics, sub-topics
+
+Everything in the book is one of three things. A **domain** is a field, such as Computer Science or
+Databases. A **topic** sits directly under a domain, such as Data Structures. A **sub-topic** sits under
+a topic or under another sub-topic, at any depth: Stacks & Queues, then Queues under it, then Circular
+buffer under that. The home page indents each level one step further. (The code and the JSON files
+still say `node` and `node_id` for these; that is internal and never shown on the site.)
+
+A topic or sub-topic that has sub-topics takes its due date from the soonest of its own latest quiz and
+its sub-topics' due dates. Its own quiz always competes, so a quiz on Trees that comes due in 3 days puts
+Trees on the review schedule even when its sub-topics are due later. One exception: a quiz older than a
+sub-topic's latest quiz counts as superseded, so an old whole-topic quiz does not stay overdue forever.
 
 ## events.json and nodes.json
 

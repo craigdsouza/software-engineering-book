@@ -1,6 +1,6 @@
 # Topic prose — format
 
-Every page node in `nodes.json` (a `page` with no `#`) has its prose in `{id}.md`; the page is
+Every topic page in `nodes.json` (a `page` with no `#`) has its prose in `{id}.md`; the page is
 generated into the build output: `computer-science/data-structures/trees.md` → `_site/computer-science/data-structures/trees.html`.
 `scripts/render-pages.mjs` builds it; topic `.html` files are never committed.
 
@@ -27,12 +27,12 @@ prose_through: 86
 ```
 
 `prose_through` is the highest event id already written into this page. Any later event that
-touches one of the page's nodes (as `node_id`, a question's or gap's `node_id`, or a `read`
+touches one of the page's topics or sub-topics (as `node_id`, a question's or gap's `node_id`, or a `read`
 event's `nodes[]`) is **backlog**: `scan-book.mjs` records it in `progress-data.json`
 (`pages[file].prose`), and the page's status line shows it — "1 event not yet written up (#86)".
 The home page also shows a "Waiting for the editor" box listing every page that is behind and every
 new topic that has events but no page yet (so a Gemini-proposed topic is visible before it has a page).
-`node scripts/prose-backlog.mjs [node id]` prints the backlog events in full, plus any node that
+`node scripts/prose-backlog.mjs [node id]` prints the backlog events in full, plus any topic or sub-topic that
 has events but no `page` yet (the editor places it first). The editor folds the events in, then
 sets `prose_through` to the highest id it folded.
 
@@ -57,7 +57,7 @@ after it, in its own box. `## Related pages` is optional.
 | Write | Renders as |
 |---|---|
 | `## Heading` / `### Subheading` | `<h2>` / `<h3>` |
-| `## Hash Tables {#hash-tables}` | `<h2 id="hash-tables">` — a section node's anchor must match its `page` in nodes.json |
+| `## Hash Tables {#hash-tables}` | `<h2 id="hash-tables">` — a sub-topic's anchor must match its `page` in nodes.json |
 | blank-line-separated text | paragraph |
 | `**bold**`, `*italic*`, `` `code` `` | strong, em, code |
 | `[text](../backend/apis.html#anchor)` | link |
@@ -75,8 +75,8 @@ never break the page layout. `<`, `>` and `&` are fine as plain characters.
 `node scripts/rebuild.mjs` (validate → scan → render-pages → build-progress).
 `node scripts/render-pages.mjs --check` exits 1 if any page in `_site/` is out of date with its .md.
 
-A new page node needs its .md before the rebuild will pass (`render-pages` reports the missing file).
-`render-pages` also fails if a section node that lives on this page (`page: "x.html#anchor"`)
+A new topic page needs its .md before the rebuild will pass (`render-pages` reports the missing file).
+`render-pages` also fails if a sub-topic that lives on this page (`page: "x.html#anchor"`)
 has no `{#anchor}` heading, or if the front matter is missing.
 
 Migrated from hand-written HTML on 2026-09-23 by `scripts/extract-prose.mjs`; the rendered

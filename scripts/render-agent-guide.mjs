@@ -126,7 +126,7 @@ const html = `<!doctype html>
   <p>A topic the book doesn't have yet:</p>
   <pre><code>${ex(EXAMPLES[2])}</code></pre>
 
-  <h2 id="topics">Topics (valid node ids)</h2>
+  <h2 id="topics">Topics and sub-topics (valid ids)</h2>
   <p>Status comes from the quiz history: <em>solid</em> = last review clean and not yet due; <em>needs-review</em> = last review had a miss, or it's past due. Retest open gaps first, with a fresh scenario.</p>
   <div class="table-scroll">
     <table>

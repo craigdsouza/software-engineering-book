@@ -747,8 +747,9 @@ summary.unit-summary:focus-visible { outline: 2px solid var(--accent); outline-o
   border-bottom: 1px solid transparent;
 }
 .panel-row-title a:hover { color: var(--accent); border-bottom-color: var(--accent); }
-.panel-row[data-kind="page"] .panel-row-title { font-weight: 700; }
-.panel-row[data-depth="1"] .panel-row-head { padding-left: 18px; }
+.panel-row[data-depth="0"] .panel-row-title { font-weight: 700; }
+/* One 18px step per level: topic at 0, its sub-topics at 1, theirs at 2, and so on. */
+.panel-row-head { padding-left: calc(var(--depth, 0) * 18px); }
 .panel-row-meta {
   font-family: var(--font-mono);
   font-size: 10px;

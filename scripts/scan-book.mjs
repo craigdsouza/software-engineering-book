@@ -221,12 +221,14 @@ function computeAll(nodes, eventsByNode) {
       rollup = worse(rollup, statusOf(childId));
     }
 
-    // Parent pages (not pure groupings) take their due date from their children:
-    // the SOONEST due date among the children counts, so a quiz on any one child
-    // moves the parent's date. The parent's own old quiz events only count if a
-    // whole-page quiz is at least as recent as every child's latest quiz. Without
-    // this, a page quizzed once long ago stayed "overdue" forever while its sections
-    // were being reviewed. (Changed 2026-10-26.)
+    // A topic or sub-topic that has sub-topics under it takes its due date from the
+    // SOONEST of two things: its own latest quiz, and its sub-topics' due dates. Its own
+    // quiz always competes -- if a quiz on Trees comes due in 3 days and its sub-topics
+    // are due later, Trees is due in 3 days and is listed on the review schedule in its
+    // own right. The one exception: an own quiz older than a sub-topic's latest quiz is
+    // treated as superseded, or a topic quizzed once long ago would stay "overdue"
+    // forever while its sub-topics were being reviewed. (Exception added 2026-10-26;
+    // ties now go to the parent's own quiz, 2026-11-10.)
     const kids = node.children.map((c) => nodes.get(c)).filter(Boolean);
     const kidDues = kids.map((k) => k._dueDate).filter(Boolean);
     const kidLast = kids.map((k) => k._lastScored).filter(Boolean).sort().pop() || null;
@@ -237,8 +239,8 @@ function computeAll(nodes, eventsByNode) {
     let dueFrom = direct ? "own" : null;
     if (isParentPage && kidDues.length) {
       const soonest = [...kidDues].sort()[0];
-      if (ownIsCurrent && direct.dueDate && direct.dueDate < soonest) {
-        dueDate = direct.dueDate; // a recent whole-page quiz that comes due first
+      if (ownIsCurrent && direct.dueDate && direct.dueDate <= soonest) {
+        dueDate = direct.dueDate; // its own quiz is current and comes due first, or ties
         dueFrom = "own";
       } else {
         dueDate = soonest;
@@ -246,7 +248,7 @@ function computeAll(nodes, eventsByNode) {
       }
     }
 
-    // Status: a parent's stale own result is ignored the same way as its stale due date.
+    // Status: a parent's superseded own result is ignored the same way as its superseded due date.
     let combined;
     if (isParentPage && kidDues.length && !ownIsCurrent) {
       combined = rollup;
@@ -453,8 +455,7 @@ function progressHelpers(nodes, eventsByNode, today) {
   function rowMeta(n, depth) {
     const d = n._direct;
     const parts = [];
-    if (n.materialization === "page" && depth === 0) parts.push("page");
-    else if (depth === 1 && n.parent && nodes.get(n.parent)) parts.push("under " + stripParen(nodes.get(n.parent).title));
+    if (depth === 0) parts.push("topic"); // indentation shows where a sub-topic sits, so no "under X" label
 
     if (n._dueDate) {
       const off = offsetDays(n._dueDate, today);
@@ -510,9 +511,10 @@ function hrefFor(nodeId) {
 
 // ---- the spine: study-path order, one row per graph node ----
 // Groups = domains with content, in PATH order, then one "not started" group
-// for the rest. Units = a domain's depth-2 nodes. Rows = a unit's descendants
-// (children at depth 0, grandchildren at depth 1, …); a unit with no
-// descendants is its own single row.
+// for the rest. A unit is a topic (a domain's direct child). Its rows are its
+// sub-topics at every level: direct sub-topics at depth 1, their sub-topics at
+// depth 2, and so on. The topic's own row, when it has quiz history of its own,
+// comes first at depth 0. A topic with no sub-topics is its own single row.
 function buildSpine(nodes, eventsByNode, rawEvents, today, H) {
   const groups = [];
   const flatUnits = []; // { ord, title, groupName, unitPageId, rows }
@@ -570,29 +572,35 @@ function buildSpine(nodes, eventsByNode, rawEvents, today, H) {
         ? [graphRow(u, 0)]
         : (eventsByNode.get(u.id) || []).length
         ? [graphRow(u, 0), ...descendants(u, 1, [])]
-        : descendants(u, 0, []);
-      const solid = rows.filter((r) => r.status === "solid").length;
-      const noTags = rows.filter(
+        : descendants(u, 1, []);
+      // Counts cover sub-topics only; a topic with none counts as its single row.
+      const counted = rows.some((r) => r.depth >= 1) ? rows.filter((r) => r.depth >= 1) : rows;
+      const subCount = rows.filter((r) => r.depth >= 1).length;
+      const solid = counted.filter((r) => r.status === "solid").length;
+      const noTags = counted.filter(
         (r) => !(eventsByNode.get(r.node_id) || []).some((e) => (e.payload?.questions || []).some((q) => q.tag))
       ).length;
       units.push({
         ord,
         title: u.title,
-        note: `${rows.length} node${rows.length === 1 ? "" : "s"}`,
-        count: `${solid} / ${rows.length} solid`,
+        note: subCount ? `${subCount} sub-topic${subCount === 1 ? "" : "s"}` : "no sub-topics yet",
+        subCount,
+        count: `${solid} / ${counted.length} solid`,
         here: false, // set once the frontier pick is known
         href: hrefFor(u.id),
         footnote: !noTags
           ? undefined
-          : rows.length === 1
+          : counted.length === 1
           ? `No tagged questions yet, so the recall / explain / predict cells stay empty.`
-          : `${cap(word(noTags))} of these ${word(rows.length)} have no tagged questions yet, so their recall / explain / predict cells stay empty.`,
+          : `${cap(word(noTags))} of these ${word(counted.length)} ${subCount ? "sub-topics" : "rows"} have no tagged questions yet, so their recall / explain / predict cells stay empty.`,
         nodes: rows,
       });
       flatUnits.push({ ord, title: u.title, groupName: dom.title, unitPageId: u.id, rows });
     }
-    const count = units.reduce((a, u) => a + (u.nodes ? u.nodes.length : 0), 0);
-    groups.push({ name: dom.title, meta: `domain ${gi} · ${count} node${count === 1 ? "" : "s"}`, units });
+    const topicCount = units.filter((u) => u.nodes).length;
+    const subTotal = units.reduce((a, u) => a + (u.subCount || 0), 0);
+    const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
+    groups.push({ name: dom.title, meta: `domain ${gi} · ${plural(topicCount, "topic")} · ${plural(subTotal, "sub-topic")}`, units });
   }
   if (idle.length) {
     groups.push({
@@ -676,19 +684,19 @@ function buildFrontier(nodes, flatUnits, today, H) {
     const over = -offsetDays(pick._dueDate, today);
     why =
       overdue.length === 1
-        ? `${cap(word(over))} days overdue, and the only node in the book that is.`
-        : `${cap(word(over))} days overdue — the oldest of ${word(overdue.length)} nodes past due.`;
+        ? `${cap(word(over))} days overdue, and the only topic or sub-topic that is.`
+        : `${cap(word(over))} days overdue — the oldest of ${word(overdue.length)} topics and sub-topics past due.`;
     const depId = (pick.deps || [])
       .find((id) => nodes.has(id) && nodes.get(id)._status !== "solid" && !nodes.get(id)._direct);
     if (depId) {
-      why += ` Its dep ${stripParen(nodes.get(depId).title)} has never been scored on its own, so this is also the check that gives that section its first evidence.`;
+      why += ` Its dep ${stripParen(nodes.get(depId).title)} has never been scored on its own, so this is also the check that gives that sub-topic its first evidence.`;
     }
   } else if (clause === 3) {
-    why = `${stripParen(pick.title)} is a declared dependency of the next unsolid node and isn't solid itself, so it comes first.`;
+    why = `${stripParen(pick.title)} is a declared dependency of the next topic or sub-topic that isn't solid, and isn't solid itself, so it comes first.`;
   } else if (clause === 4) {
-    why = `First unsolid section of ${stripParen(nodes.get(pick.parent)?.title || "its page")} — the page's status is a roll-up and can't be cleared directly.`;
+    why = `First sub-topic of ${stripParen(nodes.get(pick.parent)?.title || "its topic")} that isn't solid — a topic's status is a roll-up and can't be cleared directly.`;
   } else {
-    why = `First node in study-path order that isn't solid yet.`;
+    why = `First topic or sub-topic in study-path order that isn't solid yet.`;
   }
 
   const kicker =
@@ -697,18 +705,18 @@ function buildFrontier(nodes, flatUnits, today, H) {
       : clause === 3
       ? "Next up · dependency first"
       : clause === 4
-      ? "Next up · section before its page"
+      ? "Next up · sub-topic before its topic"
       : "Next up · study-path order";
 
   const clauses = [
     {
       n: 1,
-      text: `Any node past its due date — oldest first. ${stripParen(pick.title)} has been due since ${pick._dueDate || "—"}.`,
+      text: `Any topic or sub-topic past its due date — oldest first. ${stripParen(pick.title)} has been due since ${pick._dueDate || "—"}.`,
       fired: clause === 1,
     },
-    { n: 2, text: `Otherwise walk domains in study-path order, then units, then their nodes, and take the first node that isn't solid.`, fired: clause === 2 },
-    { n: 3, text: `If that node has a declared dep that isn't solid, the dep is taken instead.`, fired: clause === 3 },
-    { n: 4, text: `Children before their parent: a parent's status is a roll-up, so it can't be cleared directly.`, fired: clause === 4 },
+    { n: 2, text: `Otherwise walk domains in study-path order, then topics, then their sub-topics, and take the first one that isn't solid.`, fired: clause === 2 },
+    { n: 3, text: `If that one has a declared dependency that isn't solid, the dependency is taken instead.`, fired: clause === 3 },
+    { n: 4, text: `Sub-topics before their parent: a parent's status is a roll-up, so it can't be cleared directly.`, fired: clause === 4 },
   ];
 
   return {
@@ -758,8 +766,8 @@ function buildDue(nodes, today) {
   unscheduled.forEach((u) => delete u._rank);
 
   const advice =
-    `${cap(word(unscheduled.length))} nodes carry no due date: they've never been quizzed on their own ` +
-    `(a whole-page review scored the page, not them). One quiz each puts them on a schedule.`;
+    `${cap(word(unscheduled.length))} topics and sub-topics carry no due date: they've never been quizzed on their own ` +
+    `(a review of the whole topic scored the topic, not them). One quiz each puts them on a schedule.`;
 
   return { scheduled, unscheduled, advice };
 }
@@ -883,7 +891,7 @@ function buildProgressData(nodes, eventsByNode, rawEvents) {
   const lastDate = rawEvents.map(eventDate).filter(Boolean).sort().pop();
   const provenance =
     `Generated from events ${Math.min(...ids)}–${Math.max(...ids)} (latest ${lastDate}) and ` +
-    `${nodes.size} nodes in nodes.json. No status on this page is hand-written.`;
+    `${nodes.size} topics and sub-topics in nodes.json. No status on this page is hand-written.`;
 
   return {
     generated_at: new Date().toISOString(),

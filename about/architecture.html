@@ -96,7 +96,7 @@
 <main>
   <div class="breadcrumb"><a href="../index.html">Home</a> / Architecture</div>
   <h1>How the Book's Data Fits Together</h1>
-  <p class="subtitle">Every JSON, script, and generated page in this repo, and which one feeds which. Click any box for what the file holds, who writes it, who reads it, and a real excerpt. Snapshot taken 2026-09-21 (events 51–85, 30 nodes); prose pipeline and <code>_site/</code> build added 2026-09-23.</p>
+  <p class="subtitle">Every JSON, script, and generated page in this repo, and which one feeds which. Click any box for what the file holds, who writes it, who reads it, and a real excerpt. Snapshot taken 2026-09-21 (events 51–85, 30 topics and sub-topics); prose pipeline and <code>_site/</code> build added 2026-09-23.</p>
 
   <h2>One session, end to end</h2>
   <ol class="arch-steps">
@@ -292,7 +292,7 @@ const D = {
     title: "events.json",
     kind: "Source of truth — append-only log (schema 1)",
     file: "../events.json",
-    role: "A record of every taught, read and quiz session, in order. Nothing is edited or removed; status is always recomputed from it. Only quiz_answered events change status, and each question names the node it tests, so one quiz can score several topics.",
+    role: "A record of every taught, read and quiz session, in order. Nothing is edited or removed; status is always recomputed from it. Only quiz_answered events change status, and each question names the topic or sub-topic it tests, so one quiz can score several topics.",
     writes: "swe-teacher (taught, and quizzes it runs itself), swe-quizmaster (quiz_answered); later, any agent through the API",
     reads: "scan-book.mjs, activity.html (in the browser)",
     when: "One append per finished session",
@@ -307,7 +307,7 @@ const D = {
     file: "../nodes.json",
     role: "Every topic an event can point at: 15 subject domains (computer-science, databases, backend, …) and the topics under them. The id is the path (domain/concept/sub-concept, 1–4 parts), so a topic's parent is its id minus the last part. Each entry says where its prose lives (page), what it depends on and contrasts with, and which other domains it also belongs to (also_in). It never holds scores. Replaced the six *.graph.json sidecars on 2026-09-21.",
     writes: "swe-teacher, when a topic is added or moved (page left null); swe-editor sets page when it places a topic",
-    reads: "scan-book.mjs, validate-events.mjs (every event's node ids must exist here), render-pages.mjs (titles, breadcrumbs, section anchors)",
+    reads: "scan-book.mjs, validate-events.mjs (every event's topic and sub-topic ids must exist here), render-pages.mjs (titles, breadcrumbs, section anchors)",
     when: "Only when the shape of the book changes",
     lean: "Order of study is not stored here: the study path (which domain comes first) lives in scan-book.mjs, so the hierarchy only says what a topic is, not when to learn it.",
     leanOk: true,
@@ -318,7 +318,7 @@ const D = {
     title: "Topic prose (e.g. computer-science/data-structures.md)",
     kind: "Source of truth — the book's prose, one writer",
     file: "../computer-science/data-structures/trees.md",
-    role: "Everything hand-written about a topic, in a small strict markdown subset (docs/prose-format.md), next to the page it becomes: {node id}.md → {node id}.html. Front matter records prose_through, the last event already written in; later events that touch the page are its backlog, shown on the page's status line.",
+    role: "Everything hand-written about a topic, in a small strict markdown subset (docs/prose-format.md), next to the page it becomes: {id}.md → {id}.html. Front matter records prose_through, the last event already written in; later events that touch the page are its backlog, shown on the page's status line.",
     writes: "swe-editor only",
     reads: "render-pages.mjs, scan-book.mjs (prose_through only), the skills (for context)",
     when: "Whenever swe-editor folds a backlog — at the end of every teaching session, or on demand",
@@ -338,7 +338,7 @@ prose_through: 85
     title: "scripts/render-pages.mjs",
     kind: "Script — builds topic pages",
     file: "../scripts/render-pages.mjs",
-    role: "For every page node in nodes.json, turns {id}.md into {id}.html: generates the head, nav, breadcrumb and title from nodes.json, renders the prose, and carries the two status regions over for build-progress.mjs to refresh. Fails loudly on raw HTML, a missing front matter, or a section node whose {#anchor} heading is missing.",
+    role: "For every topic page in nodes.json, turns {id}.md into {id}.html: generates the head, nav, breadcrumb and title from nodes.json, renders the prose, and carries the two status regions over for build-progress.mjs to refresh. Fails loudly on raw HTML, a missing front matter, or a sub-topic whose {#anchor} heading is missing.",
     writes: "every topic page (_site/{id}.html)",
     reads: "{id}.md, nodes.json",
     when: "Every rebuild, between scan-book.mjs and build-progress.mjs",
@@ -357,7 +357,7 @@ prose_through: 85
     title: "Topic pages (e.g. computer-science/data-structures.html)",
     kind: "Page — fully generated",
     file: "../computer-science/data-structures.html",
-    role: "The teaching material, at {node id}.html. Since 2026-09-23 nothing in it is hand-edited: render-pages.mjs writes the shell and prose from the .md, and build-progress.mjs fills the status line (including any \"not yet written up\" backlog) and the coverage log.",
+    role: "The teaching material, at {id}.html. Since 2026-09-23 nothing in it is hand-edited: render-pages.mjs writes the shell and prose from the .md, and build-progress.mjs fills the status line (including any \"not yet written up\" backlog) and the coverage log.",
     writes: "render-pages.mjs (shell + prose), build-progress.mjs (page-status, page-coverage)",
     reads: "You",
     when: "Every rebuild",
@@ -371,7 +371,7 @@ prose_through: 85
     title: "scripts/scan-book.mjs",
     kind: "Script — computes all status",
     file: "../scripts/scan-book.mjs",
-    role: "Reads nodes.json plus events.json and works out, for each topic, a status (solid / needs-review), review streak, and next due date. A parent topic takes the weaker of its own status and its children's. It also writes every sentence the home page prints.",
+    role: "Reads nodes.json plus events.json and works out, for each topic, a status (solid / needs-review), review streak, and next due date. A topic or sub-topic with sub-topics under it takes the weaker of its own status and theirs, and the soonest of its own due date and theirs, so its own quiz is scheduled in its own right even when its sub-topics are due later. It also writes every sentence the home page prints.",
     writes: "book-graph-data.json, progress-data.json (including each page's prose backlog)",
     reads: "nodes.json, events.json, each {id}.md's prose_through",
     when: "Run by the skill after every session (by hand today)",
@@ -399,7 +399,7 @@ study path: computer-science → databases → mathematics → …`
     when: "Rewritten on every scan",
     lean: "Fine as is. It's the file an outside agent would query for \"what do I know?\", the natural thing to expose later through a read-only API.",
     leanOk: true,
-    exLabel: "The Linked Lists node",
+    exLabel: "The Linked Lists sub-topic",
     ex: "{\n  \"id\": \"computer-science/data-structures/linked-lists\",\n  \"title\": \"Linked Lists\",\n  \"materialization\": \"section\",\n  \"page\": \"computer-science/data-structures.html#linked-lists\",\n  \"parent\": \"computer-science/data-structures\",\n  \"children\": [],\n  \"deps\": [],\n  \"contrasts\": [\"computer-science/data-structures/arrays\",\n                \"computer-science/data-structures/doubly-linked-lists\"],\n  \"also_in\": [],\n  \"unlocks\": 2,\n  \"status\": \"solid\",\n  \"direct\": { \"status\": \"solid\", \"timesReviewed\": 2, \"lastScored\": \"2026-09-17\",\n              \"lastSuccess\": \"2026-09-17\", \"dueDate\": \"2026-09-24\" }\n}"
   },
   progress: {
@@ -413,7 +413,7 @@ study path: computer-science → databases → mathematics → …`
     lean: "Having a data file between computing and rendering is fine: it keeps build-progress.mjs pure presentation. Its date-dependent fields (\"15 days overdue\") are only as fresh as the last scan, so the site shows the state as of the last session, not today.",
     leanOk: true,
     exLabel: "Top-level keys and the start of \"due\"",
-    ex: "{\n  \"generated_at\": \"2026-09-21T…\",\n  \"today\": \"2026-09-21\",\n  \"cadence\":   { \"days\": [ { \"date\": \"2026-06-30\", \"questions\": 0, \"level\": 0 }, … ] },\n  \"next\":      { \"title\": \"Auth\", \"kicker\": \"Next up · overdue review\",\n                 \"why\": \"21 days overdue — the oldest of six nodes past due.\", … },\n  \"spine\":     [ { \"name\": \"Computer Science\", \"meta\": \"domain 1 · 9 nodes\",\n                   \"units\": [ { \"title\": \"Data Structures\", \"count\": \"1 / 8 solid\", … },\n                              { \"title\": \"Algorithms\", \"note\": \"planned\", … } ] },\n                 { \"name\": \"Databases\", … }, { \"name\": \"Backend\", … }, { \"name\": \"Frontend\", … },\n                 { \"name\": \"Not started\", \"meta\": \"11 domains · in study-path order\", … } ],\n  \"due\": {\n    \"scheduled\": [\n      { \"title\": \"Auth\",         \"due\": \"2026-08-31\", \"status\": \"needs-review\", \"offset_days\": -21 },\n      { \"title\": \"Databases\",    \"due\": \"2026-09-01\", \"status\": \"needs-review\", \"offset_days\": -20 },\n      …\n      { \"title\": \"Linked Lists\", \"due\": \"2026-09-24\", \"status\": \"solid\",        \"offset_days\": 3 }\n    ],\n    \"unscheduled\": [ { \"title\": \"Doubly-Linked Lists\", \"last\": \"scored 09-11\" }, … ]\n  },\n  \"provenance\": \"Generated from events 51–85 (latest 2026-09-17) and 30 nodes in nodes.json…\"\n}"
+    ex: "{\n  \"generated_at\": \"2026-09-21T…\",\n  \"today\": \"2026-09-21\",\n  \"cadence\":   { \"days\": [ { \"date\": \"2026-06-30\", \"questions\": 0, \"level\": 0 }, … ] },\n  \"next\":      { \"title\": \"Auth\", \"kicker\": \"Next up · overdue review\",\n                 \"why\": \"21 days overdue — the oldest of six topics and sub-topics past due.\", … },\n  \"spine\":     [ { \"name\": \"Computer Science\", \"meta\": \"domain 1 · 9 nodes\",\n                   \"units\": [ { \"title\": \"Data Structures\", \"count\": \"1 / 8 solid\", … },\n                              { \"title\": \"Algorithms\", \"note\": \"planned\", … } ] },\n                 { \"name\": \"Databases\", … }, { \"name\": \"Backend\", … }, { \"name\": \"Frontend\", … },\n                 { \"name\": \"Not started\", \"meta\": \"11 domains · in study-path order\", … } ],\n  \"due\": {\n    \"scheduled\": [\n      { \"title\": \"Auth\",         \"due\": \"2026-08-31\", \"status\": \"needs-review\", \"offset_days\": -21 },\n      { \"title\": \"Databases\",    \"due\": \"2026-09-01\", \"status\": \"needs-review\", \"offset_days\": -20 },\n      …\n      { \"title\": \"Linked Lists\", \"due\": \"2026-09-24\", \"status\": \"solid\",        \"offset_days\": 3 }\n    ],\n    \"unscheduled\": [ { \"title\": \"Doubly-Linked Lists\", \"last\": \"scored 09-11\" }, … ]\n  },\n  \"provenance\": \"Generated from events 51–85 (latest 2026-09-17) and 30 topics and sub-topics in nodes.json…\"\n}"
   },
   buildprogress: {
     verbs: true,
@@ -447,7 +447,7 @@ study path: computer-science → databases → mathematics → …`
     leanOk: true,
     exLabel: "Provenance line at the bottom of the generated region",
     ex: `<p class="spine-provenance">Generated from events 51–85
-(latest 2026-09-17) and 30 nodes in nodes.json. No status on this page is hand-written.</p>`
+(latest 2026-09-17) and 30 topics and sub-topics in nodes.json. No status on this page is hand-written.</p>`
   },
   rsstrip: {
     title: "review-schedule.html",

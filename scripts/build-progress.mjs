@@ -91,7 +91,7 @@ function renderCadence(cadence) {
 
 function renderNext(next) {
   if (!next) {
-    return `<section class="nextcard" aria-label="Next up"><p class="nextcard-kicker">Next up</p><p class="nextcard-why">Nothing outstanding — every tracked node is solid or ahead of its due date.</p></section>`;
+    return `<section class="nextcard" aria-label="Next up"><p class="nextcard-kicker">Next up</p><p class="nextcard-why">Nothing outstanding — every tracked topic and sub-topic is solid or ahead of its due date.</p></section>`;
   }
   const rows = next.clauses
     .map((c) => {
@@ -157,7 +157,7 @@ function renderPanel(unit) {
     .map((n) => {
       const t = n.tags || {};
       const titleInner = n.href ? `<a href="${esc(n.href)}">${esc(n.title)}</a>` : esc(n.title);
-      return `<div class="panel-row" data-kind="${n.kind}" data-depth="${n.depth || 0}" data-status="${n.status}">
+      return `<div class="panel-row" data-kind="${n.kind}" data-depth="${n.depth || 0}" style="--depth:${n.depth || 0}" data-status="${n.status}">
               <div class="panel-row-head">
                 <p class="panel-row-title">${titleInner}</p>
                 <p class="panel-row-meta">${esc(STATUS_LABEL[n.status] + (n.meta ? " · " + n.meta : ""))}</p>
@@ -172,7 +172,7 @@ function renderPanel(unit) {
   const foot = unit.footnote ? `\n            <p class="panel-footnote">${esc(unit.footnote)}</p>` : "";
   return `<div class="unit-panel">
             <div class="panel-head">
-              <span>section</span><span>recall</span><span>explain</span><span>predict</span><span>where it stands</span>
+              <span>topic / sub-topic</span><span>recall</span><span>explain</span><span>predict</span><span>where it stands</span>
             </div>
             ${rows}${foot}
           </div>`;
