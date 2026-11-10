@@ -164,6 +164,15 @@
     <li>No status on any page is typed by hand. A wrong number means a wrong event or a wrong rule, never a wrong page.</li>
   </ul>
 
+  <h2>13. The skills that work on the book</h2>
+  <ul>
+    <li>Three skills do the work: the <strong>teacher</strong> teaches and logs, the <strong>quizmaster</strong> quizzes and scores, and the <strong>editor</strong> writes the pages.</li>
+    <li><strong>Their instructions live in this repo</strong>, in the <code>skills/</code> folder, so they are versioned with the book and always current.</li>
+    <li>The skills installed in Claude are only <strong>loaders</strong>. Each time one runs, it pulls the latest repo and reads its instructions from <code>skills/</code>. An installed copy therefore cannot go out of date, and a change pushed to the repo is live in the next session.</li>
+    <li>The teacher and the quizmaster commit and push their events themselves. The editor pushes its page changes when it runs on its own. When the teacher calls the editor, the teacher pushes everything together.</li>
+    <li>To change a skill: edit its file in <code>skills/</code>, raise the version in its title, save a frozen copy in <code>docs/skill-history/</code>, then commit and push. Nothing needs reinstalling.</li>
+  </ul>
+
   <h2>Related pages</h2>
   <ul>
     <li><a href="architecture.html">Architecture</a>: how the files and scripts feed each page.</li>
