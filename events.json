@@ -3384,5 +3384,76 @@
       ],
       "notes": "Three questions across both nodes. No open gaps were carried in: g82-1 and g84-1 were both resolved on 2026-10-22. All three answers were right on cost and reasoning, including the new idea that a lookup table hands you a node but not its predecessor in a singly linked list, and shifting only the front block in the array case. One new gap (g134-1): consistently skips the head/tail and back-link updates when describing pointer changes. Small slip in Q2b: 19,999 instead of 20,000 previous-slots (counted slots in use, not slots reserved)."
     }
+  },
+  {
+    "id": 135,
+    "schema": 1,
+    "ts": "2026-11-10T14:05:49.000Z",
+    "date": "2026-11-10",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/hash-tables",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "recall",
+          "question": "A hash table has 20 slots and holds 15 keys. (a) What is its load factor? (b) Name two ways a table can handle two keys that hash to the same slot.",
+          "answer": "Load factor 15/20 = 0.75. Collisions: chaining (list at the slot) or open addressing (take the next free slot).",
+          "correct": true,
+          "node_id": "computer-science/data-structures/hash-tables",
+          "feedback": "Correct. Load factor = keys ÷ slots = 0.75. Chaining and open addressing (e.g. linear probing) are the two standard answers."
+        },
+        {
+          "tag": "explain",
+          "question": "A table with 10 slots uses 'key mod 10' and grows to 20 slots ('key mod 20'). (a) Which slot does key 38 belong to after growing? (b) Why can't you copy every key into the same slot number in the new table? (c) What does a rehash cost?",
+          "answer": "38 now belongs in slot 18. Copying in place breaks the rule: a later insert such as 28 collides in slot 8, and lookups for 38 would check slot 18 and wrongly say it is absent. Rehash is O(n).",
+          "correct": true,
+          "node_id": "computer-science/data-structures/hash-tables",
+          "feedback": "Correct (38 mod 10 = 8, 38 mod 20 = 18). Initially graded partly wrong because I said in-place copying would not collide; Craig pointed out the later collision with 28 and the failed lookup. His point was right, so the grade was changed to correct. Rehash is O(n): every key is placed again."
+        },
+        {
+          "tag": "predict",
+          "question": "A chained table has 8 buckets and holds 40 keys spread evenly. (a) How long is each chain on average? (b) What is the load factor? (c) Can open addressing hold 50 keys in 10 slots? (d) What is the largest load factor open addressing can reach?",
+          "answer": "Chains about 5 long. Said load factor would be 100% and that it is 'saturated' under chaining. Open addressing cannot hold 50 keys in 10 slots. On a fresh probe: load factor 40/8 = 5, same as average chain length; open addressing maxes at 1.",
+          "correct": false,
+          "node_id": "computer-science/data-structures/hash-tables",
+          "feedback": "Load factor = keys ÷ slots, so 40/8 = 5, not 100%. Under chaining it can exceed 1 and equals the average chain length. Under open addressing it cannot exceed 1. Part (b) and (c) were right; the load factor definition was the gap, corrected on a fresh probe."
+        },
+        {
+          "tag": "predict",
+          "question": "A 7-slot table uses 'key mod 7' with linear probing. Keys 10, 17, 24, 5 are inserted in that order. (a) Which slot does each end up in? (b) Walk a lookup for 31. (c) Why is key 5 not in its home slot?",
+          "answer": "Slots 3:10, 4:17, 5:24, 6:5 correct. For 31 said probes 4,5,6,7 then 0,1,2 and concluded absent. 5 displaced because 24 took slot 5. On a fresh probe: checks 4, 5, then 0, then stops.",
+          "correct": false,
+          "node_id": "computer-science/data-structures/hash-tables",
+          "feedback": "Part (a) and (c) right. For (b) the walk for 31 starts at slot 3, then 4, 5, 6, wraps to 0 and stops at the first empty slot. There is no slot 7 in a 7-slot table, and probing must stop at the first empty slot because an inserted key would have been placed there. Key 5 was displaced by clustering. A fresh 6-slot, 22-key probe was answered correctly."
+        },
+        {
+          "tag": "predict",
+          "question": "A hash table holds 100,000 user IDs. How many IDs must it look at to find all IDs between 4,000 and 4,500? What structure would suit this better? Which operation is the hash table best at?",
+          "answer": "Said up to 10,000 IDs; suggested a sorted array or BST; hash table best for O(1) insertion.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/hash-tables",
+          "feedback": "Accepted: the question did not say what kind of IDs. A hash table has no order, so neighbouring IDs sit in unrelated slots. If the 501 values can be listed, do 501 lookups. Otherwise scan all 100,000 and sort. A balanced BST takes about 17 steps then reads in order. Hash tables are strongest at exact-key lookup; O(1) insertion holds only at a low load factor."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g135-1",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "text": "Load factor is keys ÷ slots; under chaining it can exceed 1 and equals average chain length. Said 100% and 'saturated'."
+        },
+        {
+          "id": "g135-2",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "text": "Linear probe lookup stops at the first empty slot and wraps at the table end. Used a nonexistent slot 7 and kept probing past an empty slot. Retest of g102-2."
+        }
+      ],
+      "notes": "Topic was 11 days overdue (due 10-30); no open gaps going in. Q2 changed to correct after Craig's valid pushback. Q5 was ambiguous about ID type. Recheck the probe stopping rule at next review."
+    }
   }
 ]
