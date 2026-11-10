@@ -61,27 +61,27 @@
       "also_in": []
     },
     {
-      "id": "computer-science/data-structures/stacks",
+      "id": "computer-science/data-structures/stacks-and-queues/stacks",
       "title": "Stacks",
       "page": "computer-science/data-structures/stacks-and-queues.html#stacks",
       "deps": [],
       "contrasts": [
-        "computer-science/data-structures/queues"
+        "computer-science/data-structures/stacks-and-queues/queues"
       ],
       "also_in": []
     },
     {
-      "id": "computer-science/data-structures/queues",
+      "id": "computer-science/data-structures/stacks-and-queues/queues",
       "title": "Queues",
       "page": "computer-science/data-structures/stacks-and-queues.html#queues",
       "deps": [],
       "contrasts": [
-        "computer-science/data-structures/stacks"
+        "computer-science/data-structures/stacks-and-queues/stacks"
       ],
       "also_in": []
     },
     {
-      "id": "computer-science/data-structures/queues/circular-buffer",
+      "id": "computer-science/data-structures/stacks-and-queues/queues/circular-buffer",
       "title": "Circular buffer",
       "page": "computer-science/data-structures/stacks-and-queues.html#circular-buffer",
       "deps": [
@@ -213,7 +213,7 @@
       "title": "Recursion & Recurrences",
       "page": "computer-science/algorithms.html#recursion",
       "deps": [
-        "computer-science/data-structures/stacks",
+        "computer-science/data-structures/stacks-and-queues/stacks",
         "mathematics/discrete-math"
       ],
       "contrasts": [],
@@ -286,8 +286,8 @@
       "title": "Graph Traversal (BFS & DFS)",
       "page": "computer-science/algorithms.html#graph-traversal",
       "deps": [
-        "computer-science/data-structures/queues",
-        "computer-science/data-structures/stacks",
+        "computer-science/data-structures/stacks-and-queues/queues",
+        "computer-science/data-structures/stacks-and-queues/stacks",
         "computer-science/data-structures/graphs"
       ],
       "contrasts": [],
@@ -1108,7 +1108,7 @@
       "summary": "Where local variables live versus long-lived objects.",
       "page": null,
       "deps": [
-        "computer-science/data-structures/stacks"
+        "computer-science/data-structures/stacks-and-queues/stacks"
       ],
       "contrasts": [],
       "also_in": []
@@ -2978,7 +2978,7 @@
       "summary": "Handing slow work to a queue so the user does not wait for it.",
       "page": null,
       "deps": [
-        "computer-science/data-structures/queues"
+        "computer-science/data-structures/stacks-and-queues/queues"
       ],
       "contrasts": [],
       "also_in": []
@@ -3133,7 +3133,7 @@
       "summary": "One thread running one thing at a time, with waiting work lined up behind it.",
       "page": null,
       "deps": [
-        "computer-science/data-structures/queues"
+        "computer-science/data-structures/stacks-and-queues/queues"
       ],
       "contrasts": [],
       "also_in": []
@@ -3518,7 +3518,7 @@
       "id": "deque",
       "title": "Deque",
       "tier": "intermediate",
-      "under": "computer-science/data-structures/queues",
+      "under": "computer-science/data-structures/stacks-and-queues/queues",
       "note": "A line where items can be added or removed at either end, not only the back and the front. Not covered yet."
     }
   ]

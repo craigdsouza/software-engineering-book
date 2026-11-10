@@ -80,3 +80,7 @@ that's Gemini in Chrome (Skill: `docs/skill-history/gemini-book-tutor.*`), paste
 - The generated `agent-guide.html` lists every valid `node_id` with status, open gaps and recent
   questions, plus examples that are checked against these rules on every build.
 
+
+## Id rewrite, 2026-11-10
+
+Stacks and Queues were renamed so their ids nest under their page's topic. `computer-science/data-structures/stacks`, `.../queues` and `.../queues/circular-buffer` became `computer-science/data-structures/stacks-and-queues/stacks`, `.../stacks-and-queues/queues` and `.../stacks-and-queues/queues/circular-buffer`. All 19 references in `events.json` and 12 in `nodes.json` were rewritten in place (`node_id` fields, question and gap ids, deps, contrasts). No event was added, removed or reordered, and every topic's review history, streak and due date is unchanged. A topic's parent comes from its id prefix, so an id that does not nest under its parent puts the topic in the wrong place on the home page.
