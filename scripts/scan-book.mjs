@@ -68,10 +68,23 @@ function loadRegistry(root) {
       also_in: n.also_in || [],
     });
   }
+  // A node's parent is normally the node named by its id's prefix. One correction: when a
+  // sub-topic lives on another topic's page (id ".../stacks", page "stacks-and-queues.html#stacks")
+  // and the id-prefix parent is on a different page, the node whose page that is becomes the
+  // parent. That is why Stacks and Queues sit under Stacks & Queues, not beside it.
+  const baseOf = (pg) => (pg ? pg.split("#")[0] : null);
+  const pageOwner = new Map(); // base page -> id of the node that owns the whole page
+  for (const n of nodes.values()) if (n.page && !n.page.includes("#")) pageOwner.set(n.page, n.id);
   for (const n of nodes.values()) {
     const cut = n.id.lastIndexOf("/");
-    const parentId = cut === -1 ? null : n.id.slice(0, cut);
-    if (parentId && nodes.has(parentId)) {
+    let parentId = cut === -1 ? null : n.id.slice(0, cut);
+    if (parentId && !nodes.has(parentId)) parentId = null;
+    const owner = n.page && n.page.includes("#") ? pageOwner.get(baseOf(n.page)) : null;
+    const ownerParent = owner ? owner.slice(0, Math.max(owner.lastIndexOf("/"), 0)) : null;
+    // only a sibling page's owner qualifies (Stacks & Queues next to Data Structures' other sub-topics);
+    // Big O, which is shown on the Data Structures page but belongs to Complexity, keeps its own parent
+    if (owner && owner !== n.id && parentId && ownerParent === parentId && baseOf(nodes.get(parentId).page) !== baseOf(n.page)) parentId = owner;
+    if (parentId) {
       n.parent = parentId;
       nodes.get(parentId).children.push(n.id);
     }
