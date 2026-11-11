@@ -3455,5 +3455,55 @@
       ],
       "notes": "Topic was 11 days overdue (due 10-30); no open gaps going in. Q2 changed to correct after Craig's valid pushback. Q5 was ambiguous about ID type. Recheck the probe stopping rule at next review."
     }
+  },
+  {
+    "id": 136,
+    "schema": 1,
+    "ts": "2026-11-11T17:13:08.000Z",
+    "date": "2026-11-11",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/graphs/representations",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "A team has 20 people and every person is friends with every other person. (a) How many cells does the adjacency matrix have? (b) How many entries do the adjacency lists hold in total? (c) Which layout would you pick here, and why?",
+          "answer": "400 cells; 20 x 19 = 380 list entries; picked the matrix because the extra storage is small and a friendship lookup is O(1).",
+          "correct": true,
+          "node_id": "computer-science/data-structures/graphs/representations",
+          "feedback": "Correct. This is the retest of g123-1: the diagonal is left out (a person is not their own neighbor), so 380 not 400 entries. In a dense graph the lists save almost no memory, so the matrix's O(1) lookup wins."
+        },
+        {
+          "tag": "explain",
+          "question": "A social app has 1,000,000 users and each follows about 200 others. (a) Roughly how many cells would a matrix need? (b) Roughly how many entries would the lists need? (c) Which layout fits, and what makes it fit?",
+          "answer": "10^12 cells and 200 million entries, both right; chose lists. Said the matrix is six orders of magnitude larger and did not name sparsity. On a fresh probe (10,000 users, 20 messages each) said 10^8 cells vs 2x10^5 entries, 500 times larger, and named sparsity.",
+          "correct": false,
+          "node_id": "computer-science/data-structures/graphs/representations",
+          "feedback": "Lists are right, but the size gap was misjudged: 10^12 / (2 x 10^8) = 5,000 times, about 3.7 powers of ten, not six. What makes lists fit is sparsity: each vertex touches a tiny fraction of the possible neighbors (200 of 1,000,000), so most matrix cells are empty. Fresh probe answered correctly."
+        },
+        {
+          "tag": "predict",
+          "question": "Follows are one-way. A follows B, A follows C, B follows C, D follows A. (a) With adjacency lists that store who each person follows, how do you find everyone who follows C? (b) How does the matrix answer the same question? (c) Which is easier, and why?",
+          "answer": "Scan every list for C; with the matrix read the line for C and look for 1s; matrix is cheaper because it is one line instead of several. Used row C, assuming row = the one followed.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/graphs/representations",
+          "feedback": "Correct. Graded wrong at first for reading row C, but the question never said which axis is the follower, and row = followed with column = follower is a valid convention. Either way one direction is a row read and the other a column read. With lists the fix is to also keep a reverse list of who follows each person. The follow-up probe under the stated convention (row = follower) was answered correctly: row N for who N follows, column O for who follows O."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g136-1",
+          "node_id": "computer-science/data-structures/graphs/representations",
+          "text": "Misjudged the matrix-versus-list size gap for a sparse graph: said six orders of magnitude when 10^12 vs 2x10^8 is 5,000 times (about 3.7), and did not name sparsity as the deciding property. Resolved on a fresh probe in the same session."
+        }
+      ],
+      "notes": "Topic was 5 days overdue (due 11-06). g123-1 (a vertex is not its own neighbor, so 50 x 49 = 2,450 not 2,500) resolved: Q1 used 20 x 19 = 380 correctly. Q3 was regraded to correct after Craig's valid pushback that the row/column convention was never stated in the question; state the convention in future directed-matrix questions. Net: one miss, on the size comparison and the missing name for sparsity, fixed on a fresh probe."
+    }
   }
 ]
