@@ -30,6 +30,17 @@
       "also_in": []
     },
     {
+      "id": "computer-science/data-structures/arrays/array-based-sets",
+      "title": "Array-based sets",
+      "page": "computer-science/data-structures.html#array-based-sets",
+      "deps": [],
+      "contrasts": [
+        "computer-science/data-structures/hash-tables"
+      ],
+      "also_in": [],
+      "summary": "An array that refuses duplicates, so every insert pays a full search first."
+    },
+    {
       "id": "computer-science/data-structures/linked-lists",
       "title": "Linked Lists",
       "page": "computer-science/data-structures.html#linked-lists",
@@ -3520,6 +3531,13 @@
       "tier": "intermediate",
       "under": "computer-science/data-structures/stacks-and-queues/queues",
       "note": "A line where items can be added or removed at either end, not only the back and the front. Not covered yet."
+    },
+    {
+      "id": "sorted-array-sets",
+      "title": "Sorted array-based sets",
+      "tier": "intermediate",
+      "under": "computer-science/data-structures/arrays/array-based-sets",
+      "note": "If the array is kept sorted, the duplicate check can use binary search (about log N steps instead of N), but an insert still shifts cells. Hash-table sets cut both steps to about 1."
     }
   ]
 }
