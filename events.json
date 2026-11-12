@@ -3567,5 +3567,55 @@
       "content": "Array-based sets: an array that refuses duplicates.\n\nA set is a collection where no value appears twice. An array-based set is a plain array with one extra rule: before any value goes in, we check that it is not already there. Everything else about the array is unchanged. Cells are still contiguous, reading by index is still 1 step, and shifting is still how the front and middle are opened up or closed.\n\nWhy the rule costs something. The array has no index of its values, only an index of positions. To know whether \"apple\" is already present, the only tool is a search, and a search for a value that is absent must read every cell. So every insert pays a full search first. For 100 elements that is 100 steps spent just to learn the value is new.\n\nStep counts for a set of 100 elements, compared with a plain array of 100:\n\n  operation                 array    array-based set\n  read by index               1            1\n  search (value absent)      100          100\n  insert at the end           1           101   (100 to check + 1 to insert)\n  insert at the beginning    101          201   (100 to check + 100 shifts + 1 to insert)\n  delete at the beginning    100          100   (1 delete + 99 shifts)\n  delete at the end           1            1\n\nThe pattern, as a small picture of where the cost goes:\n\n  array insert at front:        [ shift N cells ][ 1 insert ]                    = N + 1\n  set   insert at front:  [ search N ][ shift N cells ][ 1 insert ]              = 2N + 1\n  set   insert at end:    [ search N ][ 1 insert ]                              = N + 1\n\nWhy deletes do not change. To delete, we already know the value is in the set, because we are pointing at it. There is nothing to check for duplicates, so deletes cost exactly what they cost in a plain array: 1 step at the end, N steps at the beginning (1 delete plus N - 1 shifts left).\n\nThe counterintuitive bit. In a plain array, insert at the end is the cheap case at 1 step. In an array-based set it is not: it is N + 1, because the duplicate check dominates. Inserting at the end no longer saves you anything over a plain search. (Resizing a full array is a separate, rare extra cost that applies to arrays and sets alike, and is counted as amortized, so it is left out of these counts.)\n\nThe tempting-but-wrong alternative: count a set insert at the end as 1 step because the array does. Counterexample: a set of 100 names, insert \"Dana\". We must read all 100 cells to prove \"Dana\" is absent. That is 100 reads before the single write, so 101, not 1.\n\nInsert only counts as 2N + 1 or N + 1 when the value is new. If the value is already present, the set rejects it after the search: at most N steps, and nothing is inserted.\n\nRelated result from the same exercises: finding every instance of a value in an array (for example counting all \"apple\"s in N items) takes N steps. A search for the first instance can stop early, but finding all of them has no early exit, because any unread cell could still hold another match.\n\nConnections. Parent: Arrays (same contiguous layout, same shifting cost). Big O: these counts are O(1), O(N) and O(N) in the sets that matter, so the set's extra cost does not change the order of an insert at the front, which was already O(N), but it moves insert at the end from O(1) to O(N). Contrast: Hash Tables, where checking whether a value is present takes about 1 step instead of N, which is why most real sets are built on hash tables.\n\nSource: exercises 2 and 3 of Chapter 1 of Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python.",
       "notes": "Taught through the Chapter 1 exercises rather than a separate lesson: Craig had just answered exercise 2 (array-based set, 100 elements) with all six parts correct, reasoning from the mechanism (a full search before every insert, shifts for front inserts and deletes). The book had no sub-topic for it, so question 2 of quiz event 137 had been filed under Arrays; this event and the new sub-topic fix that. Beyond current depth, for later: an ordered (sorted) array lets the duplicate check use binary search (about log N steps) but an insert still shifts cells, so a sorted array-based set costs less to check and the same to insert; and hash-table-based sets cut both steps to about 1."
     }
+  },
+  {
+    "id": 139,
+    "schema": 1,
+    "ts": "2026-11-12T15:50:50.000Z",
+    "date": "2026-11-12",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/algorithms/binary-search",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "How many steps would it take to perform a linear search for the number 8 in the ordered array [2, 4, 6, 8, 10, 12, 13]? (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 2 exercise 1.)",
+          "answer": "First said 7. After feedback said it was a mental slip and gave 4, because 8 is the 4th element. On a fresh probe (linear search for 30 in [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]) said 6 steps, correct.",
+          "correct": false,
+          "node_id": "computer-science/algorithms/binary-search",
+          "feedback": "Linear search reads one cell at a time from the left and stops the moment it finds the target. 8 is the 4th cell (2, 4, 6, 8), so it takes 4 steps. Seven steps would be the cost for the last cell (13) or for a missing value. Craig called it a slip, and the fresh probe (30 is the 6th cell, so 6 steps) confirmed he knows the search stops at the match."
+        },
+        {
+          "tag": "predict",
+          "question": "How many steps would binary search take to find 8 in the same ordered array [2, 4, 6, 8, 10, 12, 13]? (Wengrow, Chapter 2 exercise 2.)",
+          "answer": "1 step, because the middle element is the one being looked for.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/binary-search",
+          "feedback": "Correct. The array has 7 cells, so the middle is the 4th cell, which holds 8. Found on the first look."
+        },
+        {
+          "tag": "predict",
+          "question": "What is the maximum number of steps it would take to perform a binary search on an array of size 100,000? (Wengrow, Chapter 2 exercise 3.)",
+          "answer": "First said 16, counted by halving 100,000 down to 1. After feedback, on a fresh probe (sorted array of 1,000 cells, maximum steps) said 10, working it as 2^10 - 1 = 1,023. He said '10,000 cells' aloud but the working was for 1,000, so it was accepted.",
+          "correct": false,
+          "node_id": "computer-science/algorithms/binary-search",
+          "feedback": "The maximum is 17, not 16. Halving 100,000 down to 1 takes 16 halvings, but after the 16th halving one cell is still left and it must be looked at, which is step 17. Small check: an 8-cell array halves 3 times (8, 4, 2, 1) but binary search looks 4 times, once at each size. Rule: k looks can cover at most 2^k - 1 cells, so the maximum is the smallest k where 2^k - 1 is at least N. 16 looks cover 65,535 cells, too few for 100,000. 17 looks cover 131,071, enough. For 1,000 cells, 2^10 - 1 = 1,023 is enough and 2^9 - 1 = 511 is not, so 10. For 10,000 cells it would be 14 (2^13 - 1 = 8,191 is too few, 2^14 - 1 = 16,383 is enough)."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g139-1",
+          "node_id": "computer-science/algorithms/binary-search",
+          "text": "Counted halvings to get the maximum number of binary-search steps: 100,000 halves to 1 in 16 halvings, so said 16. This misses the final look at the last remaining cell, so the maximum is 17. Rule: k looks cover at most 2^k - 1 cells, so the maximum is the smallest k with 2^k - 1 at least N. Resolved on a fresh probe in the same session (1,000 cells gives 10, worked as 2^10 - 1 = 1,023)."
+        }
+      ],
+      "notes": "Binary Search was 10 days overdue (due 11-02), with no open gaps going in. Craig worked the Chapter 2 exercises of Wengrow's A Common-Sense Guide to Data Structures and Algorithms in Python on his phone. Q1 was missed as a slip (7 instead of 4), not a misconception: a fresh linear search (30 in a 10-cell array, 6 steps) was right, so it is not logged as a gap. Q3 is the one real gap (g139-1), resolved on a fresh probe. Net: two misses of three, so the topic needs review. Next time, ask for a not-found search and for the maximum on an exact power of two (for example 1,023 or 1,024 cells), where the off-by-one shows most."
+    }
   }
 ]
