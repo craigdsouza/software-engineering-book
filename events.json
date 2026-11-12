@@ -3617,5 +3617,71 @@
       ],
       "notes": "Binary Search was 10 days overdue (due 11-02), with no open gaps going in. Craig worked the Chapter 2 exercises of Wengrow's A Common-Sense Guide to Data Structures and Algorithms in Python on his phone. Q1 was missed as a slip (7 instead of 4), not a misconception: a fresh linear search (30 in a 10-cell array, 6 steps) was right, so it is not logged as a gap. Q3 is the one real gap (g139-1), resolved on a fresh probe. Net: two misses of three, so the topic needs review. Next time, ask for a not-found search and for the maximum on an exact power of two (for example 1,023 or 1,024 cells), where the off-by-one shows most."
     }
+  },
+  {
+    "id": 140,
+    "schema": 1,
+    "ts": "2026-11-12T17:04:58.000Z",
+    "date": "2026-11-12",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/complexity/big-o",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "Use Big O notation to describe the time complexity of a function that tells whether a given year is a leap year: is_leap_year(year) checks if year % 100 == 0, and if so checks year % 400 == 0 (returning False if yes, True if no); otherwise it returns year % 4 == 0. (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 3 exercise 1.)",
+          "answer": "O(1): whatever year is fed in, the number of steps is the same, a check against 100 and then against 400.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. The function makes at most 3 checks (against 100, 400 and 4), and that count never changes with the size of the year, so it is O(1)."
+        },
+        {
+          "tag": "predict",
+          "question": "Use Big O notation to describe the time complexity of a function that sums up all the numbers in a given array: array_sum(array) sets sum = 0, adds each number in the array to sum with a for loop, and returns sum. (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 3 exercise 2.)",
+          "answer": "O(n): the for loop makes more passes as the array grows, so the steps rise in step with the size of the array.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. One addition per element, so n elements cost about n steps."
+        },
+        {
+          "tag": "predict",
+          "question": "Use Big O notation to describe the time complexity of chessboard_space(number_of_grains), which finds the chessboard square needed for a number of rice grains (1 grain on square 1, doubling on each next square): it starts chessboard_spaces = 1 and placed_grains = 1, and while placed_grains < number_of_grains it does placed_grains *= 2 and chessboard_spaces += 1, then returns chessboard_spaces. (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 3 exercise 3.)",
+          "answer": "First said O(n): as the number of grains grows, the while loop makes proportionally more passes. After feedback, on a fresh probe (a counter that starts at 1 and stops at N = 1,000,000): adding 3 each pass takes about 333,333 passes and is O(N); tripling each pass takes about 13 passes and is O(log N). Also noted unprompted that this one is log base 3.",
+          "correct": false,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "The answer is O(log N), not O(n). The loop does not add 1 each pass, it doubles placed_grains (1, 2, 4, 8, 16), so 16 grains take 4 passes (the function returns 5 because the board-space counter starts at 1). Doubling the input adds only 1 pass: 1,024 grains take 10 passes, 1,000,000 take 20, 1,000,000,000 take 30. This is binary search in reverse: binary search halves the work each pass, this loop doubles the counter each pass, and either way the passes number about log N. The slip was judging by 'more input means more passes', which is true but does not say how many more. The test is how the loop counter moves: a fixed amount added each pass gives O(N), a fixed factor multiplied or divided each pass gives O(log N). On the fresh probe both loops were right. Craig's remark that the base is 3 for the tripling loop is correct, and the base does not change the Big O label: log base 3 of N is log base 2 of N divided by about 1.585, a constant factor, which Big O drops (13 passes against 20 at N = 1,000,000)."
+        },
+        {
+          "tag": "predict",
+          "question": "Use Big O notation to describe the time complexity of select_a_strings(array), which takes an array of strings and returns a new array holding only the strings that start with the character \"a\": it makes an empty new_array, loops over every string, appends the string if string[0] == \"a\", and returns new_array. (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 3 exercise 4.)",
+          "answer": "O(n): as the array grows to n strings, the for loop makes more passes, comparing each string, in step with n.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. Each string is checked once, and an append to the end is 1 step, so the cost is about n."
+        },
+        {
+          "tag": "predict",
+          "question": "Describe the time complexity in Big O notation of median(array), which finds the median of an ordered array: it returns None for an empty array, sets middle = len(array) // 2, and returns either the average of array[middle - 1] and array[middle] (even length) or array[middle] (odd length). (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 3 exercise 5.)",
+          "answer": "O(1): the size of the array does not matter, it only reads values from the middle, and a read on an array is O(1).",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. The function checks the length, then reads one or two cells. Each is a single step, however long the array."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g140-1",
+          "node_id": "computer-science/complexity/big-o",
+          "text": "Judged the chessboard loop as O(n) because more input means more passes, without checking how the loop counter moves. The counter doubles each pass, so the passes are about log N (4 for 16 grains, 20 for 1,000,000). Test: a counter that adds a fixed amount each pass gives O(N), and one that multiplies or divides by a fixed factor each pass gives O(log N). Resolved on a fresh probe in the same session (adding 3 gives about 333,333 passes and O(N), tripling gives 13 passes and O(log N))."
+        }
+      ],
+      "notes": "Big O was 13 days overdue (due 10-30), with no open gaps going in (g79-1 was resolved in event 103). Craig worked the Chapter 3 exercises of Wengrow's A Common-Sense Guide to Data Structures and Algorithms in Python on his phone. Four of five correct; Q3 is the one real gap (g140-1), resolved on a fresh probe with two loops, one adding 3 and one tripling. He also pointed out on his own that the tripling loop is log base 3, which is right, and the base does not change the Big O label. Net: one miss, so the topic needs review again. Next time, ask for a nested loop where the inner loop halves (O(n log n)) and one where the inner loop depends on the outer counter (O(n^2))."
+    }
   }
 ]
