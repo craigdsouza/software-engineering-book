@@ -3505,5 +3505,49 @@
       ],
       "notes": "Topic was 5 days overdue (due 11-06). g123-1 (a vertex is not its own neighbor, so 50 x 49 = 2,450 not 2,500) resolved: Q1 used 20 x 19 = 380 correctly. Q3 was regraded to correct after Craig's valid pushback that the row/column convention was never stated in the question; state the convention in future directed-matrix questions. Net: one miss, on the size comparison and the missing name for sparsity, fixed on a fresh probe."
     }
+  },
+  {
+    "id": 137,
+    "schema": 1,
+    "ts": "2026-11-12T04:07:01.000Z",
+    "date": "2026-11-12",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/arrays",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "recall",
+          "question": "For an array containing 100 elements, give the number of steps for: (a) reading, (b) searching for a value not in the array, (c) insertion at the beginning, (d) insertion at the end, (e) deletion at the beginning, (f) deletion at the end. (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 1 exercise 1.)",
+          "answer": "a) 1. b) N = 100. c) N + 1 = 101 (N shifts right, then 1 insert). d) 1, noting that if the array is full and must be resized it can take N + 1. e) N = 100 (1 delete plus N-1 left shifts). f) 1.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "All six correct. The book's count for insertion at the end is 1 step; Craig's resize caveat is real (a full array is copied to bigger memory, costing about N + 1 once) but rare, which is why appends are counted as 1, amortized."
+        },
+        {
+          "tag": "predict",
+          "question": "For an array-based set (no duplicates allowed) containing 100 elements, give the number of steps for: (a) reading, (b) searching for a value not in the set, (c) inserting a new value at the beginning, (d) inserting a new value at the end, (e) deletion at the beginning, (f) deletion at the end. (Wengrow, Chapter 1 exercise 2.)",
+          "answer": "a) 1. b) N = 100. c) 2N + 1 = 201 (N to check for a duplicate, N to shift, 1 to insert). d) N + 1 = 101 (N to check, 1 to insert). e) N = 100, same as an array. f) 1.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "All six correct. A set pays an extra full search before every insert to rule out duplicates, so insert at the end goes from 1 to N + 1 and insert at the beginning goes from N + 1 to 2N + 1. Deletes cost the same as in a plain array because the value being removed is already known to exist."
+        },
+        {
+          "tag": "predict",
+          "question": "Normally an array search stops at the first match. How many steps does it take to find every instance of a value, such as counting all the \"apple\"s in an array of N items, in terms of N? (Wengrow, Chapter 1 exercise 3.)",
+          "answer": "N steps, because every element has to be read: with no early stop, any unread cell could still hold an apple.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Correct. A search for the first instance can stop early and takes between 1 and N steps. Finding all instances removes the early exit, so it always takes N steps, the same as a search for a value that is not in the array."
+        }
+      ],
+      "gaps": [],
+      "notes": "Craig worked the Chapter 1 exercises of Wengrow's A Common-Sense Guide to Data Structures and Algorithms in Python (arrays and array-based sets) from the book on his phone. Clean session: 2 predict, 1 recall, all correct. No open gaps on Arrays going in (g105-1 was resolved in event 124). He reasoned from the mechanism each time: shifts for front inserts and deletes, a full duplicate-check search before every set insert, and no early exit when counting every match. Small precision point, not scored: he gave most answers in terms of N and only some as numbers for N = 100."
+    }
   }
 ]
