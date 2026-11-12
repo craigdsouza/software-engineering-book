@@ -1,5 +1,5 @@
 ---
-prose_through: 115
+prose_through: 139
 ---
 
 Data structures are about how data sits in memory. Algorithms are about the steps you take over that data. The two are one skill: binary search works only because the list is sorted *and* an [array](data-structures.html#arrays) lets you jump to the middle in one step. On a [linked list](data-structures.html#linked-lists), reaching the middle takes n/2 steps, so binary search loses its advantage. Data structures are the containers. Algorithms are what you do with them.
@@ -206,6 +206,21 @@ The search stops in one of two ways. Either the middle item is the target, or th
 
 **Why it takes about 20 steps.** Searching 1,000,000 items by plain scanning takes up to 1,000,000 steps. Binary search halves the range each time. Since 2 to the power 20 is about 1,048,576, a million items need at most about 20 halvings. A search for a value that is not in the list costs the same as the worst case for a value that is. It still needs about 20 steps, because it only stops once the range is empty, after the last single item has been checked and does not match.
 
+**Counting the maximum exactly.** The number of steps is the number of looks at a middle item. Count looks, not halvings. Take 100,000 cells. Halving 100,000 down to 1 takes 16 halvings (100,000, 50,000, 25,000, and so on). But after the 16th halving one cell is still left, and it must be looked at. That look is the 17th, so the maximum is 17, not 16. A small case shows it. An 8-cell array halves 3 times (8, 4, 2, 1), yet binary search looks 4 times, once at each size.
+
+A rule that avoids the slip: **k looks can cover at most 2^k − 1 cells.** One look covers 1 cell, two looks cover 3, and three looks cover 7. The maximum number of steps is the smallest k where 2^k − 1 is at least N.
+
+| Cells | Looks needed | Why |
+|---|---|---|
+| 1,000 | 10 | 2^10 − 1 = 1,023 is enough, and 2^9 − 1 = 511 is not |
+| 10,000 | 14 | 2^14 − 1 = 16,383 is enough, and 2^13 − 1 = 8,191 is not |
+| 100,000 | 17 | 2^17 − 1 = 131,071 is enough, and 2^16 − 1 = 65,535 is not |
+| 1,000,000 | 20 | 2^20 − 1 = 1,048,575 is enough, and 2^19 − 1 = 524,287 is not |
+
+Tempting but wrong: stopping at the number of halvings. It is one look short every time.
+
+**Linear search versus binary search on one array.** This example is from the Chapter 2 exercises of Wengrow's *A Common-Sense Guide to Data Structures and Algorithms in Python*. Take the sorted array [2, 4, 6, 8, 10, 12, 13] and search for 8. Linear search reads from the left and stops the moment it finds the target. It reads 2, 4, 6, 8, so it takes 4 steps. Seven steps would be the cost only for the last cell (13) or for a value that is not there. Binary search has 7 cells, so it looks first at the middle one, the 4th cell, which holds 8. That is 1 step.
+
 **Why the list must be sorted.** One comparison with the middle item can rule out half the range only because the items are in order.
 
 **Tempting but wrong: "a sorted linked list works too."** It does not. Binary search would still make only about 20 comparisons. But on a [linked list](data-structures.html#linked-lists), reaching the middle takes n/2 steps. For 1,000,000 items that is 500,000 steps. Reaching the next middle takes about 250,000 more, then 125,000, and so on. The walking adds up to about 1,000,000 steps, the same as scanning from the start. On an [array](data-structures.html#arrays), jumping to the middle takes one step. That is why binary search needs an array.
@@ -259,6 +274,12 @@ sum([3,5,2]) = 3 + sum([5,2])                      <- waiting
 
 Going back up: sum([]) = 0, then sum([2]) = 2 + 0 = 2, then sum([5,2]) = 5 + 2 = 7, then sum([3,5,2]) = 3 + 7 = 10. At the deepest point 4 calls are waiting at once.
 
+**A base case depends on the size, not on the items.** Take a function that counts a list: the count is 1 plus the count of the list with its first item removed. Give it the base case "the list has exactly 2 items, so the answer is 2". A 5-item list works. count(5) = 1 + count(4), count(4) = 1 + count(3), count(3) = 1 + count(2), and count(2) = 2 is the base case. Coming back up, count(3) = 3, count(4) = 4 and count(5) = 5. The base case never needs to know what the items are, only how many there are. A 1-item list goes wrong. It asks for the count of 0 items, and a 0-item list has nothing left to remove. Neither ever reaches exactly 2, so the calls pile up until the stack overflows. "Exactly 2" works only for lists of 2 or more.
+
+A countdown shows the same thing. It prints n, then calls itself with n − 1, and stops when "n is exactly 10". Starting at 15 works, and starting at 10 stops at once. Starting at 4 never reaches 10, so it counts into negative numbers forever. A base case of "n is exactly 0" is better but still unsafe, because a start of −3 never ends either. The safer base case is "n is 0 or less".
+
+The rule: every call must move closer to the base case, and every allowed input must be able to reach it. For lists, "the list is empty, so the answer is 0" is safe for every size, because each call removes exactly one item and a list of n items is empty after exactly n calls. The base case is the same whether the function sums or counts. Only the combine step differs: add the first number for a sum, add 1 for a count.
+
 [Binary search](#binary-search) is recursion too. The smaller version is "search the half that could hold the target", so 1,000,000 items become 500,000, then 250,000, and so on. The base cases are "the range is empty" (not found) and "the middle item is the target" (found).
 
 ### Depth is a cost
@@ -297,6 +318,18 @@ Level 3:     [1][1][1][1][1][1][1][1]      work 1x8 = 8
 Every row costs 8, which is n. Halving 8 down to 1 takes 3 rows, which is log₂ 8. The total is about 8 × 3 = 24 steps. For 1,000 items it is about 10 rows of about 1,000, so about 10,000 steps. Here "the work" means the number of basic steps. In merge sort a step is moving one card into the merged pile.
 
 The sum has a much simpler tree: one box per row, 1 step each, and n rows, so the total is n.
+
+**A recursion with three pieces.** Take T(n) = 3 × T(n / 3) + n with n = 27. Read it as: split the problem into 3 pieces, each one third the size, and spend n extra steps splitting and combining. The pieces go 27, then 9, then 3, then 1, which is 3 splits.
+
+```
+Row 1:   [27]                                  work 27
+Row 2:   [9]  [9]  [9]                         work 3 x 9 = 27
+Row 3:   [3][3][3][3][3][3][3][3][3]           work 9 x 3 = 27
+```
+
+The "+ n" is the cost of splitting and combining one piece of size n, and the pieces in a row always add up to the full size, 27. So every row costs 27. Each row has more pieces, but each piece is smaller by the same factor, so the row cost stays the same. The total is rows × cost per row = 3 × 27 = 81 steps. The size-1 pieces at the bottom add a little more, but 81 is the right size of the answer.
+
+Tempting but wrong: using the number of splits (3) as the cost of a row, and reading the total as about 3 × 3 + 1 = 10. The number of splits is the number of rows, not the cost of a row. Multiply the number of rows by the cost of one row.
 
 ### Tempting but wrong: "two calls are always fine"
 
@@ -357,7 +390,7 @@ Merge sort has neither problem. Each card sits in exactly one pile per row, so n
 
 ## Where things stand
 
-The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and how the field divides into problem types. Two check-in questions were answered correctly: binary search on 2 billion items takes 31 steps, and quadratic work grows 100 times when the input grows 10 times. Problem recognition has had two rounds of practice scenarios. Most families were named correctly: shortest path, clustering, spanning tree, dependency ordering, matching, search, string, numeric and continuous optimization. A scored question on three requests over one road map (path, network, tour) was answered correctly, so the tour-versus-tree slip looks resolved. The wording clue that separates them was supplied rather than stated, and is worth checking again at the next review. One thing is still shaky: cost versus distance was offered as the difference between a path and a network, but the weight can be either in both, and the answer shape is what differs. The knapsack goal was understood correctly: the most tips under the limit gives 44. The value-per-kg shortcut is a tempting method that fails, and it is shown above. The cell-tower question was half right: the geometry step was named, but not the subset choice that carries the hard label. How hard problems are handled has since been covered, and a spanning tree has been drawn. Sorting has not yet been practised as its own scenario. Binary search has had its first scored check, with all three questions answered correctly: the idea of halving a sorted range, why a linked list ruins it (the walking costs about 1,000,000 steps), and why a miss takes about 20 steps. The stopping rule was left out of the first answer and supplied unprompted in the third. Recursion has been taught but not yet quizzed. The halving cost was understood: about 10 calls deep for 1,000 items. The conclusion that a recursive sum risks overflowing the stack was drawn without help, and the final check was answered correctly: doubling the calls does not grow the cost of a row, because the size of each call halves. Two things are shaky and worth checking again. The base case for summing a list was given as one element left, which misses the empty list, and the combine step was not stated. Merge sort and Fibonacci were both new, so each was explained from scratch, and the first comparison of them named the constant row cost but not the repeated work. Next up is a quiz on recursion, then the simple sorts. Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
+The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and how the field divides into problem types. Two check-in questions were answered correctly: binary search on 2 billion items takes 31 steps, and quadratic work grows 100 times when the input grows 10 times. Problem recognition has had two rounds of practice scenarios. Most families were named correctly: shortest path, clustering, spanning tree, dependency ordering, matching, search, string, numeric and continuous optimization. A scored question on three requests over one road map (path, network, tour) was answered correctly, so the tour-versus-tree slip looks resolved. The wording clue that separates them was supplied rather than stated, and is worth checking again at the next review. One thing is still shaky: cost versus distance was offered as the difference between a path and a network, but the weight can be either in both, and the answer shape is what differs. The knapsack goal was understood correctly: the most tips under the limit gives 44. The value-per-kg shortcut is a tempting method that fails, and it is shown above. The cell-tower question was half right: the geometry step was named, but not the subset choice that carries the hard label. How hard problems are handled has since been covered, and a spanning tree has been drawn. Sorting has not yet been practised as its own scenario. Binary search needs review. Its first scored check had all three questions right: halving a sorted range, why a linked list ruins it (the walking costs about 1,000,000 steps), and why a miss takes about 20 steps. The stopping rule was left out of the first answer and supplied unprompted in the third. A later check from the book's exercises had one real miss. The maximum number of steps for 100,000 cells was given as 16, counted by halving down to 1. It is 17, because the last cell still has to be looked at. The rule that k looks cover at most 2^k − 1 cells was then used correctly on a fresh case: 1,000 cells need 10. Finding 8 by binary search in a 7-cell array in 1 step was right. A linear search for the same 8 was first given as 7 steps instead of 4. It was called a slip, and a fresh linear search was right. The next step is a check on the maximum at an exact power of two, for example 1,023 or 1,024 cells. Recursion has had two quizzes and needs review. The halving cost was understood: about 10 calls deep for 1,000 items. The conclusion that a recursive sum risks overflowing the stack was drawn without help, and a check on a million items was answered correctly: a method that removes one item goes about 1,000,000 calls deep, and one that halves goes about 20. Doubling the calls does not grow the cost of a row, because the size of each call halves. The empty-list base case is now stated correctly, and so is the reason it is safe for every size: each call removes one item, so any list ends up empty. An earlier slip, judging that a base case "does not know what the items are", is resolved. A base case depends only on the size, and a countdown with the base case "exactly 10" was judged correctly for starts of 15, 10 and 4. One slip is open. For T(n) = 3 × T(n / 3) + n with n = 27, the 3 splits were right, but a row was costed at 3 steps and the total at 10, instead of 27 per row and 81 in total. Merge sort and Fibonacci were both new, so each was explained from scratch, and the first comparison of them named the constant row cost but not the repeated work. The next steps are a fresh recurrence where the row cost has to be worked out, a retest of why Fibonacci's calls explode while merge sort's do not, and then the simple sorts. Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
 
 ## Intermediate & Advanced Topics (forward pointers)
 
