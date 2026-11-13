@@ -3683,5 +3683,57 @@
       ],
       "notes": "Big O was 13 days overdue (due 10-30), with no open gaps going in (g79-1 was resolved in event 103). Craig worked the Chapter 3 exercises of Wengrow's A Common-Sense Guide to Data Structures and Algorithms in Python on his phone. Four of five correct; Q3 is the one real gap (g140-1), resolved on a fresh probe with two loops, one adding 3 and one tripling. He also pointed out on his own that the tripling loop is log base 3, which is right, and the base does not change the Big O label. Net: one miss, so the topic needs review again. Next time, ask for a nested loop where the inner loop halves (O(n log n)) and one where the inner loop depends on the outer counter (O(n^2))."
     }
+  },
+  {
+    "id": 141,
+    "schema": 1,
+    "ts": "2026-11-13T12:08:32.000Z",
+    "date": "2026-11-13",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/complexity/big-o",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "recall",
+          "question": "Fill in the table of steps for each Big O type. N = 100: O(N) = 100, O(log N) = ?, O(N^2) = ?. N = 2000: O(N) = ?, O(log N) = ?, O(N^2) = ? (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 4 exercise 1.)",
+          "answer": "N=100: O(log N) about 6.64, rounded up to 7; O(N^2) = 10,000. N=2000: O(N) = 2,000; O(log N) about 11; O(N^2) = 4,000,000.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. log2(100) is 6.64 and log2(2000) is 10.97, so 7 and 11 steps. Squaring 100 gives 10,000 and squaring 2,000 gives 4,000,000. Note how N grew 20 times while log N grew only from 7 to 11, and N^2 grew 400 times."
+        },
+        {
+          "tag": "predict",
+          "question": "An O(N^2) algorithm processes an array and takes 256 steps. What is the size of the array? (Wengrow, Chapter 4 exercise 2.)",
+          "answer": "The square root of 256, which is 16.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. N^2 = 256, so N = 16. Going from steps back to size means undoing the square with a square root."
+        },
+        {
+          "tag": "explain",
+          "question": "Describe the time complexity in Big O notation of greatest_product(array), which uses a nested loop to compare the product of every pair of different elements against the best product so far. (Wengrow, Chapter 4 exercise 3.)",
+          "answer": "O(N^2). The nested for loop gives it away: every element is paired with every other element and their product is compared.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. The outer loop runs N times and the inner loop runs N times for each pass of the outer loop, so about N x N steps. The index_i != index_j check only skips N of the N^2 pairs, which does not change the Big O."
+        },
+        {
+          "tag": "explain",
+          "question": "greatest_number(array) finds the biggest number with a nested loop and runs in O(N^2). Describe, in words and with no code, how to rewrite it to run in O(N). (Wengrow, Chapter 4 exercise 4.)",
+          "answer": "Keep one variable, greatest, set to the value at index 0. Loop once through the array. Whenever an element is bigger than greatest, replace greatest with it. After the loop, return greatest.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. One pass with one running best value is N steps, so O(N). The nested version re-checked every number against every other number, which is wasted work. One small edge case you did not mention: the original returns None for an empty array. Your version starts by reading index 0, which would fail on an empty array. A guard at the top (if the array is empty, return None) keeps the same behavior. This is a detail, not a misconception about Big O."
+        }
+      ],
+      "gaps": [],
+      "notes": "Craig worked the Chapter 4 end-of-chapter exercises (Speeding Up Your Code with Big O) from Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, from the printed book on his phone, with no code typed. Four of four correct: 1 recall, 3 explain/predict. Q4 was graded on his spoken description of the O(N) approach, not code. Only note: he did not mention the empty-array guard (the original returns None), which is an edge case rather than a Big O gap. No open gaps going in (g140-1 was resolved in event 140). Not retested here because these exercises have no loop with a doubling or halving counter. Next time, ask for the nested loop where the inner loop halves (O(n log n)) and one where the inner loop depends on the outer counter (O(n^2)), as noted after event 140."
+    }
   }
 ]
