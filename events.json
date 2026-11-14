@@ -3735,5 +3735,65 @@
       "gaps": [],
       "notes": "Craig worked the Chapter 4 end-of-chapter exercises (Speeding Up Your Code with Big O) from Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, from the printed book on his phone, with no code typed. Four of four correct: 1 recall, 3 explain/predict. Q4 was graded on his spoken description of the O(N) approach, not code. Only note: he did not mention the empty-array guard (the original returns None), which is an edge case rather than a Big O gap. No open gaps going in (g140-1 was resolved in event 140). Not retested here because these exercises have no loop with a doubling or halving counter. Next time, ask for the nested loop where the inner loop halves (O(n log n)) and one where the inner loop depends on the outer counter (O(n^2)), as noted after event 140."
     }
+  },
+  {
+    "id": 142,
+    "schema": 1,
+    "ts": "2026-11-14T03:57:41.000Z",
+    "date": "2026-11-14",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/complexity/big-o",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "explain",
+          "question": "Use Big O notation to describe the time complexity of an algorithm that takes 4N + 16 steps. (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 5 exercise 1.)",
+          "answer": "O(N). Big O ignores constants and multipliers of N, so the 4 and the 16 both drop out.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. The 16 is a fixed cost that stays the same as N grows, and the 4 is a multiplier. At N = 1,000,000 the steps are 4,000,016, which still grows in a straight line with N."
+        },
+        {
+          "tag": "recall",
+          "question": "Use Big O notation to describe the time complexity of an algorithm that takes 2N^2 steps. (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 5 exercise 2.)",
+          "answer": "O(N^2). Big O ignores the multiplier 2.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. The 2 is a constant multiplier, so 2N^2 simplifies to O(N^2)."
+        },
+        {
+          "tag": "explain",
+          "question": "Describe the time complexity of double_then_sum(array), which doubles every number into a new array in one loop, then adds up the doubled array in a second loop. (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 5 exercise 3.)",
+          "answer": "O(N). Two steps per element, so 2N steps for N items. (Said the second step adds the doubled value to the array; it actually adds it to the running sum.)",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct: two loops one after the other, N + N = 2N steps, so O(N). Wording fix: the first loop appends each doubled number to the new array, and the second loop adds each doubled number to sum. The answer is unaffected."
+        },
+        {
+          "tag": "explain",
+          "question": "Describe the time complexity of multiple_cases(array), which prints each string in upper, lower and capitalized form. (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 5 exercise 4.)",
+          "answer": "O(N). Three steps per element, so 3N steps for N strings.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. Three prints per string gives 3N steps. Three loops in a row would still be O(N), because the 3 is a constant multiplier."
+        },
+        {
+          "tag": "predict",
+          "question": "Describe the time complexity of every_other(array), which loops over the array and, only at even-numbered positions, runs a full inner loop over the whole array that prints number + other_number. (Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 5 exercise 5.)",
+          "answer": "O(N^2). The inner loop runs for half the positions, so about N^2/2 steps, and the 1/2 drops out.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. For N = 10 the inner loop runs 5 times with 10 steps each, about 50 steps; for N = 1,000 it is about 500,000. The outer loop still visits all N positions to run the if check, so the full count is about N^2/2 + N, and the extra N is dwarfed by N^2/2. Terminology: the 1/2 is a constant factor (multiplier), not a constant term. A constant term is something added, like the 16 in question 1."
+        }
+      ],
+      "gaps": [],
+      "notes": "Craig worked the Chapter 5 end-of-chapter exercises (Optimizing Code With and Without Big O, exercises 1-5) from Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, from the printed book on his phone, with no code typed. Five of five correct: 1 recall, 3 explain, 1 predict. He gave the right reason each time: Big O drops constant terms and multipliers. Two wording slips, neither a real gap: in Q3 he said the second step adds to the array when it adds to the running sum, and in Q5 he called the 1/2 a constant term instead of a constant factor. No open gaps going in or out."
+    }
   }
 ]
