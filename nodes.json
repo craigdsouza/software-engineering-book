@@ -243,6 +243,15 @@
       "also_in": []
     },
     {
+      "id": "computer-science/algorithms/simple-sorts/bubble-sort",
+      "title": "Bubble Sort",
+      "summary": "Swap out-of-order neighbours, pass after pass: O(n²) steps, O(n) if already sorted, in-place and stable.",
+      "page": "computer-science/algorithms.html#bubble-sort",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/algorithms/divide-and-conquer-sorts",
       "title": "Merge Sort & Quicksort",
       "page": "computer-science/algorithms.html#divide-and-conquer-sorts",
@@ -3538,6 +3547,13 @@
       "tier": "intermediate",
       "under": "computer-science/data-structures/arrays/array-based-sets",
       "note": "If the array is kept sorted, the duplicate check can use binary search (about log N steps instead of N), but an insert still shifts cells. Hash-table sets cut both steps to about 1."
+    },
+    {
+      "id": "cocktail-shaker-sort",
+      "title": "Cocktail shaker sort (bubbling in both directions)",
+      "tier": "intermediate",
+      "under": "computer-science/algorithms/simple-sorts/bubble-sort",
+      "note": "Bubble sort moves small items only one spot left per pass. Alternating a left-to-right pass with a right-to-left pass moves the slow small items faster."
     }
   ]
 }

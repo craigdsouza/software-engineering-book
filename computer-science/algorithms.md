@@ -1,5 +1,5 @@
 ---
-prose_through: 139
+prose_through: 143
 ---
 
 Data structures are about how data sits in memory. Algorithms are about the steps you take over that data. The two are one skill: binary search works only because the list is sorted *and* an [array](data-structures.html#arrays) lets you jump to the middle in one step. On a [linked list](data-structures.html#linked-lists), reaching the middle takes n/2 steps, so binary search loses its advantage. Data structures are the containers. Algorithms are what you do with them.
@@ -366,7 +366,59 @@ Merge sort has neither problem. Each card sits in exactly one pile per row, so n
 
 ## Simple Sorts (Selection & Insertion) {#simple-sorts}
 
-*Not yet covered.* Two sorts that take O(n²) steps. For 1,000 items that is about 1,000,000 comparisons. Will cover: how each one works step by step, why insertion sort is fast on a list that is almost sorted already, and two properties every sort is judged on. "In-place" means it needs no extra copy of the data. "Stable" means equal items keep their original order.
+*Partly covered.* [Bubble sort](#bubble-sort), the simplest of the group, is written up below. Selection and insertion sort are not yet covered. All of them take O(n²) steps in the usual case. For 1,000 items that is about 1,000,000 comparisons. Still to cover for selection and insertion: how each one works step by step, why insertion sort is fast on a list that is almost sorted already, and two properties every sort is judged on. "In-place" means it needs no extra copy of the data. "Stable" means equal items keep their original order.
+
+## Bubble Sort {#bubble-sort}
+
+Bubble sort sorts a list by swapping neighbours that are in the wrong order. Picture five jumbled playing cards in a row. You may only swap two cards that sit side by side.
+
+**The idea.** Look at two neighbours. If the left one is bigger, swap them. Slide one spot right and repeat. One walk from the left end to the right end is called a **pass**.
+
+```
+One pass on [5, 1, 4, 2]
+compare 5,1 -> swap -> [1, 5, 4, 2]
+compare 5,4 -> swap -> [1, 4, 5, 2]
+compare 5,2 -> swap -> [1, 4, 2, 5]
+```
+
+The 5 was the biggest, so it kept getting swapped and "bubbled" to the end. That is where the name comes from. The same thing happens on [6, 2, 9, 4]: the 6,2 pair swaps, 6,9 stays, 9,4 swaps, and the list becomes [2, 6, 4, 9]. That is 3 comparisons and 2 swaps. After any pass, the biggest item still in play must sit at the end.
+
+**Each pass can stop one spot earlier.** After pass 1 the biggest item is in its final place. After pass 2 the second biggest is too. So the settled part grows from the right.
+
+```
+Pass 1: 3 comparisons -> [1, 4, 2 | 5]
+Pass 2: 2 comparisons -> [1, 2 | 4, 5]
+Pass 3: 1 comparison  -> [1 | 2, 4, 5]   done
+```
+
+That is 3 + 2 + 1 = 6 comparisons for 4 items. In general it is n(n-1)/2. For 1,000 items that is about 500,000 comparisons, so bubble sort is O(n²).
+
+**Stopping early.** A plain bubble sort always does n - 1 passes, even on a list that is already sorted. The fix is to watch for swaps. If a whole pass makes zero swaps, every neighbouring pair is in order, so the list is sorted and you can stop.
+
+- **Best case.** An already sorted list of [1, 2, 3, 4] takes one pass of 3 comparisons, not 6. For 1,000 sorted items that is about 999 steps instead of about 500,000. The best case drops from O(n²) to O(n).
+- **Worst case.** A reversed list such as [4, 3, 2, 1] swaps on every comparison. It needs all 6 comparisons and 6 swaps. For 1,000 reversed items that is about 500,000 swaps. Early exit does not help here.
+- **Early exit with shrinking passes.** On [2, 1, 3, 4, 5], pass 1 makes 4 comparisons and 1 swap, giving [1, 2, 3, 4, 5]. Because a swap happened, another pass is needed. Pass 2 makes 3 comparisons (the last spot is already settled) and no swaps, so it stops. The total is 7 comparisons, against 10 without early exit.
+
+**Big items fly, small items crawl.** In one pass a big item can travel the whole way to the right. A small item moves only one spot left per pass, because each swap moves it past just one neighbour. The slow small items are nicknamed turtles, and the fast big ones rabbits. The same five numbers show it in two orders.
+
+```
+[5, 1, 2, 3, 4]   the 5 flies right
+  Pass 1: 5 swaps 4 times -> [1, 2, 3, 4, 5]
+  Pass 2: 0 swaps -> stop.          2 passes
+
+[2, 3, 4, 5, 1]   the 1 crawls left
+  Pass 1 -> [2, 3, 4, 1, 5]
+  Pass 2 -> [2, 3, 1, 4, 5]
+  Pass 3 -> [2, 1, 3, 4, 5]
+  Pass 4 -> [1, 2, 3, 4, 5]
+  Pass 5: 0 swaps -> stop.          5 passes
+```
+
+The number of passes is roughly how far the furthest-travelling small item must move left, plus one pass to confirm. So [3, 4, 5, 1] takes 4 passes, while [4, 1, 3, 5] takes only 2: the 4 flies right past two items in the first pass.
+
+**Two properties every sort is judged on.** A sort is **in-place** if it needs no extra copy of the data, only swaps inside the one list. Bubble sort is in-place. A sort is **stable** if equal items keep their original order. Bubble sort is stable, because it swaps only when the left item is *strictly* bigger, so two equal neighbours are never swapped. Stability matters when you sort a class list by marks and two students both have 80. A stable sort keeps them in whatever order they were in before, say alphabetical.
+
+**Where it fits.** It builds on [arrays](data-structures.html#arrays), since every swap is by position, and on [Big O](data-structures.html#big-o), since n(n-1)/2 steps is O(n²). It sits beside selection and insertion sort as a simple O(n²) sort. [Merge sort and quicksort](#divide-and-conquer-sorts) take O(n log n), about 10,000 comparisons for 1,000 items instead of about 500,000.
 
 ## Merge Sort & Quicksort {#divide-and-conquer-sorts}
 
@@ -390,7 +442,7 @@ Merge sort has neither problem. Each card sits in exactly one pile per row, so n
 
 ## Where things stand
 
-The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and how the field divides into problem types. Two check-in questions were answered correctly: binary search on 2 billion items takes 31 steps, and quadratic work grows 100 times when the input grows 10 times. Problem recognition has had two rounds of practice scenarios. Most families were named correctly: shortest path, clustering, spanning tree, dependency ordering, matching, search, string, numeric and continuous optimization. A scored question on three requests over one road map (path, network, tour) was answered correctly, so the tour-versus-tree slip looks resolved. The wording clue that separates them was supplied rather than stated, and is worth checking again at the next review. One thing is still shaky: cost versus distance was offered as the difference between a path and a network, but the weight can be either in both, and the answer shape is what differs. The knapsack goal was understood correctly: the most tips under the limit gives 44. The value-per-kg shortcut is a tempting method that fails, and it is shown above. The cell-tower question was half right: the geometry step was named, but not the subset choice that carries the hard label. How hard problems are handled has since been covered, and a spanning tree has been drawn. Sorting has not yet been practised as its own scenario. Binary search needs review. Its first scored check had all three questions right: halving a sorted range, why a linked list ruins it (the walking costs about 1,000,000 steps), and why a miss takes about 20 steps. The stopping rule was left out of the first answer and supplied unprompted in the third. A later check from the book's exercises had one real miss. The maximum number of steps for 100,000 cells was given as 16, counted by halving down to 1. It is 17, because the last cell still has to be looked at. The rule that k looks cover at most 2^k − 1 cells was then used correctly on a fresh case: 1,000 cells need 10. Finding 8 by binary search in a 7-cell array in 1 step was right. A linear search for the same 8 was first given as 7 steps instead of 4. It was called a slip, and a fresh linear search was right. The next step is a check on the maximum at an exact power of two, for example 1,023 or 1,024 cells. Recursion has had two quizzes and needs review. The halving cost was understood: about 10 calls deep for 1,000 items. The conclusion that a recursive sum risks overflowing the stack was drawn without help, and a check on a million items was answered correctly: a method that removes one item goes about 1,000,000 calls deep, and one that halves goes about 20. Doubling the calls does not grow the cost of a row, because the size of each call halves. The empty-list base case is now stated correctly, and so is the reason it is safe for every size: each call removes one item, so any list ends up empty. An earlier slip, judging that a base case "does not know what the items are", is resolved. A base case depends only on the size, and a countdown with the base case "exactly 10" was judged correctly for starts of 15, 10 and 4. One slip is open. For T(n) = 3 × T(n / 3) + n with n = 27, the 3 splits were right, but a row was costed at 3 steps and the total at 10, instead of 27 per row and 81 in total. Merge sort and Fibonacci were both new, so each was explained from scratch, and the first comparison of them named the constant row cost but not the repeated work. The next steps are a fresh recurrence where the row cost has to be worked out, a retest of why Fibonacci's calls explode while merge sort's do not, and then the simple sorts. Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
+The overview is covered: what an algorithm is, why growth rate matters more than raw speed, and how the field divides into problem types. Two check-in questions were answered correctly: binary search on 2 billion items takes 31 steps, and quadratic work grows 100 times when the input grows 10 times. Problem recognition has had two rounds of practice scenarios. Most families were named correctly: shortest path, clustering, spanning tree, dependency ordering, matching, search, string, numeric and continuous optimization. A scored question on three requests over one road map (path, network, tour) was answered correctly, so the tour-versus-tree slip looks resolved. The wording clue that separates them was supplied rather than stated, and is worth checking again at the next review. One thing is still shaky: cost versus distance was offered as the difference between a path and a network, but the weight can be either in both, and the answer shape is what differs. The knapsack goal was understood correctly: the most tips under the limit gives 44. The value-per-kg shortcut is a tempting method that fails, and it is shown above. The cell-tower question was half right: the geometry step was named, but not the subset choice that carries the hard label. How hard problems are handled has since been covered, and a spanning tree has been drawn. Sorting has not yet been practised as its own scenario. Binary search needs review. Its first scored check had all three questions right: halving a sorted range, why a linked list ruins it (the walking costs about 1,000,000 steps), and why a miss takes about 20 steps. The stopping rule was left out of the first answer and supplied unprompted in the third. A later check from the book's exercises had one real miss. The maximum number of steps for 100,000 cells was given as 16, counted by halving down to 1. It is 17, because the last cell still has to be looked at. The rule that k looks cover at most 2^k − 1 cells was then used correctly on a fresh case: 1,000 cells need 10. Finding 8 by binary search in a 7-cell array in 1 step was right. A linear search for the same 8 was first given as 7 steps instead of 4. It was called a slip, and a fresh linear search was right. The next step is a check on the maximum at an exact power of two, for example 1,023 or 1,024 cells. Recursion has had two quizzes and needs review. The halving cost was understood: about 10 calls deep for 1,000 items. The conclusion that a recursive sum risks overflowing the stack was drawn without help, and a check on a million items was answered correctly: a method that removes one item goes about 1,000,000 calls deep, and one that halves goes about 20. Doubling the calls does not grow the cost of a row, because the size of each call halves. The empty-list base case is now stated correctly, and so is the reason it is safe for every size: each call removes one item, so any list ends up empty. An earlier slip, judging that a base case "does not know what the items are", is resolved. A base case depends only on the size, and a countdown with the base case "exactly 10" was judged correctly for starts of 15, 10 and 4. One slip is open. For T(n) = 3 × T(n / 3) + n with n = 27, the 3 splits were right, but a row was costed at 3 steps and the total at 10, instead of 27 per row and 81 in total. Merge sort and Fibonacci were both new, so each was explained from scratch, and the first comparison of them named the constant row cost but not the repeated work. The next steps are a fresh recurrence where the row cost has to be worked out, a retest of why Fibonacci's calls explode while merge sort's do not, and then the rest of the simple sorts. Bubble sort has been taught but not yet quizzed. Three checks along the way went well. One slip came up: on [6, 2, 9, 4] the last swap (9 and 4) was missed on the first try. The self-check that the biggest item must end up last resolves it. The early-exit count of 7 comparisons on [2, 1, 3, 4, 5] was right, with a self-corrected slip about the second pass being one shorter. The turtle check was right: [3, 4, 5, 1] takes 4 passes and [4, 1, 3, 5] takes 2. Stability was explained but not tested, so a quiz on bubble sort should cover it. Every other section below is still an outline, apart from merge sort and quicksort, which came up as Big O examples.
 
 ## Intermediate & Advanced Topics (forward pointers)
 
@@ -402,6 +454,7 @@ Concepts mentioned along the way that go beyond this page's current depth, track
 | Approximation algorithms and exact solvers for hard problems | Intermediate | [Types of Problems](#problem-types) | How to get a good-enough answer with a known worst case, or an exact answer for realistic sizes, on problems like cell-tower coverage (set cover). Greedy is within about ln(n) + 1 times the best. |
 | Parallel algorithms on GPUs | Intermediate | [What the domain is about](#overview) | A GPU runs thousands of small tasks at once, so which algorithms split into independent pieces decides what it can speed up. |
 | Spatial indexes (k-d trees, R-trees) | Intermediate | [What the domain is about](#overview) | They make nearest-neighbour search over millions of map points fast, where a naive check over 10 million points is slow. |
+| Cocktail shaker sort (bubbling in both directions) | Intermediate | [Bubble Sort](#bubble-sort) | Bubble sort moves small items only one spot left per pass. Alternating a left-to-right pass with a right-to-left pass moves the slow small items faster. |
 | Tail-call optimization | Intermediate | [Recursion & Recurrences](#recursion) | A language can turn a call that is the very last thing a function does into a loop. That removes the stack cost, so a recursive sum over 1,000,000 numbers need not overflow. |
 | Solving recurrences formally (Master Theorem) | Intermediate | [Recursion & Recurrences](#recursion) | A rule for turning T(n) = a × T(n / b) + f(n) into a growth rate without drawing the tree. It builds on discrete mathematics. |
 
