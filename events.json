@@ -3813,5 +3813,60 @@
       "content": "Bubble sort: sort a list by repeatedly swapping neighbours that are in the wrong order.\n\nThe idea. Look at two neighbouring items. If the left one is bigger, swap them. Slide one spot right and repeat. One walk from the left end to the right end is a pass. Analogy: 5 jumbled playing cards in a row where you may only swap two neighbouring cards.\n\nWorked pass on [5, 1, 4, 2]:\ncompare 5,1 -> swap -> [1, 5, 4, 2]\ncompare 5,4 -> swap -> [1, 4, 5, 2]\ncompare 5,2 -> swap -> [1, 4, 2, 5]\nThe biggest item (5) kept getting swapped, so it 'bubbled' all the way to the end. That is the name.\n\nKey fact: after pass 1 the biggest item is in its final spot; after pass 2 the second biggest is too. So each pass can stop one spot earlier than the last. Full run on [5, 1, 4, 2]:\nPass 1: 3 comparisons -> [1, 4, 2 | 5]\nPass 2: 2 comparisons -> [1, 2 | 4, 5]\nPass 3: 1 comparison -> [1 | 2, 4, 5] done\nTotal 3 + 2 + 1 = 6 comparisons for 4 items, which is n(n-1)/2. For 1,000 items about 500,000 comparisons, so O(n^2). Self-check: after any pass the biggest remaining item must sit at the end of the unsettled part.\n\nSecond worked pass, [6, 2, 9, 4]: compare 6,2 swap -> [2, 6, 9, 4]; compare 6,9 no swap; compare 9,4 swap -> [2, 6, 4, 9]. 3 comparisons, 2 swaps, and the 9 ends last.\n\nStopping early. A plain bubble sort always does n-1 passes, wasteful on a list that is already sorted. Fix: watch for swaps. If a whole pass makes zero swaps, every neighbour pair is in order, so the list is sorted: stop. Already sorted [1, 2, 3, 4]: pass 1 does 3 comparisons and 0 swaps, stop; 3 steps instead of 6. For 1,000 sorted items about 999 steps instead of about 500,000, so the best case drops from O(n^2) to O(n). The worst case does not improve: a reversed list like [4, 3, 2, 1] swaps on every comparison, needing all 6 comparisons and 6 swaps (about 500,000 swaps for 1,000 reversed items). Worked example with early exit and shrinking passes on [2, 1, 3, 4, 5]: pass 1 has 4 comparisons and 1 swap (2,1) giving [1, 2, 3, 4, 5]; because a swap happened another pass is needed; pass 2 has 3 comparisons (the last spot is already settled) and 0 swaps, stop. Total 7 comparisons versus 10 without early exit (4+3+2+1).\n\nCounterintuitive part: big items fly, small items crawl. In one pass a big item can travel the whole way right. A small item moves only one spot left per pass, because each swap moves it past just one neighbour. Small items stuck near the end are nicknamed turtles; big fast ones rabbits. Same five numbers, two orders:\n[5, 1, 2, 3, 4]: pass 1, the 5 swaps four times -> [1, 2, 3, 4, 5]; pass 2, 0 swaps, stop. 2 passes.\n[2, 3, 4, 5, 1]: pass 1 -> [2, 3, 4, 1, 5]; pass 2 -> [2, 3, 1, 4, 5]; pass 3 -> [2, 1, 3, 4, 5]; pass 4 -> [1, 2, 3, 4, 5]; pass 5, 0 swaps, stop. 5 passes.\nRule: the number of passes is about how far the furthest-right small item must travel left, plus one pass to confirm.\n\nTwo properties every sort is judged on. In-place: needs no extra copy of the data, only swaps inside the one list; bubble sort is in-place. Stable: equal items keep their original order; bubble sort is stable because it swaps only when the left item is strictly bigger, so two equal neighbours are never swapped. Why stability matters: sort a class list by marks where two students both have 80; stability keeps them in whatever order they were in before, say alphabetical.\n\nConnections: builds on arrays (swaps happen in place by index) and Big O (n(n-1)/2 steps is O(n^2); the early-exit best case is O(n)). Contrasts with merge sort and quicksort, which take O(n log n), about 10,000 comparisons for 1,000 items instead of about 500,000. Sits with selection sort and insertion sort as the O(n^2) simple sorts.",
       "notes": "Craig answered the check-ins in prose on his phone, no code. Pass on [6, 2, 9, 4]: first answer was [2, 6, 9, 4] written as 2694 with 1 swap; he missed the 9,4 swap. Correct is [2, 6, 4, 9] with 3 comparisons and 2 swaps. The self-check that the biggest item must end last was given to him. Early-exit count on [2, 1, 3, 4, 5]: correct, 7 comparisons (4 + 3); he first said 4 comparisons for pass 2, then corrected himself without prompting because passes shrink by one. Turtles check, [3, 4, 5, 1] versus [4, 1, 3, 5]: correct, 4 passes and 2 passes, with the right reason (small item moves one spot left per pass; 4 flies two spots right). Not yet quizzed or scored. Craig did not get a worked example of selection or insertion sort, and the stable property was explained but not tested; worth a quiz question. Beyond current depth, not taught: cocktail shaker sort (bubbling in both directions to fix turtles), and comparing swap counts across the three simple sorts."
     }
+  },
+  {
+    "id": 144,
+    "schema": 1,
+    "ts": "2026-11-15T17:31:48.000Z",
+    "date": "2026-11-15",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/algorithms/simple-sorts/bubble-sort",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "Do exactly one pass on [4, 9, 2, 7, 1]. What does the list look like afterwards, and how many comparisons and swaps were made?",
+          "answer": "Traced the whole sort instead of one pass: 4 comparisons and 3 swaps in pass 1, then 3/2, 2/1, 1/1 for the next passes; 10 comparisons and 7 swaps in total; final list [1, 2, 4, 7, 9]. Did not state the list after pass 1.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/bubble-sort",
+          "feedback": "Correct. Every number checks out. One pass alone leaves [4, 2, 7, 1, 9] with 4 comparisons and 3 swaps. The full run is 10 comparisons (4+3+2+1) and 7 swaps. This also resolves the earlier slip of missing the last swap in a pass."
+        },
+        {
+          "tag": "explain",
+          "question": "Three students are listed alphabetically with marks: Asha 80, Ben 80, Cy 70. You sort by marks, lowest first. If a bubble sort swapped neighbours when the left mark was bigger or equal, instead of strictly bigger, what happens to Asha and Ben, why does it matter, and what is the property called when a sort avoids it?",
+          "answer": "Named the property as stability. Said it matters because the earlier (alphabetical) order should survive as the tie-breaker, and that a swap on equal marks would swap Asha and Ben, which is undesirable. Loosely said their 'scores' would swap rather than their positions.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/bubble-sort",
+          "feedback": "Correct. Stable means equal items keep their original order, and bubble sort is stable because it swaps only when the left item is strictly bigger. With a bigger-or-equal rule the run is [Asha 80, Ben 80, Cy 70] -> [Ben, Asha, Cy] -> [Ben, Cy, Asha] -> [Cy, Ben, Asha], so Ben ends up ahead of Asha and the alphabetical tie-break is lost. The students swap places; their marks stay the same."
+        },
+        {
+          "tag": "predict",
+          "question": "Two lists of 1,000 numbers, both nearly sorted. List A is sorted small to big except the smallest number sits at the far right. List B is sorted small to big except the biggest number sits at the far left. With early exit and shrinking passes, roughly how many passes does each need, which costs far more comparisons, and about how many for each?",
+          "answer": "List A needs 999 passes because the smallest item moves one spot left per pass; list B needs 2 passes because the biggest item flies right in one pass and the second pass shows no swaps. For B said about 999 comparisons, counting only the first pass. For A recalled 500,000 from n squared but could not derive it from 1,000 and asked to be taught the method.",
+          "correct": false,
+          "node_id": "computer-science/algorithms/simple-sorts/bubble-sort",
+          "feedback": "Passes were right: A needs about 999 passes, B needs 2. The comparison count for B was low. The second pass, the one that finds no swaps, still makes comparisons, about 998 of them. So B costs about 999 + 998 = 1,997 comparisons, not 999. The early exit saves the later passes, not the confirming pass itself. For A the passes cost 999 + 998 + ... + 1 comparisons. Write the sum forwards and backwards and add column by column: each column totals 1,000 and there are 999 columns, so twice the sum is 999 x 1,000 and the sum is 499,500, about 500,000. In general 1 + 2 + ... + (n-1) = n(n-1)/2. Check on n = 4: 3 + 2 + 1 = 6 = 4 x 3 / 2."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g144-1",
+          "node_id": "computer-science/algorithms/simple-sorts/bubble-sort",
+          "text": "The pass that finds no swaps and triggers the early exit still makes comparisons (about 998 for 1,000 items). List B was costed at about 999 comparisons instead of about 1,997."
+        },
+        {
+          "id": "g144-2",
+          "node_id": "computer-science/algorithms/simple-sorts/bubble-sort",
+          "text": "Could not get from 1,000 items to about 500,000 comparisons: the n(n-1)/2 sum (999 + 998 + ... + 1) was shown in the lesson but not recalled or derived."
+        }
+      ],
+      "notes": "Three questions answered in prose on a phone. Q1 and Q2 correct. Q1: Craig traced the whole sort instead of one pass; all numbers were right. Q2: stability named and explained; small wording slip that the 'scores' would swap rather than the students. Q3 missed on the comparison count: passes right (999 for the smallest item at the far right, 2 for the biggest at the far left), but the confirming pass of list B was left out of the comparison count, giving 999 instead of about 1,997. He also asked to be taught how 1,000 items gives about 500,000 comparisons; the forwards-and-backwards sum was taught in this session. Pass-count convention: the lesson counted the final no-swap confirming pass as a pass (so [3, 4, 5, 1] was 4 passes, and the simple list [2, 3, 4, 5, 1] was 5). For a list of n items, n-1 passes always suffice, so List A is 999 working passes; both counts were accepted. No prior gaps to retest."
+    }
   }
 ]
