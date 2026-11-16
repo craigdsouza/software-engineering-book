@@ -252,6 +252,15 @@
       "also_in": []
     },
     {
+      "id": "computer-science/algorithms/simple-sorts/selection-sort",
+      "title": "Selection Sort",
+      "summary": "Find the smallest item left, swap it into place: always n(n-1)/2 comparisons, at most n-1 swaps, in-place but not stable.",
+      "page": "computer-science/algorithms.html#selection-sort",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/algorithms/divide-and-conquer-sorts",
       "title": "Merge Sort & Quicksort",
       "page": "computer-science/algorithms.html#divide-and-conquer-sorts",
