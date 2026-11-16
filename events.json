@@ -3886,5 +3886,65 @@
       "content": "Selection sort: sort a list by repeatedly picking the smallest item left and swapping it into place.\n\nThe idea. Split the list into a sorted part (left) and an unsorted part (right). Repeat: find the smallest item in the unsorted part, then swap it into the first unsorted slot. The wall between the two parts only moves right, and everything left of it is final.\n\nWorked example on [29, 10, 14, 37, 13]:\nStart:  [29 10 14 37 13]\nPass 1: smallest of all = 10 (slot 1), swap with slot 0 -> [10 | 29 14 37 13]\nPass 2: smallest of the rest = 13, swap with 29 -> [10 13 | 14 37 29]\nPass 3: smallest of the rest = 14, already in place -> [10 13 14 | 37 29]\nPass 4: smallest of the rest = 29, swap with 37 -> [10 13 14 29 | 37]\nAfter n-1 = 4 passes the last item has nowhere else to go, so it is done.\n\nCost. To find the minimum of k items you must look at all k. So the passes cost 4 + 3 + 2 + 1 = 10 comparisons for n = 5. In general n(n-1)/2. For 1,000 items that is 499,500 comparisons, so O(n^2). It does at most n-1 swaps (at most 999 for 1,000 items), because each pass does at most one swap.\n\nNo early exit. Selection sort does the same number of comparisons on every input: sorted, reversed or shuffled. On an already sorted [1, 2, 3, 4, 5] it still makes 10 comparisons. A pass can only be sure it found the minimum after looking at every remaining item, even if the minimum turns out to be in the first slot.\n\nTempting but wrong: \"if a pass needs no swap, stop\", copied from bubble sort. Counterexample [1, 3, 2]: pass 1 finds the smallest, 1, already in slot 0, so no swap, but the list is not sorted. In bubble sort a swap-free pass means every neighbouring pair was checked and is in order, so it proves the list is sorted. In selection sort a swap-free pass only says one slot was already right.\n\nTwo properties every sort is judged on. In-place means no extra copy of the data; selection sort is in-place because it only swaps inside the one list. Stable means equal items keep their original order; selection sort is NOT stable. Proof with [4a, 4b, 2], where 4a and 4b are different items with the same value: pass 1 finds 2 in slot 2 and swaps it with slot 0, giving [2, 4b, 4a]. The long-distance swap carried 4a over 4b. Second example, [3a, 3b, 1, 3c]: pass 1 swaps 1 with 3a -> [1, 3b, 3a, 3c]; the later passes need no swaps (ties keep the first minimum found). Final order 1, 3b, 3a, 3c, so a and b flipped.\n\nWhere it wins. At most n-1 swaps, against up to about 500,000 for bubble sort on 1,000 items. That helps when moving an item is expensive, such as large records on slow storage. The price is that it never gets faster on easy input.\n\nConnections. Builds on arrays (every swap is by position) and Big O (n(n-1)/2 steps is O(n^2)). Sits beside bubble sort: both O(n^2) and in-place, but bubble sort is stable and can exit early (O(n) on sorted input) while selection sort is unstable, has no early exit, and swaps far less. Contrasts with merge sort and quicksort, which take O(n log n): about 10,000 comparisons for 1,000 items instead of about 500,000.",
       "notes": "Craig answered both check-ins correctly. Check-in 1 (already sorted [1..5], how many comparisons?): said 10, with the reasoning that a pass cannot know it found the smallest until it has checked every remaining item, so there is no shortcut. Check-in 2 ([3a, 3b, 1, 3c]): correctly traced to 1, 3b, 3a, 3c and saw that only the first swap moved a 3. Not yet covered: insertion sort (the other half of the Simple Sorts topic) and why it is fast on nearly sorted lists. Lower-bound and heap sort (a selection sort that finds the minimum faster) are beyond current depth."
     }
+  },
+  {
+    "id": 146,
+    "schema": 1,
+    "ts": "2026-11-16T15:05:22.000Z",
+    "date": "2026-11-16",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/algorithms/simple-sorts/selection-sort",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "Run selection sort on [4, 2, 5, 1, 3]. What does the list look like after pass 2, how many comparisons have been made so far, and how many swaps? (A pass that finds its smallest item already in place makes no swap.)",
+          "answer": "After pass 2: [1, 2, 5, 4, 3]; 4 + 3 = 7 comparisons; 1 swap (pass 2 found 2 already in place).",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/selection-sort",
+          "feedback": "Correct. Pass 1 swaps 4 and 1 (4 comparisons) and pass 2 finds 2 already in place (3 comparisons, no swap): [1, 2, 5, 4, 3], 7 comparisons, 1 swap."
+        },
+        {
+          "tag": "predict",
+          "question": "Take 1,000 numbers sorted small to big, except the biggest sits at the far left. Bubble sort uses early exit and shrinking passes. Roughly how many comparisons does bubble sort make in total, how many does selection sort make, and which is cheaper by about how much? (Count every pass bubble sort makes, including the last one that finds no swaps.)",
+          "answer": "Bubble: 999 + 998 = 1,997 (one pass carries the biggest to the end, the second finds no swaps). Selection: n(n-1)/2 = 1,000 x 999 / 2 = 499,500. Bubble cheaper by about 497,500.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/bubble-sort",
+          "feedback": "Correct. The confirming pass still makes about 998 comparisons, so bubble sort costs about 1,997. Selection sort always costs n(n-1)/2 = 499,500. The difference is about 497,500. Retests g144-1 (confirming pass still counts) and g144-2 (n(n-1)/2 for 1,000 items)."
+        },
+        {
+          "tag": "predict",
+          "question": "A robot arm rearranges 1,000 heavy crates in random order into weight order, lightest first. A swap takes 1 minute, comparing is free, ties in weight do not matter. Bubble or selection? What is the most swaps (minutes) the chosen sort could ever need, and why is the other worse?",
+          "answer": "Chose selection: swaps are the expensive part, stability does not matter, and a random list rarely lets bubble sort exit early. Gave bubble's worst case first (reversed list, n(n-1)/2 = 499,500 swaps), then on a nudge gave selection's maximum: 999 swaps = 999 minutes, because each pass makes at most one swap and there are n-1 passes.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/selection-sort",
+          "feedback": "Correct. Selection sort makes at most n - 1 = 999 swaps (about 16.7 hours). Bubble sort's worst case is 499,500 swaps, about 347 days. The first answer gave only bubble sort's number because the question's wording was ambiguous; the 999 followed immediately when asked."
+        },
+        {
+          "tag": "explain",
+          "question": "A list in alphabetical order is Asha 80, Ben 80, Cy 70, to be sorted by marks lowest first, keeping equal marks in alphabetical order. What is the final order under bubble sort (swap only when strictly bigger) and under selection sort, which one gives the teacher what she wants, and why does the other fail?",
+          "answer": "Bubble: Cy, Asha, Ben. Selection: Cy, Ben, Asha. Bubble gives what she wants. Selection fails because in pass 1 Cy's 70 is swapped with Asha's 80, which carries Asha past Ben and breaks the alphabetical tie-break.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/selection-sort",
+          "feedback": "Correct. Bubble sort never swaps equal neighbours, so it is stable: [Asha, Ben, Cy] -> [Asha, Cy, Ben] -> [Cy, Asha, Ben]. Selection sort's pass 1 swaps Cy with Asha at distance 2, giving [Cy, Ben, Asha], so Asha jumps over Ben. That long-distance swap is why it is unstable."
+        },
+        {
+          "tag": "predict",
+          "question": "Take the reversed list [5, 4, 3, 2, 1]. How many swaps does bubble sort make in total, how many does selection sort make, and why is selection sort's count so low? Trace selection sort pass by pass.",
+          "answer": "Bubble: 4 + 3 + 2 + 1 = 10 swaps. Selection: 2 swaps. Pass 1 swaps 1 and 5, putting both in their final slots. Pass 2 swaps 2 and 4, again two items placed at once. 3 is already in the middle.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/selection-sort",
+          "feedback": "Correct. On a reversed list every comparison in bubble sort swaps, so 10 swaps. Selection sort swaps 1 with 5 and then 2 with 4; each long-distance swap puts two items in their final slots, and 3 is already home, so only 2 swaps."
+        }
+      ],
+      "gaps": [],
+      "notes": "Five questions answered in prose on a phone, all correct. Selection sort had no open gaps. Q2 retested bubble sort's open gaps: g144-1 resolved (the confirming pass of the early exit still counts, 999 + 998 = 1,997) and g144-2 resolved (1,000 x 999 / 2 = 499,500 recalled and applied unprompted). Q3 was correct after one nudge: the first answer gave bubble sort's worst case (499,500 swaps) instead of the chosen sort's maximum (999), partly because the question wording was ambiguous. Small wording point in Q4: 'stability is not one of its properties' was circular on its own, but the mechanism (Cy's swap carries Asha past Ben) was given right away. Strong points: sees that selection sort wins when swaps are expensive and loses the early-exit advantage on random input, and that a long-distance swap places two items at once."
+    }
   }
 ]
