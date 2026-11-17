@@ -261,6 +261,15 @@
       "also_in": []
     },
     {
+      "id": "computer-science/algorithms/simple-sorts/insertion-sort",
+      "title": "Insertion Sort",
+      "summary": "Take the next item and slide it left into its place in the sorted part: O(n²) worst case, O(n) if nearly sorted, in-place and stable.",
+      "page": "computer-science/algorithms.html#insertion-sort",
+      "deps": [],
+      "contrasts": [],
+      "also_in": []
+    },
+    {
       "id": "computer-science/algorithms/divide-and-conquer-sorts",
       "title": "Merge Sort & Quicksort",
       "page": "computer-science/algorithms.html#divide-and-conquer-sorts",
@@ -3563,6 +3572,13 @@
       "tier": "intermediate",
       "under": "computer-science/algorithms/simple-sorts/bubble-sort",
       "note": "Bubble sort moves small items only one spot left per pass. Alternating a left-to-right pass with a right-to-left pass moves the slow small items faster."
+    },
+    {
+      "id": "binary-insertion-sort",
+      "title": "Binary insertion sort and insertion sort inside library sorts",
+      "tier": "intermediate",
+      "under": "computer-science/algorithms/simple-sorts/insertion-sort",
+      "note": "Insertion sort is used to finish small chunks inside faster sorts. Finding each key's spot by binary search cuts comparisons but not shifts."
     }
   ]
 }
