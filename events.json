@@ -3964,5 +3964,73 @@
       "content": "Insertion sort: sort a list by taking each next item and sliding it left into its place among the items already sorted.\n\nThe idea. Think of sorting a hand of playing cards: pick up one card at a time and put it in the right spot among the cards already in your hand. Split the list into a sorted part (left) and an unsorted part (right). The sorted part starts as just the first item, because one item is always sorted. Each pass takes the first item of the unsorted part, called the key. Compare the key with the item just to its left. If that item is bigger, shift it one slot right. Keep going left until you meet an item that is smaller than or equal to the key, or reach the front of the list. Then drop the key into the gap.\n\nWorked example on [5, 2, 4, 1] (the bar marks the end of the sorted part):\nStart:  [5 | 2 4 1]\nPass 1: key = 2. 5 > 2, shift 5 right. Front reached. Drop 2 in -> [2 5 | 4 1]. 1 comparison.\nPass 2: key = 4. 5 > 4, shift 5. 2 <= 4, stop. Drop 4 in -> [2 4 5 | 1]. 2 comparisons.\nPass 3: key = 1. 5, 4 and 2 are all bigger, shift all three. Front reached. Drop 1 in -> [1 2 4 5]. 3 comparisons.\nDiagram of pass 3:\n[2, 4, 5 | 1]  key = 1\n[2, 4, _, 5]   shift 5\n[2, _, 4, 5]   shift 4\n[_, 2, 4, 5]   shift 2\n[1, 2, 4, 5]   drop key in\nReaching the front of the list needs no comparison (nothing left to compare with), so [3, 1, 2] costs 1 comparison in pass 1 (1 vs 3, then front) and 2 in pass 2 (2 vs 3, then 2 vs 1), 3 in total.\n\nCompared with selection sort, the work is reversed. Selection sort does the hard part first (scan the whole unsorted side for the smallest) and placing it is trivial. Insertion sort takes whatever item comes next (trivial pick) and the work is finding its spot, and that search only looks at the sorted side.\n\nCost depends on how far each key travels left, which is as far as bigger items sit to its left.\nWorst case, a reversed list such as [4, 3, 2, 1]: every key goes all the way to the front. Pass 1 costs 1 comparison, pass 2 costs 2, pass 3 costs 3, total 6. In general 1 + 2 + ... + (n-1) = n(n-1)/2, which is 499,500 comparisons for 1,000 items, the same number selection sort always pays. O(n^2).\nBest case, an already sorted list such as [1, 2, 3, 4]: each key meets a smaller neighbour on its first comparison and stops at once. 1 comparison per pass and no shifts, total n-1, which is 999 comparisons for 1,000 items instead of 499,500. O(n).\nAverage case, random order: a key travels about halfway back, so about n(n-1)/4 comparisons. Still O(n^2), but half the work.\nNearly sorted example: [2, 3, 4, 5, 1] costs 3 + 4 = 7 comparisons (keys 3, 4, 5 cost 1 each; key 1 is compared with 5, 4, 3, 2 then hits the front), while selection sort pays its fixed 4 + 3 + 2 + 1 = 10.\n\nThe counterintuitive bit. Selection sort cannot benefit from a nearly sorted list, because it scans the whole unsorted side every pass. Insertion sort's cost tracks how out of order the list is. A list with one item out of place costs about n comparisons, not n^2. That is why it suits small or nearly sorted data, and why real library sorts use it to finish small chunks.\n\nShifts are not swaps. Bubble sort swaps two items (2 writes). Insertion sort shifts each bigger item one slot right (1 write per item) and writes the key once per pass. On a reversed list of 1,000 it makes 499,500 shifts plus about 999 key writes, about 500,500 writes. Selection sort on the same reversed list does about 500 swaps (each puts two items in their final slots), which is 2 writes each, about 1,000 writes. So if every write is expensive (a robot arm moving heavy crates, large records on slow storage), selection sort is about 500 times better on a reversed list; if writes are cheap and the list is nearly sorted, insertion sort wins.\n\nStability. Insertion sort is stable, as long as the key stops when it meets an item that is smaller than or equal to it. Example: marks list [Asha 80, Ben 80], key = Ben. Asha's 80 is equal, so Ben stops right after her and the order is kept. The tempting wrong rule is \"keep shifting while the left item is bigger-or-equal\": that would carry Ben past Asha and break stability. Selection sort is not stable because its long-distance swap carries an item over equal ones (Cy 70 swapped with Asha 80 carries Asha past Ben). It is in-place, because it only moves items inside the one list.\n\nConnections. Builds on arrays (shifting items is by position) and Big O (n(n-1)/2 is O(n^2); n-1 is O(n)). Sits beside bubble sort (stable, O(n) on sorted input, but swaps) and selection sort (unstable, no early exit, fewest writes). Contrasts with merge sort and quicksort, which take O(n log n): about 10,000 comparisons for 1,000 items instead of about 500,000.",
       "notes": "Craig answered all three check-ins correctly, on a phone, in prose. Pass-by-pass trace of [3, 1, 2]: [1, 3, 2] with 1 comparison, then [1, 2, 3] with 2 comparisons, total 3; he caught and fixed his own miscount mid-answer. Check-in 1 ([2, 3, 4, 5, 1]): 7 comparisons for insertion sort, 10 for selection sort, both right. Check-in 2 (stability): right idea and a right contrast with selection sort's long-distance swap, but he said the key stops at an item 'bigger than or equal to' it; the direction is flipped, the key stops at an item smaller than or equal to it (bigger items are shifted). Treat as a wording slip, worth retesting once. Check-in 3 (write cost on a reversed list of 1,000): insertion sort about 499,500 shifts plus about 1,000 key writes, about 500,000; selection sort about 500 swaps x 2 = about 1,000 writes; both right and he picked selection sort as better when writes are expensive. Small fix: he said half the list 'sorts automatically'; the real reason is that each swap fixes two slots at once. Session ended after the full lesson, nothing left unfinished. Possible forward pointers beyond current depth: insertion sort inside library sorts for small chunks, and binary insertion sort."
     }
+  },
+  {
+    "id": 148,
+    "schema": 1,
+    "ts": "2026-11-17T16:57:50.000Z",
+    "date": "2026-11-17",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/algorithms/simple-sorts/insertion-sort",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "explain",
+          "question": "A list sorted by marks is Asha 70, Ben 75, Cy 80, and a new student Dev with 75 arrives at the far right as the key. Using insertion sort, which items does Dev compare with, which get shifted, and where does Dev land? State the exact stopping rule and which way the comparison points. Then, for the variant rule 'keep shifting while the left item is bigger or equal to the key', where does Dev land and which property breaks?",
+          "answer": "Dev compares with Cy (shifted right) then Ben (equal, stop); final order Asha, Ben, Dev, Cy. Rule: the key stops at an item smaller than or equal to it. On the variant rule Craig misapplied the comparison from the key's side and said Dev would not move at all.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/insertion-sort",
+          "feedback": "Parts 1 and 2 correct. For the variant rule (shift while the left item is bigger or equal), Cy 80 shifts, Ben 75 is equal and also shifts, and Dev stops at Asha 70, giving Asha, Dev, Ben, Cy: Dev jumps over Ben, so the sort is no longer stable. The two rules differ only on an equal item: the correct rule stops at it, the variant steps over it. Graded correct after the question's 'opposite rule' label was found confusing (it mixed 'while' and 'until'); the comparison-direction slip is retested in question 6."
+        },
+        {
+          "tag": "predict",
+          "question": "For 1,000 items, roughly how many comparisons does insertion sort make when the list is already sorted, exactly reversed, and in random order? How does each compare with selection sort's fixed 499,500, and why does random order land where it does?",
+          "answer": "Sorted: n-1 = 999, far cheaper. Reversed: n(n-1)/2 = 499,500, same as selection sort. Random: about n(n-1)/4, about 250,000, because each key travels about halfway back.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/insertion-sort",
+          "feedback": "Correct. Sorted costs 999 (about 500 times cheaper than 499,500), reversed ties at 499,500, random costs about 250,000, half of selection sort's, because each key travels about halfway back on average."
+        },
+        {
+          "tag": "predict",
+          "question": "1,000 numbers are sorted small to big except the smallest sits at the far right. How many comparisons do insertion, bubble (early exit, shrinking passes) and selection sort make, which is cheapest and by how many times, and why does bubble sort suffer?",
+          "answer": "Bubble 499,500 and selection 499,500; insertion 998 + 999 = about 2,000. Insertion is about 250 times cheaper. Bubble moves a small item only one spot left per pass.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/bubble-sort",
+          "feedback": "Correct. Bubble sort needs 999 passes of shrinking length (999 + 998 + ... + 1 = 499,500) because the small item moves one spot left per pass; selection sort always pays 499,500; insertion sort pays 998 one-comparison passes plus 999 for the last key, 1,997, about 250 times cheaper."
+        },
+        {
+          "tag": "predict",
+          "question": "A shop has 10,000 sorted prices and 5 new items are added at the end each night, then the list is re-sorted. Comparisons and writes cost about the same. Which of the three sorts, and roughly how many comparisons per night in the worst case for it and for selection sort?",
+          "answer": "Insertion sort: about 10,000 comparisons for the sorted block plus up to 10,000 for each of the 5 new items, about 60,000, and about 50,000 writes. Selection sort: about 50 million comparisons and about 20,000 writes. Bubble sort is ruled out for the same comparison count as selection in the worst case.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/insertion-sort",
+          "feedback": "Correct. Insertion sort's worst case is about 60,000 comparisons and 50,000 writes; selection sort makes about 50 million comparisons (n(n-1)/2 with n = 10,005), roughly 830 times more, and its only win, about 20,000 writes, cannot make up for it. Bubble sort in the worst case (small new items) also needs about 10,000 passes, about 50 million comparisons. The ratio had to be supplied after the first answer."
+        },
+        {
+          "tag": "predict",
+          "question": "1,000 large student records, writes expensive, comparisons free, reversed marks, ties must stay alphabetical. Which sort can be ruled out straight away, how many writes do the other two make in the worst case, and which do you pick?",
+          "answer": "Selection sort ruled out (the only unstable one). Bubble: 499,500 swaps x 2 = about 999,000 writes. Insertion: 499,500 shifts + about 999 key writes = about 500,500 writes. Picks insertion, about 2 times cheaper.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/selection-sort",
+          "feedback": "Correct. Selection sort is the only unstable one of the three. Bubble and insertion both fix one out-of-order pair at a time, but a bubble swap costs 2 writes and an insertion shift costs 1, so insertion makes about half the writes (about 500,500 against about 999,000)."
+        },
+        {
+          "tag": "recall",
+          "question": "For bubble, selection and insertion sort: is it stable, and how many comparisons does it make on an already sorted list of 1,000? Then a fresh stopping-rule case: sorted part Raj 40, Sue 40, Tim 55 with key Uma 40 — which items does Uma compare with, which are shifted, what is the final order, and which 40 does she stop at and why?",
+          "answer": "Bubble stable, 999 (one pass with no swaps); selection not stable, 499,500; insertion stable, 999. Uma compares with Tim (shifted) and then Sue (equal, stops); final order Raj, Sue, Uma, Tim; the key stops at an item smaller than or equal to it.",
+          "correct": true,
+          "node_id": "computer-science/algorithms/simple-sorts/insertion-sort",
+          "feedback": "Correct. Stable: bubble yes, selection no, insertion yes. Sorted-list comparisons: bubble 999 (early exit), selection 499,500, insertion 999. Uma stops at Sue's equal 40 because the key stops at an item smaller than or equal to it, so the two earlier 40s keep their order. The comparison direction was stated correctly here, which settles the slip from question 1."
+        }
+      ],
+      "gaps": [],
+      "notes": "Six questions answered in prose on a phone, all correct, three on insertion sort alone and the rest comparing bubble, selection and insertion. No open gaps. Question 1 retested the stopping-rule wording slip from the lesson: parts 1 and 2 were right and the rule was stated correctly (the key stops at an item smaller than or equal to it). Part 3 was misapplied from the key's side, partly because the question labelled the variant rule 'opposite' while mixing 'while' and 'until'; Craig pointed that out fairly, the wording was fixed, and it was graded correct. Question 6 then stated the direction correctly on a fresh case, so the slip looks resolved; worth one more fresh check at the next review. Question 4: Craig counted 60,000 comparisons (the sorted block of 10,000 plus up to 10,000 per new item), more careful than the 50,000 the question expected; he did not state the ratio to selection sort, which is about 830 times, until it was supplied. Strong points: reads the best, worst and average cases off how far each key travels, sees that bubble sort's small items move only one spot per pass, and counts writes separately from comparisons (swap = 2, shift = 1)."
+    }
   }
 ]
