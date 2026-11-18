@@ -4090,5 +4090,76 @@
       ],
       "notes": "Four exercises from Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 6 exercises (page 93), answered in prose on a phone. Q1, Q3 and Q4 were right with sound reasoning. Q2 had the right answer but Craig said he was not sure why and asked to be taught, so it is logged as a miss on the explanation; taught in session with the 1,000,020 example. Small refinements: the best case of two_sum is the second comparison, not the first (index 0 vs 0 is skipped); the contains_X fix needs return False after the loop, and its average-case gain is a constant factor that Big O hides. Craig also saw by himself that the exercise only asked for the worst case in Big O notation."
     }
+  },
+  {
+    "id": 150,
+    "schema": 1,
+    "ts": "2026-11-18T17:35:40.000Z",
+    "date": "2026-11-18",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/complexity/big-o",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "explain",
+          "question": "one_hundred_sum(array) returns False if the array length is odd. Otherwise it walks a left index up from 0 and a right index down from the end, checking that each pair adds to 100, and it stops when the left index reaches len(array) // 2. Describe its time complexity in Big O.",
+          "answer": "It only checks up to halfway through the array, so about N/2 steps, which is O(N).",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct. The loop runs N/2 times (50 passes for 100 numbers) and Big O drops the 1/2, so O(N). Best case is O(1): an odd length returns False at once, or the first pair fails. Worst case is O(N): every pair adds to 100 and all N/2 checks run."
+        },
+        {
+          "tag": "explain",
+          "question": "merge(array_1, array_2) merges two sorted arrays into one sorted array using one while loop and two pointers that only move forward. Array 1 has N items and array 2 has M items. Describe its time complexity in Big O.",
+          "answer": "First said N*M, then corrected to O(N+M). Did not say why.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct: O(N + M). One loop, and every pass adds exactly one item to the new array, so there are N + M passes (1,000 + 500 = 1,500 passes). The pointers only move forward and never reset, so there is no nesting and no multiplication. Your first instinct of N*M is what you would get from a loop inside a loop. The reason was not stated in your answer, so it is worth saying aloud next time."
+        },
+        {
+          "tag": "predict",
+          "question": "find_needle(needle, haystack) checks every start position in the haystack for the needle, comparing needle characters one at a time. The haystack has N characters and the needle has M. Describe its time complexity in Big O, including best and worst case.",
+          "answer": "Counted N - M passes with up to M comparisons each. Treated 'best case' as special sizes (M = N or M = 1) and ended with 'anywhere between O(N) and O(N^2)', with worst case O(N^2) when M = N/2.",
+          "correct": false,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Good start: N - M + 1 start positions, up to M comparisons each, so the worst case is about N * M, written O(N * M). That is the answer to give. Your N^2/4 check is also valid: with N = 1,000 and M = 500 it is 501 * 500 = 250,500 steps, and M can never be bigger than N, so N * M is at most N^2. The miss: best, average and worst case depend on what is inside the strings, not on how long they are. Fix the sizes (N = 1,000, M = 5) and ask which contents are fastest or slowest. Best: the needle sits at the very start, so only M comparisons, O(M). Worst: haystack 'aaaa...a' and needle 'aaaa...ab', so every start position runs almost the full M comparisons. Also M = 1 is not a best case: with no match it is N passes, and with an instant match it is 1 step. When a function has two inputs, give the answer in both letters (O(N * M)) rather than guessing how M relates to N."
+        },
+        {
+          "tag": "predict",
+          "question": "largest_product(array) uses three nested while loops: i from 0, j from i + 1, and k from j + 1, each running up to len(array), and compares array[i] * array[j] * array[k] to the best so far. Describe its time complexity in Big O.",
+          "answer": "Said O(N): about N - 3 passes, because the nested loops only check that each element is not yet at the end of the array.",
+          "correct": false,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "The right answer is O(N^3). The nested loops do multiply, even though each inner loop starts later than the one outside it. The k loop runs up to the end of the array for every pair (i, j), and the j loop runs up to the end for every i. The number of innermost steps is the number of ways to pick 3 positions out of N, which is N(N-1)(N-2)/6, about N^3/6. For N = 100 that is 161,700 steps. For N = 1,000 it is about 166,000,000, against 1,000 for an O(N) function. The dropped 1/6 is a constant. The test is to count how many times the innermost line runs, not how long each loop's counter is. This is the same shape as the two_sum nested loop you got right earlier (O(N^2)); here the while loops with counters hid it."
+        },
+        {
+          "tag": "predict",
+          "question": "pick_resume(resumes) repeatedly throws away the top half, then the bottom half of what remains, alternating, until one resume is left (midpoint = len(resumes) // 2, then keep resumes[:midpoint] or resumes[-midpoint:]). Describe its time complexity in Big O.",
+          "answer": "O(log N), log base 2 of the length of the resumes array.",
+          "correct": true,
+          "node_id": "computer-science/complexity/big-o",
+          "feedback": "Correct: O(log N). Each pass halves the pile, so 1,000,000 resumes need only about 20 passes. The base does not matter in Big O. Extra detail: in Python, slicing makes a copy of the half that is kept, so the copying adds up to about N/2 + N/4 + ... = N steps in real running time. The exercise counts only the number of passes, so O(log N) is the expected answer; just know the copy cost exists."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g150-1",
+          "node_id": "computer-science/complexity/big-o",
+          "text": "Mixed up best/average/worst case with the sizes of the inputs in find_needle (called M = 1 and M = N 'best cases'). Cases depend on the contents of the input for fixed sizes: best is the needle at position 0 (O(M)), worst is a near-match at every start (O(N * M)). With two inputs, answer in both letters. Retest with a fresh two-input function."
+        },
+        {
+          "id": "g150-2",
+          "node_id": "computer-science/complexity/big-o",
+          "text": "Called three nested loops O(N) because the inner loops start later (j = i + 1, k = j + 1). They still multiply: the count of innermost runs is N choose 3, about N^3/6, so O(N^3) (161,700 steps at N = 100). Test to apply: count how many times the innermost line runs. Retest with a fresh nested-loop case where the inner start depends on the outer index."
+        }
+      ],
+      "notes": "Five exercises from Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 7 exercises (pages 108-111), answered in prose on a phone. Q1 (one_hundred_sum, O(N)), Q2 (merge, O(N+M)) and Q5 (pick_resume, O(log N)) were right. Q2 flipped from N*M to N+M without stating why. Q3 (find_needle) reached N - M passes with up to M comparisons each but mixed best/worst case with input sizes and never stated O(N*M); logged as g150-1. Q4 (largest_product) was called O(N) when it is O(N^3); logged as g150-2. The same nested-loop idea was right earlier on two_sum (O(N^2)), so the slip looks like while-loop counters hiding the nesting. g149-1 (why log N is dropped next to N) was not retested directly; Q5 shows the halving-to-log-N idea is solid. Other open Big O gaps were not retested. Score: 3 of 5 correct."
+    }
   }
 ]
