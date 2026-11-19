@@ -4161,5 +4161,63 @@
       ],
       "notes": "Five exercises from Wengrow, A Common-Sense Guide to Data Structures and Algorithms in Python, Chapter 7 exercises (pages 108-111), answered in prose on a phone. Q1 (one_hundred_sum, O(N)), Q2 (merge, O(N+M)) and Q5 (pick_resume, O(log N)) were right. Q2 flipped from N*M to N+M without stating why. Q3 (find_needle) reached N - M passes with up to M comparisons each but mixed best/worst case with input sizes and never stated O(N*M); logged as g150-1. Q4 (largest_product) was called O(N) when it is O(N^3); logged as g150-2. The same nested-loop idea was right earlier on two_sum (O(N^2)), so the slip looks like while-loop counters hiding the nesting. g149-1 (why log N is dropped next to N) was not retested directly; Q5 shows the halving-to-log-N idea is solid. Other open Big O gaps were not retested. Score: 3 of 5 correct."
     }
+  },
+  {
+    "id": 151,
+    "schema": 1,
+    "ts": "2026-11-19T16:14:39.000Z",
+    "date": "2026-11-19",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/hash-tables",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "explain",
+          "question": "A chained hash table has 12 slots and holds 30 keys, spread evenly. (a) What is the load factor? (b) What is the average chain length? (c) Is the table \"full\" or broken? Why or why not?",
+          "answer": "(a) 2.5. (b) 2.5, and noted that average chain length equals the load factor however the keys are spread. (c) Said the table is \"full\" but not broken, and that lookup takes longer and is no longer O(1).",
+          "correct": false,
+          "node_id": "computer-science/data-structures/hash-tables",
+          "feedback": "The numbers were right: 30 keys / 12 slots = 2.5, and the average chain length is the same 2.5. Two slips in (c). A chained table is never \"full\": each slot holds a list that can keep growing, so a load factor of 2.5 only means 2.5 keys per slot on average (same word slip as \"saturated\" last time). And lookup is still about O(1) at 2.5: about 2 to 3 checks, a small fixed number. Lookup only degrades if the load factor keeps climbing with no rehash, e.g. 10 slots holding 10,000 keys gives chains about 1,000 long. That is why a rehash (growing the table) happens."
+        },
+        {
+          "tag": "predict",
+          "question": "A table with 6 slots (0 to 5), hash = key mod 6, linear probing with wraparound from slot 5 to slot 0. Keys 11, 17 and 23 are inserted in that order; all hash to slot 5; slot 2 stays empty. (a) Which slot does each key end up in? (b) Which slots do you check to find 23? (c) Look up absent key 29 (also hashes to 5): which slots do you check, where do you stop, and why is it safe to stop there?",
+          "answer": "(a) 11 in slot 5, 17 in slot 0, 23 in slot 1. (b) Checks 5, 0, 1. (c) Checks 5, 0, 1, 2, stops at empty slot 2 because an inserted 29 would have landed in slot 2 or earlier.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/hash-tables",
+          "feedback": "All three parts correct, including the wraparound from 5 to 0 and the first-empty-slot stopping rule with the right reason."
+        },
+        {
+          "tag": "explain",
+          "question": "A school keeps a list of 50,000 student ID numbers that have paid fees; the list is only the IDs, nothing paired with them. (a) How do you use a hash table to check \"has ID 48,213 paid?\" quickly: what is the key and what is the value? (b) Roughly how many checks does a lookup take, versus scanning the plain list? (c) Name one thing you give up by using the hash table instead of a plain list.",
+          "answer": "(a) ID as key, a truthy placeholder like true as value. (b) O(1), about 1 check. (c) Gives up reading an item by position/index, which a list does in O(1).",
+          "correct": true,
+          "node_id": "computer-science/data-structures/hash-tables",
+          "feedback": "Correct. The value is a placeholder; all the information is in whether the key is present. A plain-list scan takes up to 50,000 checks (about 25,000 on average for a present ID), versus about 1. Losing position access is valid; more fully, a hash table also keeps no order and costs extra memory for placeholder values and empty slots."
+        },
+        {
+          "tag": "predict",
+          "question": "You have a list of 10,000 phone numbers and want to know whether any number appears twice. (a) Describe how you would do it with a hash table, one number at a time; what do you do the first time you meet a number already there? (b) Roughly how many steps in total? (c) Comparing every number with every other number takes roughly how many comparisons?",
+          "answer": "(a) For each number, look it up first; if already present, return true (duplicate found); otherwise insert it with value true; finish with no duplicate if the end is reached. (b) At most about 10,000 steps. (c) n(n-1)/2, about 49 to 50 million.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/hash-tables",
+          "feedback": "Correct. Check before insert, stop at the first repeat. About 10,000 lookups-plus-inserts versus 10,000 x 9,999 / 2 = 49,995,000 pair comparisons, roughly 5,000 times more work for the nested comparison."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g151-1",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "text": "Load factor under chaining: numbers now right (30/12 = 2.5, equals average chain length), but called the table \"full\" (a chained table cannot be full; chains just grow) and said lookup is no longer O(1) at 2.5 (about 2 to 3 checks is still constant; it degrades only if the load factor keeps climbing with no rehash). Retest of g135-1, still standing in part."
+        }
+      ],
+      "notes": "Retests: g135-1 still standing in part (see g151-1): load factor and chain length numbers correct, but said a chained table is \"full\" and not O(1) at load factor 2.5. g135-2 resolved: first-empty-slot stopping rule and wraparound both correct on a fresh 6-slot table. The non-paired index question (set of IDs with a placeholder value) and a duplicate-check application were both clean. Recheck the word \"full\" under chaining and the idea that a bounded load factor keeps lookup O(1) at the next review."
+    }
   }
 ]
