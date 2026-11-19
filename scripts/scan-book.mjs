@@ -373,7 +373,7 @@ function trimProse(s) {
 // ---- cadence: one cell per day, oldest -> newest, 84 entries ----
 function buildCadence(rawEvents, today) {
   const WINDOW = 84;
-  const RENDERED = 28; // the home strip; metrics are computed over this tail
+  const RENDERED = 60; // the home strip; metrics are computed over this tail
   const perDay = {};
   for (const e of rawEvents) {
     if (e.verb !== "quiz_answered") continue;

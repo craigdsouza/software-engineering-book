@@ -405,7 +405,7 @@ footer.site-footer {
 .cadence-track { min-width: 0; }
 .cadence-cells {
   display: flex;
-  gap: 3px;
+  gap: 2px;
   margin-bottom: 9px;
 }
 .cadence-cell {

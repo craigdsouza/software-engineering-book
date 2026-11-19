@@ -66,7 +66,7 @@ function spliceRegion(html, name, body) {
 // ---------- cadence strip ----------
 
 function renderCadence(cadence) {
-  const rendered = cadence.days.slice(-28);
+  const rendered = cadence.days.slice(-60);
   const cells = rendered
     .map((d) => {
       const label = d.questions ? `${d.date} · ${d.questions} question${d.questions === 1 ? "" : "s"}` : `${d.date} · nothing logged`;
