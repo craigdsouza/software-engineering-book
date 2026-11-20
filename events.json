@@ -4219,5 +4219,68 @@
       ],
       "notes": "Retests: g135-1 still standing in part (see g151-1): load factor and chain length numbers correct, but said a chained table is \"full\" and not O(1) at load factor 2.5. g135-2 resolved: first-empty-slot stopping rule and wraparound both correct on a fresh 6-slot table. The non-paired index question (set of IDs with a placeholder value) and a duplicate-check application were both clean. Recheck the word \"full\" under chaining and the idea that a bounded load factor keeps lookup O(1) at the next review."
     }
+  },
+  {
+    "id": 152,
+    "schema": 1,
+    "ts": "2026-11-20T16:03:05.000Z",
+    "date": "2026-11-20",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/trees",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "explain",
+          "node_id": "computer-science/data-structures/trees/b-trees",
+          "question": "B-tree where a node holds at most 4 keys (5 keys = overflow, split). Root [40, 80]; left leaf [10, 20, 30, 35]; other children not shown. Insert 25 into the left leaf. (1) What happens to that leaf, which key moves up and where does it go? (2) Does the tree get taller here, and why or why not? (3) What would have to be true for a split to make the tree taller?",
+          "answer": "Said the lower of the middle two keys, 20, moves up and joins the parent as [20, 40, 80]. Said the tree does not grow because the parent has room. Said it would grow if the parent already had four keys.",
+          "correct": false,
+          "feedback": "Shape reasoning was right (the middle key goes up into the parent, parent has room, so height is unchanged), but the key was wrong. After inserting 25 the leaf holds 5 keys: [10, 20, 25, 30, 35]. Five keys have one exact middle, 25. 25 moves up, the leaf splits into [10, 20] and [30, 35], and the root becomes [25, 40, 80]. The overflowing key counts toward the 5; it looks like 25 was left out of the count. On part 3: a full parent that is the root makes a new root, so the answer fits this tree, but in general a full non-root parent splits too and pushes its own middle key to its parent. The height grows only when the root itself overflows."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/trees/bst",
+          "question": "BST: root 50 with children 30 (left) and 70 (right); 70 has children 60 (left) and 90 (right); 60 has one child, 65, on its right and no left child. Delete 50. (1) Which value takes 50's place and how do you find it? (2) What happens to the node holding 65? (3) What are 70's two children afterwards?",
+          "answer": "60, the leftmost node in the right subtree, takes 50's place. 65 takes the place of its parent 60. 70 now has children 65 and 90.",
+          "correct": true,
+          "feedback": "Correct. 60 is the successor (go right once, then left until empty). 65 slides up into 60's old slot as 70's left child, so 70's children are 65 and 90. This is the splice step left unconfirmed in g72-1."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/trees/balanced-trees",
+          "question": "Insert 5, 6, 7, 8, 9 in order into an empty AVL tree (height of an empty side is 0, a single node is 1; the rule breaks when the two side heights differ by more than 1). (1) Which insert first breaks the rule, at which node, and which two heights are compared? (2) One rotation or two, and why? (3) After all 5 inserts, what are the root and its two children?",
+          "answer": "7 breaks the rule at node 5 (left height 0, right height 2). One rotation: 6 takes 5's place with children 5 and 7. 8 then 9 go in on the right and the rule breaks again; one rotation moves 8 up. Final: root 6, left 5, right 8 with children 7 and 9.",
+          "correct": true,
+          "feedback": "Correct, with the heights compared properly. The second break is at node 7 (left 0, right 2). Not stated: why one rotation is enough. Each new node lay in a straight line down the right side (right-right), so a single left rotation fixes it. A zigzag shape such as 30, 10, 20 needs two rotations."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/trees",
+          "question": "Tree: root 1; 1's children are 2 (left) and 3 (right); 2's children are 4 and 5; 3's only child is 6; 4's only child is 7. (1) Visit order using a queue (BFS)? (2) Visit order using a stack (DFS), left child first? (3) Which reaches node 7 first and why, in terms of what each holds?",
+          "answer": "BFS 1,2,3,4,5,6,7. DFS 1,2,4,7,5,3,6. DFS reaches 7 first because it keeps going down the left side; walked through the stack holding 1, 2, 4, 7, then popping back up to try 5 and then 3 and 6.",
+          "correct": true,
+          "feedback": "Correct. Both orders are right and the stack walk-through is sound (the stack holds the current path from the root). Missing contrast: a queue finishes each level before going deeper, so 7 waits behind 3, 4, 5 and 6."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g152-1",
+          "node_id": "computer-science/data-structures/trees/b-trees",
+          "text": "Moved the wrong key up in a B-tree split. With max 4 keys per node, inserting 25 into [10, 20, 30, 35] gives 5 keys [10, 20, 25, 30, 35]; the middle key 25 moves up. Answered 20 ('lower of the middle two'), as if the leaf held 4 keys and the inserted key was not counted."
+        },
+        {
+          "id": "g152-2",
+          "node_id": "computer-science/data-structures/trees/b-trees",
+          "text": "Retest of g128-1, only partly resolved. Correctly said a split with room in the parent leaves height unchanged, but said a full parent makes the tree taller. That is true only when the full parent is the root; a full non-root parent splits and pushes its middle key up, and height grows only when the root itself overflows."
+        }
+      ],
+      "notes": "Trees quiz, 4 questions (1 explain, 3 predict) on an overdue topic (due 2026-11-01). Retested g128-1 first: partly resolved (g152-2 carries the remainder). g72-1 resolved: the BST successor splice (65 slides into 60's slot) was walked correctly. g126-1 resolved: AVL heights compared correctly on fresh numbers. Q1 B-tree split missed on the key choice; Q2 BST deletion, Q3 AVL insert and rotation, Q4 BFS/DFS order all correct. Short written answers on a phone."
+    }
   }
 ]
