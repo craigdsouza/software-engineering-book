@@ -396,25 +396,45 @@ footer.site-footer {
 /* ---- cadence strip ---- */
 .cadence {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 30px;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  column-gap: 56px;
   align-items: end;
   padding: 26px 0 30px;
   border-bottom: 1px solid var(--border);
 }
-.cadence-track { min-width: 0; }
+.cadence-track { min-width: 0; width: fit-content; }
+/* GitHub-style grid: columns are weeks, rows are weekdays (Sunday on top) */
+.cadence-grid { display: flex; gap: 8px; margin-bottom: 9px; }
+.cadence-days {
+  display: grid;
+  grid-template-rows: repeat(7, 16px);
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  line-height: 16px;
+}
+.cadence-days span:nth-child(1) { grid-row: 2; }
+.cadence-days span:nth-child(2) { grid-row: 4; }
+.cadence-days span:nth-child(3) { grid-row: 6; }
 .cadence-cells {
-  display: flex;
-  gap: 2px;
-  margin-bottom: 9px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, 16px);
+  grid-auto-columns: 16px;
+  gap: 3px;
 }
 .cadence-cell {
-  flex: 1;
-  height: 30px;
-  border-radius: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
   background: var(--border);
   border: 1px solid var(--border);
 }
+.cadence-cell--pad { visibility: hidden; }
 .cadence-cell[data-level="1"] { background: color-mix(in srgb, var(--status-fresh) 45%, var(--bg)); border-color: transparent; }
 .cadence-cell[data-level="2"] { background: var(--status-fresh); border-color: transparent; }
 .cadence-cell[data-level="3"] { background: var(--status-faint); border-color: transparent; }

@@ -66,17 +66,28 @@ function spliceRegion(html, name, body) {
 // ---------- cadence strip ----------
 
 function renderCadence(cadence) {
+  // GitHub-style grid: one column per week (Sunday at the top), one row per weekday, newest week
+  // on the right. Blank pads fill the first week before the window starts and the days after today.
   const rendered = cadence.days.slice(-60);
-  const cells = rendered
-    .map((d) => {
+  const weekday = (iso) => new Date(`${iso}T00:00:00Z`).getUTCDay(); // 0 = Sunday
+  const pad = `<span class="cadence-cell cadence-cell--pad" aria-hidden="true"></span>`;
+  const lead = weekday(rendered[0].date);
+  const trail = (7 - ((lead + rendered.length) % 7)) % 7;
+  const cells = [
+    pad.repeat(lead),
+    ...rendered.map((d) => {
       const label = d.questions ? `${d.date} · ${d.questions} question${d.questions === 1 ? "" : "s"}` : `${d.date} · nothing logged`;
       return `<span class="cadence-cell" data-level="${d.level}" title="${esc(label)}"></span>`;
-    })
-    .join("");
+    }),
+    pad.repeat(trail),
+  ].join("");
   const since = cadence.days_since_last == null ? "—" : String(cadence.days_since_last);
   return `<section class="cadence" aria-label="Study cadence">
       <div class="cadence-track">
-        <div class="cadence-cells">${cells}</div>
+        <div class="cadence-grid">
+          <div class="cadence-days" aria-hidden="true"><span>Mon</span><span>Wed</span><span>Fri</span></div>
+          <div class="cadence-cells">${cells}</div>
+        </div>
         <p class="cadence-axis"><span>${esc(prettyDate(rendered[0].date))}</span><span>today</span></p>
       </div>
       <div class="cadence-stats">
