@@ -4303,8 +4303,8 @@
           "node_id": "computer-science/data-structures/stacks-and-queues/stacks",
           "question": "Start with an empty stack and run these steps in order: push 4, push 7, pop, push 2, push 9, pop, pop. (a) What values come out, in the order they were popped? (b) What does the stack hold at the end?",
           "answer": "Said 7 then 9 were popped and the stack ends holding 4 and 2. Dropped the third pop.",
-          "correct": false,
-          "feedback": "Three pops, not two. Trace (top on the right): push 4 -> [4]; push 7 -> [4,7]; pop gives 7 -> [4]; push 2 -> [4,2]; push 9 -> [4,2,9]; pop gives 9 -> [4,2]; pop gives 2 -> [4]. Pops come out 7, 9, 2 and the stack ends holding just 4. The first two pops were right, so this was a counting slip, not a LIFO misunderstanding."
+          "correct": true,
+          "feedback": "Three pops, not two. Trace (top on the right): push 4 -> [4]; push 7 -> [4,7]; pop gives 7 -> [4]; push 2 -> [4,2]; push 9 -> [4,2,9]; pop gives 9 -> [4,2]; pop gives 2 -> [4]. Pops come out 7, 9, 2 and the stack ends holding just 4. The first two pops were right, so this was a counting slip, not a LIFO misunderstanding. Scored as correct at Craig's request: the first answer dropped the third pop, but it was a momentary counting slip and the fresh retest was fully right."
         },
         {
           "tag": "predict",
@@ -4340,7 +4340,7 @@
         }
       ],
       "gaps": [],
-      "notes": "Overdue review of Stacks (last quizzed 2026-11-06), plus Queues and Circular buffer. No open gaps going in (g129-1, g129-2, g130-1 all resolved earlier). 4 of 5 questions clean. The one miss (stack trace, dropped a third pop) was a counting slip: a fresh trace with 8 steps was fully right. Array-end choice for a stack, stack reversing a queue, and circular buffer full-ring overwrite all answered correctly. No new gaps."
+      "notes": "Overdue review of Stacks (last quizzed 2026-11-06), plus Queues and Circular buffer. No open gaps going in (g129-1, g129-2, g130-1 all resolved earlier). 5 of 5 scored correct. The first stack trace dropped a third pop (a counting slip, Craig had just woken up); at Craig's request it is scored correct, and a fresh 8-step trace was fully right. Array-end choice for a stack, stack reversing a queue, and circular buffer full-ring overwrite all answered correctly. No new gaps."
     }
   }
 ]
