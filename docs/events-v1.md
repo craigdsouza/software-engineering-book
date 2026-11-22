@@ -84,3 +84,8 @@ that's Gemini in Chrome (Skill: `docs/skill-history/gemini-book-tutor.*`), paste
 ## Id rewrite, 2026-11-10
 
 Stacks and Queues were renamed so their ids nest under their page's topic. `computer-science/data-structures/stacks`, `.../queues` and `.../queues/circular-buffer` became `computer-science/data-structures/stacks-and-queues/stacks`, `.../stacks-and-queues/queues` and `.../stacks-and-queues/queues/circular-buffer`. All 19 references in `events.json` and 12 in `nodes.json` were rewritten in place (`node_id` fields, question and gap ids, deps, contrasts). No event was added, removed or reordered, and every topic's review history, streak and due date is unchanged. A topic's parent comes from its id prefix, so an id that does not nest under its parent puts the topic in the wrong place on the home page.
+
+
+## Id rewrite, 2026-11-22
+
+Sets became a topic of its own, at the same level as Arrays, with Array-based sets under it. `computer-science/data-structures/arrays/array-based-sets` became `computer-science/data-structures/sets/array-based-sets`, and a new `computer-science/data-structures/sets` was added. 2 references in `events.json` (the third question of event 137 and event 138) and 2 in `nodes.json` (the id and the `under` of the Sorted array-based sets forward pointer) were rewritten in place. No event was added, removed or reordered. Array-based sets keeps its review count, streak and due date. Two parents changed with their children: Arrays no longer has a child, so its status now comes from its own reviews alone, and Sets is the new parent of Array-based sets. Array-based sets also now depends on Arrays, which keeps the link the old id path expressed.

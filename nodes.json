@@ -30,10 +30,21 @@
       "also_in": []
     },
     {
-      "id": "computer-science/data-structures/arrays/array-based-sets",
+      "id": "computer-science/data-structures/sets",
+      "title": "Sets",
+      "page": "computer-science/data-structures.html#sets",
+      "deps": [],
+      "contrasts": [],
+      "also_in": [],
+      "summary": "A collection where no value appears twice, and what that rule costs depending on how the set is stored."
+    },
+    {
+      "id": "computer-science/data-structures/sets/array-based-sets",
       "title": "Array-based sets",
       "page": "computer-science/data-structures.html#array-based-sets",
-      "deps": [],
+      "deps": [
+        "computer-science/data-structures/arrays"
+      ],
       "contrasts": [
         "computer-science/data-structures/hash-tables"
       ],
@@ -3563,7 +3574,7 @@
       "id": "sorted-array-sets",
       "title": "Sorted array-based sets",
       "tier": "intermediate",
-      "under": "computer-science/data-structures/arrays/array-based-sets",
+      "under": "computer-science/data-structures/sets/array-based-sets",
       "note": "If the array is kept sorted, the duplicate check can use binary search (about log N steps instead of N), but an insert still shifts cells. Hash-table sets cut both steps to about 1."
     },
     {
