@@ -4416,5 +4416,49 @@
       ],
       "notes": "Intermediate-level session on Hash Tables (due 2026-11-22, one open gap going in). Retested g151-1 (a chained table cannot be 'full'; O(1) needs a bounded load factor): resolved, clean answers on both the original and the follow-up. Delete-from-open-addressing: first answer wrong (blind shift), corrected, then deleted-marker idea understood. Walk in the follow-up went one slot past the first empty slot, logged as g154-1. Resize/amortized cost and bad-vs-good hash function both clean. 4 of 6 scored correct. Recheck the stopping rule and tombstones at next review."
     }
+  },
+  {
+    "id": 155,
+    "schema": 1,
+    "ts": "2026-11-22T06:41:56.000Z",
+    "date": "2026-11-22",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/arrays",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "A dynamic array is full at 80 slots. It grows by x4, to 320 slots. (a) How many free appends does that resize buy? (b) How many items does it copy? (c) Counting each copy and each append as 1 unit, what is the average cost per append over that stretch?",
+          "answer": "240 free appends, 80 items copied, 320 units of work over 240 appends = about 1.33 per append.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Correct on all three parts. Shortcut: growth factor g costs g / (g - 1) per append, so x4 gives 4/3. A bigger factor means fewer resizes and a cheaper average (x2 -> 2, x4 -> 1.33); it is always a constant for a fixed factor."
+        },
+        {
+          "tag": "predict",
+          "question": "A to-do app keeps 5,000 tasks packed in an array, positions 0 to 4,999. The user deletes the task at position 1,200. (a) How many tasks move, and in which direction? (b) Why can't the app just leave a hole there?",
+          "answer": "3,799 tasks move left by one slot. A hole would break lookup by index, which needs the items to be contiguous.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Correct. The tasks at positions 1,201 to 4,999 shift left, which is 3,799. The lookup formula (start address + index x item size) only lands on the right item if every slot from 0 up is filled. With a hole at 1,200, a read there would return an empty slot, and the positions after it would be off."
+        },
+        {
+          "tag": "explain",
+          "question": "Reading position 4,000 of an array takes the same time as reading position 0. Searching for a value can take up to 5,000 steps. Why does reading by position cost 1 step while searching by value does not?",
+          "answer": "Reading uses the formula start address + index x item size, so any position is 1 step. Searching has no index to compute from, so it may check up to n slots one by one.",
+          "correct": true,
+          "node_id": "computer-science/data-structures/arrays",
+          "feedback": "Correct. One precision: it is not only about the data being unsorted. The formula turns a position into an address, but nothing turns a value into a position, so the array cannot jump to a value. Sorted data lets a smarter search skip ahead, but a plain array search still checks slot by slot."
+        }
+      ],
+      "gaps": [],
+      "notes": "Overdue review of Arrays (and its sub-topic Array-based sets, due Nov 15). Six questions were planned: three on Arrays and three on Array-based sets. Craig answered the three Arrays questions (1 predict on amortized growth with a fresh factor x4, 1 predict on delete shifting with exact count, 1 explain on read vs search); all correct, clean session: 2 predict / 1 explain, no open gaps going in or out. The three Array-based sets questions were held back while Craig moves Array-based sets under a new Sets topic, and will be asked and logged after that restructure."
+    }
   }
 ]
