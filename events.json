@@ -4342,5 +4342,79 @@
       "gaps": [],
       "notes": "Overdue review of Stacks (last quizzed 2026-11-06), plus Queues and Circular buffer. No open gaps going in (g129-1, g129-2, g130-1 all resolved earlier). 5 of 5 scored correct. The first stack trace dropped a third pop (a counting slip, Craig had just woken up); at Craig's request it is scored correct, and a fresh 8-step trace was fully right. Array-end choice for a stack, stack reversing a queue, and circular buffer full-ring overwrite all answered correctly. No new gaps."
     }
+  },
+  {
+    "id": 154,
+    "schema": 1,
+    "ts": "2026-11-22T05:25:20.000Z",
+    "date": "2026-11-22",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/hash-tables",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intermediate",
+      "questions": [
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "question": "Two chained tables both have 100 slots and spread keys evenly: Table A holds 300 keys, Table B holds 3,000 keys. (a) Load factor of each? (b) Which table can still be called 'full', if either? (c) Roughly how many keys must you check to look up a key in each? (d) Which table still gives constant-time lookup, and why?",
+          "answer": "(a) 3 and 30. (b) Neither is full, more keys can always be added to both. (c) Worst case 3 and 30. (d) A constant time; B less so, but 30 reads could still be close to O(1).",
+          "correct": true,
+          "feedback": "Parts (a) to (c) correct, and the 'full' slip from g151-1 is fixed: a chained table is never full, its chains just grow. Chain length equals load factor under even spread; a hit checks about half the chain. Part (d) was hedged: O(1) is about whether cost stays put as the table grows, not how big the number is. Resolved by the follow-up."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "question": "Follow-up: Table B never adds slots and its keys grow from 3,000 to 30,000, then 300,000, in the same 100 slots. (a) Load factor and typical chain length at 30,000 and at 300,000? (b) Is lookup constant time as keys grow? (c) What should the table do so lookups stay constant time?",
+          "answer": "(a) 300 and 3,000. (b) No, lookup stops being constant; the same holds for Table A if it never adds slots. (c) Add slots and expand.",
+          "correct": true,
+          "feedback": "Correct, including the sharp point that Table A has the same problem if its slots stay fixed. Lookup is constant time only while the load factor stays bounded, which means growing the slots as keys arrive (and re-placing the keys). Retest of g151-1: resolved."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "question": "8-slot table, hash = key mod 8, linear probing. Keys 3, 11, 19 (all hash to 3) sit in slots 3, 4, 5; slot 6 is empty. You delete 11 by emptying slot 4, then look up 19. (a) Which slots do you check and what do you conclude? (b) Is that right, what went wrong? (c) Suggest one safe way to delete.",
+          "answer": "(a) Checks slot 3 then 4; slot 4 is empty so stops. (b) Wrong because 19 is in slot 5. (c) Shift the items in slots 4 to 7 left by one, then do the same for slots 0, 1 and 2, with slot 0 moving to 7.",
+          "correct": false,
+          "feedback": "(a) and (b) correct: emptying slot 4 breaks the stop-at-first-empty-slot rule, so 19 looks absent though it sits in slot 5. (c) was wrong: you cannot shift items blindly. A key must never sit before its home slot, and shifting stops at the first empty slot so slots 0 to 2 are never touched. Safe fixes: put a 'deleted' marker (lookups walk past it, inserts may reuse it), or a careful backward shift that moves only keys that stay at or after their home slot."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "question": "Table holds 3 (slot 3), 11 (slot 4, home 3), 5 (slot 5, home 5), 13 (slot 6, home 5); slot 7 empty. Delete 11 by shifting every item after it left one slot (5 to slot 4, 13 to slot 5). (a) Look up 5: where do you start, which slots do you check, what do you conclude? (b) What rule did the shifting break? (c) Alternative: a 'deleted' marker in slot 4. How should a lookup treat it, and why is that correct?",
+          "answer": "(a) Start at slot 5, then 6, then 7; slot 7 is empty so stops and concludes 5 is absent. (b) Shifting broke the rule that colliding items move right in search of an empty slot. (c) A lookup should skip a deleted marker and continue, because unlike an empty slot it does not prove the key is absent; this keeps insertion rules intact.",
+          "correct": false,
+          "feedback": "(a) Conclusion right (the table wrongly says 5 is absent, though 5 now sits in slot 4) but the walk was wrong: after the shift 13 left slot 6, so slot 6 is empty and the lookup stops there, not at slot 7. (b) Right idea: the shift put key 5 before its home slot 5, so a walk from its home never reaches it. (c) Correct: a marker means 'something was here, keep going'; inserts may reuse it and the next resize clears markers. The one-slot-too-far walk is the same stopping-rule slip as g102-2 and g135-2."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "question": "A chained table starts with 4 slots. When it is about to hold more keys than slots, it doubles its slots and re-places every existing key. You insert 16 keys one at a time. (a) Before which inserts does it grow, to what sizes? (b) How many existing keys get re-placed in total? (c) Roughly how many extra moves per insert on average, and what does that say about the cost of one insert in the long run?",
+          "answer": "(a) Before key 5 (to 8 slots) and before key 9 (to 16 slots). (b) 4 + 8 = 12. (c) Worked running totals of inserts plus moves (8: 12, 16: 28, 32: 60, 64: 124, 128: 252) and concluded the average insert costs about 2 in the long run.",
+          "correct": true,
+          "feedback": "Correct. 12 / 16 = 0.75 extra moves per insert here, approaching 1 as the table grows; with the insert itself that is about 2 units of work per insert, which matches Craig's running totals. One insert can be expensive (the 9th costs 8 moves) but the average stays constant: amortized O(1)."
+        },
+        {
+          "tag": "predict",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "question": "Chained table with 1,000 slots holds every 4-digit number 1000 to 9999 (9,000 keys). Design X: hash = first digit. Design Y: hash = key mod 1000. (a) How many slots does X use and how long is each chain? (b) Chain length in Y? (c) Average keys checked on a hit in X and in Y? (d) What makes a good hash function?",
+          "answer": "(a) X uses only slots 1 to 9, chains about 1,000 long. (b) Y uses all 1,000 slots, about 9 per slot. (c) About 500 in X and 4.5 in Y. (d) It uses all available slots evenly.",
+          "correct": true,
+          "feedback": "Correct on all four. Same table size, about 100 times the work for X. A good hash function also gives the same slot every time for the same key and is cheap to compute."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g154-1",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "text": "Linear probing stopping rule slipped again, this time in a deletion scenario: after a shift-left delete, walked past the now-empty slot 6 and stopped at slot 7. The rule is to stop at the first empty slot. Third appearance after g102-2 and g135-2 (resolved 2026-11-19). Also first proposed a blind shift-left delete, which breaks the rule that a key never sits before its home slot; corrected in the same session (deleted markers understood). Retest the stopping rule on a table where an earlier delete or shift left an empty slot mid-cluster."
+        }
+      ],
+      "notes": "Intermediate-level session on Hash Tables (due 2026-11-22, one open gap going in). Retested g151-1 (a chained table cannot be 'full'; O(1) needs a bounded load factor): resolved, clean answers on both the original and the follow-up. Delete-from-open-addressing: first answer wrong (blind shift), corrected, then deleted-marker idea understood. Walk in the follow-up went one slot past the first empty slot, logged as g154-1. Resize/amortized cost and bad-vs-good hash function both clean. 4 of 6 scored correct. Recheck the stopping rule and tombstones at next review."
+    }
   }
 ]
