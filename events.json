@@ -4460,5 +4460,47 @@
       "gaps": [],
       "notes": "Overdue review of Arrays (and its sub-topic Array-based sets, due Nov 15). Six questions were planned: three on Arrays and three on Array-based sets. Craig answered the three Arrays questions (1 predict on amortized growth with a fresh factor x4, 1 predict on delete shifting with exact count, 1 explain on read vs search); all correct, clean session: 2 predict / 1 explain, no open gaps going in or out. The three Array-based sets questions were held back while Craig moves Array-based sets under a new Sets topic, and will be asked and logged after that restructure."
     }
+  },
+  {
+    "id": 156,
+    "schema": 1,
+    "ts": "2026-11-23T18:28:21.000Z",
+    "date": "2026-11-23",
+    "verb": "quiz_answered",
+    "node_id": "databases/fundamentals",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intermediate",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "Hospital app, 2 doctors on call per shift; a doctor may go off-call only if at least 2 are on call. Each 'go off-call' request is one transaction at Repeatable Read: (1) SELECT count(*) FROM on_call WHERE shift='night'; (2) if count >= 2, UPDATE that doctor's row to off-call. Exactly 2 are on call (Asha, Ben) and both tap 'go off-call' at the same instant. (a) What happens, and why doesn't Repeatable Read stop it? (b) Name at least two different fixes.",
+          "answer": "Both are taken off call; each transaction counts 2 and passes the check. Fixes: keep an on-call counter with a conditional UPDATE, or run at Serializable so the second transaction sees the count below 2.",
+          "correct": true,
+          "node_id": "databases/fundamentals",
+          "feedback": "Correct. Sharpening: the two transactions write different rows (Asha's and Ben's), so the database sees no write conflict, and each one checks a rule that spans both rows without seeing the other's change - this is write skew. A counter works because both must update the same counter row, so the second waits; Serializable works because the database treats them as if run one after the other. Other fixes: SELECT ... FOR UPDATE on a parent 'night shift' row so the second request waits, then counts 1 and is refused; or retry after the database aborts one transaction at Serializable. A unique constraint does not fit here, since no single value is duplicated."
+        },
+        {
+          "tag": "predict",
+          "question": "Photo app with one leader database and two async replicas; writes go to the leader, reads go to a random replica, replicas lag about 2 seconds. A user uploads a photo and is sent to their gallery; the new photo is missing, and a refresh 2 seconds later shows it. (a) Why did this happen? (b) Name two server-side fixes that make the user always see their own uploads.",
+          "answer": "Explained it as cache invalidation on a known mutation triggering a refetch; suggested server push notification as a server-side fix; could not name another server-side fix.",
+          "correct": false,
+          "node_id": "databases/distributed-systems/replication",
+          "feedback": "Mixed up a stale cache with a stale replica. The refetch after the upload was fine, but it went to a random replica about 2 seconds behind the leader that had not yet received the photo; refetching sooner or a push notification still hits a lagging replica. This is a read-your-writes violation under async replication. Two server-side fixes: (1) route a recent writer's reads to the leader for a short window (e.g. 10 seconds after a write) - costs extra leader load; (2) track a replication position: the leader returns the write's log position (e.g. change #5,042) to the user's session, and a replica may serve that user's read only once it has reached that position, otherwise the read waits or goes to the leader - more precise and cheaper. A chat message missing from your own thread for 2 seconds is the same bug with the same fixes."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g156-1",
+          "node_id": "databases/distributed-systems/replication",
+          "text": "Read-your-writes under async replication (retest of g90-2): confused it with cache invalidation; did not know server-side fixes (send recent writers' reads to the leader, track a replication log position per user and only read from replicas that have caught up)."
+        }
+      ],
+      "notes": "Overdue review. 1/2 correct. Retested g90-1 (isolation / write skew): resolved - got both the failure and two fixes. Retested g90-2 (read-your-writes): still open, now g156-1. g90-3 (CAP, CP vs AP) not retested: Craig stopped before the third question; still open."
+    }
   }
 ]
