@@ -4502,5 +4502,33 @@
       ],
       "notes": "Overdue review. 1/2 correct. Retested g90-1 (isolation / write skew): resolved - got both the failure and two fixes. Retested g90-2 (read-your-writes): still open, now g156-1. g90-3 (CAP, CP vs AP) not retested: Craig stopped before the third question; still open."
     }
+  },
+  {
+    "id": 157,
+    "schema": 1,
+    "ts": "2026-11-24T17:41:24.000Z",
+    "date": "2026-11-24",
+    "verb": "quiz_answered",
+    "node_id": "databases/distributed-systems/cap",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intermediate",
+      "questions": [
+        {
+          "tag": "predict",
+          "question": "Ticket-booking system with servers in Mumbai and Delhi; the link between them drops for 5 minutes; only 1 seat is left for tonight's show. (a) If the system chooses CP (consistency over availability), what happens to a user booking in Delhi during those 5 minutes? (b) If it chooses AP (availability over consistency), what could go wrong with the last seat? (c) Which would you choose for seat booking, and why?",
+          "answer": "CP: the Delhi booking is refused because the servers cannot sync and both must see the same seat status. AP: the last seat may be booked in Mumbai while Delhi does not know, so someone in Delhi books it again. Chose CP for seat booking.",
+          "correct": true,
+          "node_id": "databases/distributed-systems/cap",
+          "feedback": "Correct on all three parts. Added: under CP the Delhi user gets an error or a wait rather than a silent wrong answer, and the cost is lost sales during the 5 minutes. Under AP the double booking is a conflicting write that must be reconciled once the link returns, for example by refunding one buyer. Some businesses (airlines) knowingly choose AP and overbook, because a refund is cheaper than a lost sale; CP is the right default when a double booking cannot be undone cheaply."
+        }
+      ],
+      "gaps": [],
+      "notes": "Completes the 2026-11-23 session. Retested g90-3 (CAP, CP vs AP): resolved - explained both choices and picked CP with the right reason. g156-1 (read-your-writes) is still open."
+    }
   }
 ]
