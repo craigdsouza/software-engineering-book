@@ -1,5 +1,5 @@
 ---
-prose_through: 158
+prose_through: 160
 ---
 
 ## Why databases exist
@@ -38,6 +38,8 @@ The database enforces both. Inserting a second row with `id = 2` is refused.
 
 **Tempting but wrong: use a name or an email as the key.** With student name as the key, a second student called Priya Shah is refused, so a real student can't be enrolled. Names and emails also change. If `jo@old.com` becomes `jo@new.com`, every other table that stored the old value now points at nothing. A good key never changes, so most tables use a meaningless number (1, 2, 3...) or random ID, called a **surrogate key**. The key's job is to be stable, not meaningful. Order numbers and booking references like PNR 4829103 work this way.
 
+A surrogate key separates a row's **identity** (never changes) from its **attributes** (can change). Take a `products` table keyed by SKU code, with 500 `order_items` rows holding `'A-100'` as a foreign key. Renaming the code to `'AX-100'` is refused, because the 500 rows would point at a code that no longer exists. Key the table by `id = 42` instead, and the SKU becomes an ordinary column like name or price. Renaming it is a plain edit on one row. The order rows store `product_id = 42`, which still matches, so nothing breaks and nothing is deleted. Some databases can rewrite all 500 foreign key values when a key changes, but that is 500 extra writes a surrogate key avoids entirely.
+
 A **foreign key** is a column in one table that holds the primary key of a row in another table. It is a pointer.
 
 ```
@@ -50,6 +52,8 @@ authors (parent)           books (child)
 ```
 
 Here `books.author_id` is the foreign key. Meera's name lives in one row, so a rename is one update and all her books follow. This is the normalized design from above. It costs a join to read, which is why some systems denormalize for read speed.
+
+The foreign key goes on the **many** side. An author writes many books, but each book has one author, so `books.author_id` works: one cell can point at one row. The reverse can't work, because one cell can't point at many rows. Storing a list of book ids inside the author's row (`book_ids = 10, 11`) fails twice. Finding a book's author means reading every author's list, and the database can't check a list inside a cell, so nothing stops it holding a book id that doesn't exist.
 
 The database enforces **referential integrity**: every foreign key value must match an existing primary key.
 
@@ -68,6 +72,34 @@ DELETE author 5 (has no books)   -> allowed
 - **Soft delete**: keep the parent row and mark it archived or inactive. Nothing points at nothing.
 
 A shop that must keep sales records for taxes can't cascade, because that destroys the orders. Soft delete (or blocking) keeps them. If privacy law requires erasing a person's details while the tax record must stay, keep the customer row and its `id` but blank the name and contact fields. Orders still link to a real row, but the row no longer identifies anyone.
+
+**When both sides have many: the junction table.** Now suppose a book can have several authors. An author still writes many books, and a book has many authors. This is a **many-to-many** relationship, and neither table can hold the foreign key: a single `author_id` cell can't hold two authors, and a book list on the author row fails as above.
+
+Tempting but wrong:
+
+- **Columns `author_id_1`, `author_id_2`, `author_id_3`** on `books`. This caps authors at three, leaves empty cells for most books, and every query for "books by author 2" must check all three columns.
+- **A list of ids in one cell.** It has the lookup and checking problems above.
+- **One book row per author.** The title is stored twice, so a rename must update every copy (the update anomaly again), and the book's `id` no longer identifies one book.
+
+The fix is a **junction table** (also called a join table or link table): a third table whose only job is to hold pairings. Each row pairs one book with one author and has two foreign keys.
+
+```
+books              authors            book_authors (junction)
+ id | title         id | name           book_id | author_id
+----+--------------  ---+-----------    --------+----------
+ 10 | Salt Roads    1  | Meera Rao      10      | 1
+ 11 | Night Trains  2  | Sam Iyer       10      | 2
+ 12 | Paper Boats   3  | Lena Park      11      | 1
+                                         12      | 3
+```
+
+Book 10 has two authors (Meera Rao and Sam Iyer), and Meera Rao has two books (10 and 11). Every fact is still stored once: titles in `books`, names in `authors`, pairings in `book_authors`.
+
+It works because a many-to-many relationship is really **two one-to-many relationships back to back**. One book has many rows in `book_authors`, and one author has many rows in `book_authors`. Both times the foreign key sits on the many side, and the junction table is the many side. The rule from before still holds: a foreign key goes on the table where each row points at exactly one row of the other table.
+
+The junction table's primary key is the pair `(book_id, author_id)` taken together, called a **composite primary key**. Each pair must be unique, so the same author can't be listed twice on one book, but the same `book_id` can appear many times with different authors. Both foreign keys are enforced, so you can't link book 99 or author 99 if either doesn't exist. Deleting a book should cascade to its junction rows, since a pairing means nothing without the book, but it must not delete the authors. Deleting an author is the block, cascade or soft-delete choice from above.
+
+A junction table can also hold facts about the pairing itself, which belong to neither side. For example, the author's position on the book (first, second) or a royalty share. Meera Rao's share of book 10 is a fact about the pair, not about Meera or the book. The same shape covers students and courses (an `enrollments` table that can also hold the grade), orders and products (an `order_items` table with quantity and price), and posts and tags.
 
 ## ACID and isolation {#isolation}
 
@@ -132,7 +164,7 @@ Two implementation strategies: **locking** (a transaction takes a lock on a row 
 
 ## Where things stand
 
-Database Fundamentals is solid. Normalization is understood, including the update anomaly on a rename. Isolation levels are now understood too: the write-skew cases (oversold concert, two doctors going off call) were explained correctly, with fixes named. Primary keys and foreign keys were taught and both check-ins were answered correctly, including choosing a soft delete for a shop that must keep tax records. They have not been quizzed yet, so the next step is a quiz on keys. Replication, sharding and CAP, including the read-your-writes question, are tracked on [Distributed Systems](distributed-systems.html).
+Normalization is understood, including the update anomaly on a rename. Isolation levels are understood too: the write-skew cases (oversold concert, two doctors going off call) were explained correctly, with fixes named. Keys are mostly there. The two key rules, referential integrity, loading parents before children, and putting the foreign key on the many side were all answered correctly. One idea is shaky and should be retested: a surrogate key never changes, so a rename touches only an ordinary column, not the key. Many-to-many relationships and the junction table have been explained but not quizzed. The next step is a fresh retest of the surrogate key idea, then a quiz on the junction table. Replication, sharding and CAP are tracked on [Distributed Systems](distributed-systems.html).
 
 ## Related pages
 

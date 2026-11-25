@@ -4606,5 +4606,23 @@
       ],
       "notes": "First quiz on this sub-topic, same day it was taught. 3/4 correct. Q3's reason for not disabling a foreign key was vague (said the tables could go out of sync); sharpened to silent orphans from typos or missing parents. No prior gaps to retest. Q2 miss: g159-1 open."
     }
+  },
+  {
+    "id": 160,
+    "schema": 1,
+    "ts": "2026-11-25T17:19:01.000Z",
+    "date": "2026-11-25",
+    "verb": "taught",
+    "node_id": "databases/fundamentals/tables-keys",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-teacher"
+    },
+    "payload": {
+      "depth": "intro",
+      "content": "Follow-up question: what if a book can have several authors? An author can write many books and a book can have many authors; this is a many-to-many relationship.\n\nWhy the one-to-many design stops working. With one author per book, books.author_id (a foreign key on the many side) is enough: a cell can point at one row. With several authors per book, a single author_id cell cannot hold two values, and putting a book list on the authors row fails for the same reason (one cell cannot point at many rows).\n\nTempting but wrong: (1) add columns author_id_1, author_id_2, author_id_3 to books. This caps authors at three, leaves empty cells for most books, and every query that asks 'which books did author 2 write?' must check all three columns. (2) Store a list of ids in one cell (book_ids = 10, 11): finding a book's author means reading every author's list, and the database cannot check that a listed id exists, so there is no referential integrity. (3) Repeat the book row once per author: the title is stored twice, so renaming it means updating every copy (the update anomaly again), and the book's id no longer identifies one book.\n\nThe fix is a junction table (also called a join table or link table): a third table whose only job is to hold pairings. Each row is one pairing of a book with an author, and it has two foreign keys.\n\nbooks              authors            book_authors (junction)\n id | title         id | name           book_id | author_id\n 10 | Salt Roads    1  | Meera Rao      10      | 1\n 11 | Night Trains  2  | Sam Iyer       10      | 2\n 12 | Paper Boats   3  | Lena Park      11      | 1\n                                         12      | 3\n\nReading it: book 10 has two authors (Meera Rao and Sam Iyer), and Meera Rao has two books (10 and 11). Every fact is still stored once: titles in books, names in authors, pairings in book_authors.\n\nWhy it works: a many-to-many relationship is really two one-to-many relationships joined back to back. One book has many rows in book_authors, and one author has many rows in book_authors. In both cases the foreign key lives on the many side, and the junction table is the many side. The rule from before still holds: a foreign key goes on the table where each row points at exactly one row of the other table.\n\nThe junction table's primary key is the pair (book_id, author_id) taken together, called a composite primary key. Each pair must be unique, so the same author cannot be listed twice on the same book, but the same book_id can appear many times with different authors. Both foreign keys are still enforced: you cannot link book 99 or author 99 if either does not exist. Deleting a book should cascade to its junction rows (a pairing means nothing without the book) but must not delete the authors. Deleting an author is the block, cascade or soft-delete choice from before.\n\nCounterintuitive: a junction table can also hold facts about the pairing itself, which belong to neither side. For example the author's position on the book (first author, second author) or a royalty share: Meera Rao's share of book 10 is not a fact about Meera or about the book, only about the pair.\n\nReal-world many-to-many cases: students and courses (an enrollments table that can also hold the grade), orders and products (an order_items table with quantity and price), posts and tags.\n\nConnections: foreign keys and referential integrity (the two foreign keys in the junction table are enforced the same way), normalization (each fact stored once), and joins, which reassemble a book with its authors by following both foreign keys.",
+      "notes": "Craig asked this as a follow-up after the keys quiz (event 159), so no check-in question was asked and the topic has not been quizzed on it. Not taught, beyond current depth: composite primary keys beyond a one-line mention, UUIDs vs auto-increment ids, ON DELETE SET NULL, ON UPDATE CASCADE, how a three-table join reads the junction table."
+    }
   }
 ]
