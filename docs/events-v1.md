@@ -89,3 +89,8 @@ Stacks and Queues were renamed so their ids nest under their page's topic. `comp
 ## Id rewrite, 2026-11-22
 
 Sets became a topic of its own, at the same level as Arrays, with Array-based sets under it. `computer-science/data-structures/arrays/array-based-sets` became `computer-science/data-structures/sets/array-based-sets`, and a new `computer-science/data-structures/sets` was added. 2 references in `events.json` (the third question of event 137 and event 138) and 2 in `nodes.json` (the id and the `under` of the Sorted array-based sets forward pointer) were rewritten in place. No event was added, removed or reordered. Array-based sets keeps its review count, streak and due date. Two parents changed with their children: Arrays no longer has a child, so its status now comes from its own reviews alone, and Sets is the new parent of Array-based sets. Array-based sets also now depends on Arrays, which keeps the link the old id path expressed.
+
+
+## Id rewrite, 2026-11-25
+
+Tables, Primary Keys & Foreign Keys moved from SQL & the Relational Model to Database Fundamentals, because it is the basis for the normalization and foreign-key ideas taught there. `databases/sql-relational/tables-keys` became `databases/fundamentals/tables-keys`. 2 references in `nodes.json` (the id and the entry in a `deps` list) were rewritten in place; `events.json` had none. No event was added, removed or reordered. SQL & the Relational Model and Database Fundamentals each changed one child, so their statuses come from their children's.

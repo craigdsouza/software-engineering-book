@@ -2193,10 +2193,10 @@
       "also_in": []
     },
     {
-      "id": "databases/sql-relational/tables-keys",
+      "id": "databases/fundamentals/tables-keys",
       "title": "Tables, Primary Keys & Foreign Keys",
       "summary": "How rows are identified, and how one table points at another.",
-      "page": null,
+      "page": "databases/fundamentals.html#tables-keys",
       "deps": [],
       "contrasts": [],
       "also_in": []
@@ -2207,7 +2207,7 @@
       "summary": "Reassembling related rows from several tables: inner, left and outer joins.",
       "page": null,
       "deps": [
-        "databases/sql-relational/tables-keys"
+        "databases/fundamentals/tables-keys"
       ],
       "contrasts": [],
       "also_in": []
