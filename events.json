@@ -4548,5 +4548,63 @@
       "content": "A table is rows and columns. A primary key is a column (or columns) whose value is different in every row and is never empty; it is the row's ID card. Why it matters: to change or delete exactly one row (as in the rename of an author with 40 books), the database must be able to point at that row.\n\nExample: an authors table with rows (id 1, Meera Rao, Pune), (id 2, Meera Rao, Delhi), (id 3, Sam Iyer, Pune). Two different people share the name Meera Rao, so UPDATE ... WHERE name = 'Meera Rao' would change both; WHERE id = 2 touches exactly one row.\n\nA primary key must satisfy two constraints at once: (1) unique, no two rows share the value; (2) never empty, since a row you cannot point at is useless. The database enforces this: inserting a second row with id = 2 is refused.\n\nTempting but wrong: use the email (or a person's name) as the key. It looks unique today, but people change emails and names; if jo@old.com becomes jo@new.com, every other table that stored the old value now points at nothing. With name as key, a second student called Priya Shah is refused by the database, so a real student cannot be enrolled, and a spelling or legal name change breaks every reference. A good key never changes. That is why most tables use a meaningless number (1, 2, 3...) or random ID, called a surrogate key. The key's job is to be stable, not meaningful. Real-world cases: an order number, a government ID on a form, a booking reference like PNR 4829103.\n\nA foreign key is a column in one table that holds the primary key of a row in another table; it is a pointer. Example:\n\nauthors (parent)            books (child)\n id | name                   id | title        | author_id\n 1  | Meera Rao              10 | Salt Roads   | 1\n 2  | Sam Iyer               11 | Night Trains | 1\n                             12 | Paper Boats  | 2\n\nbooks.author_id is the foreign key. Meera's name lives in one row, so a rename is one update and all her books follow. This is the normalized design from the denormalization example, and it costs a join to read, which is why some systems denormalize for read speed.\n\nThe database enforces referential integrity: every foreign key value must match an existing primary key. Insert a book with author_id = 99 and no author 99 exists: refused. Delete author 2 while book 12 still points at them: refused, or the book goes too, depending on the rule chosen. Delete author 5 who has no books: allowed.\n\nWhen a parent is deleted while children still exist, the rule is chosen up front: block the delete (the parent cannot go while children exist), or cascade (deleting the parent also deletes its children). A third, common real-world choice is a soft delete: keep the parent row and mark it archived or inactive, so orders stay valid and no foreign key points at nothing. For a shop that must keep sales records for taxes, cascading would destroy the records; soft delete (or blocking) keeps them. If privacy law requires erasing a person's details while the tax record must stay, keep the customer row and its id but blank out the name and contact fields: orders still link to a real row, but the row no longer identifies anyone.\n\nTempting but wrong: skip the constraint and just store the number. Without enforcement, an app bug or a manual delete leaves author_id = 2 pointing at nothing, an orphan; the book page shows 'by: (missing)' and nothing warns you. With a foreign key, the bad delete is refused at that moment. A foreign key is a guarantee, not just a pointer: a bare number can silently rot, and the constraint keeps the pointer true.\n\nConnections: normalization and single source of truth (Database Fundamentals), the update anomaly from a rename, and joins, which reassemble rows by following foreign keys.",
       "notes": "Session 2026-11-25. Diagnostic-free; two check-ins. Check-in 1 (student name as primary key): correct, said duplicate names break the unique constraint; sharpened that the database refuses the second row so a real student cannot be enrolled, plus names change so references break. Check-in 2 (deleting a customer who has orders): offered cascade delete and archiving the customer; chose archiving for a shop that needs tax records, correct and the better real-world answer; added anonymising details while keeping the row. Topic was moved from databases/sql-relational/tables-keys to databases/fundamentals/tables-keys at Craig's request (see docs/events-v1.md). Beyond current depth, not taught: composite primary keys, UUIDs vs auto-increment ids, ON DELETE SET NULL, deferred constraints."
     }
+  },
+  {
+    "id": 159,
+    "schema": 1,
+    "ts": "2026-11-25T17:16:37.000Z",
+    "date": "2026-11-25",
+    "verb": "quiz_answered",
+    "node_id": "databases/fundamentals/tables-keys",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "recall",
+          "question": "(a) What two rules must every primary key value satisfy? (b) What does a foreign key column hold, and what promise does the database make about it?",
+          "answer": "Unique, and every row has one. A foreign key holds the primary key of a row in another table; the database promises referential integrity: you cannot insert a foreign key value that is not a primary key elsewhere, and you cannot delete a primary key unless its linked data is also deleted.",
+          "correct": true,
+          "node_id": "databases/fundamentals/tables-keys",
+          "feedback": "Correct. Sharpening on deletes: when a parent still has children, the rule is chosen up front. Block means the database refuses until the children are removed first; cascade means the database removes the children for you; a soft delete avoids the question by deleting nothing."
+        },
+        {
+          "tag": "predict",
+          "question": "A shop uses the SKU code as the primary key of its products table. order_items has 500 rows with product_sku = 'A-100', a foreign key column. The company renames the code from 'A-100' to 'AX-100'. (a) What happens when someone changes the code in products alone, with the foreign key enforced, and why? (b) How would a surrogate key (a meaningless number like id = 42) change this?",
+          "answer": "(a) Refused, because referential integrity would break the link to the order rows. (b) Said a surrogate key would change nothing, because changing a surrogate key from 42 to something else is like deleting it, which referential integrity would not allow unless the rule is cascade.",
+          "correct": false,
+          "node_id": "databases/fundamentals/tables-keys",
+          "feedback": "Part (a) correct: the database refuses the change, since 500 order rows would point at a code that no longer exists. Part (b) mixed up which value changes. With a surrogate key the key is id = 42 and it never changes; the SKU becomes an ordinary column like name or price, so renaming A-100 to AX-100 is a plain edit of that column on one row. order_items rows store product_id = 42, which still matches, so nothing breaks and nothing is deleted. A surrogate key separates a row's identity (never changes) from its attributes (can change). Some databases can rewrite all 500 foreign key values when a key changes, but that is 500 extra writes a surrogate key avoids entirely."
+        },
+        {
+          "tag": "predict",
+          "question": "A restaurants table and a reviews table, with reviews.restaurant_id a foreign key. An import file lists reviews first and restaurants second; the first row is a review for restaurant_id = 15, which has not been loaded yet. (a) What does the database do with that review, and why? (b) What is the correct fix, and why is turning off the foreign key so the import works a bad one?",
+          "answer": "The database does not accept the review because restaurant 15 does not exist yet. Fix: import the restaurants table first. Turning off the foreign key risks the two tables going out of sync.",
+          "correct": true,
+          "node_id": "databases/fundamentals/tables-keys",
+          "feedback": "Correct: the database refuses the insert, and loading parents before children is the fix. The reason for not turning the constraint off was vague. With it off, nothing checks any insert: a review with a typo like restaurant_id = 150, or for a restaurant that never loads, goes in quietly and becomes an orphan, found only later when a page shows 'restaurant: (missing)'. The constraint makes bad data fail loudly at the moment it enters."
+        },
+        {
+          "tag": "explain",
+          "question": "An author can write many books and each book has one author. A developer proposes skipping the foreign key and storing a list of book ids inside each author's row (book_ids = 10, 11). (a) In the design that uses a foreign key, which table holds it and what does it hold? (b) Give one concrete problem with the list-in-a-cell design.",
+          "answer": "The books table holds the foreign key, since a book has only one author; the reverse cannot work because an author has many books. The list design makes it slow to find a book's author, since you must read every author's list.",
+          "correct": true,
+          "node_id": "databases/fundamentals/tables-keys",
+          "feedback": "Correct: the foreign key goes on the many side (books.author_id), because one cell can point at one row but not at many. The lookup problem is real. A second problem: the database cannot check a list inside a cell, so nothing stops it containing a book id that does not exist, which means no referential integrity."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g159-1",
+          "node_id": "databases/fundamentals/tables-keys",
+          "text": "Surrogate keys: thought a surrogate key itself would be changed or deleted on a rename; did not see that it separates a row's identity (never changes) from its attributes (SKU, name, email), so renaming an attribute is a plain edit and no foreign key breaks."
+        }
+      ],
+      "notes": "First quiz on this sub-topic, same day it was taught. 3/4 correct. Q3's reason for not disabling a foreign key was vague (said the tables could go out of sync); sharpened to silent orphans from typos or missing parents. No prior gaps to retest. Q2 miss: g159-1 open."
+    }
   }
 ]
