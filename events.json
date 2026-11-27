@@ -4658,5 +4658,39 @@
       ],
       "notes": "Stopped partway at Craig's request after Q1. Q2 was asked but not answered: 100-slot open-addressing table with 10 live keys, 80 deleted markers, 10 empty; (a) why are misses slow when live load factor is 0.1, (b) fix and its cost (rebuild/rehash without markers, O(n)). Resume with Q2 and a third question next session. g154-1 resolved: stopping rule correct on a table with a deleted marker mid-cluster and an empty slot before a later key."
     }
+  },
+  {
+    "id": 162,
+    "schema": 1,
+    "ts": "2026-11-27T18:19:30.000Z",
+    "date": "2026-11-27",
+    "verb": "quiz_answered",
+    "node_id": "computer-science/data-structures/hash-tables",
+    "agent": {
+      "name": "claude",
+      "surface": "chat",
+      "skill": "swe-quizmaster"
+    },
+    "payload": {
+      "depth": "intro",
+      "questions": [
+        {
+          "tag": "explain",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "question": "An open-addressing table has 100 slots. After months of use only 10 slots hold live keys, 80 hold deleted markers and 10 are truly empty. (a) Counting live keys the load factor is 10/100 = 0.1, yet lookups for absent keys are slow. Why? (b) What should the table do to fix this, and roughly what does the fix cost?",
+          "answer": "(a) Deleted markers must still be walked past, so a miss checks deleted and live slots alike; said about 90 of 100 slots are checked before concluding absent. (b) Remove the deleted markers and mark those slots empty in one go; no cost given.",
+          "correct": false,
+          "feedback": "(a) Right idea, overstated: a miss walks only to the first truly empty slot, not every slot, but markers make the table behave like load factor 0.9 for misses (about 50 checks per miss for linear probing, versus about 1 at 0.1). (b) Wrong: clearing markers to empty in place breaks lookups for live keys that walked past a marker. Counterexample: 12 in slot 2, marker in slot 3, 42 in slot 5 (home 2); clear slot 3 and a lookup for 42 stops at the now-empty slot 3 and wrongly reports absent. The fix is a rebuild: make a fresh empty table and re-insert only the 10 live keys, each walking from its own hash slot. Cost O(n): scan the 100 old slots once plus 10 inserts, about 110 steps, done once. Tables often trigger this when live keys plus markers pass a threshold such as two-thirds of the slots."
+        }
+      ],
+      "gaps": [
+        {
+          "id": "g162-1",
+          "node_id": "computer-science/data-structures/hash-tables",
+          "text": "Cleaning up deleted markers: proposed turning all markers back to empty in place, which breaks lookups for keys placed past a marker. The fix is a rebuild that re-inserts only live keys into a fresh table, O(n). Also overstated a miss as checking every slot rather than walking to the first empty slot."
+        }
+      ],
+      "notes": "Continuation of event 161 (Q2 from that session, answered today). Craig stopped after Q2. Q3 asked but not answered: 1 million orders keyed by date-time in a hash table; (a) how to answer 'all orders 1-7 Nov' and the work (full scan, O(n)), (b) why hashing doesn't help (adjacent keys land in unrelated slots, no order), (c) a sorted structure such as a balanced tree/B-tree, giving up O(1) exact lookup for O(log n). Resume with that Q3 plus one more question next session. g161-1 not retested today, still open."
+    }
   }
 ]
